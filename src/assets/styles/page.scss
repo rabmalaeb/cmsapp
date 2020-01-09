@@ -1,0 +1,69 @@
+.page {
+}
+
+.page__container {
+  @include container;
+}
+
+.page__section {
+  display: flex;
+  align-items: center;
+}
+
+.page__title-container {
+  flex: 1;
+}
+
+.page__title {
+  @include title;
+}
+
+.page__form-button-container {
+  display: flex;
+}
+
+.page__form__button {
+  margin-right: 10px;
+  &:last-child {
+    margin-right: 0;
+  }
+}
+
+.page__upload-container {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.page__upload-button {
+  width: 100px;
+  margin-right: 20px;
+}
+
+.page__upload-error {
+  background-color: rgb(105, 17, 17);
+  color: #fff;
+  font-size: 14px;
+}
+
+.page__upload-image-container {
+  width: 100px;
+  height: 100px;
+  margin-bottom: 10px;
+}
+
+.page__upload-image {
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}
+
+.page__upload-name {
+  font-size: 14px;
+  color: $global--primary-color;
+  margin-bottom: 20px;
+}
+
+.page__form-item {
+  margin-bottom: 10px;
+}

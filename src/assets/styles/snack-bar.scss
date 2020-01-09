@@ -1,0 +1,13 @@
+.snack-bar {
+  &_is-success {
+  }
+
+  &_is-error {
+    background: #96251c;
+    color: white;
+  }
+
+  &_is-arabic {
+    direction: rtl;
+  }
+}

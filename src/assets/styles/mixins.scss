@@ -1,0 +1,9 @@
+@mixin container {
+  padding: 20px;
+}
+
+@mixin title {
+  font-weight: bold;
+  font-size: 31px;
+  margin-bottom: 20px;
+}

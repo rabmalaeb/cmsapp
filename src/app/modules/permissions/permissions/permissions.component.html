@@ -1,0 +1,57 @@
+<div class="page">
+  <div class="page__container">
+    <div class="page__section">
+      <div class="page__title-container">
+        <div class="page__title">
+          Permissions
+        </div>
+      </div>
+      <div class="page__actions">
+        <button mat-button class="button button_is-primary" (click)="addPermission()" *ngIf="canAddPermission">
+          Add Permission
+        </button>
+      </div>
+    </div>
+    <mat-table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+      <ng-container matColumnDef="id">
+        <mat-header-cell *matHeaderCellDef>Id</mat-header-cell>
+        <mat-cell *matCellDef="let permission">{{ permission.id }}</mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="name">
+        <mat-header-cell *matHeaderCellDef>Name</mat-header-cell>
+        <mat-cell *matCellDef="let permission">{{ permission.name }}</mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="type">
+        <mat-header-cell *matHeaderCellDef>Type</mat-header-cell>
+        <mat-cell *matCellDef="let permission">
+          {{ permission.type | titlecase }}
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="group">
+        <mat-header-cell *matHeaderCellDef>Group</mat-header-cell>
+        <mat-cell *matCellDef="let permission">
+          {{ permission.group }}
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="action">
+        <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
+        <mat-cell *matCellDef="let permission" class="action-link">
+          <a class="table__action" (click)="editPermission(permission.id)">View</a> |
+          <a class="table__action" (click)="deletePermission(permission.id)" *ngIf="canDeletePermission">Delete</a>
+        </mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+    </mat-table>
+
+    <mat-paginator
+      [pageSizeOptions]="[20, 50, 100]"
+      showFirstLastButtons
+    ></mat-paginator>
+  </div>
+</div>

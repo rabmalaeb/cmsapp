@@ -1,0 +1,16 @@
+<div class="nav-bar">
+  <div class="nav-bar__container">
+    <div class="nav-bar__item-container">
+      <div class="nav-bar__item" *ngFor="let item of navBarItems">
+        <a
+          mat-button
+          class="nav-bar__link"
+          [routerLink]="item.link"
+          routerLinkActive="nav-bar__link_is-active"
+        >
+          {{ item.name | titlecase }}
+        </a>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,16 @@
+<div class="alert">
+  <div class="alert__container">
+    <div class="alert__item">
+       {{title}}
+    </div>
+    <div class="alert__item">
+      {{text}}
+    </div>
+    <div class="alert__actions">
+      <mat-dialog-actions align="end">
+        <button mat-button mat-dialog-close>{{cancelButtonText}}</button>
+        <button *ngIf = "!isAlert" mat-button [mat-dialog-close]="true">{{okButtonText}}</button>
+      </mat-dialog-actions>
+    </div>
+  </div>
+</div>

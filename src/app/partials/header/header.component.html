@@ -1,0 +1,15 @@
+<div class="header">
+  <div class="header__container">
+    <div class="header__item-container">
+      <div class="header__item">
+        <button mat-button [matMenuTriggerFor]="menu">
+          Welcome {{user.name}}
+        </button>
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item>Edit Profile</button>
+          <button mat-menu-item (click)="logout()">Logout</button>
+        </mat-menu>
+      </div>
+    </div>
+  </div>
+</div>

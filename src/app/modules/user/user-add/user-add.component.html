@@ -1,0 +1,139 @@
+<div class="page">
+  <div class="page__container">
+    <div class="page__section">
+      <div class="page__title-container">
+        <div class="page__title">
+          {{ title }}
+        </div>
+      </div>
+      <div class="page__actions">
+        <button mat-button class="button button_is-primary" routerLink="/users">
+          Back To Users
+        </button>
+      </div>
+    </div>
+    <div class="page__form-container" *ngIf="!isLoadingUser">
+      <form
+        [formGroup]="userForm"
+        #formDirective="ngForm"
+        (ngSubmit)="performAction(userForm, formDirective)"
+        class="page__form"
+      >
+        <div class="form-item">
+          <div class="form-item__value form-item__value_is-textfield">
+            <mat-form-field appearance="outline">
+              <mat-label>First Name</mat-label>
+              <input
+                matInput
+                id="name"
+                name="name"
+                placeholder="First Name"
+                [formControl]="firstName"
+              />
+              <mat-error
+                *ngFor="let validation of validationMessages.firstName"
+              >
+                <mat-error
+                  class="error-message"
+                  *ngIf="
+                    firstName.hasError(validation.type) &&
+                    (firstName.dirty || firstName.touched)
+                  "
+                >
+                  {{ validation.message }}</mat-error
+                >
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="form-item">
+          <div class="form-item__value form-item__value_is-textfield">
+            <mat-form-field appearance="outline">
+              <mat-label>Last Name</mat-label>
+              <input
+                matInput
+                id="description"
+                name="description"
+                placeholder="Last Name"
+                [formControl]="lastName"
+              />
+              <mat-error *ngFor="let validation of validationMessages.lastName">
+                <mat-error
+                  class="error-message"
+                  *ngIf="
+                    lastName.hasError(validation.type) &&
+                    (lastName.dirty || lastName.touched)
+                  "
+                >
+                  {{ validation.message }}</mat-error
+                >
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="form-item">
+          <div class="form-item__value form-item__value_is-textfield">
+            <mat-form-field appearance="outline">
+              <mat-label>Email</mat-label>
+              <input
+                matInput
+                id="email"
+                name="email"
+                placeholder="Email"
+                [formControl]="email"
+              />
+              <mat-error *ngFor="let validation of validationMessages.email">
+                <mat-error
+                  class="error-message"
+                  *ngIf="
+                    email.hasError(validation.type) &&
+                    (email.dirty || email.touched)
+                  "
+                >
+                  {{ validation.message }}</mat-error
+                >
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="form-item">
+          <div class="form-item__value form-item__value_is-textfield">
+            <mat-form-field appearance="outline">
+              <mat-label>Mobile</mat-label>
+              <input
+                matInput
+                id="mobile"
+                name="mobile"
+                placeholder="Mobile"
+                [formControl]="mobile"
+              />
+              <mat-error *ngFor="let validation of validationMessages.mobile">
+                <mat-error
+                  class="error-message"
+                  *ngIf="
+                    mobile.hasError(validation.type) &&
+                    (mobile.dirty || mobile.touched)
+                  "
+                >
+                  {{ validation.message }}</mat-error
+                >
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="page__form-button-container" *ngIf="canEditUser">
+          <div class="page__form__button">
+            <button mat-button type="reset" class="button button_is-secondary">
+              Reset
+            </button>
+          </div>
+          <div class="page__form__button">
+            <button mat-button type="submit" class="button button_is-primary">
+              {{ buttonLabel }}
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

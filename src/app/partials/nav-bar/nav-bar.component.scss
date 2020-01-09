@@ -1,0 +1,34 @@
+@import '../../../assets/styles/global';
+
+:host {
+  height: 100%;
+}
+
+.nav-bar {
+  height: 100vh;
+}
+
+.nav-bar__container {
+  background-color: $global--primary-color;
+  height: 100%;
+  overflow-y: scroll;
+}
+
+.nav-bar__item {
+}
+
+.nav-bar__link {
+  font-size: 15px;
+  padding: 10px 40px;
+  cursor: pointer;
+  color: #92959e;
+  text-align: left;
+  width: 100%;
+  &_is-active {
+    background-color: $global--primary-color-hover;
+    border-left: 2px solid;
+  }
+  &:hover {
+    background-color: $global--primary-color-hover;
+  }
+}

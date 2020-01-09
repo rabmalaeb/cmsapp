@@ -1,0 +1,23 @@
+<input
+  #fileInput
+  style="display: none"
+  type="file"
+  accept="image/*"
+  (change)="preview($event)"
+/>
+<div class="page__upload-container">
+  <div class="page__upload-button">
+    <div class="button button_is-primary" (click)="fileInput.click()">
+      Select image
+    </div>
+  </div>
+  <div class="page__upload-error" *ngIf="message">
+    {{ message }}
+  </div>
+</div>
+<div class="page__upload-image-container" *ngIf="imageUrl">
+  <img (click)="fileInput.click()" [src]="imageUrl" class="page__upload-image" />
+</div>
+<div class="page__upload-name">
+  {{ imageName }}
+</div>

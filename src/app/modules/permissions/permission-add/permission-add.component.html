@@ -1,0 +1,70 @@
+<div class="page">
+  <div class="page__container">
+    <div class="page__section">
+      <div class="page__title-container">
+        <div class="page__title">
+          {{ title }}
+        </div>
+      </div>
+      <div class="page__actions">
+        <button mat-button class="button button_is-primary" routerLink="/permissions">
+          Back To Permissions
+        </button>
+      </div>
+    </div>
+    <div class="page__form-container" *ngIf="!isLoadingPermission">
+      <form
+        [formGroup]="permissionForm"
+        #formDirective="ngForm"
+        (ngSubmit)="performAction(permissionForm, formDirective)"
+        class="page__form"
+      >
+        <div class="form-item">
+          <div class="form-item__value form-item__value_is-textfield">
+            <mat-form-field appearance="outline">
+              <mat-label>modules</mat-label>
+              <mat-select placeholder="modules" formControlName="modules">
+                <mat-option
+                  *ngFor="let modules of appModules"
+                  [value]="modules.name"
+                >
+                  {{ modules.name | titlecase }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="form-item">
+          <div class="form-item__value form-item__value_is-textfield">
+            <mat-form-field appearance="outline">
+              <mat-label>Permission Type</mat-label>
+              <mat-select
+                placeholder="Permission Type"
+                formControlName="permissionType"
+              >
+                <mat-option
+                  *ngFor="let permissionType of permissionTypes"
+                  [value]="permissionType"
+                >
+                  {{ permissionType | titlecase }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="page__form-button-container" *ngIf="canEditPermission">
+          <div class="page__form__button">
+            <button mat-button type="reset" class="button button_is-secondary">
+              Reset
+            </button>
+          </div>
+          <div class="page__form__button">
+            <button mat-button type="submit" class="button button_is-primary">
+              {{ buttonLabel }}
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

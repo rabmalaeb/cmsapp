@@ -1,0 +1,21 @@
+@import '../../../assets/styles/global';
+
+.header {
+
+}
+
+.header__container {
+  padding: 20px;
+  background-color: #fff;
+  color: $global--primary-color;
+  box-shadow: 1px 1px 6px 0px #00000047;
+}
+
+.header__item-container {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.header__item {
+  font-size: 16px;
+}

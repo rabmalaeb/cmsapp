@@ -1,0 +1,13 @@
+<div class="permission-group">
+  <div class="permission-group__name" (click)="togglePermissions()">
+    {{permissionGroup.group}}
+  </div>
+  <div class="permission-group__permissions">
+    <div
+      class="permission-group__item"
+      *ngFor="let permission of permissionGroup.permissions"
+    >
+      <app-permission-item [permission]="permission"></app-permission-item>
+    </div>
+  </div>
+</div>

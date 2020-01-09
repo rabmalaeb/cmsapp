@@ -1,0 +1,79 @@
+<div class="page">
+  <div class="page__container">
+    <div class="page__section">
+      <div class="page__title-container">
+        <div class="page__title">
+          Translations
+        </div>
+      </div>
+      <div class="page__actions">
+        <button
+          mat-button
+          class="button button_is-primary"
+          (click)="addTranslation()"
+          *ngIf="canAddTranslation"
+        >
+          Add Translation
+        </button>
+      </div>
+    </div>
+    <mat-table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+      <ng-container matColumnDef="id">
+        <mat-header-cell *matHeaderCellDef>Id</mat-header-cell>
+        <mat-cell *matCellDef="let translation">{{ translation.id }}</mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="partner">
+        <mat-header-cell *matHeaderCellDef>Partner</mat-header-cell>
+        <mat-cell *matCellDef="let translation">{{
+          translation.partner.name
+        }}</mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="language">
+        <mat-header-cell *matHeaderCellDef>Language</mat-header-cell>
+        <mat-cell *matCellDef="let translation">
+          {{ translation.language.name }}
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="key">
+        <mat-header-cell *matHeaderCellDef>Key</mat-header-cell>
+        <mat-cell *matCellDef="let translation">{{
+          translation.languageKey.name
+        }}</mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="value">
+        <mat-header-cell *matHeaderCellDef>Value</mat-header-cell>
+        <mat-cell *matCellDef="let translation">
+          {{ translation.value }}
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="action">
+        <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
+        <mat-cell *matCellDef="let translation" class="action-link">
+          <a class="table__action" (click)="editTranslation(translation.id)"
+            >View</a
+          >
+          |
+          <a
+            class="table__action"
+            (click)="deleteTranslation(translation.id)"
+            *ngIf="canDeleteTranslation"
+            >Delete</a
+          >
+        </mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+    </mat-table>
+
+    <mat-paginator
+      [pageSizeOptions]="[20, 50, 100]"
+      showFirstLastButtons
+    ></mat-paginator>
+  </div>
+</div>

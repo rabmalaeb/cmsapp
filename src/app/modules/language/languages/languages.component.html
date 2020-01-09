@@ -1,0 +1,61 @@
+<div class="page">
+  <div class="page__container">
+    <div class="page__section">
+      <div class="page__title-container">
+        <div class="page__title">
+          Languages
+        </div>
+      </div>
+      <div class="page__actions">
+        <button
+          mat-button
+          class="button button_is-primary"
+          (click)="addLanguage()"
+          *ngIf="canAddLanguage"
+        >
+          Add Language
+        </button>
+      </div>
+    </div>
+    <mat-table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+      <ng-container matColumnDef="id">
+        <mat-header-cell *matHeaderCellDef>Id</mat-header-cell>
+        <mat-cell *matCellDef="let language">{{ language.id }}</mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="name">
+        <mat-header-cell *matHeaderCellDef>Name</mat-header-cell>
+        <mat-cell *matCellDef="let language">{{ language.name }}</mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="code">
+        <mat-header-cell *matHeaderCellDef>Code</mat-header-cell>
+        <mat-cell *matCellDef="let language">
+          {{ language.code }}
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="action">
+        <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
+        <mat-cell *matCellDef="let language" class="action-link">
+          <a class="table__action" (click)="editLanguage(language.id)">View</a>
+          |
+          <a
+            class="table__action"
+            (click)="deleteLanguage(language.id)"
+            *ngIf="canDeleteLanguage"
+            >Delete</a
+          >
+        </mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+    </mat-table>
+
+    <mat-paginator
+      [pageSizeOptions]="[20, 50, 100]"
+      showFirstLastButtons
+    ></mat-paginator>
+  </div>
+</div>

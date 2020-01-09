@@ -1,0 +1,64 @@
+<div class="page">
+  <div class="page__container">
+    <div class="page__section">
+      <div class="page__title-container">
+        <div class="page__title">
+          Users
+        </div>
+      </div>
+      <div class="page__actions">
+        <button mat-button class="button button_is-primary" (click)="addUser()" *ngIf="canAddUser">
+          Add User
+        </button>
+      </div>
+    </div>
+    <mat-table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+      <ng-container matColumnDef="id">
+        <mat-header-cell *matHeaderCellDef>Id</mat-header-cell>
+        <mat-cell *matCellDef="let user">{{ user.id }}</mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="first_name">
+        <mat-header-cell *matHeaderCellDef>First Name</mat-header-cell>
+        <mat-cell *matCellDef="let user">{{ user.firstName }}</mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="last_name">
+        <mat-header-cell *matHeaderCellDef>Last Name</mat-header-cell>
+        <mat-cell *matCellDef="let user">
+          {{ user.lastName }}
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="email">
+        <mat-header-cell *matHeaderCellDef>Email</mat-header-cell>
+        <mat-cell *matCellDef="let user">
+          {{ user.email }}
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="mobile">
+        <mat-header-cell *matHeaderCellDef>Mobile</mat-header-cell>
+        <mat-cell *matCellDef="let user">
+          {{ user.mobile }}
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="action">
+        <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
+        <mat-cell *matCellDef="let user" class="action-link">
+          <a class="table__action" (click)="editUser(user.id)">View</a> |
+          <a class="table__action" (click)="deleteUser(user.id)" *ngIf="canDeleteUser">Delete</a>
+        </mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+    </mat-table>
+
+    <mat-paginator
+      [pageSizeOptions]="[20, 50, 100]"
+      showFirstLastButtons
+    ></mat-paginator>
+  </div>
+</div>

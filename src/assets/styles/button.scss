@@ -1,0 +1,23 @@
+.button {
+  font-size: 14px;
+  padding: 10px;
+  cursor: pointer;
+
+  &_is-primary {
+    background-color: $global--secondary-color;
+    color: #fff;
+    &:hover {
+    background-color: $global--secondary-color-hover;
+    }
+  }
+
+  &_is-secondary {
+
+    background-color: #808080;
+    color: #fff;
+    &:hover {
+    background-color: #9e9e9e;
+    }
+  }
+
+}

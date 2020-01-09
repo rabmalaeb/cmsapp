@@ -1,0 +1,50 @@
+<div class="page">
+  <div class="page__container">
+    <div class="page__section">
+      <div class="page__title-container">
+        <div class="page__title">
+          Partners
+        </div>
+      </div>
+      <div class="page__actions">
+        <button mat-button class="button button_is-primary" (click)="addPartner()" *ngIf="canAddPartner">
+          Add Partner
+        </button>
+      </div>
+    </div>
+    <mat-table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+      <ng-container matColumnDef="id">
+        <mat-header-cell *matHeaderCellDef>Id</mat-header-cell>
+        <mat-cell *matCellDef="let partner">{{ partner.id }}</mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="name">
+        <mat-header-cell *matHeaderCellDef>Name</mat-header-cell>
+        <mat-cell *matCellDef="let partner">{{ partner.name }}</mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="code">
+        <mat-header-cell *matHeaderCellDef>Code</mat-header-cell>
+        <mat-cell *matCellDef="let partner">
+          {{ partner.code }}
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="action">
+        <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
+        <mat-cell *matCellDef="let partner" class="action-link">
+          <a class="table__action" (click)="editPartner(partner.id)">View</a> |
+          <a class="table__action" (click)="deletePartner(partner.id)" *ngIf="canDeletePartner">Delete</a>
+        </mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+    </mat-table>
+
+    <mat-paginator
+      [pageSizeOptions]="[20, 50, 100]"
+      showFirstLastButtons
+    ></mat-paginator>
+  </div>
+</div>
