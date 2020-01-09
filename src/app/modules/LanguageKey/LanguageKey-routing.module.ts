@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes, PreloadAllModules } from '@angular/router';
 import { LanguageKeyAddComponent } from './LanguageKey-add/LanguageKey-add.component';
-import { LanguageKeysComponent } from './languageKeys/languageKeys.component';
+import { LanguageKeysComponent } from './LanguageKeys/LanguageKeys.component';
 import { LanguageKeyComponent } from './LanguageKey/LanguageKey.component';
 
 

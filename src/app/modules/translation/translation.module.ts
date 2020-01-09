@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { TranslationsComponent } from './Translations/translations.component';
+import { TranslationsComponent } from './translations/translations.component';
 import { TranslationComponent } from './translation/translation.component';
 import { TranslationRoutingModule } from './translation-routing.module';
 import { TranslationAddComponent } from './translation-add/translation-add.component';

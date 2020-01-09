@@ -1,8 +1,9 @@
 import { map } from 'rxjs/operators';
-import { Injectable, Inject } from '@angular/core';
+import { Injectable } from '@angular/core';
 
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { isArray } from 'util';
+import { environment } from 'src/environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class HttpService {
@@ -11,11 +12,10 @@ export class HttpService {
    * @param http HttpClient instance that handles api calls
    */
   constructor(
-    @Inject('environment') private environment,
     private http: HttpClient,
   ) { }
 
-  url: string = this.environment.apiUrl;
+  url: string = environment.apiUrl;
   data: any;
 
   request(endpoint: string, data: any) {

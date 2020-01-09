@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes, PreloadAllModules } from '@angular/router';
-import { TranslationsComponent } from './Translations/translations.component';
+import { TranslationsComponent } from './translations/translations.component';
 import { TranslationComponent } from './translation/translation.component';
 import { TranslationAddComponent } from './translation-add/translation-add.component';
 

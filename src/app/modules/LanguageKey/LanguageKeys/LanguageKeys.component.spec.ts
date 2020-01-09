@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { LanguageKeysComponent } from './languageKeys.component';
+import { LanguageKeysComponent } from './LanguageKeys.component';
 
 describe('LanguageKeysComponent', () => {
   let component: LanguageKeysComponent;

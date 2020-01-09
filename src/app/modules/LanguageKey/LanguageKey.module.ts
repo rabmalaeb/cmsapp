@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { LanguageKeysComponent } from './languageKeys/languageKeys.component';
+import { LanguageKeysComponent } from './LanguageKeys/LanguageKeys.component';
 import { LanguageKeyComponent } from './LanguageKey/LanguageKey.component';
 import { LanguageKeyRoutingModule } from './LanguageKey-routing.module';
 import { LanguageKeyAddComponent } from './LanguageKey-add/LanguageKey-add.component';

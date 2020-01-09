@@ -1,0 +1,48 @@
+.app {
+  display: flex;
+  height: 100%;
+}
+
+.app__header {
+
+}
+
+.app__body {
+  display: flex;
+  flex: 1;
+}
+
+.app__login {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  top: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.app__nav-container {
+  width: 200px;
+  position: relative;
+}
+
+.app__nav-bar {
+}
+
+.app__body-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: scroll;
+  flex: 1;
+}
+
+.app__body-section {
+  flex: 1;
+}
+
+.app__footer {
+
+}
