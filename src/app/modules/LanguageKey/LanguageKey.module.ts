@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { LanguageKeysComponent } from './LanguageKeys/LanguageKeys.component';
-import { LanguageKeyComponent } from './LanguageKey/LanguageKey.component';
-import { LanguageKeyRoutingModule } from './LanguageKey-routing.module';
-import { LanguageKeyAddComponent } from './LanguageKey-add/LanguageKey-add.component';
+import { LanguageKeysComponent } from './languagekeys/languagekeys.component';
+import { LanguageKeyComponent } from './languagekey/languagekey.component';
+import { LanguageKeyRoutingModule } from './languagekey-routing.module';
+import { LanguageKeyAddComponent } from './languagekey-add/languagekey-add.component';
 import { SharedModule } from 'src/app/shared.module';
 import { ComponentsModule } from 'src/app/components/components.module';
 

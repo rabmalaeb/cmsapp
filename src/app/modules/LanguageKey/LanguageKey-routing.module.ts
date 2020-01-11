@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes, PreloadAllModules } from '@angular/router';
-import { LanguageKeyAddComponent } from './LanguageKey-add/LanguageKey-add.component';
-import { LanguageKeysComponent } from './LanguageKeys/LanguageKeys.component';
-import { LanguageKeyComponent } from './LanguageKey/LanguageKey.component';
+import { LanguageKeyAddComponent } from './languagekey-add/languagekey-add.component';
+import { LanguageKeysComponent } from './languagekeys/languagekeys.component';
+import { LanguageKeyComponent } from './languagekey/languagekey.component';
 
 
 const routes: Routes = [

@@ -15,26 +15,26 @@
     <mat-table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
       <ng-container matColumnDef="id">
         <mat-header-cell *matHeaderCellDef>Id</mat-header-cell>
-        <mat-cell *matCellDef="let languageKey">{{ languageKey.id }}</mat-cell>
+        <mat-cell *matCellDef="let languagekey">{{ languagekey.id }}</mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="name">
         <mat-header-cell *matHeaderCellDef>Name</mat-header-cell>
-        <mat-cell *matCellDef="let languageKey">{{ languageKey.name }}</mat-cell>
+        <mat-cell *matCellDef="let languagekey">{{ languagekey.name }}</mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="description">
         <mat-header-cell *matHeaderCellDef>Description</mat-header-cell>
-        <mat-cell *matCellDef="let languageKey">
-          {{ languageKey.description }}
+        <mat-cell *matCellDef="let languagekey">
+          {{ languagekey.description }}
         </mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="action">
         <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
-        <mat-cell *matCellDef="let languageKey" class="action-link">
-          <a class="table__action" (click)="editLanguageKey(languageKey.id)">View</a> |
-          <a class="table__action" (click)="deleteLanguageKey(languageKey.id)" *ngIf="canDeleteKey">Delete</a>
+        <mat-cell *matCellDef="let languagekey" class="action-link">
+          <a class="table__action" (click)="editLanguageKey(languagekey.id)">View</a> |
+          <a class="table__action" (click)="deleteLanguageKey(languagekey.id)" *ngIf="canDeleteKey">Delete</a>
         </mat-cell>
       </ng-container>
 

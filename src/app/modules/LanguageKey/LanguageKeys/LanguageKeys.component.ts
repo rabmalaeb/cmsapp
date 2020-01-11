@@ -2,19 +2,19 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatTableDataSource, MatPaginator } from '@angular/material';
 import { AlertService } from 'src/app/services/alert.service';
-import { LanguageKey } from '../LanguageKey';
-import { LanguageKeyService } from '../LanguageKey.service';
+import { LanguageKey } from '../languagekey';
+import { LanguageKeyService } from '../languagekey.service';
 import { AuthorizationService } from 'src/app/services/authorization.service';
 import { ModuleName } from 'src/app/models/general';
 
 @Component({
-  selector: 'app-languageKeys',
-  templateUrl: './languageKeys.component.html',
-  styleUrls: ['./languageKeys.component.scss']
+  selector: 'app-languagekeys',
+  templateUrl: './languagekeys.component.html',
+  styleUrls: ['./languagekeys.component.scss']
 })
 export class LanguageKeysComponent implements OnInit {
   isLoading = false;
-  languageKeys: LanguageKey[] = [];
+  languagekeys: LanguageKey[] = [];
   displayedColumns: string[] = [
     'id',
     'name',
@@ -25,7 +25,7 @@ export class LanguageKeysComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(
-    private languageKeyService: LanguageKeyService,
+    private languagekeyService: LanguageKeyService,
     private alertService: AlertService,
     private authorizationService: AuthorizationService,
     private router: Router
@@ -37,15 +37,15 @@ export class LanguageKeysComponent implements OnInit {
 
   getLanguageKeys() {
     this.isLoading = true;
-    this.languageKeyService.getLanguageKeys().subscribe(response => {
+    this.languagekeyService.getLanguageKeys().subscribe(response => {
       this.isLoading = false;
-      this.languageKeys = response;
+      this.languagekeys = response;
       this.setDataSource();
     });
   }
 
   setDataSource() {
-    this.dataSource = new MatTableDataSource<LanguageKey>(this.languageKeys);
+    this.dataSource = new MatTableDataSource<LanguageKey>(this.languagekeys);
     this.dataSource.paginator = this.paginator;
   }
   addLanguageKey() {
@@ -66,8 +66,8 @@ export class LanguageKeysComponent implements OnInit {
       'Yes',
       'No',
       () => {
-        this.languageKeyService.deleteLanguageKey(id).subscribe(response => {
-          this.languageKeys = response;
+        this.languagekeyService.deleteLanguageKey(id).subscribe(response => {
+          this.languagekeys = response;
           this.setDataSource();
         });
       }

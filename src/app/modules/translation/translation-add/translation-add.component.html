@@ -53,12 +53,12 @@
           <div class="form-item__value form-item__value_is-textfield">
             <mat-form-field appearance="outline">
               <mat-label>Key</mat-label>
-              <mat-select placeholder="Key" formControlName="languageKeyId">
+              <mat-select placeholder="Key" formControlName="languagekeyId">
                 <mat-option
-                  *ngFor="let languageKey of languageKeys"
-                  [value]="languageKey.id"
+                  *ngFor="let languagekey of languagekeys"
+                  [value]="languagekey.id"
                 >
-                  {{ languageKey.name }}
+                  {{ languagekey.name }}
                 </mat-option>
               </mat-select>
             </mat-form-field>
