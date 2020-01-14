@@ -21,7 +21,7 @@ export class PartnersComponent implements OnInit {
     'code',
     'action'
   ];
-  dataSource;
+  dataSource: MatTableDataSource<any>;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(

@@ -23,7 +23,7 @@ export class UsersComponent implements OnInit {
     'mobile',
     'action'
   ];
-  dataSource;
+  dataSource: MatTableDataSource<any>;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(

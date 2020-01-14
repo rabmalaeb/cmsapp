@@ -22,7 +22,7 @@ export class PermissionsComponent implements OnInit {
     'group',
     'action'
   ];
-  dataSource;
+  dataSource: MatTableDataSource<any>;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(

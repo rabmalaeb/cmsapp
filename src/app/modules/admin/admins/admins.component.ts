@@ -23,7 +23,7 @@ export class AdminsComponent implements OnInit {
     'active',
     'action'
   ];
-  dataSource;
+  dataSource: MatTableDataSource<any>;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(

@@ -40,8 +40,8 @@
       <ng-container matColumnDef="action">
         <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
         <mat-cell *matCellDef="let permission" class="action-link">
-          <a class="table__action" (click)="editPermission(permission.id)">View</a> |
-          <a class="table__action" (click)="deletePermission(permission.id)" *ngIf="canDeletePermission">Delete</a>
+          <a class="table__action" (click)="editPermission(permission.id)"><mat-icon>edit</mat-icon></a>
+          <a class="table__action" (click)="deletePermission(permission.id)" *ngIf="canDeletePermission"><mat-icon>delete</mat-icon></a>
         </mat-cell>
       </ng-container>
 

@@ -20,7 +20,7 @@ export class RolesComponent implements OnInit {
     'name',
     'action'
   ];
-  dataSource;
+  dataSource: MatTableDataSource<any>;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(

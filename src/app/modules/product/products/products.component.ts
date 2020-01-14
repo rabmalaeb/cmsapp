@@ -22,7 +22,7 @@ export class ProductsComponent implements OnInit {
     'category',
     'action'
   ];
-  dataSource;
+  dataSource: MatTableDataSource<any>;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(

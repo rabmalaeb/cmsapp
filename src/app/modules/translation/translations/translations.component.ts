@@ -14,7 +14,7 @@ import { ModuleName } from 'src/app/models/general';
 })
 export class TranslationsComponent implements OnInit {
   isLoading = false;
-  Translations: Translation[] = [];
+  translations: Translation[] = [];
   displayedColumns: string[] = [
     'id',
     'language',
@@ -23,7 +23,7 @@ export class TranslationsComponent implements OnInit {
     'value',
     'action'
   ];
-  dataSource;
+  dataSource: MatTableDataSource<any>;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(
@@ -41,15 +41,16 @@ export class TranslationsComponent implements OnInit {
     this.isLoading = true;
     this.translationService.getTranslations().subscribe(response => {
       this.isLoading = false;
-      this.Translations = response;
+      this.translations = response;
       this.setDataSource();
     });
   }
 
   setDataSource() {
-    this.dataSource = new MatTableDataSource<Translation>(this.Translations);
+    this.dataSource = new MatTableDataSource<Translation>(this.translations);
     this.dataSource.paginator = this.paginator;
   }
+
   addTranslation() {
     this.router.navigate(['translations/add']);
   }
@@ -69,7 +70,7 @@ export class TranslationsComponent implements OnInit {
       'No',
       () => {
         this.translationService.deleteTranslation(id).subscribe(response => {
-          this.Translations = response;
+          this.translations = response;
           this.setDataSource();
         });
       }

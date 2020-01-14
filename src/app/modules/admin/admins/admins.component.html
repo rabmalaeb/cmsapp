@@ -47,8 +47,8 @@
       <ng-container matColumnDef="action">
         <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
         <mat-cell *matCellDef="let admin" class="action-link">
-          <a class="table__action" (click)="editAdmin(admin.id)">View</a> |
-          <a class="table__action" (click)="deleteAdmin(admin.id)" *ngIf="canDeleteAdmin">Delete</a>
+          <a class="table__action" (click)="editAdmin(admin.id)"><mat-icon>edit</mat-icon></a>
+          <a class="table__action" (click)="deleteAdmin(admin.id)" *ngIf="canDeleteAdmin"><mat-icon>delete</mat-icon></a>
         </mat-cell>
       </ng-container>
 

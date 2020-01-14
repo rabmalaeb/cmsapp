@@ -1,17 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { LanguageKeyService } from '../languagekey.service';
+import { LanguageKeyService } from '../languageKey.service';
 
 @Component({
   selector: 'app-language-key',
-  templateUrl: './languagekey.component.html',
-  styleUrls: ['./languagekey.component.scss']
+  templateUrl: './languageKey.component.html',
+  styleUrls: ['./languageKey.component.scss']
 })
 export class LanguageKeyComponent implements OnInit {
 
   constructor(
     private activatedRoute: ActivatedRoute,
-    private languagekeyService: LanguageKeyService,
+    private languageKeyService: LanguageKeyService,
   ) {
     activatedRoute.params.forEach(param => {
       if (param.id) {
@@ -24,7 +24,7 @@ export class LanguageKeyComponent implements OnInit {
   }
 
   getLanguageKey(id: number) {
-    this.languagekeyService.getLanguageKey(id).subscribe(response => {
+    this.languageKeyService.getLanguageKey(id).subscribe(response => {
       console.log('repo ', response);
     });
   }

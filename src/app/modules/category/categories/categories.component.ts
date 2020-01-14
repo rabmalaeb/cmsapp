@@ -22,7 +22,7 @@ export class CategoriesComponent implements OnInit {
     'parent',
     'action'
   ];
-  dataSource;
+  dataSource: MatTableDataSource<any>;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(

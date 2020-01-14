@@ -10,7 +10,7 @@ import { CategoryModule } from './modules/category/category.module';
 import { ProductModule } from './modules/product/product.module';
 import { LanguageModule } from './modules/language/language.module';
 import { PartnerModule } from './modules/partner/partner.module';
-import { LanguageKeyModule } from './modules/languagekey/languagekey.module';
+import { LanguageKeyModule } from './modules/languageKey/languageKey.module';
 import { TranslationModule } from './modules/translation/translation.module';
 import { PermissionModule } from './modules/permissions/permission.module';
 import { RoleModule } from './modules/role/role.module';

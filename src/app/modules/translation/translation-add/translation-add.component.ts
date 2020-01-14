@@ -13,10 +13,10 @@ import { Translation } from '../translation';
 import { ErrorHandlerService } from 'src/app/services/error-handler.service';
 import { TranslationService } from '../translation.service';
 import { LanguageService } from '../../language/language.service';
-import { LanguageKeyService } from '../../languagekey/languagekey.service';
+import { LanguageKeyService } from '../../languageKey/languageKey.service';
 import { PartnerService } from '../../partner/partner.service';
 import { Partner } from '../../partner/partner';
-import { LanguageKey } from '../../languagekey/languagekey';
+import { LanguageKey } from '../../languageKey/languageKey';
 import { Language } from '../../language/language';
 import { AuthorizationService } from 'src/app/services/authorization.service';
 
@@ -35,7 +35,7 @@ export class TranslationAddComponent implements OnInit {
     private authorizationService: AuthorizationService,
     private route: ActivatedRoute,
     private languageService: LanguageService,
-    private languagekeyService: LanguageKeyService,
+    private languageKeyService: LanguageKeyService,
     private partnerService: PartnerService,
   ) {}
 
@@ -49,7 +49,7 @@ export class TranslationAddComponent implements OnInit {
   isLoading = false;
   partners: Partner[] = [];
   languages: Language[] = [];
-  languagekeys: LanguageKey[] = [];
+  languageKeys: LanguageKey[] = [];
 
   ngOnInit() {
     this.getLanguageKeys();
@@ -84,9 +84,9 @@ export class TranslationAddComponent implements OnInit {
 
   getLanguageKeys() {
     this.isLoadingLanguageKeys = true;
-    this.languagekeyService.getLanguageKeys().subscribe(response => {
+    this.languageKeyService.getLanguageKeys().subscribe(response => {
       this.isLoadingLanguageKeys = false;
-      this.languagekeys = response;
+      this.languageKeys = response;
     });
   }
 
@@ -105,20 +105,20 @@ export class TranslationAddComponent implements OnInit {
   buildForm() {
     let partnerId: number;
     let languageId: number;
-    let languagekeyId: number;
+    let languageKeyId: number;
     let value: string;
     if (this.translation) {
       console.log('translation si ', this.translation);
 
       languageId = this.translation.languageId;
       partnerId = this.translation.partnerId;
-      languagekeyId = this.translation.languagekeyId;
+      languageKeyId = this.translation.languageKeyId;
       value = this.translation.value;
     }
     this.translationForm = this.form.group({
       languageId: [languageId, [Validators.required]],
       partnerId: [partnerId, [Validators.required]],
-      languagekeyId: [languagekeyId, [Validators.required]],
+      languageKeyId: [languageKeyId, [Validators.required]],
       value: [value, [Validators.required]],
     });
   }
@@ -131,8 +131,8 @@ export class TranslationAddComponent implements OnInit {
     return this.translationForm.get('partnerId');
   }
 
-  get languagekeyId() {
-    return this.translationForm.get('languagekeyId');
+  get languageKeyId() {
+    return this.translationForm.get('languageKeyId');
   }
 
   get value() {
@@ -155,7 +155,7 @@ export class TranslationAddComponent implements OnInit {
     const translation = new Translation();
     translation.partnerId = this.partnerId.value;
     translation.languageId = this.languageId.value;
-    translation.languagekeyId = this.languagekeyId.value;
+    translation.languageKeyId = this.languageKeyId.value;
     translation.value = this.value.value;
     return translation;
   }

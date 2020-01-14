@@ -1,24 +1,21 @@
 import { Injectable } from '@angular/core';
-import { LanguageKey } from './languagekey';
+import { LanguageKey } from './languageKey';
 import { CategorySerializerService } from '../category/category-serializer.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LanguageKeySerializerService {
+  constructor(private categorySerializer: CategorySerializerService) {}
 
-  constructor(
-    private categorySerializer: CategorySerializerService
-  ) { }
-
-  getLanguageKey(languagekeyResponse: any) {
-    if (!languagekeyResponse) {
+  getLanguageKey(languageKeyResponse: any) {
+    if (!languageKeyResponse) {
       return null;
     }
-    const languagekey = new LanguageKey();
-    languagekey.id = parseInt(languagekeyResponse.id, 0);
-    languagekey.name = languagekeyResponse.attributes.name;
-    languagekey.description = languagekeyResponse.attributes.description;
-    return languagekey;
+    const languageKey = new LanguageKey();
+    languageKey.id = parseInt(languageKeyResponse.id, 0);
+    languageKey.name = languageKeyResponse.attributes.name;
+    languageKey.description = languageKeyResponse.attributes.description;
+    return languageKey;
   }
 }

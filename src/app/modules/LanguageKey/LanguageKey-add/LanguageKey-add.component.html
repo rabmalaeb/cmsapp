@@ -14,9 +14,9 @@
     </div>
     <div class="page__form-container" *ngIf="!isLoadingLanguageKey">
       <form
-        [formGroup]="languagekeyForm"
+        [formGroup]="languageKeyForm"
         #formDirective="ngForm"
-        (ngSubmit)="performAction(languagekeyForm, formDirective)"
+        (ngSubmit)="performAction(languageKeyForm, formDirective)"
         class="page__form"
       >
         <div class="form-item">

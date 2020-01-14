@@ -9,21 +9,21 @@ import { ValidationMessagesService } from 'src/app/services/validation-messages.
 import { NotificationService } from 'src/app/services/notification.service';
 import { ActionType, USER_MESSAGES, ModuleName } from 'src/app/models/general';
 import { ActivatedRoute } from '@angular/router';
-import { LanguageKey } from '../languagekey';
+import { LanguageKey } from '../languageKey';
 import { ErrorHandlerService } from 'src/app/services/error-handler.service';
-import { LanguageKeyService } from '../languagekey.service';
+import { LanguageKeyService } from '../languageKey.service';
 import { Category } from '../../category/category';
 import { AuthorizationService } from 'src/app/services/authorization.service';
 
 @Component({
   selector: 'app-language-key-add',
-  templateUrl: './languagekey-add.component.html',
-  styleUrls: ['./languagekey-add.component.scss']
+  templateUrl: './languageKey-add.component.html',
+  styleUrls: ['./languageKey-add.component.scss']
 })
 export class LanguageKeyAddComponent implements OnInit {
   constructor(
     private form: FormBuilder,
-    private languagekeyService: LanguageKeyService,
+    private languageKeyService: LanguageKeyService,
     private notificationService: NotificationService,
     private validationMessagesService: ValidationMessagesService,
     private authorizationService: AuthorizationService,
@@ -31,9 +31,9 @@ export class LanguageKeyAddComponent implements OnInit {
     private route: ActivatedRoute
   ) {}
 
-  languagekeyForm: FormGroup;
+  languageKeyForm: FormGroup;
   actionType: ActionType;
-  languagekey: LanguageKey;
+  languageKey: LanguageKey;
   isLoadingLanguageKey = false;
   isLoading = false;
   categories: Category[] = [];
@@ -52,9 +52,9 @@ export class LanguageKeyAddComponent implements OnInit {
 
   getLanguageKey(id: number) {
     this.isLoadingLanguageKey = true;
-    this.languagekeyService.getLanguageKey(id).subscribe(response => {
+    this.languageKeyService.getLanguageKey(id).subscribe(response => {
       this.isLoadingLanguageKey = false;
-      this.languagekey = response;
+      this.languageKey = response;
       this.buildForm();
     }, error => {
       this.isLoading = false;
@@ -65,30 +65,30 @@ export class LanguageKeyAddComponent implements OnInit {
   buildForm() {
     let name = '';
     let description = '';
-    if (this.languagekey) {
-      name = this.languagekey.name;
-      description = this.languagekey.description;
+    if (this.languageKey) {
+      name = this.languageKey.name;
+      description = this.languageKey.description;
     }
-    this.languagekeyForm = this.form.group({
+    this.languageKeyForm = this.form.group({
       name: [name, [Validators.required]],
       description: [description, [Validators.required]],
     });
   }
 
   get name() {
-    return this.languagekeyForm.get('name');
+    return this.languageKeyForm.get('name');
   }
 
   get description() {
-    return this.languagekeyForm.get('description');
+    return this.languageKeyForm.get('description');
   }
 
   performAction(formData: any, formDirective: FormGroupDirective) {
-    if (!this.languagekeyForm.valid) {
+    if (!this.languageKeyForm.valid) {
       this.notificationService.showError(USER_MESSAGES.FORM_NOT_VALID);
       return;
     }
-    if (this.languagekey) {
+    if (this.languageKey) {
       this.updateLanguageKey(this.buildLanguageKeyParams());
     } else {
       this.addLanguageKey(this.buildLanguageKeyParams());
@@ -96,15 +96,15 @@ export class LanguageKeyAddComponent implements OnInit {
   }
 
   buildLanguageKeyParams(): LanguageKey {
-    const languagekey = new LanguageKey();
-    languagekey.name = this.name.value;
-    languagekey.description = this.description.value;
-    return languagekey;
+    const languageKey = new LanguageKey();
+    languageKey.name = this.name.value;
+    languageKey.description = this.description.value;
+    return languageKey;
   }
 
   addLanguageKey(params) {
     this.isLoading = true;
-    this.languagekeyService
+    this.languageKeyService
       .addLanguageKey(params)
       .subscribe(response => {
         this.isLoading = false;
@@ -117,8 +117,8 @@ export class LanguageKeyAddComponent implements OnInit {
 
   updateLanguageKey(params) {
     this.isLoading = true;
-    const id = this.languagekey.id;
-    this.languagekeyService
+    const id = this.languageKey.id;
+    this.languageKeyService
       .updateLanguageKey(id, params)
       .subscribe(response => {
         this.isLoading = false;

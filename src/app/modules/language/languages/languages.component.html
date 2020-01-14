@@ -38,14 +38,16 @@
       <ng-container matColumnDef="action">
         <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
         <mat-cell *matCellDef="let language" class="action-link">
-          <a class="table__action" (click)="editLanguage(language.id)">View</a>
-          |
+          <a class="table__action" (click)="editLanguage(language.id)"
+            ><mat-icon>edit</mat-icon></a
+          >
           <a
             class="table__action"
             (click)="deleteLanguage(language.id)"
             *ngIf="canDeleteLanguage"
-            >Delete</a
           >
+            <mat-icon>delete</mat-icon>
+          </a>
         </mat-cell>
       </ng-container>
 

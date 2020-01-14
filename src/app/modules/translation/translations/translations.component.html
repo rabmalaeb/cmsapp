@@ -39,9 +39,11 @@
 
       <ng-container matColumnDef="key">
         <mat-header-cell *matHeaderCellDef>Key</mat-header-cell>
-        <mat-cell *matCellDef="let translation">{{
-          translation.languagekey.name
-        }}</mat-cell>
+        <mat-cell *matCellDef="let translation">
+          <span *ngIf="translation.languageKey">
+            {{ translation.languageKey.name }}
+          </span>
+        </mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="value">
@@ -54,16 +56,16 @@
       <ng-container matColumnDef="action">
         <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
         <mat-cell *matCellDef="let translation" class="action-link">
-          <a class="table__action" (click)="editTranslation(translation.id)"
-            >View</a
-          >
-          |
+          <a class="table__action" (click)="editTranslation(translation.id)">
+            <mat-icon>edit</mat-icon>
+          </a>
           <a
             class="table__action"
             (click)="deleteTranslation(translation.id)"
             *ngIf="canDeleteTranslation"
-            >Delete</a
           >
+            <mat-icon>delete</mat-icon>
+          </a>
         </mat-cell>
       </ng-container>
 

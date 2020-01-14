@@ -1,4 +1,4 @@
-import { LanguageKey } from '../languagekey/languagekey';
+import { LanguageKey } from '../languageKey/languageKey';
 import { Language } from '../language/language';
 import { Partner } from '../partner/partner';
 
@@ -6,9 +6,9 @@ export class Translation {
   id: number;
   partnerId: number;
   languageId: number;
-  languagekeyId: number;
+  languageKeyId: number;
   partner: Partner;
   language: Language;
-  languagekey: LanguageKey;
+  languageKey: LanguageKey;
   value: string;
 }
