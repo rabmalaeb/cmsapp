@@ -22,7 +22,7 @@ export class PartnersComponent implements OnInit {
     'action'
   ];
   dataSource: MatTableDataSource<any>;
-  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 
   constructor(
     private partnerService: PartnerService,

@@ -22,7 +22,7 @@ export class LanguageKeysComponent implements OnInit {
     'action'
   ];
   dataSource: MatTableDataSource<any>;
-  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatPaginator, /* TODO: add static flag */ {}) paginator: MatPaginator;
 
   constructor(
     private languageKeyService: LanguageKeyService,
