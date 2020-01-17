@@ -1,15 +1,29 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes, PreloadAllModules } from '@angular/router';
-import { LanguageKeyAddComponent } from './languageKey-add/languageKey-add.component';
-import { LanguageKeysComponent } from './languageKeys/languageKeys.component';
-import { LanguageKeyComponent } from './languageKey/languageKey.component';
-
+import { LanguageKeyAddComponent } from './languagekey-add/languagekey-add.component';
+import { LanguageKeysComponent } from './languagekeys/languagekeys.component';
+import { LanguageKeyComponent } from './languagekey/languagekey.component';
+import { AddLanguageKeyGuard } from './guards/add-languagekey.guard';
+import { ViewLanguageKeyGuard } from './guards/view-languagekey.guard';
+import { EditLanguageKeyGuard } from './guards/edit-languagekey.guard';
 
 const routes: Routes = [
-  { path: 'keys', component: LanguageKeysComponent },
+  {
+    path: 'keys',
+    component: LanguageKeysComponent,
+    canActivate: [ViewLanguageKeyGuard]
+  },
   { path: 'key/:id', component: LanguageKeyComponent },
-  { path: 'keys/:id/view', component: LanguageKeyAddComponent },
-  { path: 'keys/add', component: LanguageKeyAddComponent},
+  {
+    path: 'keys/:id/view',
+    component: LanguageKeyAddComponent,
+    canActivate: [EditLanguageKeyGuard]
+  },
+  {
+    path: 'keys/add',
+    component: LanguageKeyAddComponent,
+    canActivate: [AddLanguageKeyGuard]
+  }
 ];
 
 @NgModule({
@@ -21,5 +35,4 @@ const routes: Routes = [
   ],
   exports: [RouterModule]
 })
-
-export class LanguageKeyRoutingModule { }
+export class LanguageKeyRoutingModule {}

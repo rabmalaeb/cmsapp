@@ -13,8 +13,8 @@ import { Role, RoleRequest } from '../role';
 import { ErrorHandlerService } from 'src/app/services/error-handler.service';
 import { RoleService } from '../role.service';
 import { PermissionGroup } from '../../permissions/permission';
-import { PermissionService } from '../../permissions/permission.service';
 import { AuthorizationService } from 'src/app/services/authorization.service';
+import { PermissionService } from '../../permissions/permission.service';
 
 @Component({
   selector: 'app-role-add',

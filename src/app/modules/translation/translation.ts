@@ -1,4 +1,4 @@
-import { LanguageKey } from '../languageKey/languageKey';
+import { LanguageKey } from '../languagekey/languagekey';
 import { Language } from '../language/language';
 import { Partner } from '../partner/partner';
 

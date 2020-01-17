@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NotificationService } from './services/notification.service';
 import { AuthenticationService } from './services/authentication.service';
 import { AuthorizationService } from './services/authorization.service';
-import { MatSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-root',

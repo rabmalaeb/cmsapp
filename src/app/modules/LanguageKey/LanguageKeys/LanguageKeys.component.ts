@@ -1,16 +1,17 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { MatTableDataSource, MatPaginator } from '@angular/material';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
 import { AlertService } from 'src/app/services/alert.service';
-import { LanguageKey } from '../languageKey';
-import { LanguageKeyService } from '../languageKey.service';
+import { LanguageKey } from '../languagekey';
+import { LanguageKeyService } from '../languagekey.service';
 import { AuthorizationService } from 'src/app/services/authorization.service';
 import { ModuleName } from 'src/app/models/general';
 
 @Component({
   selector: 'app-languageKeys',
-  templateUrl: './languageKeys.component.html',
-  styleUrls: ['./languageKeys.component.scss']
+  templateUrl: './languagekeys.component.html',
+  styleUrls: ['./languagekeys.component.scss']
 })
 export class LanguageKeysComponent implements OnInit {
   isLoading = false;
@@ -22,7 +23,7 @@ export class LanguageKeysComponent implements OnInit {
     'action'
   ];
   dataSource: MatTableDataSource<any>;
-  @ViewChild(MatPaginator, /* TODO: add static flag */ {}) paginator: MatPaginator;
+  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 
   constructor(
     private languageKeyService: LanguageKeyService,

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpService } from 'src/app/services/http.service';
-import { LanguageKeySerializerService } from './languageKey-serializer.service';
+import { LanguageKeySerializerService } from './languagekey-serializer.service';
 import { map } from 'rxjs/operators';
 
 @Injectable({

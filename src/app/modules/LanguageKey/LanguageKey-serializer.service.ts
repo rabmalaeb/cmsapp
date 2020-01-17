@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { LanguageKey } from './languageKey';
+import { LanguageKey } from './languagekey';
 import { CategorySerializerService } from '../category/category-serializer.service';
 
 @Injectable({
