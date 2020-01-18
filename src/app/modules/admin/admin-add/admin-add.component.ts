@@ -3,7 +3,8 @@ import {
   FormGroup,
   FormBuilder,
   FormGroupDirective,
-  Validators
+  Validators,
+  FormControl
 } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Admin } from '../admin';
@@ -41,14 +42,19 @@ export class AdminAddComponent implements OnInit {
   isLoading = false;
   roles: Role[];
   isLoadingRoles: boolean;
+  showTogglePassword: boolean;
+  willSetPassword: boolean;
 
   ngOnInit() {
     this.route.params.forEach(param => {
       if (param.id) {
         this.getAdmin(param.id);
         this.actionType = ActionType.EDIT;
+        this.showTogglePassword = true;
       } else {
         this.actionType = ActionType.ADD;
+        this.showTogglePassword = false;
+        this.willSetPassword = true;
         this.initializeForm();
       }
     });
@@ -89,20 +95,16 @@ export class AdminAddComponent implements OnInit {
       active = this.admin.active;
       roleId = this.admin.roleId;
     }
-    this.adminForm = this.form.group(
-      {
-        name: [name, [Validators.required]],
-        description: [description, [Validators.required]],
-        email: [email, [Validators.required, Validators.email]],
-        roleId: [roleId, [Validators.required]],
-        active: [active, [Validators.required]],
-        password: ['', [Validators.required]],
-        confirmPassword: ['', [Validators.required]]
-      },
-      {
-        validator: CustomValidations.MatchPasswords // custom validation method
-      }
-    );
+    this.adminForm = this.form.group({
+      name: [name, [Validators.required]],
+      description: [description, [Validators.required]],
+      email: [email, [Validators.required, Validators.email]],
+      roleId: [roleId, [Validators.required]],
+      active: [active, [Validators.required]]
+    });
+    if (!this.showTogglePassword) {
+      this.addPasswordControlsAndValidations();
+    }
   }
 
   get name() {
@@ -146,14 +148,17 @@ export class AdminAddComponent implements OnInit {
   }
 
   buildAdminParams(): Admin {
-    return {
+    const admin: Admin = {
       name: this.name.value,
       description: this.description.value,
       email: this.email.value,
       active: this.active.value,
-      roleId: this.roleId.value,
-      password: this.password.value
+      roleId: this.roleId.value
     };
+    if (this.willSetPassword) {
+      admin.password = this.password.value;
+    }
+    return admin;
   }
 
   addAdmin(params: Admin) {
@@ -208,5 +213,38 @@ export class AdminAddComponent implements OnInit {
       this.actionType === ActionType.EDIT &&
       this.authorizationService.canEdit(ModuleName.ADMINS)
     );
+  }
+
+  togglePassword() {
+    this.willSetPassword = !this.willSetPassword;
+    this.updateFormValidations();
+  }
+
+  updateFormValidations() {
+    if (this.willSetPassword) {
+      this.addPasswordControlsAndValidations();
+    } else {
+      this.removePasswordControlsAndValidations();
+    }
+  }
+
+  addPasswordControlsAndValidations() {
+    this.adminForm.addControl(
+      'password',
+      new FormControl('', [Validators.required])
+    );
+    this.adminForm.addControl(
+      'confirmPassword',
+      new FormControl('', [Validators.required])
+    );
+    this.adminForm.setValidators(CustomValidations.MatchPasswords);
+    this.adminForm.updateValueAndValidity();
+  }
+
+  removePasswordControlsAndValidations() {
+    this.adminForm.removeControl('password');
+    this.adminForm.removeControl('confirmPassword');
+    this.adminForm.clearValidators();
+    this.adminForm.updateValueAndValidity();
   }
 }
