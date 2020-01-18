@@ -16,6 +16,6 @@ export class EditProductGuard implements CanActivate {
   ) { }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    return this.authorizationService.canAdd(ModuleName.PRODUCTS);
+    return this.authorizationService.canEdit(ModuleName.PRODUCTS);
   }
 }

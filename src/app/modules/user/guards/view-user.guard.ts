@@ -15,6 +15,6 @@ export class ViewUserGuard implements CanActivate {
     private authorizationService: AuthorizationService
   ) { }
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    return this.authorizationService.canAdd(ModuleName.USERS);
+    return this.authorizationService.canView(ModuleName.USERS);
   }
 }

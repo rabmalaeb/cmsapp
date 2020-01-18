@@ -16,6 +16,6 @@ export class EditUserGuard implements CanActivate {
   ) { }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    return this.authorizationService.canAdd(ModuleName.USERS);
+    return this.authorizationService.canEdit(ModuleName.USERS);
   }
 }

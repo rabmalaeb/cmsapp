@@ -15,6 +15,6 @@ export class ViewRoleGuard implements CanActivate {
     private authorizationService: AuthorizationService
   ) { }
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    return this.authorizationService.canAdd(ModuleName.ROLES);
+    return this.authorizationService.canView(ModuleName.ROLES);
   }
 }

@@ -7,7 +7,12 @@
         </div>
       </div>
       <div class="page__actions">
-        <button mat-button class="button button_is-primary" (click)="addAdmin()" *ngIf="canAddAdmin">
+        <button
+          mat-button
+          class="button button_is-primary"
+          (click)="addAdmin()"
+          *ngIf="canAddAdmin"
+        >
           Add Admin
         </button>
       </div>
@@ -47,8 +52,15 @@
       <ng-container matColumnDef="action">
         <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
         <mat-cell *matCellDef="let admin" class="action-link">
-          <a class="table__action" (click)="editAdmin(admin.id)"><mat-icon>edit</mat-icon></a>
-          <a class="table__action" (click)="deleteAdmin(admin.id)" *ngIf="canDeleteAdmin"><mat-icon>delete</mat-icon></a>
+          <a class="table__action" (click)="editAdmin(admin.id)"
+            ><mat-icon>edit</mat-icon></a
+          >
+          <a
+            class="table__action"
+            (click)="deleteAdmin(admin.id)"
+            *ngIf="canDeleteAdmin"
+            ><mat-icon>delete</mat-icon></a
+          >
         </mat-cell>
       </ng-container>
 

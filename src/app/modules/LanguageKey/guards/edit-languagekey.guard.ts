@@ -16,6 +16,6 @@ export class EditLanguageKeyGuard implements CanActivate {
   ) { }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    return this.authorizationService.canAdd(ModuleName.LANGUAGE_KEYS);
+    return this.authorizationService.canEdit(ModuleName.LANGUAGE_KEYS);
   }
 }

@@ -16,6 +16,6 @@ export class EditCategoryGuard implements CanActivate {
   ) { }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    return this.authorizationService.canAdd(ModuleName.CATEGORIES);
+    return this.authorizationService.canEdit(ModuleName.CATEGORIES);
   }
 }

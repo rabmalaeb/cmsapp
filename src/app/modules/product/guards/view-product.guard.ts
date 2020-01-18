@@ -15,6 +15,6 @@ export class ViewProductGuard implements CanActivate {
     private authorizationService: AuthorizationService
   ) { }
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    return this.authorizationService.canAdd(ModuleName.PRODUCTS);
+    return this.authorizationService.canView(ModuleName.PRODUCTS);
   }
 }

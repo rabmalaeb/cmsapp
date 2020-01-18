@@ -15,6 +15,6 @@ export class ViewLanguageKeyGuard implements CanActivate {
     private authorizationService: AuthorizationService
   ) {}
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    return this.authorizationService.canAdd(ModuleName.LANGUAGE_KEYS);
+    return this.authorizationService.canView(ModuleName.LANGUAGE_KEYS);
   }
 }

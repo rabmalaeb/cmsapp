@@ -15,6 +15,6 @@ export class ViewAdminGuard implements CanActivate {
     private authorizationService: AuthorizationService
   ) { }
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    return this.authorizationService.canAdd(ModuleName.ADMINS);
+    return this.authorizationService.canView(ModuleName.ADMINS);
   }
 }

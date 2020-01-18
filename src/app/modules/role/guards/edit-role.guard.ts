@@ -16,6 +16,6 @@ export class EditRoleGuard implements CanActivate {
   ) { }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    return this.authorizationService.canAdd(ModuleName.ROLES);
+    return this.authorizationService.canEdit(ModuleName.ROLES);
   }
 }

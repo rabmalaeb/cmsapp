@@ -16,6 +16,6 @@ export class EditTranslationGuard implements CanActivate {
   ) { }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    return this.authorizationService.canAdd(ModuleName.TRANSLATIONS);
+    return this.authorizationService.canEdit(ModuleName.TRANSLATIONS);
   }
 }

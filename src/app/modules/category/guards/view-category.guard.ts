@@ -15,6 +15,6 @@ export class ViewCategoryGuard implements CanActivate {
     private authorizationService: AuthorizationService
   ) { }
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    return this.authorizationService.canAdd(ModuleName.CATEGORIES);
+    return this.authorizationService.canView(ModuleName.CATEGORIES);
   }
 }

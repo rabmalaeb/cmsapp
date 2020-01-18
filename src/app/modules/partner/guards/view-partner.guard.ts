@@ -15,6 +15,6 @@ export class ViewPartnerGuard implements CanActivate {
     private authorizationService: AuthorizationService
   ) { }
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    return this.authorizationService.canAdd(ModuleName.PARTNERS);
+    return this.authorizationService.canView(ModuleName.PARTNERS);
   }
 }

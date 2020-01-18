@@ -3,7 +3,7 @@ import {
   Router,
   CanActivate,
   ActivatedRouteSnapshot,
-  RouterStateSnapshot,
+  RouterStateSnapshot
 } from '@angular/router';
 import { AuthorizationService } from 'src/app/services/authorization.service';
 import { ModuleName } from 'src/app/models/general';
@@ -13,8 +13,8 @@ export class ViewTranslationGuard implements CanActivate {
   constructor(
     private router: Router,
     private authorizationService: AuthorizationService
-  ) { }
+  ) {}
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    return this.authorizationService.canAdd(ModuleName.TRANSLATIONS);
+    return this.authorizationService.canView(ModuleName.TRANSLATIONS);
   }
 }

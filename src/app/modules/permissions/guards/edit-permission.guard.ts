@@ -16,6 +16,6 @@ export class EditPermissionGuard implements CanActivate {
   ) { }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    return this.authorizationService.canAdd(ModuleName.PERMISSIONS);
+    return this.authorizationService.canEdit(ModuleName.PERMISSIONS);
   }
 }

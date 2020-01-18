@@ -16,6 +16,6 @@ export class EditPartnerGuard implements CanActivate {
   ) { }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    return this.authorizationService.canAdd(ModuleName.PARTNERS);
+    return this.authorizationService.canEdit(ModuleName.PARTNERS);
   }
 }
