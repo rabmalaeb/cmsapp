@@ -18,6 +18,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { LoginModule } from './modules/login/login.module';
 import { DashboardComponent } from './modules/dashboard/dashboard.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
 
 @NgModule({
@@ -38,6 +39,11 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     PermissionModule,
     RoleModule,
     AppRoutingModule,
+    StoreDevtoolsModule.instrument({
+      maxAge: 25, // Retains last 25 states
+      logOnly: false // Restrict extension to log-only mode
+    }),
+
     LoginModule
   ],
   providers: [],
