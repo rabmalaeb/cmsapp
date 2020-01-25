@@ -19,6 +19,7 @@ import { LoginModule } from './modules/login/login.module';
 import { DashboardComponent } from './modules/dashboard/dashboard.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { RootStoreModule } from './root-store';
 
 
 @NgModule({
@@ -38,6 +39,7 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
     TranslationModule,
     PermissionModule,
     RoleModule,
+    RootStoreModule,
     AppRoutingModule,
     StoreDevtoolsModule.instrument({
       maxAge: 25, // Retains last 25 states

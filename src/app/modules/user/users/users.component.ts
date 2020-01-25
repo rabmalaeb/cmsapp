@@ -7,6 +7,9 @@ import { User } from '../user';
 import { UserService } from '../user.service';
 import { AuthorizationService } from 'src/app/services/authorization.service';
 import { ModuleName } from 'src/app/models/general';
+import { Observable } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { RootStoreState, UserStoreSelectors, UserStoreActions } from 'src/app/root-store';
 
 @Component({
   selector: 'app-users',
@@ -16,6 +19,11 @@ import { ModuleName } from 'src/app/models/general';
 export class UsersComponent implements OnInit {
   isLoading = false;
   users: User[] = [];
+
+  users$: Observable<User[]>;
+  error$: Observable<string>;
+  isLoading$: Observable<boolean>;
+
   displayedColumns: string[] = [
     'id',
     'first_name',
@@ -31,11 +39,26 @@ export class UsersComponent implements OnInit {
     private userService: UserService,
     private alertService: AlertService,
     private authorizationService: AuthorizationService,
+    private store$: Store<RootStoreState.State>,
     private router: Router
   ) {}
 
   ngOnInit() {
-    this.getUsers();
+    this.users$ = this.store$.select(
+      UserStoreSelectors.selectAllUserItems
+    );
+
+    this.error$ = this.store$.select(
+      UserStoreSelectors.selectUserError
+    );
+
+    this.isLoading$ = this.store$.select(
+      UserStoreSelectors.selectUserIsLoading
+    );
+
+    this.store$.dispatch(
+      new UserStoreActions.LoadRequestAction()
+    );
   }
 
   getUsers() {
