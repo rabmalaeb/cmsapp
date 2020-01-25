@@ -2,9 +2,9 @@ import { Action } from '@ngrx/store';
 import { User } from 'src/app/modules/user/user';
 
 export enum ActionTypes {
-  LOAD_REQUEST = '[My Feature] Load Request',
-  LOAD_FAILURE = '[My Feature] Load Failure',
-  LOAD_SUCCESS = '[My Feature] Load Success'
+  LOAD_REQUEST = '[User] Load Request',
+  LOAD_FAILURE = '[User] Load Failure',
+  LOAD_SUCCESS = '[User] Load Success'
 }
 
 export class LoadRequestAction implements Action {
@@ -13,12 +13,12 @@ export class LoadRequestAction implements Action {
 
 export class LoadFailureAction implements Action {
   readonly type = ActionTypes.LOAD_FAILURE;
-  constructor(public payload: { error: string }) { }
+  constructor(public payload: { error: string }) {}
 }
 
 export class LoadSuccessAction implements Action {
   readonly type = ActionTypes.LOAD_SUCCESS;
-  constructor(public payload: { items: User[] }) { }
+  constructor(public payload: { items: User[] }) {}
 }
 
 export type Actions = LoadRequestAction | LoadFailureAction | LoadSuccessAction;

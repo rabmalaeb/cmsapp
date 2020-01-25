@@ -14,20 +14,23 @@ export const getIsLoading = (state: State): boolean => state.isLoading;
 export const selectUserState: MemoizedSelector<
   object,
   State
-> = createFeatureSelector<State>('myFeature');
+> = createFeatureSelector<State>('user');
 
 export const selectAllUserItems: (
   state: object
 ) => User[] = userAdapter.getSelectors(selectUserState).selectAll;
 
 export const selectUserById = (id: string) =>
-  createSelector(this.selectAllUserItems, (allUsers: User[]) => {
-    if (allUsers) {
-      return allUsers.find(p => p.id.toString() === id);
-    } else {
-      return null;
+  createSelector(
+    this.selectAllUserItems,
+    (allUsers: User[]) => {
+      if (allUsers) {
+        return allUsers.find(p => p.id.toString() === id);
+      } else {
+        return null;
+      }
     }
-  });
+  );
 
 export const selectUserError: MemoizedSelector<object, any> = createSelector(
   selectUserState,
@@ -37,4 +40,7 @@ export const selectUserError: MemoizedSelector<object, any> = createSelector(
 export const selectUserIsLoading: MemoizedSelector<
   object,
   boolean
-> = createSelector(selectUserState, getIsLoading);
+> = createSelector(
+  selectUserState,
+  getIsLoading
+);

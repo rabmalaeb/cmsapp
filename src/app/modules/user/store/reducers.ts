@@ -1,4 +1,3 @@
-
 import { userAdapter, initialState, State } from './state';
 import { Actions, ActionTypes } from './actions';
 
