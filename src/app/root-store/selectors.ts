@@ -2,7 +2,7 @@ import { createSelector, MemoizedSelector } from '@ngrx/store';
 import { UserStoreSelectors } from '../modules/user/store';
 
 export const selectError: MemoizedSelector<object, string> = createSelector(
-  UserStoreSelectors.selectUserError,
+  UserStoreSelectors.selectUserLoadingError,
   (user: string) => {
     return user;
   }

@@ -8,8 +8,15 @@ import { UserService } from '../user.service';
 import { AuthorizationService } from 'src/app/services/authorization.service';
 import { ModuleName } from 'src/app/models/general';
 import { Observable } from 'rxjs';
-import { Store } from '@ngrx/store';
-import { RootStoreState, UserStoreSelectors, UserStoreActions } from 'src/app/root-store';
+import { Store, ActionsSubject } from '@ngrx/store';
+import {
+  RootStoreState,
+  UserStoreSelectors,
+  UserStoreActions
+} from 'src/app/root-store';
+import { ActionTypes } from '../store/actions';
+import { NotificationService } from 'src/app/services/notification.service';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-users',
@@ -40,40 +47,59 @@ export class UsersComponent implements OnInit {
     private alertService: AlertService,
     private authorizationService: AuthorizationService,
     private store$: Store<RootStoreState.State>,
+    private actionsSubject$: ActionsSubject,
+    private notificationService: NotificationService,
     private router: Router
   ) {}
 
   ngOnInit() {
-    this.users$ = this.store$.select(
-      UserStoreSelectors.selectAllUserItems
-    );
+    this.getUsers();
+    this.initializeStoreVariables();
+  }
 
-    this.error$ = this.store$.select(
-      UserStoreSelectors.selectUserError
-    );
+  initializeStoreVariables() {
+    this.users$ = this.store$.select(UserStoreSelectors.selectAllUserItems);
+
+    this.error$ = this.store$.select(UserStoreSelectors.selectUserLoadingError);
 
     this.isLoading$ = this.store$.select(
       UserStoreSelectors.selectUserIsLoading
     );
 
-    this.store$.dispatch(
-      new UserStoreActions.LoadRequestAction()
-    );
+    this.actionsSubject$
+      .pipe(
+        filter((action: any) => action.type === ActionTypes.DELETE_USER_SUCCESS)
+      )
+      .subscribe(() => {
+        this.notificationService.showSuccess('User Deleted Successfully');
+      });
+
+    this.actionsSubject$
+      .pipe(
+        filter((action: any) => action.type === ActionTypes.DELETE_USER_FAILURE)
+      )
+      .subscribe(() => {
+        this.notificationService.showError('Could not delete User. Please try again');
+      });
+
+    this.actionsSubject$
+      .pipe(
+        filter((action: any) => action.type === ActionTypes.LOAD_FAILURE)
+      )
+      .subscribe(() => {
+        this.notificationService.showError('An Error has occured. Please try again');
+      });
   }
 
   getUsers() {
-    this.isLoading = true;
-    this.userService.getUsers().subscribe(response => {
-      this.isLoading = false;
-      this.users = response;
-      this.setDataSource();
-    });
+    this.store$.dispatch(new UserStoreActions.LoadRequestAction());
   }
 
   setDataSource() {
     this.dataSource = new MatTableDataSource<User>(this.users);
     this.dataSource.paginator = this.paginator;
   }
+
   addUser() {
     this.router.navigate(['users/add']);
   }
@@ -100,10 +126,11 @@ export class UsersComponent implements OnInit {
       'Yes',
       'No',
       () => {
-        this.userService.deleteUser(id).subscribe(response => {
-          this.users = response;
-          this.setDataSource();
-        });
+        this.store$.dispatch(new UserStoreActions.DeleteUserRequestAction(id));
+        // this.userService.deleteUser(id).subscribe(response => {
+        //   this.users = response;
+        //   this.setDataSource();
+        // });
       }
     );
   }
