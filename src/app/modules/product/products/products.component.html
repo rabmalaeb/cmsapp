@@ -7,7 +7,12 @@
         </div>
       </div>
       <div class="page__actions">
-        <button mat-button class="button button_is-primary" (click)="addProduct()" *ngIf="canAddProduct">
+        <button
+          mat-button
+          class="button button_is-primary"
+          (click)="addProduct()"
+          *ngIf="canAddProduct | async"
+        >
           Add Product
         </button>
       </div>
@@ -42,8 +47,15 @@
       <ng-container matColumnDef="action">
         <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
         <mat-cell *matCellDef="let product" class="action-link">
-          <a class="table__action" (click)="editProduct(product.id)"><mat-icon>edit</mat-icon></a>
-          <a class="table__action" (click)="deleteProduct(product.id)" *ngIf="canDeleteProduct"><mat-icon>delete</mat-icon></a>
+          <a class="table__action" (click)="editProduct(product.id)"
+            ><mat-icon>edit</mat-icon></a
+          >
+          <a
+            class="table__action"
+            (click)="deleteProduct(product.id)"
+            *ngIf="canDeleteProduct | async"
+            ><mat-icon>delete</mat-icon></a
+          >
         </mat-cell>
       </ng-container>
 

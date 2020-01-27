@@ -11,7 +11,7 @@
           mat-button
           class="button button_is-primary"
           (click)="addTranslation()"
-          *ngIf="canAddTranslation"
+          *ngIf="canAddTranslation | async"
         >
           Add Translation
         </button>
@@ -62,7 +62,7 @@
           <a
             class="table__action"
             (click)="deleteTranslation(translation.id)"
-            *ngIf="canDeleteTranslation"
+            *ngIf="canDeleteTranslation | async"
           >
             <mat-icon>delete</mat-icon>
           </a>

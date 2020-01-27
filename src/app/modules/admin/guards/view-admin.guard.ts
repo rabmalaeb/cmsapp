@@ -7,6 +7,7 @@ import {
 } from '@angular/router';
 import { AuthorizationService } from 'src/app/services/authorization.service';
 import { ModuleName } from 'src/app/models/general';
+import { of } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class ViewAdminGuard implements CanActivate {

@@ -87,7 +87,7 @@ export class UsersComponent implements OnInit {
         filter((action: any) => action.type === ActionTypes.LOAD_FAILURE)
       )
       .subscribe(() => {
-        this.notificationService.showError('An Error has occured. Please try again');
+        this.notificationService.showError('An Error has occurred. Please try again');
       });
   }
 

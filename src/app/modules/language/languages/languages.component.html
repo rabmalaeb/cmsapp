@@ -11,7 +11,7 @@
           mat-button
           class="button button_is-primary"
           (click)="addLanguage()"
-          *ngIf="canAddLanguage"
+          *ngIf="canAddLanguage | async"
         >
           Add Language
         </button>
@@ -44,7 +44,7 @@
           <a
             class="table__action"
             (click)="deleteLanguage(language.id)"
-            *ngIf="canDeleteLanguage"
+            *ngIf="canDeleteLanguage | async"
           >
             <mat-icon>delete</mat-icon>
           </a>

@@ -7,12 +7,13 @@ import { Permission, PermissionGroup } from './permission';
 export class PermissionSerializerService {
   constructor() {}
 
-  getPermission(permissionResponse: any): Permission {
+  getPermission(permissionResponse: any, isRolePermission = false): Permission {
     const permission: Permission = {
       id: parseInt(permissionResponse.id, 0),
       name: permissionResponse.attributes.name,
       type: permissionResponse.attributes.type,
-      group: permissionResponse.attributes.group
+      group: permissionResponse.attributes.group,
+      isRolePermission
     };
     return permission;
   }
@@ -33,6 +34,31 @@ export class PermissionSerializerService {
       if (!permissionFound) {
         const permissionGroup = new PermissionGroup();
         permissionGroup.group = permission.attributes.group;
+        permissionGroup.permissions.push(permissionResult);
+        permissionGroups.push(permissionGroup);
+      } else {
+        permissionFound.permissions.push(permissionResult);
+      }
+    });
+    return permissionGroups;
+  }
+
+  groupPermissions(permissions: Permission[]): PermissionGroup[] {
+    const permissionGroups: PermissionGroup[] = [];
+    permissions.forEach(permission => {
+      const permissionFound = this.isInPermissionGroup(
+        permission.group,
+        permissionGroups
+      );
+      const permissionResult: Permission = {
+        id: permission.id,
+        name: permission.name,
+        type: permission.type,
+        isChecked: false
+      };
+      if (!permissionFound) {
+        const permissionGroup = new PermissionGroup();
+        permissionGroup.group = permission.group;
         permissionGroup.permissions.push(permissionResult);
         permissionGroups.push(permissionGroup);
       } else {

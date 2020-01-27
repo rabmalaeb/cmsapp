@@ -12,7 +12,7 @@
           mat-button
           class="button button_is-primary"
           (click)="addUser()"
-          *ngIf="canAddUser"
+          *ngIf="canAddUser | async"
         >
           Add User
         </button>
@@ -59,7 +59,7 @@
           <a
             class="table__action"
             (click)="deleteUser(user.id)"
-            *ngIf="canDeleteUser"
+            *ngIf="canDeleteUser | async"
             ><mat-icon>delete</mat-icon></a
           >
         </mat-cell>

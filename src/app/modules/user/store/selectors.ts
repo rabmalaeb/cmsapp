@@ -5,7 +5,7 @@ import {
 } from '@ngrx/store';
 
 import { userAdapter, State } from './state';
-import { User } from 'src/app/modules/user/user';
+import { User } from '../user';
 
 export const getLoadingError = (state: State): any => state.loadingError;
 

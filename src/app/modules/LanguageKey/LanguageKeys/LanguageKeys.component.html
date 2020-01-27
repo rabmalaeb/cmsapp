@@ -7,7 +7,12 @@
         </div>
       </div>
       <div class="page__actions">
-        <button mat-button class="button button_is-primary" (click)="addLanguageKey()" *ngIf="canAddKey">
+        <button
+          mat-button
+          class="button button_is-primary"
+          (click)="addLanguageKey()"
+          *ngIf="canAddKey | async"
+        >
           Add Language Key
         </button>
       </div>
@@ -20,7 +25,9 @@
 
       <ng-container matColumnDef="name">
         <mat-header-cell *matHeaderCellDef>Name</mat-header-cell>
-        <mat-cell *matCellDef="let languageKey">{{ languageKey.name }}</mat-cell>
+        <mat-cell *matCellDef="let languageKey">{{
+          languageKey.name
+        }}</mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="description">
@@ -33,8 +40,15 @@
       <ng-container matColumnDef="action">
         <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
         <mat-cell *matCellDef="let languageKey" class="action-link">
-          <a class="table__action" (click)="editLanguageKey(languageKey.id)"><mat-icon>edit</mat-icon></a>
-          <a class="table__action" (click)="deleteLanguageKey(languageKey.id)" *ngIf="canDeleteKey"><mat-icon>delete</mat-icon></a>
+          <a class="table__action" (click)="editLanguageKey(languageKey.id)"
+            ><mat-icon>edit</mat-icon></a
+          >
+          <a
+            class="table__action"
+            (click)="deleteLanguageKey(languageKey.id)"
+            *ngIf="canDeleteKey | async"
+            ><mat-icon>delete</mat-icon></a
+          >
         </mat-cell>
       </ng-container>
 

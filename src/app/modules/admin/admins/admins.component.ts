@@ -7,6 +7,7 @@ import { AdminService } from '../admin.service';
 import { AuthorizationService } from 'src/app/services/authorization.service';
 import { ModuleName } from 'src/app/models/general';
 import { AlertService } from 'src/app/services/alert.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-admins',
@@ -78,11 +79,11 @@ export class AdminsComponent implements OnInit {
     );
   }
 
-  get canAddAdmin() {
+  get canAddAdmin(): Observable<boolean> {
     return this.authorizationService.canAdd(ModuleName.ADMINS);
   }
 
-  get canDeleteAdmin() {
+  get canDeleteAdmin(): Observable<boolean> {
     return this.authorizationService.canDelete(ModuleName.ADMINS);
   }
 }

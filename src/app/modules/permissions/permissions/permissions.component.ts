@@ -7,6 +7,13 @@ import { Permission } from '../permission';
 import { PermissionService } from '../permission.service';
 import { AuthorizationService } from 'src/app/services/authorization.service';
 import { ModuleName } from 'src/app/models/general';
+import { Observable } from 'rxjs';
+import { Store, ActionsSubject } from '@ngrx/store';
+import { RootStoreState } from 'src/app/root-store';
+import { NotificationService } from 'src/app/services/notification.service';
+import { PermissionStoreSelectors, PermissionStoreActions } from '../store';
+import { ActionTypes } from '../store/actions';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-permissions',
@@ -16,13 +23,10 @@ import { ModuleName } from 'src/app/models/general';
 export class PermissionsComponent implements OnInit {
   isLoading = false;
   permissions: Permission[] = [];
-  displayedColumns: string[] = [
-    'id',
-    'name',
-    'type',
-    'group',
-    'action'
-  ];
+  permissions$: Observable<Permission[]>;
+  error$: Observable<string>;
+  isLoading$: Observable<boolean>;
+  displayedColumns: string[] = ['id', 'name', 'type', 'group', 'action'];
   dataSource: MatTableDataSource<any>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 
@@ -30,20 +34,63 @@ export class PermissionsComponent implements OnInit {
     private permissionService: PermissionService,
     private alertService: AlertService,
     private authorizationService: AuthorizationService,
+    private store$: Store<RootStoreState.State>,
+    private actionsSubject$: ActionsSubject,
+    private notificationService: NotificationService,
     private router: Router
   ) {}
 
   ngOnInit() {
     this.getPermissions();
+    this.initializeStoreVariables();
+  }
+
+  initializeStoreVariables() {
+    this.permissions$ = this.store$.select(
+      PermissionStoreSelectors.selectAllPermissionItems
+    );
+
+    this.error$ = this.store$.select(
+      PermissionStoreSelectors.selectPermissionLoadingError
+    );
+
+    this.isLoading$ = this.store$.select(
+      PermissionStoreSelectors.selectPermissionIsLoading
+    );
+
+    this.actionsSubject$
+      .pipe(
+        filter(
+          (action: any) => action.type === ActionTypes.DELETE_PERMISSION_SUCCESS
+        )
+      )
+      .subscribe(() => {
+        this.notificationService.showSuccess('Permission Deleted Successfully');
+      });
+
+    this.actionsSubject$
+      .pipe(
+        filter(
+          (action: any) => action.type === ActionTypes.DELETE_PERMISSION_FAILURE
+        )
+      )
+      .subscribe(() => {
+        this.notificationService.showError(
+          'Could not delete Permission. Please try again'
+        );
+      });
+
+    this.actionsSubject$
+      .pipe(filter((action: any) => action.type === ActionTypes.LOAD_FAILURE))
+      .subscribe(() => {
+        this.notificationService.showError(
+          'An Error has occurred. Please try again'
+        );
+      });
   }
 
   getPermissions() {
-    this.isLoading = true;
-    this.permissionService.getPermissions().subscribe(response => {
-      this.isLoading = false;
-      this.permissions = response;
-      this.setDataSource();
-    });
+    this.store$.dispatch(new PermissionStoreActions.LoadRequestAction());
   }
 
   setDataSource() {

@@ -13,7 +13,7 @@ import { ErrorHandlerService } from 'src/app/services/error-handler.service';
 import { PermissionService } from '../permission.service';
 import { AuthorizationService } from 'src/app/services/authorization.service';
 import { AppService } from 'src/app/services/app.service';
-import { USER_MESSAGES, PermissionType, NavItem, ModuleName, ActionType } from 'src/app/models/general';
+import { ALERT_MESSAGES, PermissionType, NavItem, ModuleName, ActionType } from 'src/app/models/general';
 import { capitalize } from 'src/app/utils/general';
 
 @Component({
@@ -96,7 +96,7 @@ export class PermissionAddComponent implements OnInit {
 
   performAction(formData: any, formDirective: FormGroupDirective) {
     if (!this.permissionForm.valid) {
-      this.notificationService.showError(USER_MESSAGES.FORM_NOT_VALID);
+      this.notificationService.showError(ALERT_MESSAGES.FORM_NOT_VALID);
       return;
     }
     if (this.permission) {

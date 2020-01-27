@@ -64,6 +64,6 @@ export class AppService {
   ];
 
   get activeNavBarItems() {
-    return this.navBarItems.filter(items => items.isActive);
+    return this.navBarItems.filter(items => items);
   }
 }

@@ -7,7 +7,7 @@ import {
 } from '@angular/forms';
 import { ValidationMessagesService } from 'src/app/services/validation-messages.service';
 import { NotificationService } from 'src/app/services/notification.service';
-import { ActionType, USER_MESSAGES, ModuleName } from 'src/app/models/general';
+import { ActionType, ALERT_MESSAGES, ModuleName } from 'src/app/models/general';
 import { ActivatedRoute } from '@angular/router';
 import { Translation } from '../translation';
 import { ErrorHandlerService } from 'src/app/services/error-handler.service';
@@ -141,7 +141,7 @@ export class TranslationAddComponent implements OnInit {
 
   performAction(formData: any, formDirective: FormGroupDirective) {
     if (!this.translationForm.valid) {
-      this.notificationService.showError(USER_MESSAGES.FORM_NOT_VALID);
+      this.notificationService.showError(ALERT_MESSAGES.FORM_NOT_VALID);
       return;
     }
     if (this.translation) {

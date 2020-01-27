@@ -7,14 +7,20 @@ import {
 } from '@angular/forms';
 import { ValidationMessagesService } from 'src/app/services/validation-messages.service';
 import { NotificationService } from 'src/app/services/notification.service';
-import { ActionType, USER_MESSAGES, ModuleName } from 'src/app/models/general';
+import { ActionType, ModuleName, ALERT_MESSAGES } from 'src/app/models/general';
 import { ActivatedRoute } from '@angular/router';
 import { Role, RoleRequest } from '../role';
 import { ErrorHandlerService } from 'src/app/services/error-handler.service';
-import { RoleService } from '../role.service';
-import { PermissionGroup } from '../../permissions/permission';
+import { PermissionGroup, Permission } from '../../permissions/permission';
 import { AuthorizationService } from 'src/app/services/authorization.service';
-import { PermissionService } from '../../permissions/permission.service';
+import { Observable } from 'rxjs';
+import { RoleStoreSelectors, RoleStoreActions } from '../store';
+import { Store, ActionsSubject } from '@ngrx/store';
+import { RootStoreState } from 'src/app/root-store';
+import { filter, map } from 'rxjs/operators';
+import { PermissionStoreActions, PermissionStoreSelectors } from '../../permissions/store';
+import { PermissionSerializerService } from '../../permissions/permission-serializer.service';
+import { ActionTypes } from '../store/actions';
 
 @Component({
   selector: 'app-role-add',
@@ -24,41 +30,107 @@ import { PermissionService } from '../../permissions/permission.service';
 export class RoleAddComponent implements OnInit {
   constructor(
     private form: FormBuilder,
-    private roleService: RoleService,
-    private permissionService: PermissionService,
     private notificationService: NotificationService,
+    private permissionSerializer: PermissionSerializerService,
     private validationMessagesService: ValidationMessagesService,
     private authorizationService: AuthorizationService,
     private errorHandler: ErrorHandlerService,
+    private actionsSubject$: ActionsSubject,
+    private store$: Store<RootStoreState.State>,
     private route: ActivatedRoute
   ) {}
-
-  roleForm: FormGroup;
-  actionType: ActionType;
-  role: Role;
+  permissions$: Observable<Permission[]>;
+  isLoadingAction$: Observable<boolean>;
+  loadingErrors$: Observable<String[]>;
+  actionErrors$: Observable<String[]>;
   permissionGroups: PermissionGroup[];
-  isLoadingPermissions = false;
+  isLoading$: Observable<boolean>;
+  role$: Observable<Role>;
+  permissionGroups$: Observable<PermissionGroup[]>;
+  actionType: ActionType;
   isLoadingRole = false;
+  roleForm: FormGroup;
   isLoading = false;
+  role: Role;
 
   ngOnInit() {
+    this.initializeStoreVariables();
+    this.initializeForm();
     this.route.params.forEach(param => {
       if (param.id) {
-        this.getRole(param.id);
+        const id = parseInt(param.id, 0);
+        this.getRole(id);
         this.actionType = ActionType.EDIT;
       } else {
         this.actionType = ActionType.ADD;
-        this.initializeForm();
+        console.log('we should builds');
+        
+        this.buildNewRoleForm();
       }
     });
   }
 
+  initializeStoreVariables() {
+    this.actionErrors$ = this.store$.select(
+      RoleStoreSelectors.selectRoleActionError
+    );
+
+    this.isLoadingAction$ = this.store$.select(
+      RoleStoreSelectors.selectIsLoadingAction
+    );
+
+    this.actionsSubject$
+      .pipe(
+        filter(
+          (action: any) =>
+            action.type === ActionTypes.UPDATE_ROLE_SUCCESS ||
+            action.type === ActionTypes.ADD_ROLE_SUCCESS
+        )
+      )
+      .subscribe(() => {
+        let message = 'Role Updated Successfully';
+        if (this.actionType === ActionType.ADD) {
+          message = 'Role Added Successfully';
+        }
+        this.notificationService.showSuccess(message);
+      });
+
+    this.actionsSubject$
+      .pipe(
+        filter(
+          (action: any) =>
+            action.type === ActionTypes.UPDATE_ROLE_FAILURE ||
+            action.type === ActionTypes.ADD_ROLE_FAILURE
+        )
+      )
+      .subscribe(() => {
+        this.notificationService.showError(
+          'An Error has Occurred. Please try again'
+        );
+      });
+  }
+
   getRole(id: number) {
-    this.isLoadingRole = true;
-    this.roleService.getRole(id).subscribe(response => {
-      this.isLoadingRole = false;
-      this.role = response;
-      this.initializeForm();
+    this.store$.dispatch(new RoleStoreActions.GetRoleRequestAction(id));
+    this.role$ = this.store$.select(RoleStoreSelectors.selectRoleById(id));
+    this.loadingErrors$ = this.store$.select(
+      RoleStoreSelectors.selectRoleLoadingError
+    );
+    this.buildExistingRoleForm();
+  }
+
+  buildNewRoleForm() {
+    this.roleForm = this.form.group({
+      name: ['', [Validators.required]],
+    });
+  }
+
+  buildExistingRoleForm() {
+    this.role$.subscribe(role => {
+      this.role = role;
+      this.roleForm = this.form.group({
+        name: [role.name, [Validators.required]]
+      });
     });
   }
 
@@ -68,10 +140,10 @@ export class RoleAddComponent implements OnInit {
   }
 
   getPermissions() {
-    this.isLoadingPermissions = true;
-    this.permissionService.getGroupedPermissions().subscribe(response => {
-      this.permissionGroups = response;
-      this.isLoadingPermissions = false;
+    this.store$.dispatch(new PermissionStoreActions.LoadRequestAction());
+    this.permissions$ = this.store$.select(PermissionStoreSelectors.selectAllPermissionItems);
+    this.permissions$.subscribe(permissions => {
+      this.permissionGroups = this.permissionSerializer.groupPermissions(permissions);
       this.setCheckedPermissions();
     });
   }
@@ -106,7 +178,7 @@ export class RoleAddComponent implements OnInit {
 
   performAction(formData: any, formDirective: FormGroupDirective) {
     if (!this.roleForm.valid) {
-      this.notificationService.showError(USER_MESSAGES.FORM_NOT_VALID);
+      this.notificationService.showError(ALERT_MESSAGES.FORM_NOT_VALID);
       return;
     }
     if (this.role) {
@@ -124,26 +196,14 @@ export class RoleAddComponent implements OnInit {
   }
 
   addRole(params: RoleRequest) {
-    this.isLoading = true;
-    this.roleService.addRole(params).subscribe(
-      () => {
-        this.isLoading = false;
-        this.notificationService.showSuccess('Role added successfully');
-      },
-      error => {
-        this.isLoading = false;
-        this.errorHandler.handleErrorResponse(error);
-      }
-    );
+    this.store$.dispatch(new RoleStoreActions.AddRoleRequestAction(params));
   }
 
   updateRole(params: RoleRequest) {
-    this.isLoading = true;
     const id = this.role.id;
-    this.roleService.updateRole(id, params).subscribe(() => {
-      this.isLoading = false;
-      this.notificationService.showSuccess('Role updated successfully');
-    });
+    this.store$.dispatch(
+      new RoleStoreActions.UpdateRoleRequestAction(id, params)
+    );
   }
 
   getSelectedPermissions() {
@@ -159,13 +219,17 @@ export class RoleAddComponent implements OnInit {
   }
 
   get buttonLabel() {
-    if (this.isLoading) {
-      return 'Loading';
-    }
-    if (this.actionType === ActionType.EDIT) {
-      return 'Update';
-    }
-    return 'Add';
+    return this.isLoadingAction$.pipe(
+      map(isLoading => {
+        if (isLoading) {
+          return 'Loading';
+        }
+        if (this.actionType === ActionType.EDIT) {
+          return 'Update';
+        }
+        return 'Add';
+      })
+    );
   }
 
   get title() {
@@ -183,6 +247,9 @@ export class RoleAddComponent implements OnInit {
     if (this.actionType === ActionType.ADD) {
       return true;
     }
-    return this.actionType === ActionType.EDIT && this.authorizationService.canEdit(ModuleName.ROLES);
+    return (
+      this.actionType === ActionType.EDIT &&
+      this.authorizationService.canEdit(ModuleName.ROLES)
+    );
   }
 }

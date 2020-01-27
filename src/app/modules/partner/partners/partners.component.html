@@ -7,7 +7,12 @@
         </div>
       </div>
       <div class="page__actions">
-        <button mat-button class="button button_is-primary" (click)="addPartner()" *ngIf="canAddPartner">
+        <button
+          mat-button
+          class="button button_is-primary"
+          (click)="addPartner()"
+          *ngIf="canAddPartner | async"
+        >
           Add Partner
         </button>
       </div>
@@ -33,8 +38,15 @@
       <ng-container matColumnDef="action">
         <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
         <mat-cell *matCellDef="let partner" class="action-link">
-          <a class="table__action" (click)="editPartner(partner.id)"><mat-icon>edit</mat-icon></a>
-          <a class="table__action" (click)="deletePartner(partner.id)" *ngIf="canDeletePartner"><mat-icon>delete</mat-icon></a>
+          <a class="table__action" (click)="editPartner(partner.id)"
+            ><mat-icon>edit</mat-icon></a
+          >
+          <a
+            class="table__action"
+            (click)="deletePartner(partner.id)"
+            *ngIf="canDeletePartner | async"
+            ><mat-icon>delete</mat-icon></a
+          >
         </mat-cell>
       </ng-container>
 

@@ -15,7 +15,7 @@ import { NotificationService } from 'src/app/services/notification.service';
 import { ValidationMessagesService } from 'src/app/services/validation-messages.service';
 import { ErrorHandlerService } from 'src/app/services/error-handler.service';
 import { AuthorizationService } from 'src/app/services/authorization.service';
-import { ActionType, USER_MESSAGES, ModuleName } from 'src/app/models/general';
+import { ActionType, ALERT_MESSAGES, ModuleName } from 'src/app/models/general';
 import { CustomValidations } from 'src/app/validators/custom-validations';
 
 @Component({
@@ -137,7 +137,7 @@ export class AdminAddComponent implements OnInit {
 
   performAction(formData: any, formDirective: FormGroupDirective) {
     if (!this.adminForm.valid) {
-      this.notificationService.showError(USER_MESSAGES.FORM_NOT_VALID);
+      this.notificationService.showError(ALERT_MESSAGES.FORM_NOT_VALID);
       return;
     }
     if (this.admin) {

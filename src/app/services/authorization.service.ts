@@ -4,37 +4,43 @@ import { ModuleName, PermissionType } from 'src/app/models/general';
 import { AuthenticationService } from './authentication.service';
 import { RoleService } from '../modules/role/role.service';
 import { Permission } from '../modules/permissions/permission';
+import { RootStoreState, RoleStoreActions } from '../root-store';
+import { Store } from '@ngrx/store';
+import {
+  PermissionStoreActions,
+  PermissionStoreSelectors
+} from '../modules/permissions/store';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
-
-
 export class AuthorizationService {
-
   adminPermissions: Permission[];
+  rolePermissions$: Observable<Permission[]>;
   isLoadingPermissions = false;
   constructor(
     private authenticationService: AuthenticationService,
-    private roleService: RoleService,
-  ) { }
+    private store$: Store<RootStoreState.State>
+  ) {}
 
   getRolePermissions() {
     const roleId = this.authenticationService.getCurrentUser().roleId;
-    if (roleId) {
-      this.isLoadingPermissions = true;
-      this.roleService.getRole(roleId).subscribe(response => {
-        this.isLoadingPermissions = false;
-        this.adminPermissions = response.permissions;
-      });
-    }
+    this.store$.dispatch(
+      new PermissionStoreActions.LoadPermissionsByRoleAction(roleId)
+    );
+
+    this.rolePermissions$ = this.store$.select(
+      PermissionStoreSelectors.selectPermissionForRole
+    );
   }
 
   /**
    * check if admin has View permissions on the module
    * @param moduleName the module Name
    */
-  canView(moduleName: ModuleName): boolean {
+  canView(moduleName: ModuleName): Observable<boolean> {
     return this.checkPermission(moduleName, PermissionType.VIEW);
   }
 
@@ -42,7 +48,7 @@ export class AuthorizationService {
    * check if admin has Edit permissions on the module
    * @param moduleName the module Name
    */
-  canEdit(moduleName: ModuleName): boolean {
+  canEdit(moduleName: ModuleName): Observable<boolean> {
     return this.checkPermission(moduleName, PermissionType.EDIT);
   }
 
@@ -50,7 +56,7 @@ export class AuthorizationService {
    * check if admin has Delete permissions on the module
    * @param moduleName the module Name
    */
-  canDelete(moduleName: ModuleName): boolean {
+  canDelete(moduleName: ModuleName): Observable<boolean> {
     return this.checkPermission(moduleName, PermissionType.DELETE);
   }
 
@@ -58,20 +64,29 @@ export class AuthorizationService {
    * check if admin has Add permissions on the module
    * @param moduleName the module Name
    */
-  canAdd(moduleName: ModuleName): boolean {
+  canAdd(moduleName: ModuleName): Observable<boolean> {
     return this.checkPermission(moduleName, PermissionType.ADD);
   }
 
-  private checkPermission(moduleName: ModuleName, permissionType: PermissionType) {
-    if (!this.adminPermissions) {
-      return false;
-    }
-    const hasPermission = this.adminPermissions.find(permission => {
-      return permission.group.toLowerCase() === moduleName.toLowerCase() && permission.type === permissionType;
-    });
-    if (hasPermission) {
-      return true;
-    }
-    return false;
+  private checkPermission(
+    moduleName: ModuleName,
+    permissionType: PermissionType
+  ): Observable<boolean> {
+    return this.rolePermissions$.pipe(
+      map(permissions => {
+        if (!permissions) {
+          return false;
+        }
+        const hasPermission = permissions.find(
+          permission =>
+            permission.group.toLowerCase() === moduleName.toLowerCase() &&
+            permission.type === permissionType
+        );
+        if (hasPermission) {
+          return true;
+        }
+        return false;
+      })
+    );
   }
 }
