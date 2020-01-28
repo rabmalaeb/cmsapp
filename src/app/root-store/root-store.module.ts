@@ -10,8 +10,8 @@ import { PartnerStoreModule } from '../modules/partner/store';
 import { ProductStoreModule } from '../modules/product/store';
 import { LanguageStoreModule } from '../modules/language/store';
 import { CategoryStoreModule } from '../modules/category/store';
-import { LanguageKeyStoreModule } from '../modules/languagekey/store';
 import { TranslationStoreModule } from '../modules/translation/store';
+import { LanguageKeyStoreModule } from '../modules/language-key/store';
 
 
 

@@ -3,7 +3,7 @@ import { RoleStoreState } from '../modules/role/store';
 import { PermissionStoreState } from '../modules/permissions/store';
 import { AdminStoreState } from '../modules/admin/store';
 import { PartnerStoreState } from '../modules/partner/store';
-import { LanguagekeyStoreState } from '../modules/languagekey/store';
+import { LanguagekeyStoreState } from '../modules/language-key/store';
 import { LanguageStoreState } from '../modules/language/store';
 import { TranslationStoreState } from '../modules/translation/store';
 

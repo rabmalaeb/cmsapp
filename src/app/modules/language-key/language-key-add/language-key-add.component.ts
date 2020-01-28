@@ -9,16 +9,16 @@ import { ValidationMessagesService } from 'src/app/services/validation-messages.
 import { NotificationService } from 'src/app/services/notification.service';
 import { ActionType, ALERT_MESSAGES, ModuleName } from 'src/app/models/general';
 import { ActivatedRoute } from '@angular/router';
-import { LanguageKey } from '../languagekey';
+import { LanguageKey } from '../language-key';
 import { ErrorHandlerService } from 'src/app/services/error-handler.service';
-import { LanguageKeyService } from '../languagekey.service';
+import { LanguageKeyService } from '../language-key.service';
 import { Category } from '../../category/category';
 import { AuthorizationService } from 'src/app/services/authorization.service';
 
 @Component({
   selector: 'app-language-key-add',
-  templateUrl: './languagekey-add.component.html',
-  styleUrls: ['./languagekey-add.component.scss']
+  templateUrl: './language-key-add.component.html',
+  styleUrls: ['./language-key-add.component.scss']
 })
 export class LanguageKeyAddComponent implements OnInit {
   constructor(

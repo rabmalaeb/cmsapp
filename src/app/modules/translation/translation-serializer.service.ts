@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Translation } from './translation';
 import { PartnerSerializerService } from '../partner/partner-serializer.service';
 import { LanguageSerializerService } from '../language/language-serializer.service';
-import { LanguageKeySerializerService } from '../languagekey/languagekey-serializer.service';
+import { LanguageKeySerializerService } from '../language-key/language-key-serializer.service';
 
 @Injectable({
   providedIn: 'root'

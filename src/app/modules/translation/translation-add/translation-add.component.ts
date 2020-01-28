@@ -13,10 +13,10 @@ import { Translation } from '../translation';
 import { ErrorHandlerService } from 'src/app/services/error-handler.service';
 import { TranslationService } from '../translation.service';
 import { LanguageService } from '../../language/language.service';
-import { LanguageKeyService } from '../../languagekey/languagekey.service';
+import { LanguageKeyService } from '../../language-key/language-key.service';
 import { PartnerService } from '../../partner/partner.service';
 import { Partner } from '../../partner/partner';
-import { LanguageKey } from '../../languagekey/languagekey';
+import { LanguageKey } from '../../language-key/language-key';
 import { Language } from '../../language/language';
 import { AuthorizationService } from 'src/app/services/authorization.service';
 

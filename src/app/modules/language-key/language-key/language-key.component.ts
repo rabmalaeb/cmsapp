@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { LanguageKeyService } from '../languagekey.service';
+import { LanguageKeyService } from '../language-key.service';
 
 @Component({
   selector: 'app-language-key',
-  templateUrl: './languagekey.component.html',
-  styleUrls: ['./languagekey.component.scss']
+  templateUrl: './language-key.component.html',
+  styleUrls: ['./language-key.component.scss']
 })
 export class LanguageKeyComponent implements OnInit {
 

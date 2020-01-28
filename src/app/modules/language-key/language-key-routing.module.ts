@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes, PreloadAllModules } from '@angular/router';
-import { LanguageKeyAddComponent } from './languagekey-add/languagekey-add.component';
-import { LanguageKeysComponent } from './languagekeys/languagekeys.component';
-import { LanguageKeyComponent } from './languagekey/languagekey.component';
+import { LanguageKeyAddComponent } from './language-key-add/language-key-add.component';
+import { LanguageKeysComponent } from './language-keys/language-keys.component';
+import { LanguageKeyComponent } from './language-key/language-key.component';
 import { AddLanguageKeyGuard } from './guards/add-languagekey.guard';
 import { ViewLanguageKeyGuard } from './guards/view-languagekey.guard';
 import { EditLanguageKeyGuard } from './guards/edit-languagekey.guard';

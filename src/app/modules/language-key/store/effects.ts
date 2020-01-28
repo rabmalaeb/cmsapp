@@ -4,7 +4,7 @@ import { Action } from '@ngrx/store';
 import { Observable, of as observableOf } from 'rxjs';
 import { catchError, map, startWith, switchMap } from 'rxjs/operators';
 import * as languageKeyActions from './actions';
-import { LanguageKeyService } from '../languagekey.service';
+import { LanguageKeyService } from '../language-key.service';
 
 @Injectable()
 export class LanguageKeyStoreEffects {

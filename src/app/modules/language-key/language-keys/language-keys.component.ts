@@ -3,8 +3,8 @@ import { Router } from '@angular/router';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { AlertService } from 'src/app/services/alert.service';
-import { LanguageKey } from '../languagekey';
-import { LanguageKeyService } from '../languagekey.service';
+import { LanguageKey } from '../language-key';
+import { LanguageKeyService } from '../language-key.service';
 import { AuthorizationService } from 'src/app/services/authorization.service';
 import { ModuleName } from 'src/app/models/general';
 import { Store, ActionsSubject } from '@ngrx/store';
@@ -17,8 +17,8 @@ import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-languagekeys',
-  templateUrl: './languagekeys.component.html',
-  styleUrls: ['./languagekeys.component.scss']
+  templateUrl: './language-keys.component.html',
+  styleUrls: ['./language-keys.component.scss']
 })
 export class LanguageKeysComponent implements OnInit {
   isLoading = false;

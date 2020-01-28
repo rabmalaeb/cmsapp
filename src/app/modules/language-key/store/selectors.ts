@@ -5,7 +5,7 @@ import {
 } from '@ngrx/store';
 
 import { languageKeyAdapter, State } from './state';
-import { LanguageKey } from '../languagekey';
+import { LanguageKey } from '../language-key';
 
 export const getLoadingError = (state: State): any => state.loadingError;
 

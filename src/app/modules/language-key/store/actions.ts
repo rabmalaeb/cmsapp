@@ -1,5 +1,5 @@
 import { Action } from '@ngrx/store';
-import { LanguageKey } from '../languageKey';
+import { LanguageKey } from '../language-key';
 
 export enum ActionTypes {
   LOAD_REQUEST = '[LanguageKey] Load Request',
