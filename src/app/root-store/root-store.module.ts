@@ -5,6 +5,13 @@ import { EffectsModule } from '@ngrx/effects';
 import { UserStoreModule } from '../modules/user/store';
 import { RoleStoreModule } from '../modules/role/store';
 import { PermissionStoreModule } from '../modules/permissions/store';
+import { AdminStoreModule } from '../modules/admin/store';
+import { PartnerStoreModule } from '../modules/partner/store';
+import { ProductStoreModule } from '../modules/product/store';
+import { LanguageStoreModule } from '../modules/language/store';
+import { CategoryStoreModule } from '../modules/category/store';
+import { LanguageKeyStoreModule } from '../modules/languagekey/store';
+import { TranslationStoreModule } from '../modules/translation/store';
 
 
 
@@ -14,6 +21,13 @@ import { PermissionStoreModule } from '../modules/permissions/store';
     CommonModule,
     UserStoreModule,
     RoleStoreModule,
+    AdminStoreModule,
+    PartnerStoreModule,
+    ProductStoreModule,
+    LanguageStoreModule,
+    LanguageKeyStoreModule,
+    TranslationStoreModule,
+    CategoryStoreModule,
     PermissionStoreModule,
     StoreModule.forRoot({}),
     EffectsModule.forRoot([])

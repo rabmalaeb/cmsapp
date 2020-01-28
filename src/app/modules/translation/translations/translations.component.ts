@@ -7,6 +7,13 @@ import { Translation } from '../translation';
 import { TranslationService } from '../translation.service';
 import { AuthorizationService } from 'src/app/services/authorization.service';
 import { ModuleName } from 'src/app/models/general';
+import { ActionTypes } from '../store/actions';
+import { filter } from 'rxjs/operators';
+import { TranslationStoreSelectors, TranslationStoreActions } from '../store';
+import { ActionsSubject, Store } from '@ngrx/store';
+import { NotificationService } from 'src/app/services/notification.service';
+import { RootStoreState } from 'src/app/root-store';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-translations',
@@ -24,6 +31,9 @@ export class TranslationsComponent implements OnInit {
     'value',
     'action'
   ];
+  translations$: Observable<Translation[]>;
+  error$: Observable<string>;
+  isLoading$: Observable<boolean>;
   dataSource: MatTableDataSource<any>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 
@@ -31,20 +41,53 @@ export class TranslationsComponent implements OnInit {
     private translationService: TranslationService,
     private alertService: AlertService,
     private authorizationService: AuthorizationService,
-    private router: Router
-  ) {}
+    private router: Router,
+    private store$: Store<RootStoreState.State>,
+    private notificationService: NotificationService,
+    private actionsSubject$: ActionsSubject,
+  ) { }
 
   ngOnInit() {
     this.getTranslations();
+    this.initializeStoreVariables();
+  }
+
+  initializeStoreVariables() {
+    this.translations$ = this.store$.select(TranslationStoreSelectors.selectAllTranslationItems);
+
+    this.error$ = this.store$.select(TranslationStoreSelectors.selectTranslationLoadingError);
+
+    this.isLoading$ = this.store$.select(
+      TranslationStoreSelectors.selectTranslationIsLoading
+    );
+
+    this.actionsSubject$
+      .pipe(
+        filter((action: any) => action.type === ActionTypes.DELETE_TRANSLATION_SUCCESS)
+      )
+      .subscribe(() => {
+        this.notificationService.showSuccess('Translation Deleted Successfully');
+      });
+
+    this.actionsSubject$
+      .pipe(
+        filter((action: any) => action.type === ActionTypes.DELETE_TRANSLATION_FAILURE)
+      )
+      .subscribe(() => {
+        this.notificationService.showError('Could not delete Translation. Please try again');
+      });
+
+    this.actionsSubject$
+      .pipe(
+        filter((action: any) => action.type === ActionTypes.LOAD_FAILURE)
+      )
+      .subscribe(() => {
+        this.notificationService.showError('An Error has occurred. Please try again');
+      });
   }
 
   getTranslations() {
-    this.isLoading = true;
-    this.translationService.getTranslations().subscribe(response => {
-      this.isLoading = false;
-      this.translations = response;
-      this.setDataSource();
-    });
+    this.store$.dispatch(new TranslationStoreActions.LoadRequestAction());
   }
 
   setDataSource() {

@@ -4,7 +4,7 @@ import {
   MemoizedSelector
 } from '@ngrx/store';
 
-import { languagekeyAdapter, State } from './state';
+import { languageKeyAdapter, State } from './state';
 import { LanguageKey } from '../languagekey';
 
 export const getLoadingError = (state: State): any => state.loadingError;
@@ -23,15 +23,15 @@ export const selectLanguagekeyState: MemoizedSelector<
 
 export const selectAllLanguagekeyItems: (
   state: object
-) => LanguageKey[] = languagekeyAdapter.getSelectors(selectLanguagekeyState)
+) => LanguageKey[] = languageKeyAdapter.getSelectors(selectLanguagekeyState)
   .selectAll;
 
 export const selectLanguagekeyById = (id: number) =>
   createSelector(
     selectAllLanguagekeyItems,
-    (allLanguagekeys: LanguageKey[]) => {
-      if (allLanguagekeys) {
-        return allLanguagekeys.find(languagekey => languagekey.id === id);
+    (allLanguageKeys: LanguageKey[]) => {
+      if (allLanguageKeys) {
+        return allLanguageKeys.find(languagekey => languagekey.id === id);
       } else {
         return null;
       }

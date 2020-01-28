@@ -17,7 +17,7 @@
         </button>
       </div>
     </div>
-    <mat-table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+    <mat-table mat-table [dataSource]="partners$ | async" class="mat-elevation-z8">
       <ng-container matColumnDef="id">
         <mat-header-cell *matHeaderCellDef>Id</mat-header-cell>
         <mat-cell *matCellDef="let partner">{{ partner.id }}</mat-cell>

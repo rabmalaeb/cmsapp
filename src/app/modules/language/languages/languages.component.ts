@@ -7,6 +7,13 @@ import { Language } from '../language';
 import { LanguageService } from '../language.service';
 import { AuthorizationService } from 'src/app/services/authorization.service';
 import { ModuleName } from 'src/app/models/general';
+import { Observable } from 'rxjs';
+import { LanguageStoreActions, LanguageStoreSelectors } from '../store';
+import { ActionTypes } from '../store/actions';
+import { filter } from 'rxjs/operators';
+import { NotificationService } from 'src/app/services/notification.service';
+import { ActionsSubject, Store } from '@ngrx/store';
+import { RootStoreState } from 'src/app/root-store';
 
 @Component({
   selector: 'app-languages',
@@ -22,6 +29,9 @@ export class LanguagesComponent implements OnInit {
     'code',
     'action'
   ];
+  languages$: Observable<Language[]>;
+  error$: Observable<string>;
+  isLoading$: Observable<boolean>;
   dataSource: MatTableDataSource<any>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 
@@ -29,20 +39,53 @@ export class LanguagesComponent implements OnInit {
     private languageService: LanguageService,
     private alertService: AlertService,
     private authorizationService: AuthorizationService,
-    private router: Router
+    private router: Router,
+    private store$: Store<RootStoreState.State>,
+    private notificationService: NotificationService,
+    private actionsSubject$: ActionsSubject,
   ) { }
 
   ngOnInit() {
     this.getLanguages();
+    this.initializeStoreVariables();
+  }
+
+  initializeStoreVariables() {
+    this.languages$ = this.store$.select(LanguageStoreSelectors.selectAllLanguageItems);
+
+    this.error$ = this.store$.select(LanguageStoreSelectors.selectLanguageLoadingError);
+
+    this.isLoading$ = this.store$.select(
+      LanguageStoreSelectors.selectLanguageIsLoading
+    );
+
+    this.actionsSubject$
+      .pipe(
+        filter((action: any) => action.type === ActionTypes.DELETE_LANGUAGE_SUCCESS)
+      )
+      .subscribe(() => {
+        this.notificationService.showSuccess('Language Deleted Successfully');
+      });
+
+    this.actionsSubject$
+      .pipe(
+        filter((action: any) => action.type === ActionTypes.DELETE_LANGUAGE_FAILURE)
+      )
+      .subscribe(() => {
+        this.notificationService.showError('Could not delete Language. Please try again');
+      });
+
+    this.actionsSubject$
+      .pipe(
+        filter((action: any) => action.type === ActionTypes.LOAD_FAILURE)
+      )
+      .subscribe(() => {
+        this.notificationService.showError('An Error has occurred. Please try again');
+      });
   }
 
   getLanguages() {
-    this.isLoading = true;
-    this.languageService.getLanguages().subscribe(response => {
-      this.isLoading = false;
-      this.languages = response;
-      this.setDataSource();
-    });
+    this.store$.dispatch(new LanguageStoreActions.LoadRequestAction());
   }
 
   setDataSource() {

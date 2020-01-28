@@ -1,22 +1,22 @@
 import { Action } from '@ngrx/store';
-import { LanguageKey } from '../languagekey';
+import { LanguageKey } from '../languageKey';
 
 export enum ActionTypes {
-  LOAD_REQUEST = '[Languagekey] Load Request',
-  LOAD_FAILURE = '[Languagekey] Load Failure',
-  LOAD_SUCCESS = '[Languagekey] Load Success',
-  GET_LANGUAGEKEY_REQUEST = '[Languagekey] Get Languagekey Request',
-  GET_LANGUAGEKEY_SUCCESS = '[Languagekey] Get Languagekey Success',
-  GET_LANGUAGEKEY_FAILURE = '[Languagekey] Get Languagekey Failure',
-  ADD_LANGUAGEKEY_REQUEST = '[Languagekey] Add Languagekey Request',
-  ADD_LANGUAGEKEY_SUCCESS = '[Languagekey] Add Languagekey Success',
-  ADD_LANGUAGEKEY_FAILURE = '[Languagekey] Add Languagekey Failure',
-  UPDATE_LANGUAGEKEY_REQUEST = '[Languagekey] Update Languagekey Request',
-  UPDATE_LANGUAGEKEY_SUCCESS = '[Languagekey] Update Languagekey Success',
-  UPDATE_LANGUAGEKEY_FAILURE = '[Languagekey] Update Languagekey Failure',
-  DELETE_LANGUAGEKEY_REQUEST = '[Languagekey] Delete Languagekey Request',
-  DELETE_LANGUAGEKEY_SUCCESS = '[Languagekey] Delete Languagekey Success',
-  DELETE_LANGUAGEKEY_FAILURE = '[Languagekey] Delete Languagekey Failure'
+  LOAD_REQUEST = '[LanguageKey] Load Request',
+  LOAD_FAILURE = '[LanguageKey] Load Failure',
+  LOAD_SUCCESS = '[LanguageKey] Load Success',
+  GET_LANGUAGEKEY_REQUEST = '[LanguageKey] Get LanguageKey Request',
+  GET_LANGUAGEKEY_SUCCESS = '[LanguageKey] Get LanguageKey Success',
+  GET_LANGUAGEKEY_FAILURE = '[LanguageKey] Get LanguageKey Failure',
+  ADD_LANGUAGEKEY_REQUEST = '[LanguageKey] Add LanguageKey Request',
+  ADD_LANGUAGEKEY_SUCCESS = '[LanguageKey] Add LanguageKey Success',
+  ADD_LANGUAGEKEY_FAILURE = '[LanguageKey] Add LanguageKey Failure',
+  UPDATE_LANGUAGEKEY_REQUEST = '[LanguageKey] Update LanguageKey Request',
+  UPDATE_LANGUAGEKEY_SUCCESS = '[LanguageKey] Update LanguageKey Success',
+  UPDATE_LANGUAGEKEY_FAILURE = '[LanguageKey] Update LanguageKey Failure',
+  DELETE_LANGUAGEKEY_REQUEST = '[LanguageKey] Delete LanguageKey Request',
+  DELETE_LANGUAGEKEY_SUCCESS = '[LanguageKey] Delete LanguageKey Success',
+  DELETE_LANGUAGEKEY_FAILURE = '[LanguageKey] Delete LanguageKey Failure'
 }
 
 export class LoadRequestAction implements Action {
@@ -33,61 +33,61 @@ export class LoadSuccessAction implements Action {
   constructor(public payload: { items: LanguageKey[] }) {}
 }
 
-export class GetLanguagekeyRequestAction implements Action {
+export class GetLanguageKeyRequestAction implements Action {
   readonly type = ActionTypes.GET_LANGUAGEKEY_REQUEST;
   constructor(public id: number) {}
 }
 
-export class GetLanguagekeySuccessAction implements Action {
+export class GetLanguageKeySuccessAction implements Action {
   readonly type = ActionTypes.GET_LANGUAGEKEY_SUCCESS;
   constructor(public payload: { item: LanguageKey }) {}
 }
 
-export class GetLanguagekeyFailureAction implements Action {
+export class GetLanguageKeyFailureAction implements Action {
   readonly type = ActionTypes.GET_LANGUAGEKEY_FAILURE;
   constructor(public payload: { error: string }) {}
 }
-export class AddLanguagekeyRequestAction implements Action {
+export class AddLanguageKeyRequestAction implements Action {
   readonly type = ActionTypes.ADD_LANGUAGEKEY_REQUEST;
-  constructor(public languagekey: LanguageKey) {}
+  constructor(public languageKey: LanguageKey) {}
 }
 
-export class AddLanguagekeySuccessAction implements Action {
+export class AddLanguageKeySuccessAction implements Action {
   readonly type = ActionTypes.ADD_LANGUAGEKEY_SUCCESS;
   constructor(public payload: { item: LanguageKey }) {}
 }
 
-export class AddLanguagekeyFailureAction implements Action {
+export class AddLanguageKeyFailureAction implements Action {
   readonly type = ActionTypes.ADD_LANGUAGEKEY_FAILURE;
   constructor(public payload: { error: string }) {}
 }
 
-export class UpdateLanguagekeyRequestAction implements Action {
+export class UpdateLanguageKeyRequestAction implements Action {
   readonly type = ActionTypes.UPDATE_LANGUAGEKEY_REQUEST;
-  constructor(public id: number, public languagekey: LanguageKey) {}
+  constructor(public id: number, public languageKey: LanguageKey) {}
 }
 
-export class UpdateLanguagekeySuccessAction implements Action {
+export class UpdateLanguageKeySuccessAction implements Action {
   readonly type = ActionTypes.UPDATE_LANGUAGEKEY_SUCCESS;
   constructor(public payload: { id: number, item: LanguageKey }) {}
 }
 
-export class UpdateLanguagekeyFailureAction implements Action {
+export class UpdateLanguageKeyFailureAction implements Action {
   readonly type = ActionTypes.UPDATE_LANGUAGEKEY_FAILURE;
   constructor(public payload: { error: string }) {}
 }
 
-export class DeleteLanguagekeyRequestAction implements Action {
+export class DeleteLanguageKeyRequestAction implements Action {
   readonly type = ActionTypes.DELETE_LANGUAGEKEY_REQUEST;
   constructor(public id: number) {}
 }
 
-export class DeleteLanguagekeySuccessAction implements Action {
+export class DeleteLanguageKeySuccessAction implements Action {
   readonly type = ActionTypes.DELETE_LANGUAGEKEY_SUCCESS;
   constructor(public payload: { id: number, items: LanguageKey[] }) {}
 }
 
-export class DeleteLanguagekeyFailureAction implements Action {
+export class DeleteLanguageKeyFailureAction implements Action {
   readonly type = ActionTypes.DELETE_LANGUAGEKEY_FAILURE;
   constructor(public payload: { error: string }) {}
 }
@@ -96,15 +96,15 @@ export type Actions =
   | LoadRequestAction
   | LoadFailureAction
   | LoadSuccessAction
-  | GetLanguagekeyRequestAction
-  | GetLanguagekeySuccessAction
-  | GetLanguagekeyFailureAction
-  | DeleteLanguagekeyRequestAction
-  | DeleteLanguagekeySuccessAction
-  | DeleteLanguagekeyFailureAction
-  | AddLanguagekeyRequestAction
-  | AddLanguagekeySuccessAction
-  | AddLanguagekeyFailureAction
-  | UpdateLanguagekeyRequestAction
-  | UpdateLanguagekeySuccessAction
-  | UpdateLanguagekeyFailureAction;
+  | GetLanguageKeyRequestAction
+  | GetLanguageKeySuccessAction
+  | GetLanguageKeyFailureAction
+  | DeleteLanguageKeyRequestAction
+  | DeleteLanguageKeySuccessAction
+  | DeleteLanguageKeyFailureAction
+  | AddLanguageKeyRequestAction
+  | AddLanguageKeySuccessAction
+  | AddLanguageKeyFailureAction
+  | UpdateLanguageKeyRequestAction
+  | UpdateLanguageKeySuccessAction
+  | UpdateLanguageKeyFailureAction;

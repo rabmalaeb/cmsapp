@@ -3,53 +3,53 @@ import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Action } from '@ngrx/store';
 import { Observable, of as observableOf } from 'rxjs';
 import { catchError, map, startWith, switchMap } from 'rxjs/operators';
-import * as languagekeyActions from './actions';
+import * as languageKeyActions from './actions';
 import { LanguageKeyService } from '../languagekey.service';
 
 @Injectable()
-export class LanguagekeyStoreEffects {
+export class LanguageKeyStoreEffects {
   constructor(
-    private languagekeyService: LanguageKeyService,
+    private languageKeyService: LanguageKeyService,
     private actions$: Actions
   ) {}
 
   @Effect()
   loadRequestEffect$: Observable<Action> = this.actions$.pipe(
-    ofType<languagekeyActions.LoadRequestAction>(
-      languagekeyActions.ActionTypes.LOAD_REQUEST
+    ofType<languageKeyActions.LoadRequestAction>(
+      languageKeyActions.ActionTypes.LOAD_REQUEST
     ),
-    startWith(new languagekeyActions.LoadRequestAction()),
+    startWith(new languageKeyActions.LoadRequestAction()),
     switchMap(action =>
-      this.languagekeyService.getLanguageKeys().pipe(
+      this.languageKeyService.getLanguageKeys().pipe(
         map(
           items =>
-            new languagekeyActions.LoadSuccessAction({
+            new languageKeyActions.LoadSuccessAction({
               items
             })
         ),
         catchError(error =>
-          observableOf(new languagekeyActions.LoadFailureAction({ error }))
+          observableOf(new languageKeyActions.LoadFailureAction({ error }))
         )
       )
     )
   );
 
   @Effect()
-  getLanguagekeyEffect$: Observable<Action> = this.actions$.pipe(
-    ofType<languagekeyActions.GetLanguagekeyRequestAction>(
-      languagekeyActions.ActionTypes.GET_LANGUAGEKEY_REQUEST
+  getLanguageKeyEffect$: Observable<Action> = this.actions$.pipe(
+    ofType<languageKeyActions.GetLanguageKeyRequestAction>(
+      languageKeyActions.ActionTypes.GET_LANGUAGEKEY_REQUEST
     ),
     switchMap(action =>
-      this.languagekeyService.getLanguageKey(action.id).pipe(
+      this.languageKeyService.getLanguageKey(action.id).pipe(
         map(
           item =>
-            new languagekeyActions.GetLanguagekeySuccessAction({
+            new languageKeyActions.GetLanguageKeySuccessAction({
               item
             })
         ),
         catchError(error =>
           observableOf(
-            new languagekeyActions.GetLanguagekeyFailureAction({ error })
+            new languageKeyActions.GetLanguageKeyFailureAction({ error })
           )
         )
       )
@@ -57,21 +57,21 @@ export class LanguagekeyStoreEffects {
   );
 
   @Effect()
-  addLanguagekeyEffect$: Observable<Action> = this.actions$.pipe(
-    ofType<languagekeyActions.AddLanguagekeyRequestAction>(
-      languagekeyActions.ActionTypes.ADD_LANGUAGEKEY_REQUEST
+  addLanguageKeyEffect$: Observable<Action> = this.actions$.pipe(
+    ofType<languageKeyActions.AddLanguageKeyRequestAction>(
+      languageKeyActions.ActionTypes.ADD_LANGUAGEKEY_REQUEST
     ),
     switchMap(action =>
-      this.languagekeyService.addLanguageKey(action.languagekey).pipe(
+      this.languageKeyService.addLanguageKey(action.languageKey).pipe(
         map(
           item =>
-            new languagekeyActions.AddLanguagekeySuccessAction({
+            new languageKeyActions.AddLanguageKeySuccessAction({
               item
             })
         ),
         catchError(error =>
           observableOf(
-            new languagekeyActions.AddLanguagekeyFailureAction({ error })
+            new languageKeyActions.AddLanguageKeyFailureAction({ error })
           )
         )
       )
@@ -79,24 +79,24 @@ export class LanguagekeyStoreEffects {
   );
 
   @Effect()
-  updateLanguagekeyEffect$: Observable<Action> = this.actions$.pipe(
-    ofType<languagekeyActions.UpdateLanguagekeyRequestAction>(
-      languagekeyActions.ActionTypes.UPDATE_LANGUAGEKEY_REQUEST
+  updateLanguageKeyEffect$: Observable<Action> = this.actions$.pipe(
+    ofType<languageKeyActions.UpdateLanguageKeyRequestAction>(
+      languageKeyActions.ActionTypes.UPDATE_LANGUAGEKEY_REQUEST
     ),
     switchMap(action =>
-      this.languagekeyService
-        .updateLanguageKey(action.id, action.languagekey)
+      this.languageKeyService
+        .updateLanguageKey(action.id, action.languageKey)
         .pipe(
           map(
             item =>
-              new languagekeyActions.UpdateLanguagekeySuccessAction({
+              new languageKeyActions.UpdateLanguageKeySuccessAction({
                 id: action.id,
                 item
               })
           ),
           catchError(error =>
             observableOf(
-              new languagekeyActions.UpdateLanguagekeyFailureAction({ error })
+              new languageKeyActions.UpdateLanguageKeyFailureAction({ error })
             )
           )
         )
@@ -104,22 +104,22 @@ export class LanguagekeyStoreEffects {
   );
 
   @Effect()
-  deleteLanguagekeyEffect$: Observable<Action> = this.actions$.pipe(
-    ofType<languagekeyActions.DeleteLanguagekeyRequestAction>(
-      languagekeyActions.ActionTypes.DELETE_LANGUAGEKEY_REQUEST
+  deleteLanguageKeyEffect$: Observable<Action> = this.actions$.pipe(
+    ofType<languageKeyActions.DeleteLanguageKeyRequestAction>(
+      languageKeyActions.ActionTypes.DELETE_LANGUAGEKEY_REQUEST
     ),
     switchMap(action =>
-      this.languagekeyService.deleteLanguageKey(action.id).pipe(
+      this.languageKeyService.deleteLanguageKey(action.id).pipe(
         map(
           items =>
-            new languagekeyActions.DeleteLanguagekeySuccessAction({
+            new languageKeyActions.DeleteLanguageKeySuccessAction({
               id: action.id,
               items
             })
         ),
         catchError(error =>
           observableOf(
-            new languagekeyActions.DeleteLanguagekeyFailureAction({ error })
+            new languageKeyActions.DeleteLanguageKeyFailureAction({ error })
           )
         )
       )

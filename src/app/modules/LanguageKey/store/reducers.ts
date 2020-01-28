@@ -1,4 +1,4 @@
-import { languagekeyAdapter, initialState, State } from './state';
+import { languageKeyAdapter, initialState, State } from './state';
 import { Actions, ActionTypes } from './actions';
 
 export function languagekeyReducer(state = initialState, action: Actions): State {
@@ -11,7 +11,7 @@ export function languagekeyReducer(state = initialState, action: Actions): State
       };
     }
     case ActionTypes.LOAD_SUCCESS: {
-      return languagekeyAdapter.addAll(action.payload.items, {
+      return languageKeyAdapter.addAll(action.payload.items, {
         ...state,
         isLoading: false,
         loadingError: null
@@ -53,7 +53,7 @@ export function languagekeyReducer(state = initialState, action: Actions): State
       };
     }
     case ActionTypes.ADD_LANGUAGEKEY_SUCCESS: {
-      return languagekeyAdapter.addOne(action.payload.item, {
+      return languageKeyAdapter.addOne(action.payload.item, {
         ...state,
         isLoadingAction: false,
         actionError: null
@@ -74,7 +74,7 @@ export function languagekeyReducer(state = initialState, action: Actions): State
       };
     }
     case ActionTypes.UPDATE_LANGUAGEKEY_SUCCESS: {
-      return languagekeyAdapter.updateOne({id: action.payload.id, changes: action.payload.item}, {
+      return languageKeyAdapter.updateOne({id: action.payload.id, changes: action.payload.item}, {
         ...state,
         isLoadingAction: false,
         actionError: null
@@ -95,7 +95,7 @@ export function languagekeyReducer(state = initialState, action: Actions): State
       };
     }
     case ActionTypes.DELETE_LANGUAGEKEY_SUCCESS: {
-      return languagekeyAdapter.removeOne(action.payload.id, {
+      return languageKeyAdapter.removeOne(action.payload.id, {
         ...state,
         isLoadingAction: false,
         actionError: null

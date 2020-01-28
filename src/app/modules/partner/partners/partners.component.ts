@@ -7,6 +7,13 @@ import { Partner } from '../partner';
 import { PartnerService } from '../partner.service';
 import { ModuleName } from 'src/app/models/general';
 import { AuthorizationService } from 'src/app/services/authorization.service';
+import { Observable } from 'rxjs';
+import { PartnerStoreSelectors, PartnerStoreActions } from '../store';
+import { Store, ActionsSubject } from '@ngrx/store';
+import { RootStoreState } from 'src/app/root-store';
+import { NotificationService } from 'src/app/services/notification.service';
+import { ActionTypes } from '../store/actions';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-partners',
@@ -23,26 +30,62 @@ export class PartnersComponent implements OnInit {
     'action'
   ];
   dataSource: MatTableDataSource<any>;
+  partners$: Observable<Partner[]>;
+  error$: Observable<string>;
+  isLoading$: Observable<boolean>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 
   constructor(
     private partnerService: PartnerService,
     private alertService: AlertService,
     private router: Router,
-    private authorizationService: AuthorizationService
-  ) {}
+    private authorizationService: AuthorizationService,
+    private store$: Store<RootStoreState.State>,
+    private notificationService: NotificationService,
+    private actionsSubject$: ActionsSubject,
+  ) { }
 
   ngOnInit() {
     this.getPartners();
+    this.initializeStoreVariables();
+  }
+
+  initializeStoreVariables() {
+    this.partners$ = this.store$.select(PartnerStoreSelectors.selectAllPartnerItems);
+
+    this.error$ = this.store$.select(PartnerStoreSelectors.selectPartnerLoadingError);
+
+    this.isLoading$ = this.store$.select(
+      PartnerStoreSelectors.selectPartnerIsLoading
+    );
+
+    this.actionsSubject$
+      .pipe(
+        filter((action: any) => action.type === ActionTypes.DELETE_PARTNER_SUCCESS)
+      )
+      .subscribe(() => {
+        this.notificationService.showSuccess('Partner Deleted Successfully');
+      });
+
+    this.actionsSubject$
+      .pipe(
+        filter((action: any) => action.type === ActionTypes.DELETE_PARTNER_FAILURE)
+      )
+      .subscribe(() => {
+        this.notificationService.showError('Could not delete Partner. Please try again');
+      });
+
+    this.actionsSubject$
+      .pipe(
+        filter((action: any) => action.type === ActionTypes.LOAD_FAILURE)
+      )
+      .subscribe(() => {
+        this.notificationService.showError('An Error has occurred. Please try again');
+      });
   }
 
   getPartners() {
-    this.isLoading = true;
-    this.partnerService.getPartners().subscribe(response => {
-      this.isLoading = false;
-      this.partners = response;
-      this.setDataSource();
-    });
+    this.store$.dispatch(new PartnerStoreActions.LoadRequestAction());
   }
 
   setDataSource() {
