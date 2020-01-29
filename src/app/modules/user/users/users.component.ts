@@ -127,10 +127,6 @@ export class UsersComponent implements OnInit {
       'No',
       () => {
         this.store$.dispatch(new UserStoreActions.DeleteUserRequestAction(id));
-        // this.userService.deleteUser(id).subscribe(response => {
-        //   this.users = response;
-        //   this.setDataSource();
-        // });
       }
     );
   }

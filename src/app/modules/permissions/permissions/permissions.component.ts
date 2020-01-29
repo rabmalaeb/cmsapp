@@ -115,10 +115,7 @@ export class PermissionsComponent implements OnInit {
       'Yes',
       'No',
       () => {
-        this.permissionService.deletePermission(id).subscribe(response => {
-          this.permissions = response;
-          this.setDataSource();
-        });
+        this.store$.dispatch(new PermissionStoreActions.DeletePermissionRequestAction(id));
       }
     );
   }

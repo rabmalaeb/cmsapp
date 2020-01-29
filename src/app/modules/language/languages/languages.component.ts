@@ -110,10 +110,7 @@ export class LanguagesComponent implements OnInit {
       'Yes',
       'No',
       () => {
-        this.languageService.deleteLanguage(id).subscribe(response => {
-          this.languages = response;
-          this.setDataSource();
-        });
+        this.store$.dispatch(new LanguageStoreActions.DeleteLanguageRequestAction(id));
       }
     );
   }

@@ -110,10 +110,7 @@ export class PartnersComponent implements OnInit {
       'Yes',
       'No',
       () => {
-        this.partnerService.deletePartner(id).subscribe(response => {
-          this.partners = response;
-          this.setDataSource();
-        });
+       this.store$.dispatch(new PartnerStoreActions.DeletePartnerRequestAction(id));
       }
     );
   }

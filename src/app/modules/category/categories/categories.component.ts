@@ -110,10 +110,7 @@ export class CategoriesComponent implements OnInit {
       'Yes',
       'No',
       () => {
-        this.categoryService.deleteCategory(id).subscribe(response => {
-          this.categories = response;
-          this.setDataSource();
-        });
+        this.store$.dispatch(new CategoryStoreActions.DeleteCategoryRequestAction(id));
       }
     );
   }

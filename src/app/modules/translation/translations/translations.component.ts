@@ -113,10 +113,8 @@ export class TranslationsComponent implements OnInit {
       'Yes',
       'No',
       () => {
-        this.translationService.deleteTranslation(id).subscribe(response => {
-          this.translations = response;
-          this.setDataSource();
-        });
+        this.store$.dispatch(new TranslationStoreActions.DeleteTranslationRequestAction(id));
+
       }
     );
   }

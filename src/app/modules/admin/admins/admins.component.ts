@@ -112,10 +112,7 @@ export class AdminsComponent implements OnInit {
       'Yes',
       'No',
       () => {
-        this.adminService.deleteAdmin(id).subscribe(response => {
-          this.admins = response;
-          this.setDataSource();
-        });
+        this.store$.dispatch(new AdminStoreActions.DeleteAdminRequestAction(id));
       }
     );
   }

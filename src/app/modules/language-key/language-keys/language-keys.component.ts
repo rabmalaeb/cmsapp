@@ -119,10 +119,7 @@ export class LanguageKeysComponent implements OnInit {
       'Yes',
       'No',
       () => {
-        this.languageKeyService.deleteLanguageKey(id).subscribe(response => {
-          this.languageKeys = response;
-          this.setDataSource();
-        });
+        this.store$.dispatch(new LanguagekeyStoreActions.DeleteLanguageKeyRequestAction(id));
       }
     );
   }

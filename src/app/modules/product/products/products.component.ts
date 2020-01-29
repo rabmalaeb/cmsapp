@@ -110,10 +110,8 @@ export class ProductsComponent implements OnInit {
       'Yes',
       'No',
       () => {
-        this.productService.deleteProduct(id).subscribe(response => {
-          this.products = response;
-          this.setDataSource();
-        });
+        this.store$.dispatch(new ProductStoreActions.DeleteProductRequestAction(id));
+
       }
     );
   }
