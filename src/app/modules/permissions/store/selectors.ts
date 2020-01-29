@@ -9,13 +9,15 @@ import { Permission } from '../permission';
 
 export const getLoadingError = (state: State): any => state.loadingError;
 
-export const getPermissionsForRole = (state: State): any => state.PermissionsForRole;
+export const getPermissionsForRole = (state: State): any =>
+  state.PermissionsForRole;
 
 export const getActionError = (state: State): any => state.actionError;
 
 export const getIsLoading = (state: State): boolean => state.isLoading;
 
-export const getIsLoadingAction = (state: State): boolean => state.isLoadingAction;
+export const getIsLoadingAction = (state: State): boolean =>
+  state.isLoadingAction;
 
 export const selectPermissionState: MemoizedSelector<
   object,
@@ -24,7 +26,8 @@ export const selectPermissionState: MemoizedSelector<
 
 export const selectAllPermissionItems: (
   state: object
-) => Permission[] = permissionAdapter.getSelectors(selectPermissionState).selectAll;
+) => Permission[] = permissionAdapter.getSelectors(selectPermissionState)
+  .selectAll;
 
 export const selectPermissionById = (id: number) =>
   createSelector(
@@ -38,17 +41,26 @@ export const selectPermissionById = (id: number) =>
     }
   );
 
-export const selectPermissionForRole: MemoizedSelector<object, any> = createSelector(
+export const selectPermissionForRole: MemoizedSelector<
+  object,
+  any
+> = createSelector(
   selectPermissionState,
   getPermissionsForRole
 );
 
-export const selectPermissionLoadingError: MemoizedSelector<object, any> = createSelector(
+export const selectPermissionLoadingError: MemoizedSelector<
+  object,
+  any
+> = createSelector(
   selectPermissionState,
   getLoadingError
 );
 
-export const selectPermissionActionError: MemoizedSelector<object, any> = createSelector(
+export const selectPermissionActionError: MemoizedSelector<
+  object,
+  any
+> = createSelector(
   selectPermissionState,
   getActionError
 );
@@ -60,7 +72,6 @@ export const selectPermissionIsLoading: MemoizedSelector<
   selectPermissionState,
   getIsLoading
 );
-
 
 export const selectIsLoadingAction: MemoizedSelector<
   object,

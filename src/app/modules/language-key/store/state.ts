@@ -1,5 +1,5 @@
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
-import { LanguageKey } from '../languageKey';
+import { LanguageKey } from '../language-key';
 
 export const languageKeyAdapter: EntityAdapter<
   LanguageKey

@@ -13,7 +13,8 @@ export const getActionError = (state: State): any => state.actionError;
 
 export const getIsLoading = (state: State): boolean => state.isLoading;
 
-export const getIsLoadingAction = (state: State): boolean => state.isLoadingAction;
+export const getIsLoadingAction = (state: State): boolean =>
+  state.isLoadingAction;
 
 export const selectUserState: MemoizedSelector<
   object,
@@ -36,12 +37,18 @@ export const selectUserById = (id: number) =>
     }
   );
 
-export const selectUserLoadingError: MemoizedSelector<object, any> = createSelector(
+export const selectUserLoadingError: MemoizedSelector<
+  object,
+  any
+> = createSelector(
   selectUserState,
   getLoadingError
 );
 
-export const selectUserActionError: MemoizedSelector<object, any> = createSelector(
+export const selectUserActionError: MemoizedSelector<
+  object,
+  any
+> = createSelector(
   selectUserState,
   getActionError
 );
@@ -53,7 +60,6 @@ export const selectUserIsLoading: MemoizedSelector<
   selectUserState,
   getIsLoading
 );
-
 
 export const selectIsLoadingAction: MemoizedSelector<
   object,

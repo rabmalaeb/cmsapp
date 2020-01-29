@@ -1,7 +1,9 @@
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 import { Permission } from '../permission';
 
-export const permissionAdapter: EntityAdapter<Permission> = createEntityAdapter<Permission>({
+export const permissionAdapter: EntityAdapter<Permission> = createEntityAdapter<
+  Permission
+>({
   selectId: model => model.id,
   sortComparer: (a: Permission, b: Permission): number =>
     b.name.toString().localeCompare(a.name.toString())

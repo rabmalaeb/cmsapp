@@ -8,11 +8,16 @@ import { LanguageService } from '../language.service';
 
 @Injectable()
 export class LanguageStoreEffects {
-  constructor(private languageService: LanguageService, private actions$: Actions) {}
+  constructor(
+    private languageService: LanguageService,
+    private actions$: Actions
+  ) {}
 
   @Effect()
   loadRequestEffect$: Observable<Action> = this.actions$.pipe(
-    ofType<languageActions.LoadRequestAction>(languageActions.ActionTypes.LOAD_REQUEST),
+    ofType<languageActions.LoadRequestAction>(
+      languageActions.ActionTypes.LOAD_REQUEST
+    ),
     startWith(new languageActions.LoadRequestAction()),
     switchMap(action =>
       this.languageService.getLanguages().pipe(
@@ -84,7 +89,9 @@ export class LanguageStoreEffects {
             })
         ),
         catchError(error =>
-          observableOf(new languageActions.UpdateLanguageFailureAction({ error }))
+          observableOf(
+            new languageActions.UpdateLanguageFailureAction({ error })
+          )
         )
       )
     )
@@ -105,7 +112,9 @@ export class LanguageStoreEffects {
             })
         ),
         catchError(error =>
-          observableOf(new languageActions.DeleteLanguageFailureAction({ error }))
+          observableOf(
+            new languageActions.DeleteLanguageFailureAction({ error })
+          )
         )
       )
     )

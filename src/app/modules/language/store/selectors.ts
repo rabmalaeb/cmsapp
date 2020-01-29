@@ -13,7 +13,8 @@ export const getActionError = (state: State): any => state.actionError;
 
 export const getIsLoading = (state: State): boolean => state.isLoading;
 
-export const getIsLoadingAction = (state: State): boolean => state.isLoadingAction;
+export const getIsLoadingAction = (state: State): boolean =>
+  state.isLoadingAction;
 
 export const selectLanguageState: MemoizedSelector<
   object,
@@ -36,12 +37,18 @@ export const selectLanguageById = (id: number) =>
     }
   );
 
-export const selectLanguageLoadingError: MemoizedSelector<object, any> = createSelector(
+export const selectLanguageLoadingError: MemoizedSelector<
+  object,
+  any
+> = createSelector(
   selectLanguageState,
   getLoadingError
 );
 
-export const selectLanguageActionError: MemoizedSelector<object, any> = createSelector(
+export const selectLanguageActionError: MemoizedSelector<
+  object,
+  any
+> = createSelector(
   selectLanguageState,
   getActionError
 );
@@ -53,7 +60,6 @@ export const selectLanguageIsLoading: MemoizedSelector<
   selectLanguageState,
   getIsLoading
 );
-
 
 export const selectIsLoadingAction: MemoizedSelector<
   object,
