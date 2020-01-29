@@ -17,6 +17,12 @@ import { ErrorHandlerService } from 'src/app/services/error-handler.service';
 import { AuthorizationService } from 'src/app/services/authorization.service';
 import { ActionType, ALERT_MESSAGES, ModuleName } from 'src/app/models/general';
 import { CustomValidations } from 'src/app/validators/custom-validations';
+import { Observable } from 'rxjs';
+import { AdminStoreSelectors, AdminStoreActions } from '../store';
+import { ActionsSubject, Store } from '@ngrx/store';
+import { RootStoreState } from 'src/app/root-store';
+import { ActionTypes } from '../store/actions';
+import { filter, map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-admin-add',
@@ -32,6 +38,8 @@ export class AdminAddComponent implements OnInit {
     private validationMessagesService: ValidationMessagesService,
     private errorHandler: ErrorHandlerService,
     private authorizationService: AuthorizationService,
+    private actionsSubject$: ActionsSubject,
+    private store$: Store<RootStoreState.State>,
     private route: ActivatedRoute
   ) {}
 
@@ -44,34 +52,106 @@ export class AdminAddComponent implements OnInit {
   isLoadingRoles: boolean;
   showTogglePassword: boolean;
   willSetPassword: boolean;
+  admin$: Observable<Admin>;
+  isLoading$: Observable<boolean>;
+  isLoadingAction$: Observable<boolean>;
+  loadingErrors$: Observable<String[]>;
+  actionErrors$: Observable<String[]>;
 
   ngOnInit() {
+    this.initializeStoreVariables();
+    this.getRoles();
     this.route.params.forEach(param => {
       if (param.id) {
-        this.getAdmin(param.id);
+        const id = parseInt(param.id, 0);
+        this.getAdmin(id);
         this.actionType = ActionType.EDIT;
         this.showTogglePassword = true;
       } else {
         this.actionType = ActionType.ADD;
         this.showTogglePassword = false;
         this.willSetPassword = true;
-        this.initializeForm();
+        this.buildNewAdminForm();
       }
     });
   }
 
-  getAdmin(id: number) {
-    this.isLoadingAdmin = true;
-    this.adminService.getAdmin(id).subscribe(response => {
-      this.isLoadingAdmin = false;
-      this.admin = response;
-      this.initializeForm();
-    });
+  initializeStoreVariables() {
+    this.actionErrors$ = this.store$.select(
+      AdminStoreSelectors.selectAdminActionError
+    );
+
+    this.isLoadingAction$ = this.store$.select(
+      AdminStoreSelectors.selectIsLoadingAction
+    );
+
+    this.actionsSubject$
+      .pipe(
+        filter(
+          (action: any) =>
+            action.type === ActionTypes.UPDATE_ADMIN_SUCCESS ||
+            action.type === ActionTypes.ADD_ADMIN_SUCCESS
+        )
+      )
+      .subscribe(() => {
+        let message = 'Admin Updated Successfully';
+        if (this.actionType === ActionType.ADD) {
+          message = 'Admin Added Successfully';
+        }
+        this.notificationService.showSuccess(message);
+      });
+
+    this.actionsSubject$
+      .pipe(
+        filter(
+          (action: any) =>
+            action.type === ActionTypes.UPDATE_ADMIN_FAILURE ||
+            action.type === ActionTypes.ADD_ADMIN_FAILURE
+        )
+      )
+      .subscribe(() => {
+        this.notificationService.showError(
+          'An Error has Occurred. Please try again'
+        );
+      });
   }
 
-  initializeForm() {
-    this.buildForm();
-    this.getRoles();
+  getAdmin(id: number) {
+    this.store$.dispatch(new AdminStoreActions.GetAdminRequestAction(id));
+    this.admin$ = this.store$.select(AdminStoreSelectors.selectAdminById(id));
+    this.loadingErrors$ = this.store$.select(
+      AdminStoreSelectors.selectAdminLoadingError
+    );
+    this.buildExistingAdminForm();
+  }
+
+  buildNewAdminForm() {
+    this.adminForm = this.form.group({
+      name: ['', [Validators.required]],
+      description: ['', [Validators.required]],
+      email: ['', [Validators.required, Validators.email]],
+      roleId: ['', [Validators.required]],
+      active: ['', [Validators.required]]
+    });
+    if (!this.showTogglePassword) {
+      this.addPasswordControlsAndValidations();
+    }
+  }
+
+  buildExistingAdminForm() {
+    this.admin$.subscribe(admin => {
+      this.admin = admin;
+      this.adminForm = this.form.group({
+        name: [admin.name, [Validators.required]],
+        description: [admin.description, [Validators.required]],
+        email: [admin.email, [Validators.required, Validators.email]],
+        roleId: [admin.roleId, [Validators.required]],
+        active: [admin.active, [Validators.required]]
+      });
+    });
+    if (!this.showTogglePassword) {
+      this.addPasswordControlsAndValidations();
+    }
   }
 
   getRoles() {
@@ -80,31 +160,6 @@ export class AdminAddComponent implements OnInit {
       this.roles = response;
       this.isLoadingRoles = false;
     });
-  }
-
-  buildForm() {
-    let name = '';
-    let description = '';
-    let email = '';
-    let active = true;
-    let roleId: number;
-    if (this.admin) {
-      name = this.admin.name;
-      description = this.admin.description;
-      email = this.admin.email;
-      active = this.admin.active;
-      roleId = this.admin.roleId;
-    }
-    this.adminForm = this.form.group({
-      name: [name, [Validators.required]],
-      description: [description, [Validators.required]],
-      email: [email, [Validators.required, Validators.email]],
-      roleId: [roleId, [Validators.required]],
-      active: [active, [Validators.required]]
-    });
-    if (!this.showTogglePassword) {
-      this.addPasswordControlsAndValidations();
-    }
   }
 
   get name() {
@@ -162,36 +217,28 @@ export class AdminAddComponent implements OnInit {
   }
 
   addAdmin(params: Admin) {
-    this.isLoading = true;
-    this.adminService.addAdmin(params).subscribe(
-      () => {
-        this.isLoading = false;
-        this.notificationService.showSuccess('Admin added successfully');
-      },
-      error => {
-        this.isLoading = false;
-        this.errorHandler.handleErrorResponse(error);
-      }
-    );
+    this.store$.dispatch(new AdminStoreActions.AddAdminRequestAction(params));
   }
 
   updateAdmin(params: Admin) {
-    this.isLoading = true;
     const id = this.admin.id;
-    this.adminService.updateAdmin(id, params).subscribe(response => {
-      this.isLoading = false;
-      this.notificationService.showSuccess('Admin updated successfully');
-    });
+    this.store$.dispatch(
+      new AdminStoreActions.UpdateAdminRequestAction(id, params)
+    );
   }
 
   get buttonLabel() {
-    if (this.isLoading) {
-      return 'Loading';
-    }
-    if (this.actionType === ActionType.EDIT) {
-      return 'Update';
-    }
-    return 'Add';
+    return this.isLoadingAction$.pipe(
+      map(isLoading => {
+        if (isLoading) {
+          return 'Loading';
+        }
+        if (this.actionType === ActionType.EDIT) {
+          return 'Update';
+        }
+        return 'Add';
+      })
+    );
   }
 
   get title() {
