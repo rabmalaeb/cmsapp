@@ -43,8 +43,8 @@ export class UserAddComponent implements OnInit {
   user$: Observable<User>;
   isLoading$: Observable<boolean>;
   isLoadingAction$: Observable<boolean>;
-  loadingErrors$: Observable<String[]>;
-  actionErrors$: Observable<String[]>;
+  loadingErrors$: Observable<string[]>;
+  actionErrors$: Observable<string[]>;
   isLoadingUser = false;
   isLoading = false;
 

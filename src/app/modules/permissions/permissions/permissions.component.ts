@@ -4,7 +4,6 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { AlertService } from 'src/app/services/alert.service';
 import { Permission } from '../permission';
-import { PermissionService } from '../permission.service';
 import { AuthorizationService } from 'src/app/services/authorization.service';
 import { ModuleName } from 'src/app/models/general';
 import { Observable } from 'rxjs';
@@ -31,7 +30,6 @@ export class PermissionsComponent implements OnInit {
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 
   constructor(
-    private permissionService: PermissionService,
     private alertService: AlertService,
     private authorizationService: AuthorizationService,
     private store$: Store<RootStoreState.State>,
@@ -115,7 +113,9 @@ export class PermissionsComponent implements OnInit {
       'Yes',
       'No',
       () => {
-        this.store$.dispatch(new PermissionStoreActions.DeletePermissionRequestAction(id));
+        this.store$.dispatch(
+          new PermissionStoreActions.DeletePermissionRequestAction(id)
+        );
       }
     );
   }

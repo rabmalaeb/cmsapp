@@ -9,11 +9,15 @@ import { ValidationMessagesService } from 'src/app/services/validation-messages.
 import { NotificationService } from 'src/app/services/notification.service';
 import { ActivatedRoute } from '@angular/router';
 import { Permission, PermissionRequest } from '../permission';
-import { ErrorHandlerService } from 'src/app/services/error-handler.service';
-import { PermissionService } from '../permission.service';
 import { AuthorizationService } from 'src/app/services/authorization.service';
 import { AppService } from 'src/app/services/app.service';
-import { ALERT_MESSAGES, PermissionType, NavItem, ModuleName, ActionType } from 'src/app/models/general';
+import {
+  ALERT_MESSAGES,
+  PermissionType,
+  NavItem,
+  ModuleName,
+  ActionType
+} from 'src/app/models/general';
 import { capitalize } from 'src/app/utils/general';
 import { ActionsSubject, Store } from '@ngrx/store';
 import { RootStoreState } from 'src/app/root-store';
@@ -30,11 +34,9 @@ import { filter, map } from 'rxjs/operators';
 export class PermissionAddComponent implements OnInit {
   constructor(
     private form: FormBuilder,
-    private permissionService: PermissionService,
     private notificationService: NotificationService,
     private validationMessagesService: ValidationMessagesService,
     private authorizationService: AuthorizationService,
-    private errorHandler: ErrorHandlerService,
     private route: ActivatedRoute,
     private actionsSubject$: ActionsSubject,
     private store$: Store<RootStoreState.State>,
@@ -116,8 +118,12 @@ export class PermissionAddComponent implements OnInit {
   }
 
   getPermission(id: number) {
-    this.store$.dispatch(new PermissionStoreActions.GetPermissionRequestAction(id));
-    this.permission$ = this.store$.select(PermissionStoreSelectors.selectPermissionById(id));
+    this.store$.dispatch(
+      new PermissionStoreActions.GetPermissionRequestAction(id)
+    );
+    this.permission$ = this.store$.select(
+      PermissionStoreSelectors.selectPermissionById(id)
+    );
     this.loadingErrors$ = this.store$.select(
       PermissionStoreSelectors.selectPermissionLoadingError
     );
@@ -176,7 +182,9 @@ export class PermissionAddComponent implements OnInit {
   }
 
   addPermission(params: PermissionRequest) {
-    this.store$.dispatch(new PermissionStoreActions.AddPermissionRequestAction(params));
+    this.store$.dispatch(
+      new PermissionStoreActions.AddPermissionRequestAction(params)
+    );
   }
 
   updatePermission(params: PermissionRequest) {
@@ -200,7 +208,6 @@ export class PermissionAddComponent implements OnInit {
     );
   }
 
-
   get title() {
     if (this.actionType === ActionType.EDIT) {
       return 'View Permission';
@@ -213,10 +220,12 @@ export class PermissionAddComponent implements OnInit {
   }
 
   get canEditPermission() {
-
     if (this.actionType === ActionType.ADD) {
       return true;
     }
-    return this.actionType === ActionType.EDIT && this.authorizationService.canEdit(ModuleName.PERMISSIONS);
+    return (
+      this.actionType === ActionType.EDIT &&
+      this.authorizationService.canEdit(ModuleName.PERMISSIONS)
+    );
   }
 }

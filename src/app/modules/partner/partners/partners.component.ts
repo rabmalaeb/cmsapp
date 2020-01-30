@@ -4,7 +4,6 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { AlertService } from 'src/app/services/alert.service';
 import { Partner } from '../partner';
-import { PartnerService } from '../partner.service';
 import { ModuleName } from 'src/app/models/general';
 import { AuthorizationService } from 'src/app/services/authorization.service';
 import { Observable } from 'rxjs';
@@ -23,12 +22,7 @@ import { filter } from 'rxjs/operators';
 export class PartnersComponent implements OnInit {
   isLoading = false;
   partners: Partner[] = [];
-  displayedColumns: string[] = [
-    'id',
-    'name',
-    'code',
-    'action'
-  ];
+  displayedColumns: string[] = ['id', 'name', 'code', 'action'];
   dataSource: MatTableDataSource<any>;
   partners$: Observable<Partner[]>;
   error$: Observable<string>;
@@ -36,14 +30,13 @@ export class PartnersComponent implements OnInit {
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 
   constructor(
-    private partnerService: PartnerService,
     private alertService: AlertService,
     private router: Router,
     private authorizationService: AuthorizationService,
     private store$: Store<RootStoreState.State>,
     private notificationService: NotificationService,
-    private actionsSubject$: ActionsSubject,
-  ) { }
+    private actionsSubject$: ActionsSubject
+  ) {}
 
   ngOnInit() {
     this.getPartners();
@@ -51,9 +44,13 @@ export class PartnersComponent implements OnInit {
   }
 
   initializeStoreVariables() {
-    this.partners$ = this.store$.select(PartnerStoreSelectors.selectAllPartnerItems);
+    this.partners$ = this.store$.select(
+      PartnerStoreSelectors.selectAllPartnerItems
+    );
 
-    this.error$ = this.store$.select(PartnerStoreSelectors.selectPartnerLoadingError);
+    this.error$ = this.store$.select(
+      PartnerStoreSelectors.selectPartnerLoadingError
+    );
 
     this.isLoading$ = this.store$.select(
       PartnerStoreSelectors.selectPartnerIsLoading
@@ -61,7 +58,9 @@ export class PartnersComponent implements OnInit {
 
     this.actionsSubject$
       .pipe(
-        filter((action: any) => action.type === ActionTypes.DELETE_PARTNER_SUCCESS)
+        filter(
+          (action: any) => action.type === ActionTypes.DELETE_PARTNER_SUCCESS
+        )
       )
       .subscribe(() => {
         this.notificationService.showSuccess('Partner Deleted Successfully');
@@ -69,18 +68,22 @@ export class PartnersComponent implements OnInit {
 
     this.actionsSubject$
       .pipe(
-        filter((action: any) => action.type === ActionTypes.DELETE_PARTNER_FAILURE)
+        filter(
+          (action: any) => action.type === ActionTypes.DELETE_PARTNER_FAILURE
+        )
       )
       .subscribe(() => {
-        this.notificationService.showError('Could not delete Partner. Please try again');
+        this.notificationService.showError(
+          'Could not delete Partner. Please try again'
+        );
       });
 
     this.actionsSubject$
-      .pipe(
-        filter((action: any) => action.type === ActionTypes.LOAD_FAILURE)
-      )
+      .pipe(filter((action: any) => action.type === ActionTypes.LOAD_FAILURE))
       .subscribe(() => {
-        this.notificationService.showError('An Error has occurred. Please try again');
+        this.notificationService.showError(
+          'An Error has occurred. Please try again'
+        );
       });
   }
 
@@ -110,7 +113,9 @@ export class PartnersComponent implements OnInit {
       'Yes',
       'No',
       () => {
-       this.store$.dispatch(new PartnerStoreActions.DeletePartnerRequestAction(id));
+        this.store$.dispatch(
+          new PartnerStoreActions.DeletePartnerRequestAction(id)
+        );
       }
     );
   }
@@ -122,5 +127,4 @@ export class PartnersComponent implements OnInit {
   get canDeletePartner() {
     return this.authorizationService.canDelete(ModuleName.PARTNERS);
   }
-
 }

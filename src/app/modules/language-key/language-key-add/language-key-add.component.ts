@@ -29,11 +29,9 @@ import { ActionTypes } from '../store/actions';
 export class LanguageKeyAddComponent implements OnInit {
   constructor(
     private form: FormBuilder,
-    private languageKeyService: LanguageKeyService,
     private notificationService: NotificationService,
     private validationMessagesService: ValidationMessagesService,
     private authorizationService: AuthorizationService,
-    private errorHandler: ErrorHandlerService,
     private actionsSubject$: ActionsSubject,
     private store$: Store<RootStoreState.State>,
     private route: ActivatedRoute
@@ -106,8 +104,12 @@ export class LanguageKeyAddComponent implements OnInit {
   }
 
   getLanguageKey(id: number) {
-    this.store$.dispatch(new LanguagekeyStoreActions.GetLanguageKeyRequestAction(id));
-    this.languageKey$ = this.store$.select(LanguagekeyStoreSelectors.selectLanguagekeyById(id));
+    this.store$.dispatch(
+      new LanguagekeyStoreActions.GetLanguageKeyRequestAction(id)
+    );
+    this.languageKey$ = this.store$.select(
+      LanguagekeyStoreSelectors.selectLanguagekeyById(id)
+    );
     this.loadingErrors$ = this.store$.select(
       LanguagekeyStoreSelectors.selectLanguagekeyLoadingError
     );
@@ -117,7 +119,7 @@ export class LanguageKeyAddComponent implements OnInit {
   buildNewLanguageKeyForm() {
     this.languageKeyForm = this.form.group({
       name: ['', [Validators.required]],
-      description: ['', [Validators.required]],
+      description: ['', [Validators.required]]
     });
   }
 
@@ -126,11 +128,10 @@ export class LanguageKeyAddComponent implements OnInit {
       this.languageKey = languageKey;
       this.languageKeyForm = this.form.group({
         name: [languageKey.name, [Validators.required]],
-        description: [languageKey.description, [Validators.required]],
+        description: [languageKey.description, [Validators.required]]
       });
     });
   }
-
 
   buildForm() {
     let name = '';
@@ -141,7 +142,7 @@ export class LanguageKeyAddComponent implements OnInit {
     }
     this.languageKeyForm = this.form.group({
       name: [name, [Validators.required]],
-      description: [description, [Validators.required]],
+      description: [description, [Validators.required]]
     });
   }
 
@@ -173,7 +174,9 @@ export class LanguageKeyAddComponent implements OnInit {
   }
 
   addLanguageKey(params: LanguageKey) {
-    this.store$.dispatch(new LanguagekeyStoreActions.AddLanguageKeyRequestAction(params));
+    this.store$.dispatch(
+      new LanguagekeyStoreActions.AddLanguageKeyRequestAction(params)
+    );
   }
 
   updateLanguageKey(params: LanguageKey) {
@@ -209,10 +212,12 @@ export class LanguageKeyAddComponent implements OnInit {
   }
 
   get canEditKey() {
-
     if (this.actionType === ActionType.ADD) {
       return true;
     }
-    return this.actionType === ActionType.EDIT && this.authorizationService.canEdit(ModuleName.LANGUAGE_KEYS);
+    return (
+      this.actionType === ActionType.EDIT &&
+      this.authorizationService.canEdit(ModuleName.LANGUAGE_KEYS)
+    );
   }
 }

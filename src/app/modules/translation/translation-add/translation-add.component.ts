@@ -10,23 +10,28 @@ import { NotificationService } from 'src/app/services/notification.service';
 import { ActionType, ALERT_MESSAGES, ModuleName } from 'src/app/models/general';
 import { ActivatedRoute } from '@angular/router';
 import { Translation } from '../translation';
-import { ErrorHandlerService } from 'src/app/services/error-handler.service';
-import { TranslationService } from '../translation.service';
-import { LanguageService } from '../../language/language.service';
-import { LanguageKeyService } from '../../language-key/language-key.service';
-import { PartnerService } from '../../partner/partner.service';
 import { Partner } from '../../partner/partner';
 import { LanguageKey } from '../../language-key/language-key';
 import { Language } from '../../language/language';
 import { AuthorizationService } from 'src/app/services/authorization.service';
 import { ActionsSubject, Store } from '@ngrx/store';
-import { RootStoreState, PartnerStoreActions, PartnerStoreSelectors } from 'src/app/root-store';
+import {
+  RootStoreState,
+  PartnerStoreActions,
+  PartnerStoreSelectors
+} from 'src/app/root-store';
 import { Observable } from 'rxjs';
 import { TranslationStoreSelectors, TranslationStoreActions } from '../store';
 import { ActionTypes } from '../store/actions';
 import { filter, map } from 'rxjs/operators';
-import { LanguageStoreActions, LanguageStoreSelectors } from '../../language/store';
-import { LanguagekeyStoreActions, LanguagekeyStoreSelectors } from '../../language-key/store';
+import {
+  LanguageStoreActions,
+  LanguageStoreSelectors
+} from '../../language/store';
+import {
+  LanguagekeyStoreActions,
+  LanguagekeyStoreSelectors
+} from '../../language-key/store';
 
 @Component({
   selector: 'app-translation-add',
@@ -36,17 +41,13 @@ import { LanguagekeyStoreActions, LanguagekeyStoreSelectors } from '../../langua
 export class TranslationAddComponent implements OnInit {
   constructor(
     private form: FormBuilder,
-    private translationService: TranslationService,
-    private notificationService: NotificationService,
+
     private validationMessagesService: ValidationMessagesService,
-    private errorHandler: ErrorHandlerService,
     private authorizationService: AuthorizationService,
+    private notificationService: NotificationService,
     private route: ActivatedRoute,
-    private languageService: LanguageService,
-    private languageKeyService: LanguageKeyService,
-    private partnerService: PartnerService,
     private actionsSubject$: ActionsSubject,
-    private store$: Store<RootStoreState.State>,
+    private store$: Store<RootStoreState.State>
   ) {}
 
   translationForm: FormGroup;
@@ -124,8 +125,12 @@ export class TranslationAddComponent implements OnInit {
   }
 
   getTranslation(id: number) {
-    this.store$.dispatch(new TranslationStoreActions.GetTranslationRequestAction(id));
-    this.translation$ = this.store$.select(TranslationStoreSelectors.selectTranslationById(id));
+    this.store$.dispatch(
+      new TranslationStoreActions.GetTranslationRequestAction(id)
+    );
+    this.translation$ = this.store$.select(
+      TranslationStoreSelectors.selectTranslationById(id)
+    );
     this.loadingErrors$ = this.store$.select(
       TranslationStoreSelectors.selectTranslationLoadingError
     );
@@ -137,7 +142,7 @@ export class TranslationAddComponent implements OnInit {
       languageId: ['', [Validators.required]],
       partnerId: ['', [Validators.required]],
       languageKeyId: ['', [Validators.required]],
-      value: ['', [Validators.required]],
+      value: ['', [Validators.required]]
     });
   }
 
@@ -148,24 +153,30 @@ export class TranslationAddComponent implements OnInit {
         languageId: [translation.languageId, [Validators.required]],
         partnerId: [translation.partnerId, [Validators.required]],
         languageKeyId: [translation.languageKeyId, [Validators.required]],
-        value: [translation.value, [Validators.required]],
+        value: [translation.value, [Validators.required]]
       });
     });
   }
 
   getLanguages() {
     this.store$.dispatch(new LanguageStoreActions.LoadRequestAction());
-    this.languages$ = this.store$.select(LanguageStoreSelectors.selectAllLanguageItems);
+    this.languages$ = this.store$.select(
+      LanguageStoreSelectors.selectAllLanguageItems
+    );
   }
 
   getPartners() {
     this.store$.dispatch(new PartnerStoreActions.LoadRequestAction());
-    this.partners$ = this.store$.select(PartnerStoreSelectors.selectAllPartnerItems);
+    this.partners$ = this.store$.select(
+      PartnerStoreSelectors.selectAllPartnerItems
+    );
   }
 
   getLanguageKeys() {
     this.store$.dispatch(new LanguagekeyStoreActions.LoadRequestAction());
-    this.languageKeys$ = this.store$.select(LanguagekeyStoreSelectors.selectAllLanguagekeyItems);
+    this.languageKeys$ = this.store$.select(
+      LanguagekeyStoreSelectors.selectAllLanguagekeyItems
+    );
   }
 
   get languageId() {
@@ -206,7 +217,9 @@ export class TranslationAddComponent implements OnInit {
   }
 
   addTranslation(params: Translation) {
-    this.store$.dispatch(new TranslationStoreActions.AddTranslationRequestAction(params));
+    this.store$.dispatch(
+      new TranslationStoreActions.AddTranslationRequestAction(params)
+    );
   }
 
   updateTranslation(params: Translation) {
@@ -242,10 +255,12 @@ export class TranslationAddComponent implements OnInit {
   }
 
   get canEditTranslation() {
-
     if (this.actionType === ActionType.ADD) {
       return true;
     }
-    return this.actionType === ActionType.EDIT && this.authorizationService.canEdit(ModuleName.TRANSLATIONS);
+    return (
+      this.actionType === ActionType.EDIT &&
+      this.authorizationService.canEdit(ModuleName.TRANSLATIONS)
+    );
   }
 }

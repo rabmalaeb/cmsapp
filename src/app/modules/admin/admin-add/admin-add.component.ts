@@ -8,19 +8,20 @@ import {
 } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Admin } from '../admin';
-import { AdminService } from '../admin.service';
 import { Role } from '../../role/role';
-import { RoleService } from '../../role/role.service';
 import { NotificationService } from 'src/app/services/notification.service';
 import { ValidationMessagesService } from 'src/app/services/validation-messages.service';
-import { ErrorHandlerService } from 'src/app/services/error-handler.service';
 import { AuthorizationService } from 'src/app/services/authorization.service';
 import { ActionType, ALERT_MESSAGES, ModuleName } from 'src/app/models/general';
 import { CustomValidations } from 'src/app/validators/custom-validations';
 import { Observable } from 'rxjs';
 import { AdminStoreSelectors, AdminStoreActions } from '../store';
 import { ActionsSubject, Store } from '@ngrx/store';
-import { RootStoreState } from 'src/app/root-store';
+import {
+  RootStoreState,
+  RoleStoreSelectors,
+  RoleStoreActions
+} from 'src/app/root-store';
 import { ActionTypes } from '../store/actions';
 import { filter, map } from 'rxjs/operators';
 
@@ -32,11 +33,8 @@ import { filter, map } from 'rxjs/operators';
 export class AdminAddComponent implements OnInit {
   constructor(
     private form: FormBuilder,
-    private adminService: AdminService,
-    private roleService: RoleService,
     private notificationService: NotificationService,
     private validationMessagesService: ValidationMessagesService,
-    private errorHandler: ErrorHandlerService,
     private authorizationService: AuthorizationService,
     private actionsSubject$: ActionsSubject,
     private store$: Store<RootStoreState.State>,
@@ -48,7 +46,7 @@ export class AdminAddComponent implements OnInit {
   admin: Admin;
   isLoadingAdmin = false;
   isLoading = false;
-  roles: Role[];
+  roles$: Observable<Role[]>;
   isLoadingRoles: boolean;
   showTogglePassword: boolean;
   willSetPassword: boolean;
@@ -155,11 +153,8 @@ export class AdminAddComponent implements OnInit {
   }
 
   getRoles() {
-    this.isLoadingRoles = true;
-    this.roleService.getRoles().subscribe(response => {
-      this.roles = response;
-      this.isLoadingRoles = false;
-    });
+    this.store$.dispatch(new RoleStoreActions.LoadRequestAction());
+    this.roles$ = this.store$.select(RoleStoreSelectors.selectAllRoleItems);
   }
 
   get name() {

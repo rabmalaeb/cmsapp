@@ -4,7 +4,6 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { AlertService } from 'src/app/services/alert.service';
 import { Category } from '../category';
-import { CategoryService } from '../category.service';
 import { ModuleName } from 'src/app/models/general';
 import { AuthorizationService } from 'src/app/services/authorization.service';
 import { Observable } from 'rxjs';
@@ -36,14 +35,13 @@ export class CategoriesComponent implements OnInit {
   error$: Observable<string>;
   isLoading$: Observable<boolean>;
   constructor(
-    private categoryService: CategoryService,
     private alertService: AlertService,
     private authorizationService: AuthorizationService,
     private router: Router,
     private store$: Store<RootStoreState.State>,
     private notificationService: NotificationService,
-    private actionsSubject$: ActionsSubject,
-  ) { }
+    private actionsSubject$: ActionsSubject
+  ) {}
 
   ngOnInit() {
     this.getCategories();
@@ -51,9 +49,13 @@ export class CategoriesComponent implements OnInit {
   }
 
   initializeStoreVariables() {
-    this.categories$ = this.store$.select(CategoryStoreSelectors.selectAllCategoryItems);
+    this.categories$ = this.store$.select(
+      CategoryStoreSelectors.selectAllCategoryItems
+    );
 
-    this.error$ = this.store$.select(CategoryStoreSelectors.selectCategoryLoadingError);
+    this.error$ = this.store$.select(
+      CategoryStoreSelectors.selectCategoryLoadingError
+    );
 
     this.isLoading$ = this.store$.select(
       CategoryStoreSelectors.selectCategoryIsLoading
@@ -61,7 +63,9 @@ export class CategoriesComponent implements OnInit {
 
     this.actionsSubject$
       .pipe(
-        filter((action: any) => action.type === ActionTypes.DELETE_CATEGORY_SUCCESS)
+        filter(
+          (action: any) => action.type === ActionTypes.DELETE_CATEGORY_SUCCESS
+        )
       )
       .subscribe(() => {
         this.notificationService.showSuccess('Category Deleted Successfully');
@@ -69,18 +73,22 @@ export class CategoriesComponent implements OnInit {
 
     this.actionsSubject$
       .pipe(
-        filter((action: any) => action.type === ActionTypes.DELETE_CATEGORY_FAILURE)
+        filter(
+          (action: any) => action.type === ActionTypes.DELETE_CATEGORY_FAILURE
+        )
       )
       .subscribe(() => {
-        this.notificationService.showError('Could not delete Category. Please try again');
+        this.notificationService.showError(
+          'Could not delete Category. Please try again'
+        );
       });
 
     this.actionsSubject$
-      .pipe(
-        filter((action: any) => action.type === ActionTypes.LOAD_FAILURE)
-      )
+      .pipe(filter((action: any) => action.type === ActionTypes.LOAD_FAILURE))
       .subscribe(() => {
-        this.notificationService.showError('An Error has occurred. Please try again');
+        this.notificationService.showError(
+          'An Error has occurred. Please try again'
+        );
       });
   }
 
@@ -110,7 +118,9 @@ export class CategoriesComponent implements OnInit {
       'Yes',
       'No',
       () => {
-        this.store$.dispatch(new CategoryStoreActions.DeleteCategoryRequestAction(id));
+        this.store$.dispatch(
+          new CategoryStoreActions.DeleteCategoryRequestAction(id)
+        );
       }
     );
   }

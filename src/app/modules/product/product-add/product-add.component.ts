@@ -10,9 +10,6 @@ import { NotificationService } from 'src/app/services/notification.service';
 import { ActionType, ALERT_MESSAGES, ModuleName } from 'src/app/models/general';
 import { ActivatedRoute } from '@angular/router';
 import { Product } from '../product';
-import { ErrorHandlerService } from 'src/app/services/error-handler.service';
-import { ProductService } from '../product.service';
-import { CategoryService } from '../../category/category.service';
 import { Category } from '../../category/category';
 import { MediaService } from '../../media/media.service';
 import { Media } from '../../media/media';
@@ -33,10 +30,8 @@ import { CategoryStoreSelectors, CategoryStoreActions } from '../../category/sto
 export class ProductAddComponent implements OnInit {
   constructor(
     private form: FormBuilder,
-    private categoryService: CategoryService,
     private notificationService: NotificationService,
     private validationMessagesService: ValidationMessagesService,
-    private errorHandler: ErrorHandlerService,
     private authorizationService: AuthorizationService,
     private actionsSubject$: ActionsSubject,
     private store$: Store<RootStoreState.State>,

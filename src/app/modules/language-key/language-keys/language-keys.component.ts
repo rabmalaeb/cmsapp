@@ -4,7 +4,6 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { AlertService } from 'src/app/services/alert.service';
 import { LanguageKey } from '../language-key';
-import { LanguageKeyService } from '../language-key.service';
 import { AuthorizationService } from 'src/app/services/authorization.service';
 import { ModuleName } from 'src/app/models/general';
 import { Store, ActionsSubject } from '@ngrx/store';
@@ -31,7 +30,6 @@ export class LanguageKeysComponent implements OnInit {
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 
   constructor(
-    private languageKeyService: LanguageKeyService,
     private alertService: AlertService,
     private authorizationService: AuthorizationService,
     private router: Router,
@@ -119,7 +117,9 @@ export class LanguageKeysComponent implements OnInit {
       'Yes',
       'No',
       () => {
-        this.store$.dispatch(new LanguagekeyStoreActions.DeleteLanguageKeyRequestAction(id));
+        this.store$.dispatch(
+          new LanguagekeyStoreActions.DeleteLanguageKeyRequestAction(id)
+        );
       }
     );
   }

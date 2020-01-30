@@ -10,8 +10,6 @@ import { NotificationService } from 'src/app/services/notification.service';
 import { ActionType, ALERT_MESSAGES, ModuleName } from 'src/app/models/general';
 import { ActivatedRoute } from '@angular/router';
 import { Language } from '../language';
-import { ErrorHandlerService } from 'src/app/services/error-handler.service';
-import { LanguageService } from '../language.service';
 import { Category } from '../../category/category';
 import { AuthorizationService } from 'src/app/services/authorization.service';
 import { ActionsSubject, Store } from '@ngrx/store';
@@ -29,15 +27,13 @@ import { ActionTypes } from '../store/actions';
 export class LanguageAddComponent implements OnInit {
   constructor(
     private form: FormBuilder,
-    private languageService: LanguageService,
     private notificationService: NotificationService,
     private validationMessagesService: ValidationMessagesService,
     private authorizationService: AuthorizationService,
-    private errorHandler: ErrorHandlerService,
     private actionsSubject$: ActionsSubject,
     private store$: Store<RootStoreState.State>,
     private route: ActivatedRoute
-  ) { }
+  ) {}
 
   languageForm: FormGroup;
   actionType: ActionType;
@@ -107,7 +103,9 @@ export class LanguageAddComponent implements OnInit {
 
   getLanguage(id: number) {
     this.store$.dispatch(new LanguageStoreActions.GetLanguageRequestAction(id));
-    this.language$ = this.store$.select(LanguageStoreSelectors.selectLanguageById(id));
+    this.language$ = this.store$.select(
+      LanguageStoreSelectors.selectLanguageById(id)
+    );
     this.loadingErrors$ = this.store$.select(
       LanguageStoreSelectors.selectLanguageLoadingError
     );
@@ -117,7 +115,7 @@ export class LanguageAddComponent implements OnInit {
   buildNewLanguageForm() {
     this.languageForm = this.form.group({
       name: ['', [Validators.required]],
-      code: ['', [Validators.required]],
+      code: ['', [Validators.required]]
     });
   }
 
@@ -126,7 +124,7 @@ export class LanguageAddComponent implements OnInit {
       this.language = language;
       this.languageForm = this.form.group({
         name: [language.name, [Validators.required]],
-        code: [language.code, [Validators.required]],
+        code: [language.code, [Validators.required]]
       });
     });
   }
@@ -159,7 +157,9 @@ export class LanguageAddComponent implements OnInit {
   }
 
   addLanguage(params: Language) {
-    this.store$.dispatch(new LanguageStoreActions.AddLanguageRequestAction(params));
+    this.store$.dispatch(
+      new LanguageStoreActions.AddLanguageRequestAction(params)
+    );
   }
 
   updateLanguage(params: Language) {
@@ -195,10 +195,12 @@ export class LanguageAddComponent implements OnInit {
   }
 
   get canEditLanguage() {
-
     if (this.actionType === ActionType.ADD) {
       return true;
     }
-    return this.actionType === ActionType.EDIT && this.authorizationService.canEdit(ModuleName.LANGUAGES);
+    return (
+      this.actionType === ActionType.EDIT &&
+      this.authorizationService.canEdit(ModuleName.LANGUAGES)
+    );
   }
 }

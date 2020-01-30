@@ -4,7 +4,6 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { AlertService } from 'src/app/services/alert.service';
 import { Language } from '../language';
-import { LanguageService } from '../language.service';
 import { AuthorizationService } from 'src/app/services/authorization.service';
 import { ModuleName } from 'src/app/models/general';
 import { Observable } from 'rxjs';
@@ -23,12 +22,7 @@ import { RootStoreState } from 'src/app/root-store';
 export class LanguagesComponent implements OnInit {
   isLoading = false;
   languages: Language[] = [];
-  displayedColumns: string[] = [
-    'id',
-    'name',
-    'code',
-    'action'
-  ];
+  displayedColumns: string[] = ['id', 'name', 'code', 'action'];
   languages$: Observable<Language[]>;
   error$: Observable<string>;
   isLoading$: Observable<boolean>;
@@ -36,14 +30,13 @@ export class LanguagesComponent implements OnInit {
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 
   constructor(
-    private languageService: LanguageService,
     private alertService: AlertService,
     private authorizationService: AuthorizationService,
     private router: Router,
     private store$: Store<RootStoreState.State>,
     private notificationService: NotificationService,
-    private actionsSubject$: ActionsSubject,
-  ) { }
+    private actionsSubject$: ActionsSubject
+  ) {}
 
   ngOnInit() {
     this.getLanguages();
@@ -51,9 +44,13 @@ export class LanguagesComponent implements OnInit {
   }
 
   initializeStoreVariables() {
-    this.languages$ = this.store$.select(LanguageStoreSelectors.selectAllLanguageItems);
+    this.languages$ = this.store$.select(
+      LanguageStoreSelectors.selectAllLanguageItems
+    );
 
-    this.error$ = this.store$.select(LanguageStoreSelectors.selectLanguageLoadingError);
+    this.error$ = this.store$.select(
+      LanguageStoreSelectors.selectLanguageLoadingError
+    );
 
     this.isLoading$ = this.store$.select(
       LanguageStoreSelectors.selectLanguageIsLoading
@@ -61,7 +58,9 @@ export class LanguagesComponent implements OnInit {
 
     this.actionsSubject$
       .pipe(
-        filter((action: any) => action.type === ActionTypes.DELETE_LANGUAGE_SUCCESS)
+        filter(
+          (action: any) => action.type === ActionTypes.DELETE_LANGUAGE_SUCCESS
+        )
       )
       .subscribe(() => {
         this.notificationService.showSuccess('Language Deleted Successfully');
@@ -69,18 +68,22 @@ export class LanguagesComponent implements OnInit {
 
     this.actionsSubject$
       .pipe(
-        filter((action: any) => action.type === ActionTypes.DELETE_LANGUAGE_FAILURE)
+        filter(
+          (action: any) => action.type === ActionTypes.DELETE_LANGUAGE_FAILURE
+        )
       )
       .subscribe(() => {
-        this.notificationService.showError('Could not delete Language. Please try again');
+        this.notificationService.showError(
+          'Could not delete Language. Please try again'
+        );
       });
 
     this.actionsSubject$
-      .pipe(
-        filter((action: any) => action.type === ActionTypes.LOAD_FAILURE)
-      )
+      .pipe(filter((action: any) => action.type === ActionTypes.LOAD_FAILURE))
       .subscribe(() => {
-        this.notificationService.showError('An Error has occurred. Please try again');
+        this.notificationService.showError(
+          'An Error has occurred. Please try again'
+        );
       });
   }
 
@@ -110,7 +113,9 @@ export class LanguagesComponent implements OnInit {
       'Yes',
       'No',
       () => {
-        this.store$.dispatch(new LanguageStoreActions.DeleteLanguageRequestAction(id));
+        this.store$.dispatch(
+          new LanguageStoreActions.DeleteLanguageRequestAction(id)
+        );
       }
     );
   }

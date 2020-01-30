@@ -4,7 +4,6 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { AlertService } from 'src/app/services/alert.service';
 import { Product } from '../product';
-import { ProductService } from '../product.service';
 import { AuthorizationService } from 'src/app/services/authorization.service';
 import { ModuleName } from 'src/app/models/general';
 import { filter } from 'rxjs/operators';
@@ -36,14 +35,13 @@ export class ProductsComponent implements OnInit {
   error$: Observable<string>;
   isLoading$: Observable<boolean>;
   constructor(
-    private productService: ProductService,
     private alertService: AlertService,
     private authorizationService: AuthorizationService,
     private router: Router,
     private store$: Store<RootStoreState.State>,
     private notificationService: NotificationService,
-    private actionsSubject$: ActionsSubject,
-  ) { }
+    private actionsSubject$: ActionsSubject
+  ) {}
 
   ngOnInit() {
     this.getProducts();
@@ -51,9 +49,13 @@ export class ProductsComponent implements OnInit {
   }
 
   initializeStoreVariables() {
-    this.products$ = this.store$.select(ProductStoreSelectors.selectAllProductItems);
+    this.products$ = this.store$.select(
+      ProductStoreSelectors.selectAllProductItems
+    );
 
-    this.error$ = this.store$.select(ProductStoreSelectors.selectProductLoadingError);
+    this.error$ = this.store$.select(
+      ProductStoreSelectors.selectProductLoadingError
+    );
 
     this.isLoading$ = this.store$.select(
       ProductStoreSelectors.selectProductIsLoading
@@ -61,7 +63,9 @@ export class ProductsComponent implements OnInit {
 
     this.actionsSubject$
       .pipe(
-        filter((action: any) => action.type === ActionTypes.DELETE_PRODUCT_SUCCESS)
+        filter(
+          (action: any) => action.type === ActionTypes.DELETE_PRODUCT_SUCCESS
+        )
       )
       .subscribe(() => {
         this.notificationService.showSuccess('Product Deleted Successfully');
@@ -69,18 +73,22 @@ export class ProductsComponent implements OnInit {
 
     this.actionsSubject$
       .pipe(
-        filter((action: any) => action.type === ActionTypes.DELETE_PRODUCT_FAILURE)
+        filter(
+          (action: any) => action.type === ActionTypes.DELETE_PRODUCT_FAILURE
+        )
       )
       .subscribe(() => {
-        this.notificationService.showError('Could not delete Product. Please try again');
+        this.notificationService.showError(
+          'Could not delete Product. Please try again'
+        );
       });
 
     this.actionsSubject$
-      .pipe(
-        filter((action: any) => action.type === ActionTypes.LOAD_FAILURE)
-      )
+      .pipe(filter((action: any) => action.type === ActionTypes.LOAD_FAILURE))
       .subscribe(() => {
-        this.notificationService.showError('An Error has occurred. Please try again');
+        this.notificationService.showError(
+          'An Error has occurred. Please try again'
+        );
       });
   }
 
@@ -110,8 +118,9 @@ export class ProductsComponent implements OnInit {
       'Yes',
       'No',
       () => {
-        this.store$.dispatch(new ProductStoreActions.DeleteProductRequestAction(id));
-
+        this.store$.dispatch(
+          new ProductStoreActions.DeleteProductRequestAction(id)
+        );
       }
     );
   }
@@ -123,5 +132,4 @@ export class ProductsComponent implements OnInit {
   get canDeleteProduct() {
     return this.authorizationService.canDelete(ModuleName.PRODUCTS);
   }
-
 }

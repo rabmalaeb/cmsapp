@@ -10,7 +10,6 @@ import { NotificationService } from 'src/app/services/notification.service';
 import { ActionType, ModuleName, ALERT_MESSAGES } from 'src/app/models/general';
 import { ActivatedRoute } from '@angular/router';
 import { Role, RoleRequest } from '../role';
-import { ErrorHandlerService } from 'src/app/services/error-handler.service';
 import { PermissionGroup, Permission } from '../../permissions/permission';
 import { AuthorizationService } from 'src/app/services/authorization.service';
 import { Observable } from 'rxjs';
@@ -18,7 +17,10 @@ import { RoleStoreSelectors, RoleStoreActions } from '../store';
 import { Store, ActionsSubject } from '@ngrx/store';
 import { RootStoreState } from 'src/app/root-store';
 import { filter, map } from 'rxjs/operators';
-import { PermissionStoreActions, PermissionStoreSelectors } from '../../permissions/store';
+import {
+  PermissionStoreActions,
+  PermissionStoreSelectors
+} from '../../permissions/store';
 import { PermissionSerializerService } from '../../permissions/permission-serializer.service';
 import { ActionTypes } from '../store/actions';
 
@@ -34,7 +36,6 @@ export class RoleAddComponent implements OnInit {
     private permissionSerializer: PermissionSerializerService,
     private validationMessagesService: ValidationMessagesService,
     private authorizationService: AuthorizationService,
-    private errorHandler: ErrorHandlerService,
     private actionsSubject$: ActionsSubject,
     private store$: Store<RootStoreState.State>,
     private route: ActivatedRoute
@@ -64,7 +65,7 @@ export class RoleAddComponent implements OnInit {
       } else {
         this.actionType = ActionType.ADD;
         console.log('we should builds');
-        
+
         this.buildNewRoleForm();
       }
     });
@@ -121,7 +122,7 @@ export class RoleAddComponent implements OnInit {
 
   buildNewRoleForm() {
     this.roleForm = this.form.group({
-      name: ['', [Validators.required]],
+      name: ['', [Validators.required]]
     });
   }
 
@@ -141,9 +142,13 @@ export class RoleAddComponent implements OnInit {
 
   getPermissions() {
     this.store$.dispatch(new PermissionStoreActions.LoadRequestAction());
-    this.permissions$ = this.store$.select(PermissionStoreSelectors.selectAllPermissionItems);
+    this.permissions$ = this.store$.select(
+      PermissionStoreSelectors.selectAllPermissionItems
+    );
     this.permissions$.subscribe(permissions => {
-      this.permissionGroups = this.permissionSerializer.groupPermissions(permissions);
+      this.permissionGroups = this.permissionSerializer.groupPermissions(
+        permissions
+      );
       this.setCheckedPermissions();
     });
   }

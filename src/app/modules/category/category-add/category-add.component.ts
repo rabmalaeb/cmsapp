@@ -7,9 +7,7 @@ import {
 } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Category } from '../category';
-import { CategoryService } from '../category.service';
 import { AuthorizationService } from 'src/app/services/authorization.service';
-import { ErrorHandlerService } from 'src/app/services/error-handler.service';
 import { ActionType, ALERT_MESSAGES, ModuleName } from 'src/app/models/general';
 import { NotificationService } from 'src/app/services/notification.service';
 import { ValidationMessagesService } from 'src/app/services/validation-messages.service';
@@ -28,11 +26,9 @@ import { ActionTypes } from '../store/actions';
 export class CategoryAddComponent implements OnInit {
   constructor(
     private form: FormBuilder,
-    private categoryService: CategoryService,
     private notificationService: NotificationService,
     private validationMessagesService: ValidationMessagesService,
     private authorizationService: AuthorizationService,
-    private errorHandler: ErrorHandlerService,
     private actionsSubject$: ActionsSubject,
     private store$: Store<RootStoreState.State>,
     private route: ActivatedRoute
@@ -109,7 +105,9 @@ export class CategoryAddComponent implements OnInit {
 
   getCategory(id: number) {
     this.store$.dispatch(new CategoryStoreActions.GetCategoryRequestAction(id));
-    this.category$ = this.store$.select(CategoryStoreSelectors.selectCategoryById(id));
+    this.category$ = this.store$.select(
+      CategoryStoreSelectors.selectCategoryById(id)
+    );
     this.loadingErrors$ = this.store$.select(
       CategoryStoreSelectors.selectCategoryLoadingError
     );
@@ -120,7 +118,7 @@ export class CategoryAddComponent implements OnInit {
     this.categoryForm = this.form.group({
       name: ['', [Validators.required]],
       description: ['', [Validators.required]],
-      parentId: ['', [Validators.required]],
+      parentId: ['', [Validators.required]]
     });
   }
 
@@ -130,14 +128,16 @@ export class CategoryAddComponent implements OnInit {
       this.categoryForm = this.form.group({
         name: [category.name, [Validators.required]],
         description: [category.description, [Validators.required]],
-        parentId: [category.parentId, [Validators.required]],
+        parentId: [category.parentId, [Validators.required]]
       });
     });
   }
 
   getCategories() {
     this.store$.dispatch(new CategoryStoreActions.LoadRequestAction());
-    this.categories$ = this.store$.select(CategoryStoreSelectors.selectAllCategoryItems);
+    this.categories$ = this.store$.select(
+      CategoryStoreSelectors.selectAllCategoryItems
+    );
   }
 
   get name() {
@@ -173,7 +173,9 @@ export class CategoryAddComponent implements OnInit {
   }
 
   addCategory(params: Category) {
-    this.store$.dispatch(new CategoryStoreActions.AddCategoryRequestAction(params));
+    this.store$.dispatch(
+      new CategoryStoreActions.AddCategoryRequestAction(params)
+    );
   }
 
   updateCategory(params: Category) {
@@ -209,10 +211,12 @@ export class CategoryAddComponent implements OnInit {
   }
 
   get canEditCategory() {
-
     if (this.actionType === ActionType.ADD) {
       return true;
     }
-    return this.actionType === ActionType.EDIT && this.authorizationService.canEdit(ModuleName.CATEGORIES);
+    return (
+      this.actionType === ActionType.EDIT &&
+      this.authorizationService.canEdit(ModuleName.CATEGORIES)
+    );
   }
 }
