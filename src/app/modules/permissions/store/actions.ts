@@ -1,5 +1,5 @@
 import { Action } from '@ngrx/store';
-import { Permission, PermissionGroup } from '../permission';
+import { Permission, PermissionRequest } from '../permission';
 
 export enum ActionTypes {
   LOAD_REQUEST = '[Permission] Load Request',
@@ -67,7 +67,7 @@ export class GetPermissionFailureAction implements Action {
 }
 export class AddPermissionRequestAction implements Action {
   readonly type = ActionTypes.ADD_PERMISSION_REQUEST;
-  constructor(public permission: Permission) {}
+  constructor(public permission: PermissionRequest) {}
 }
 
 export class AddPermissionSuccessAction implements Action {
@@ -82,7 +82,7 @@ export class AddPermissionFailureAction implements Action {
 
 export class UpdatePermissionRequestAction implements Action {
   readonly type = ActionTypes.UPDATE_PERMISSION_REQUEST;
-  constructor(public id: number, public permission: Permission) {}
+  constructor(public id: number, public permission: PermissionRequest) {}
 }
 
 export class UpdatePermissionSuccessAction implements Action {

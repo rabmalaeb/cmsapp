@@ -9,6 +9,12 @@ export interface Permission {
   isRolePermission ?: boolean;
 }
 
+export interface PermissionRequest {
+  name: string;
+  type: string;
+  group: string;
+}
+
 
 export class PermissionGroup {
   group: ModuleName;

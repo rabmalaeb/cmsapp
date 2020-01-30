@@ -88,7 +88,7 @@ export class PermissionStoreEffects {
         map(
           item =>
             new permissionActions.AddPermissionSuccessAction({
-              item
+               item
             })
         ),
         catchError(error =>
