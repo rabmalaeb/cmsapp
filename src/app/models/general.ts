@@ -38,14 +38,14 @@ export enum ActionType {
 }
 
 export enum ModuleName {
-  ADMINS = 'admins',
-  USERS = 'users',
-  PARTNERS = 'partners',
-  PRODUCTS = 'products',
-  CATEGORIES = 'categories',
-  LANGUAGES = 'languages',
-  LANGUAGE_KEYS = 'language keys',
-  TRANSLATIONS = 'translations',
-  PERMISSIONS = 'permissions',
-  ROLES = 'roles'
+  ADMINS = 'Admins',
+  USERS = 'Users',
+  PARTNERS = 'Partners',
+  PRODUCTS = 'Products',
+  CATEGORIES = 'Categories',
+  LANGUAGES = 'Languages',
+  LANGUAGE_KEYS = 'Language Keys',
+  TRANSLATIONS = 'Translations',
+  PERMISSIONS = 'Permissions',
+  ROLES = 'Roles'
 }

@@ -16,6 +16,6 @@ export class AddLanguageGuard implements CanActivate {
   ) { }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    return this.authorizationService.canAdd(ModuleName.ADMINS);
+    return this.authorizationService.canAdd(ModuleName.LANGUAGES);
   }
 }

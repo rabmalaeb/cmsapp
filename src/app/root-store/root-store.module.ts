@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
+import { StoreRouterConnectingModule  } from '@ngrx/router-store';
 import { UserStoreModule } from '../modules/user/store';
 import { RoleStoreModule } from '../modules/role/store';
 import { PermissionStoreModule } from '../modules/permissions/store';
@@ -12,6 +13,8 @@ import { LanguageStoreModule } from '../modules/language/store';
 import { CategoryStoreModule } from '../modules/category/store';
 import { TranslationStoreModule } from '../modules/translation/store';
 import { LanguageKeyStoreModule } from '../modules/language-key/store';
+
+
 
 @NgModule({
   declarations: [],
@@ -28,7 +31,8 @@ import { LanguageKeyStoreModule } from '../modules/language-key/store';
     CategoryStoreModule,
     PermissionStoreModule,
     StoreModule.forRoot({}),
-    EffectsModule.forRoot([])
+    EffectsModule.forRoot([]),
+    StoreRouterConnectingModule.forRoot()
   ]
 })
-export class RootStoreModule {}
+export class RootStoreModule { }
