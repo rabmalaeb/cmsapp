@@ -10,7 +10,12 @@ import { ComponentsModule } from 'src/app/components/components.module';
 import { PermissionModule } from '../permissions/permission.module';
 
 @NgModule({
-  declarations: [RolesComponent, RoleItemComponent, RoleComponent, RoleAddComponent],
+  declarations: [
+    RolesComponent,
+    RoleItemComponent,
+    RoleComponent,
+    RoleAddComponent
+  ],
   imports: [
     CommonModule,
     RoleRoutingModule,
@@ -19,4 +24,4 @@ import { PermissionModule } from '../permissions/permission.module';
     SharedModule
   ]
 })
-export class RoleModule { }
+export class RoleModule {}

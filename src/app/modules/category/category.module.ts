@@ -9,11 +9,6 @@ import { SharedModule } from 'src/app/shared.module';
 
 @NgModule({
   declarations: [CategoriesComponent, CategoryComponent, CategoryAddComponent],
-  imports: [
-    CommonModule,
-    CategoryRoutingModule,
-    ComponentsModule,
-    SharedModule
-  ]
+  imports: [CommonModule, CategoryRoutingModule, ComponentsModule, SharedModule]
 })
-export class CategoryModule { }
+export class CategoryModule {}

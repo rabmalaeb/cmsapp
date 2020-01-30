@@ -9,12 +9,12 @@ import { SharedModule } from 'src/app/shared.module';
 import { ComponentsModule } from 'src/app/components/components.module';
 
 @NgModule({
-  declarations: [LanguagesComponent, LanguageItemComponent, LanguageComponent, LanguageAddComponent],
-  imports: [
-    CommonModule,
-    LanguageRoutingModule,
-    ComponentsModule,
-    SharedModule
-  ]
+  declarations: [
+    LanguagesComponent,
+    LanguageItemComponent,
+    LanguageComponent,
+    LanguageAddComponent
+  ],
+  imports: [CommonModule, LanguageRoutingModule, ComponentsModule, SharedModule]
 })
-export class LanguageModule { }
+export class LanguageModule {}

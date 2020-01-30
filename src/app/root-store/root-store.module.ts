@@ -13,8 +13,6 @@ import { CategoryStoreModule } from '../modules/category/store';
 import { TranslationStoreModule } from '../modules/translation/store';
 import { LanguageKeyStoreModule } from '../modules/language-key/store';
 
-
-
 @NgModule({
   declarations: [],
   imports: [
@@ -33,4 +31,4 @@ import { LanguageKeyStoreModule } from '../modules/language-key/store';
     EffectsModule.forRoot([])
   ]
 })
-export class RootStoreModule { }
+export class RootStoreModule {}

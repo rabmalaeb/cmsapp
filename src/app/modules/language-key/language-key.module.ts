@@ -8,7 +8,11 @@ import { SharedModule } from 'src/app/shared.module';
 import { ComponentsModule } from 'src/app/components/components.module';
 
 @NgModule({
-  declarations: [LanguageKeysComponent, LanguageKeyComponent, LanguageKeyAddComponent],
+  declarations: [
+    LanguageKeysComponent,
+    LanguageKeyComponent,
+    LanguageKeyAddComponent
+  ],
   imports: [
     CommonModule,
     LanguageKeyRoutingModule,
@@ -16,4 +20,4 @@ import { ComponentsModule } from 'src/app/components/components.module';
     SharedModule
   ]
 })
-export class LanguageKeyModule { }
+export class LanguageKeyModule {}

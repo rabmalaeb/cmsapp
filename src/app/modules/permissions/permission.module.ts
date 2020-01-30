@@ -10,15 +10,19 @@ import { ComponentsModule } from 'src/app/components/components.module';
 import { PermissionGroupComponent } from './permission-group/permission-group.component';
 
 @NgModule({
-  declarations: [PermissionsComponent, PermissionItemComponent, PermissionComponent, PermissionAddComponent, PermissionGroupComponent],
+  declarations: [
+    PermissionsComponent,
+    PermissionItemComponent,
+    PermissionComponent,
+    PermissionAddComponent,
+    PermissionGroupComponent
+  ],
   imports: [
     CommonModule,
     PermissionRoutingModule,
     ComponentsModule,
     SharedModule
   ],
-   exports: [
-    PermissionGroupComponent
-  ]
+  exports: [PermissionGroupComponent]
 })
-export class PermissionModule { }
+export class PermissionModule {}

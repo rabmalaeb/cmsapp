@@ -9,12 +9,12 @@ import { ComponentsModule } from 'src/app/components/components.module';
 import { SharedModule } from 'src/app/shared.module';
 
 @NgModule({
-  declarations: [AdminsComponent, AdminItemComponent, AdminComponent, AdminAddComponent],
-  imports: [
-    CommonModule,
-    AdminRoutingModule,
-    ComponentsModule,
-    SharedModule
-  ]
+  declarations: [
+    AdminsComponent,
+    AdminItemComponent,
+    AdminComponent,
+    AdminAddComponent
+  ],
+  imports: [CommonModule, AdminRoutingModule, ComponentsModule, SharedModule]
 })
-export class AdminModule { }
+export class AdminModule {}

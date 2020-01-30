@@ -9,12 +9,12 @@ import { SharedModule } from 'src/app/shared.module';
 import { ComponentsModule } from 'src/app/components/components.module';
 
 @NgModule({
-  declarations: [UsersComponent, UserItemComponent, UserComponent, UserAddComponent],
-  imports: [
-    CommonModule,
-    UserRoutingModule,
-    ComponentsModule,
-    SharedModule
-  ]
+  declarations: [
+    UsersComponent,
+    UserItemComponent,
+    UserComponent,
+    UserAddComponent
+  ],
+  imports: [CommonModule, UserRoutingModule, ComponentsModule, SharedModule]
 })
-export class UserModule { }
+export class UserModule {}

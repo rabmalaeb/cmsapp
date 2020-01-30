@@ -8,7 +8,11 @@ import { SharedModule } from 'src/app/shared.module';
 import { ComponentsModule } from 'src/app/components/components.module';
 
 @NgModule({
-  declarations: [TranslationsComponent, TranslationComponent, TranslationAddComponent],
+  declarations: [
+    TranslationsComponent,
+    TranslationComponent,
+    TranslationAddComponent
+  ],
   imports: [
     CommonModule,
     TranslationRoutingModule,
@@ -16,4 +20,4 @@ import { ComponentsModule } from 'src/app/components/components.module';
     SharedModule
   ]
 })
-export class TranslationModule { }
+export class TranslationModule {}
