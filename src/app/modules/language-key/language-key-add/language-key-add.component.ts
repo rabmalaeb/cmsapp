@@ -14,6 +14,12 @@ import { ErrorHandlerService } from 'src/app/services/error-handler.service';
 import { LanguageKeyService } from '../language-key.service';
 import { Category } from '../../category/category';
 import { AuthorizationService } from 'src/app/services/authorization.service';
+import { LanguagekeyStoreSelectors, LanguagekeyStoreActions } from '../store';
+import { ActionsSubject, Store } from '@ngrx/store';
+import { RootStoreState } from 'src/app/root-store';
+import { Observable } from 'rxjs';
+import { filter, map } from 'rxjs/operators';
+import { ActionTypes } from '../store/actions';
 
 @Component({
   selector: 'app-language-key-add',
@@ -28,6 +34,8 @@ export class LanguageKeyAddComponent implements OnInit {
     private validationMessagesService: ValidationMessagesService,
     private authorizationService: AuthorizationService,
     private errorHandler: ErrorHandlerService,
+    private actionsSubject$: ActionsSubject,
+    private store$: Store<RootStoreState.State>,
     private route: ActivatedRoute
   ) {}
 
@@ -37,30 +45,92 @@ export class LanguageKeyAddComponent implements OnInit {
   isLoadingLanguageKey = false;
   isLoading = false;
   categories: Category[] = [];
+  languageKey$: Observable<LanguageKey>;
+  isLoading$: Observable<boolean>;
+  isLoadingAction$: Observable<boolean>;
+  loadingErrors$: Observable<String[]>;
+  actionErrors$: Observable<String[]>;
 
   ngOnInit() {
+    this.initializeStoreVariables();
     this.route.params.forEach(param => {
       if (param.id) {
-        this.getLanguageKey(param.id);
+        const id = parseInt(param.id, 0);
+        this.getLanguageKey(id);
         this.actionType = ActionType.EDIT;
       } else {
         this.actionType = ActionType.ADD;
-        this.buildForm();
+        this.buildNewLanguageKeyForm();
       }
     });
   }
 
+  initializeStoreVariables() {
+    this.actionErrors$ = this.store$.select(
+      LanguagekeyStoreSelectors.selectLanguagekeyActionError
+    );
+
+    this.isLoadingAction$ = this.store$.select(
+      LanguagekeyStoreSelectors.selectIsLoadingAction
+    );
+
+    this.actionsSubject$
+      .pipe(
+        filter(
+          (action: any) =>
+            action.type === ActionTypes.UPDATE_LANGUAGEKEY_SUCCESS ||
+            action.type === ActionTypes.ADD_LANGUAGEKEY_SUCCESS
+        )
+      )
+      .subscribe(() => {
+        let message = 'LanguageKey Updated Successfully';
+        if (this.actionType === ActionType.ADD) {
+          message = 'LanguageKey Added Successfully';
+        }
+        this.notificationService.showSuccess(message);
+      });
+
+    this.actionsSubject$
+      .pipe(
+        filter(
+          (action: any) =>
+            action.type === ActionTypes.UPDATE_LANGUAGEKEY_FAILURE ||
+            action.type === ActionTypes.ADD_LANGUAGEKEY_FAILURE
+        )
+      )
+      .subscribe(() => {
+        this.notificationService.showError(
+          'An Error has Occurred. Please try again'
+        );
+      });
+  }
+
   getLanguageKey(id: number) {
-    this.isLoadingLanguageKey = true;
-    this.languageKeyService.getLanguageKey(id).subscribe(response => {
-      this.isLoadingLanguageKey = false;
-      this.languageKey = response;
-      this.buildForm();
-    }, error => {
-      this.isLoading = false;
-      this.errorHandler.handleErrorResponse(error);
+    this.store$.dispatch(new LanguagekeyStoreActions.GetLanguageKeyRequestAction(id));
+    this.languageKey$ = this.store$.select(LanguagekeyStoreSelectors.selectLanguagekeyById(id));
+    this.loadingErrors$ = this.store$.select(
+      LanguagekeyStoreSelectors.selectLanguagekeyLoadingError
+    );
+    this.buildExistingLanguageKeyForm();
+  }
+
+  buildNewLanguageKeyForm() {
+    this.languageKeyForm = this.form.group({
+      name: ['', [Validators.required]],
+      description: ['', [Validators.required]],
     });
   }
+
+  buildExistingLanguageKeyForm() {
+    this.languageKey$.subscribe(languageKey => {
+      this.languageKey = languageKey;
+      this.languageKeyForm = this.form.group({
+        name: [languageKey.name, [Validators.required]],
+        description: [languageKey.description, [Validators.required]],
+      });
+    });
+  }
+
 
   buildForm() {
     let name = '';
@@ -102,41 +172,29 @@ export class LanguageKeyAddComponent implements OnInit {
     return languageKey;
   }
 
-  addLanguageKey(params) {
-    this.isLoading = true;
-    this.languageKeyService
-      .addLanguageKey(params)
-      .subscribe(response => {
-        this.isLoading = false;
-        this.notificationService.showSuccess('LanguageKey added successfully');
-      }, error => {
-        this.isLoading = false;
-        this.errorHandler.handleErrorResponse(error);
-      });
+  addLanguageKey(params: LanguageKey) {
+    this.store$.dispatch(new LanguagekeyStoreActions.AddLanguageKeyRequestAction(params));
   }
 
-  updateLanguageKey(params) {
-    this.isLoading = true;
+  updateLanguageKey(params: LanguageKey) {
     const id = this.languageKey.id;
-    this.languageKeyService
-      .updateLanguageKey(id, params)
-      .subscribe(response => {
-        this.isLoading = false;
-        this.notificationService.showSuccess('LanguageKey updated successfully');
-      }, error => {
-        this.isLoading = false;
-        this.errorHandler.handleErrorResponse(error);
-      });
+    this.store$.dispatch(
+      new LanguagekeyStoreActions.UpdateLanguageKeyRequestAction(id, params)
+    );
   }
 
   get buttonLabel() {
-    if (this.isLoading) {
-      return 'Loading';
-    }
-    if (this.actionType === ActionType.EDIT) {
-      return 'Update';
-    }
-    return 'Add';
+    return this.isLoadingAction$.pipe(
+      map(isLoading => {
+        if (isLoading) {
+          return 'Loading';
+        }
+        if (this.actionType === ActionType.EDIT) {
+          return 'Update';
+        }
+        return 'Add';
+      })
+    );
   }
 
   get title() {
