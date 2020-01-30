@@ -30,7 +30,7 @@ export function permissionReducer(
     case ActionTypes.LOAD_PERMISSIONS_BY_ROLE_REQUEST: {
       return {
         ...state,
-        isLoading: true,
+        isLoadingPermissionsForRole: true,
         loadingError: null,
         PermissionsForRole: []
       };
@@ -38,7 +38,7 @@ export function permissionReducer(
     case ActionTypes.LOAD_PERMISSIONS_BY_ROLE_SUCCESS: {
       return {
         ...state,
-        isLoading: false,
+        isLoadingPermissionsForRole: false,
         loadingError: null,
         PermissionsForRole: action.payload.items
       };
@@ -46,7 +46,7 @@ export function permissionReducer(
     case ActionTypes.LOAD_PERMISSIONS_BY_ROLE_FAILURE: {
       return {
         ...state,
-        isLoading: false,
+        isLoadingPermissionsForRole: false,
         loadingError: action.payload.error,
         PermissionsForRole: []
       };

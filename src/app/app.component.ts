@@ -3,6 +3,9 @@ import { NotificationService } from './services/notification.service';
 import { AuthenticationService } from './services/authentication.service';
 import { AuthorizationService } from './services/authorization.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Store } from '@ngrx/store';
+import { RootStoreState } from './root-store';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -19,6 +22,7 @@ export class AppComponent implements OnInit {
     public successSnackBar: MatSnackBar,
     public authenticationService: AuthenticationService,
     private authorizationService: AuthorizationService,
+    private store$: Store<RootStoreState.State>,
   ) {
     const errorClass = ['snack-bar_is-error'];
     const successClass = ['snack-bar_is-success'];
@@ -44,8 +48,8 @@ export class AppComponent implements OnInit {
     }
   }
 
-  get isAppLoading() {
-    return this.authorizationService.isLoadingPermissions;
+  get isAppLoading$(): Observable<boolean> {
+    return this.authorizationService.isLoadingPermissions$;
   }
 
   get isLoggedIn() {

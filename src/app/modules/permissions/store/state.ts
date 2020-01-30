@@ -14,6 +14,7 @@ export interface State extends EntityState<Permission> {
   isLoadingAction?: boolean;
   loadingError?: any;
   actionError?: any;
+  isLoadingPermissionsForRole?: boolean;
   PermissionsForRole?: Permission[];
 }
 

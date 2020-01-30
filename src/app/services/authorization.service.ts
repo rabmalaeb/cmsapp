@@ -19,7 +19,7 @@ import { map } from 'rxjs/operators';
 export class AuthorizationService {
   adminPermissions: Permission[];
   rolePermissions$: Observable<Permission[]>;
-  isLoadingPermissions = false;
+  isLoadingPermissions$: Observable<boolean>;
   constructor(
     private authenticationService: AuthenticationService,
     private store$: Store<RootStoreState.State>
@@ -33,6 +33,10 @@ export class AuthorizationService {
 
     this.rolePermissions$ = this.store$.select(
       PermissionStoreSelectors.selectPermissionForRole
+    );
+
+    this.isLoadingPermissions$ = this.store$.select(
+      PermissionStoreSelectors.selectIsLoadingPermissionsForRole
     );
   }
 
