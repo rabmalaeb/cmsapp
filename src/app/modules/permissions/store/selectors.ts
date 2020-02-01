@@ -19,6 +19,9 @@ export const getIsLoading = (state: State): boolean => state.isLoading;
 export const getIsLoadingPermissionsForRole = (state: State): boolean =>
   state.isLoadingPermissionsForRole;
 
+export const getIsLoadedPermissionsForRole = (state: State): boolean =>
+  state.isLoadedPermissionsForRole;
+
 export const getIsLoadingAction = (state: State): boolean =>
   state.isLoadingAction;
 
@@ -74,7 +77,7 @@ export const selectPermissionIsLoading: MemoizedSelector<
 > = createSelector(
   selectPermissionState,
   getIsLoading
-);
+  );
 
 export const selectIsLoadingPermissionsForRole: MemoizedSelector<
   object,
@@ -82,6 +85,15 @@ export const selectIsLoadingPermissionsForRole: MemoizedSelector<
 > = createSelector(
   selectPermissionState,
   getIsLoadingPermissionsForRole
+);
+
+
+export const selectIsLoadedPermissionsForRole: MemoizedSelector<
+  object,
+  boolean
+> = createSelector(
+  selectPermissionState,
+  getIsLoadedPermissionsForRole
 );
 
 export const selectIsLoadingAction: MemoizedSelector<

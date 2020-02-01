@@ -39,6 +39,7 @@ export function permissionReducer(
       return {
         ...state,
         isLoadingPermissionsForRole: false,
+        isLoadedPermissionsForRole: true,
         loadingError: null,
         PermissionsForRole: action.payload.items
       };

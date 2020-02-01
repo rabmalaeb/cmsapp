@@ -10,8 +10,9 @@ import {
   PermissionStoreActions,
   PermissionStoreSelectors
 } from '../modules/permissions/store';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { map, tap, take, filter, switchMap } from 'rxjs/operators';
+import { selectAllPermissionItems } from '../modules/permissions/store/selectors';
 
 @Injectable({
   providedIn: 'root'
@@ -72,24 +73,37 @@ export class AuthorizationService {
     return this.checkPermission(moduleName, PermissionType.ADD);
   }
 
+  waitForPermissionsToLoad(): Observable<boolean> {
+    return this.store$
+      .select(PermissionStoreSelectors.selectIsLoadedPermissionsForRole)
+      .pipe(
+        filter(loaded => loaded),
+        take(1)
+      );
+  }
+
   private checkPermission(
     moduleName: ModuleName,
     permissionType: PermissionType
   ): Observable<boolean> {
-    return this.rolePermissions$.pipe(
-      map(permissions => {
-        if (!permissions) {
-          return false;
-        }
-        const hasPermission = permissions.find(
-          permission =>
-            permission.group.toLowerCase() === moduleName.toLowerCase() &&
-            permission.type === permissionType
+   return this.waitForPermissionsToLoad().pipe(
+      switchMap(() => {
+        return this.rolePermissions$.pipe(
+          map(permissions => {
+            if (!permissions) {
+              return false;
+            }
+            const hasPermission = permissions.find(
+              permission =>
+                permission.group.toLowerCase() === moduleName.toLowerCase() &&
+                permission.type === permissionType
+            );
+            if (hasPermission) {
+              return true;
+            }
+            return false;
+          })
         );
-        if (hasPermission) {
-          return true;
-        }
-        return false;
       })
     );
   }
