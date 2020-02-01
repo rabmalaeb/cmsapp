@@ -6,6 +6,7 @@ import { PartnerStoreState } from '../modules/partner/store';
 import { LanguagekeyStoreState } from '../modules/language-key/store';
 import { LanguageStoreState } from '../modules/language/store';
 import { TranslationStoreState } from '../modules/translation/store';
+import { LoginStoreState } from '../modules/login/store';
 
 export interface State {
   user: UserStoreState.State;
@@ -16,4 +17,5 @@ export interface State {
   languageKey: LanguagekeyStoreState.State;
   language: LanguageStoreState.State;
   translation: TranslationStoreState.State;
+  login: LoginStoreState.State;
 }

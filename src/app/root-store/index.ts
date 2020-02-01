@@ -5,4 +5,5 @@ export * from '../modules/user/store';
 export * from '../modules/role/store';
 export * from '../modules/admin/store';
 export * from '../modules/partner/store';
+export * from '../modules/login/store';
 export { RootStoreState, RootStoreSelectors, RootStoreModule };

@@ -41,8 +41,8 @@ export class AdminsComponent implements OnInit {
     private alertService: AlertService,
     private router: Router,
     private authorizationService: AuthorizationService,
-    private store$: Store<RootStoreState.State>,
     private notificationService: NotificationService,
+    private store$: Store<RootStoreState.State>,
     private actionsSubject$: ActionsSubject,
   ) { }
 
