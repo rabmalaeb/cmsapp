@@ -1,10 +1,11 @@
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 import { Category } from '../category';
 
-export const categoryAdapter: EntityAdapter<Category> = createEntityAdapter<Category>({
+export const categoryAdapter: EntityAdapter<Category> = createEntityAdapter<
+  Category
+>({
   selectId: model => model.id,
-  sortComparer: (a: Category, b: Category): number =>
-    b.name.toString().localeCompare(a.name.toString())
+  sortComparer: (a: Category, b: Category): number => (a.id > b.id ? 1 : 0)
 });
 
 export interface State extends EntityState<Category> {

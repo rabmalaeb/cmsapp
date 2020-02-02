@@ -69,7 +69,7 @@ export class UpdateLanguageRequestAction implements Action {
 
 export class UpdateLanguageSuccessAction implements Action {
   readonly type = ActionTypes.UPDATE_LANGUAGE_SUCCESS;
-  constructor(public payload: { id: number, item: Language }) {}
+  constructor(public payload: { id: number; item: Language }) {}
 }
 
 export class UpdateLanguageFailureAction implements Action {
@@ -84,7 +84,7 @@ export class DeleteLanguageRequestAction implements Action {
 
 export class DeleteLanguageSuccessAction implements Action {
   readonly type = ActionTypes.DELETE_LANGUAGE_SUCCESS;
-  constructor(public payload: { id: number, items: Language[] }) {}
+  constructor(public payload: { id: number; items: Language[] }) {}
 }
 
 export class DeleteLanguageFailureAction implements Action {

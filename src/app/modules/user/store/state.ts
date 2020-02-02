@@ -3,8 +3,7 @@ import { User } from '../user';
 
 export const userAdapter: EntityAdapter<User> = createEntityAdapter<User>({
   selectId: model => model.id,
-  sortComparer: (a: User, b: User): number =>
-    b.firstName.toString().localeCompare(a.firstName.toString())
+  sortComparer: (a: User, b: User): number => (a.id > b.id ? 1 : 0)
 });
 
 export interface State extends EntityState<User> {

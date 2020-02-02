@@ -13,7 +13,8 @@ export const getActionError = (state: State): any => state.actionError;
 
 export const getIsLoading = (state: State): boolean => state.isLoading;
 
-export const getIsLoadingAction = (state: State): boolean => state.isLoadingAction;
+export const getIsLoadingAction = (state: State): boolean =>
+  state.isLoadingAction;
 
 export const selectAdminState: MemoizedSelector<
   object,
@@ -36,12 +37,18 @@ export const selectAdminById = (id: number) =>
     }
   );
 
-export const selectAdminLoadingError: MemoizedSelector<object, any> = createSelector(
+export const selectAdminLoadingError: MemoizedSelector<
+  object,
+  any
+> = createSelector(
   selectAdminState,
   getLoadingError
 );
 
-export const selectAdminActionError: MemoizedSelector<object, any> = createSelector(
+export const selectAdminActionError: MemoizedSelector<
+  object,
+  any
+> = createSelector(
   selectAdminState,
   getActionError
 );
@@ -53,7 +60,6 @@ export const selectAdminIsLoading: MemoizedSelector<
   selectAdminState,
   getIsLoading
 );
-
 
 export const selectIsLoadingAction: MemoizedSelector<
   object,

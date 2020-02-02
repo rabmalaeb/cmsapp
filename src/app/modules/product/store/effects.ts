@@ -8,11 +8,16 @@ import { ProductService } from '../product.service';
 
 @Injectable()
 export class ProductStoreEffects {
-  constructor(private productService: ProductService, private actions$: Actions) {}
+  constructor(
+    private productService: ProductService,
+    private actions$: Actions
+  ) {}
 
   @Effect()
   loadRequestEffect$: Observable<Action> = this.actions$.pipe(
-    ofType<productActions.LoadRequestAction>(productActions.ActionTypes.LOAD_REQUEST),
+    ofType<productActions.LoadRequestAction>(
+      productActions.ActionTypes.LOAD_REQUEST
+    ),
     startWith(new productActions.LoadRequestAction()),
     switchMap(action =>
       this.productService.getProducts().pipe(

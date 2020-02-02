@@ -1,7 +1,10 @@
 import { languageKeyAdapter, initialState, State } from './state';
 import { Actions, ActionTypes } from './actions';
 
-export function languagekeyReducer(state = initialState, action: Actions): State {
+export function languagekeyReducer(
+  state = initialState,
+  action: Actions
+): State {
   switch (action.type) {
     case ActionTypes.LOAD_REQUEST: {
       return {
@@ -74,11 +77,14 @@ export function languagekeyReducer(state = initialState, action: Actions): State
       };
     }
     case ActionTypes.UPDATE_LANGUAGEKEY_SUCCESS: {
-      return languageKeyAdapter.updateOne({id: action.payload.id, changes: action.payload.item}, {
-        ...state,
-        isLoadingAction: false,
-        actionError: null
-      });
+      return languageKeyAdapter.updateOne(
+        { id: action.payload.id, changes: action.payload.item },
+        {
+          ...state,
+          isLoadingAction: false,
+          actionError: null
+        }
+      );
     }
     case ActionTypes.UPDATE_LANGUAGEKEY_FAILURE: {
       return {

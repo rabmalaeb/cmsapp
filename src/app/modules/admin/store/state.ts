@@ -3,8 +3,7 @@ import { Admin } from '../admin';
 
 export const adminAdapter: EntityAdapter<Admin> = createEntityAdapter<Admin>({
   selectId: model => model.id,
-  sortComparer: (a: Admin, b: Admin): number =>
-    b.name.toString().localeCompare(a.name.toString())
+  sortComparer: (a: Admin, b: Admin): number => (a.id > b.id ? 1 : 0)
 });
 
 export interface State extends EntityState<Admin> {

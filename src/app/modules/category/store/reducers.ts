@@ -74,11 +74,14 @@ export function categoryReducer(state = initialState, action: Actions): State {
       };
     }
     case ActionTypes.UPDATE_CATEGORY_SUCCESS: {
-      return categoryAdapter.updateOne({id: action.payload.id, changes: action.payload.item}, {
-        ...state,
-        isLoadingAction: false,
-        actionError: null
-      });
+      return categoryAdapter.updateOne(
+        { id: action.payload.id, changes: action.payload.item },
+        {
+          ...state,
+          isLoadingAction: false,
+          actionError: null
+        }
+      );
     }
     case ActionTypes.UPDATE_CATEGORY_FAILURE: {
       return {

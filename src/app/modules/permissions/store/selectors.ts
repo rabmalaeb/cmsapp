@@ -77,7 +77,7 @@ export const selectPermissionIsLoading: MemoizedSelector<
 > = createSelector(
   selectPermissionState,
   getIsLoading
-  );
+);
 
 export const selectIsLoadingPermissionsForRole: MemoizedSelector<
   object,
@@ -86,7 +86,6 @@ export const selectIsLoadingPermissionsForRole: MemoizedSelector<
   selectPermissionState,
   getIsLoadingPermissionsForRole
 );
-
 
 export const selectIsLoadedPermissionsForRole: MemoizedSelector<
   object,

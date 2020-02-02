@@ -6,7 +6,7 @@ export const languageKeyAdapter: EntityAdapter<
 > = createEntityAdapter<LanguageKey>({
   selectId: model => model.id,
   sortComparer: (a: LanguageKey, b: LanguageKey): number =>
-    b.name.toString().localeCompare(a.name.toString())
+    a.id > b.id ? 1 : 0
 });
 
 export interface State extends EntityState<LanguageKey> {

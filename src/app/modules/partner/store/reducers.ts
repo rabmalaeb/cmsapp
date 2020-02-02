@@ -74,11 +74,14 @@ export function partnerReducer(state = initialState, action: Actions): State {
       };
     }
     case ActionTypes.UPDATE_PARTNER_SUCCESS: {
-      return partnerAdapter.updateOne({id: action.payload.id, changes: action.payload.item}, {
-        ...state,
-        isLoadingAction: false,
-        actionError: null
-      });
+      return partnerAdapter.updateOne(
+        { id: action.payload.id, changes: action.payload.item },
+        {
+          ...state,
+          isLoadingAction: false,
+          actionError: null
+        }
+      );
     }
     case ActionTypes.UPDATE_PARTNER_FAILURE: {
       return {

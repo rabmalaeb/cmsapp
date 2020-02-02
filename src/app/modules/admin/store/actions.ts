@@ -69,7 +69,7 @@ export class UpdateAdminRequestAction implements Action {
 
 export class UpdateAdminSuccessAction implements Action {
   readonly type = ActionTypes.UPDATE_ADMIN_SUCCESS;
-  constructor(public payload: { id: number, item: Admin }) {}
+  constructor(public payload: { id: number; item: Admin }) {}
 }
 
 export class UpdateAdminFailureAction implements Action {
@@ -84,7 +84,7 @@ export class DeleteAdminRequestAction implements Action {
 
 export class DeleteAdminSuccessAction implements Action {
   readonly type = ActionTypes.DELETE_ADMIN_SUCCESS;
-  constructor(public payload: { id: number, items: Admin[] }) {}
+  constructor(public payload: { id: number; items: Admin[] }) {}
 }
 
 export class DeleteAdminFailureAction implements Action {

@@ -69,7 +69,7 @@ export class UpdateProductRequestAction implements Action {
 
 export class UpdateProductSuccessAction implements Action {
   readonly type = ActionTypes.UPDATE_PRODUCT_SUCCESS;
-  constructor(public payload: { id: number, item: Product }) {}
+  constructor(public payload: { id: number; item: Product }) {}
 }
 
 export class UpdateProductFailureAction implements Action {
@@ -84,7 +84,7 @@ export class DeleteProductRequestAction implements Action {
 
 export class DeleteProductSuccessAction implements Action {
   readonly type = ActionTypes.DELETE_PRODUCT_SUCCESS;
-  constructor(public payload: { id: number, items: Product[] }) {}
+  constructor(public payload: { id: number; items: Product[] }) {}
 }
 
 export class DeleteProductFailureAction implements Action {

@@ -69,7 +69,7 @@ export class UpdatePartnerRequestAction implements Action {
 
 export class UpdatePartnerSuccessAction implements Action {
   readonly type = ActionTypes.UPDATE_PARTNER_SUCCESS;
-  constructor(public payload: { id: number, item: Partner }) {}
+  constructor(public payload: { id: number; item: Partner }) {}
 }
 
 export class UpdatePartnerFailureAction implements Action {
@@ -84,7 +84,7 @@ export class DeletePartnerRequestAction implements Action {
 
 export class DeletePartnerSuccessAction implements Action {
   readonly type = ActionTypes.DELETE_PARTNER_SUCCESS;
-  constructor(public payload: { id: number, items: Partner[] }) {}
+  constructor(public payload: { id: number; items: Partner[] }) {}
 }
 
 export class DeletePartnerFailureAction implements Action {

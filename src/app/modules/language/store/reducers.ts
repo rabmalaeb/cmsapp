@@ -74,11 +74,14 @@ export function languageReducer(state = initialState, action: Actions): State {
       };
     }
     case ActionTypes.UPDATE_LANGUAGE_SUCCESS: {
-      return languageAdapter.updateOne({id: action.payload.id, changes: action.payload.item}, {
-        ...state,
-        isLoadingAction: false,
-        actionError: null
-      });
+      return languageAdapter.updateOne(
+        { id: action.payload.id, changes: action.payload.item },
+        {
+          ...state,
+          isLoadingAction: false,
+          actionError: null
+        }
+      );
     }
     case ActionTypes.UPDATE_LANGUAGE_FAILURE: {
       return {

@@ -12,7 +12,9 @@ export class AdminStoreEffects {
 
   @Effect()
   loadRequestEffect$: Observable<Action> = this.actions$.pipe(
-    ofType<adminActions.LoadRequestAction>(adminActions.ActionTypes.LOAD_REQUEST),
+    ofType<adminActions.LoadRequestAction>(
+      adminActions.ActionTypes.LOAD_REQUEST
+    ),
     startWith(new adminActions.LoadRequestAction()),
     switchMap(action =>
       this.adminService.getAdmins().pipe(

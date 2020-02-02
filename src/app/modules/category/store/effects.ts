@@ -8,11 +8,16 @@ import { CategoryService } from '../category.service';
 
 @Injectable()
 export class CategoryStoreEffects {
-  constructor(private categoryService: CategoryService, private actions$: Actions) {}
+  constructor(
+    private categoryService: CategoryService,
+    private actions$: Actions
+  ) {}
 
   @Effect()
   loadRequestEffect$: Observable<Action> = this.actions$.pipe(
-    ofType<categoryActions.LoadRequestAction>(categoryActions.ActionTypes.LOAD_REQUEST),
+    ofType<categoryActions.LoadRequestAction>(
+      categoryActions.ActionTypes.LOAD_REQUEST
+    ),
     startWith(new categoryActions.LoadRequestAction()),
     switchMap(action =>
       this.categoryService.getCategories().pipe(
@@ -84,7 +89,9 @@ export class CategoryStoreEffects {
             })
         ),
         catchError(error =>
-          observableOf(new categoryActions.UpdateCategoryFailureAction({ error }))
+          observableOf(
+            new categoryActions.UpdateCategoryFailureAction({ error })
+          )
         )
       )
     )
@@ -105,7 +112,9 @@ export class CategoryStoreEffects {
             })
         ),
         catchError(error =>
-          observableOf(new categoryActions.DeleteCategoryFailureAction({ error }))
+          observableOf(
+            new categoryActions.DeleteCategoryFailureAction({ error })
+          )
         )
       )
     )
