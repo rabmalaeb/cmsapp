@@ -50,6 +50,7 @@ export class LoginComponent implements OnInit {
     this.isLoading$ = this.store$.select(
       LoginStoreSelectors.selectLoginIsLoading
     );
+
     this.actionsSubject$
       .pipe(filter((action: any) => action.type === ActionTypes.LOAD_SUCCESS))
       .subscribe(response => {
