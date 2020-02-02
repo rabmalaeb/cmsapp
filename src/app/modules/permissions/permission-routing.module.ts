@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes, PreloadAllModules } from '@angular/router';
 import { PermissionsComponent } from './permissions/permissions.component';
-import { PermissionComponent } from './permission/permission.component';
 import { PermissionAddComponent } from './permission-add/permission-add.component';
 import { ViewPermissionGuard } from './guards/view-permission.guard';
 import { EditPermissionGuard } from './guards/edit-permission.guard';
@@ -13,7 +12,6 @@ const routes: Routes = [
     component: PermissionsComponent,
     canActivate: [ViewPermissionGuard]
   },
-  { path: 'permission/:id', component: PermissionComponent },
   {
     path: 'permissions/:id/view',
     component: PermissionAddComponent,

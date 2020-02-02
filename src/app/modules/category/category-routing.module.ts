@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes, PreloadAllModules } from '@angular/router';
 import { CategoriesComponent } from './categories/categories.component';
-import { CategoryComponent } from './category/category.component';
 import { CategoryAddComponent } from './category-add/category-add.component';
 import { ViewCategoryGuard } from './guards/view-category.guard';
 import { EditCategoryGuard } from './guards/edit-category.guard';
@@ -13,7 +12,6 @@ const routes: Routes = [
     component: CategoriesComponent,
     canActivate: [ViewCategoryGuard]
   },
-  { path: 'category/:id', component: CategoryComponent },
   {
     path: 'categories/:id/view',
     component: CategoryAddComponent,

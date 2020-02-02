@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes, PreloadAllModules } from '@angular/router';
 import { LanguagesComponent } from './languages/languages.component';
-import { LanguageComponent } from './language/language.component';
 import { LanguageAddComponent } from './language-add/language-add.component';
 import { ViewLanguageGuard } from './guards/view-language.guard';
 import { EditLanguageGuard } from './guards/edit-language.guard';
@@ -13,7 +12,6 @@ const routes: Routes = [
     component: LanguagesComponent,
     canActivate: [ViewLanguageGuard]
   },
-  { path: 'language/:id', component: LanguageComponent },
   {
     path: 'languages/:id/view',
     component: LanguageAddComponent,

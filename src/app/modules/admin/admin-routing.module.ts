@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes, PreloadAllModules } from '@angular/router';
 import { AdminsComponent } from './admins/admins.component';
-import { AdminComponent } from './admin/admin.component';
 import { AdminAddComponent } from './admin-add/admin-add.component';
 import { ViewAdminGuard } from './guards/view-admin.guard';
 import { EditAdminGuard } from './guards/edit-admin.guard';
@@ -14,7 +13,6 @@ const routes: Routes = [
     component: AdminsComponent,
     canActivate: [ViewAdminGuard]
   },
-  { path: 'admin/:id', component: AdminComponent },
   {
     path: 'admins/:id/view',
     component: AdminAddComponent,

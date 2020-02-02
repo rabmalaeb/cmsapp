@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes, PreloadAllModules } from '@angular/router';
-import { UserComponent } from './user/user.component';
 import { UserAddComponent } from './user-add/user-add.component';
 import { UsersComponent } from './users/users.component';
 import { ViewUserGuard } from './guards/view-user.guard';
@@ -9,7 +8,6 @@ import { AddUserGuard } from './guards/add-user.guard';
 
 const routes: Routes = [
   { path: 'users', component: UsersComponent, canActivate: [ViewUserGuard] },
-  { path: 'user/:id', component: UserComponent },
   {
     path: 'users/:id/view',
     component: UserAddComponent,

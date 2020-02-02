@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PermissionsComponent } from './permissions/permissions.component';
 import { PermissionItemComponent } from './permission-item/permission-item.component';
-import { PermissionComponent } from './permission/permission.component';
 import { PermissionRoutingModule } from './permission-routing.module';
 import { PermissionAddComponent } from './permission-add/permission-add.component';
 import { SharedModule } from 'src/app/shared.module';
@@ -13,7 +12,6 @@ import { PermissionGroupComponent } from './permission-group/permission-group.co
   declarations: [
     PermissionsComponent,
     PermissionItemComponent,
-    PermissionComponent,
     PermissionAddComponent,
     PermissionGroupComponent
   ],
