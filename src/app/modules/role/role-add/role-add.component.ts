@@ -23,6 +23,8 @@ import {
 } from '../../permissions/store';
 import { PermissionSerializerService } from '../../permissions/permission-serializer.service';
 import { ActionTypes } from '../store/actions';
+import { isArray } from 'util';
+import { ErrorHandlerService } from 'src/app/services/error-handler.service';
 
 @Component({
   selector: 'app-role-add',
@@ -36,14 +38,15 @@ export class RoleAddComponent implements OnInit {
     private permissionSerializer: PermissionSerializerService,
     private validationMessagesService: ValidationMessagesService,
     private authorizationService: AuthorizationService,
+    private errorHandler: ErrorHandlerService,
     private actionsSubject$: ActionsSubject,
     private store$: Store<RootStoreState.State>,
     private route: ActivatedRoute
   ) {}
   permissions$: Observable<Permission[]>;
   isLoadingAction$: Observable<boolean>;
-  loadingErrors$: Observable<String[]>;
-  actionErrors$: Observable<String[]>;
+  loadingErrors$: Observable<string[]>;
+  actionErrors$: Observable<string[]>;
   permissionGroups: PermissionGroup[];
   isLoading$: Observable<boolean>;
   role$: Observable<Role>;
@@ -104,10 +107,8 @@ export class RoleAddComponent implements OnInit {
             action.type === ActionTypes.ADD_ROLE_FAILURE
         )
       )
-      .subscribe(() => {
-        this.notificationService.showError(
-          'An Error has Occurred. Please try again'
-        );
+      .subscribe(response => {
+        this.errorHandler.handleErrorResponse(response.payload.error);
       });
   }
 

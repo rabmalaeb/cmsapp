@@ -13,6 +13,7 @@ import { RootStoreState } from 'src/app/root-store';
 import { NotificationService } from 'src/app/services/notification.service';
 import { ActionTypes } from '../store/actions';
 import { filter } from 'rxjs/operators';
+import { ErrorHandlerService } from 'src/app/services/error-handler.service';
 
 @Component({
   selector: 'app-partners',
@@ -33,6 +34,7 @@ export class PartnersComponent implements OnInit {
     private alertService: AlertService,
     private router: Router,
     private authorizationService: AuthorizationService,
+    private errorHandler: ErrorHandlerService,
     private store$: Store<RootStoreState.State>,
     private notificationService: NotificationService,
     private actionsSubject$: ActionsSubject
@@ -80,10 +82,8 @@ export class PartnersComponent implements OnInit {
 
     this.actionsSubject$
       .pipe(filter((action: any) => action.type === ActionTypes.LOAD_FAILURE))
-      .subscribe(() => {
-        this.notificationService.showError(
-          'An Error has occurred. Please try again'
-        );
+       .subscribe(response => {
+        this.errorHandler.handleErrorResponse(response.payload.error);
       });
   }
 

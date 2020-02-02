@@ -21,6 +21,7 @@ import { ProductStoreSelectors, ProductStoreActions } from '../store';
 import { filter, map } from 'rxjs/operators';
 import { ActionTypes } from '../store/actions';
 import { CategoryStoreSelectors, CategoryStoreActions } from '../../category/store';
+import { ErrorHandlerService } from 'src/app/services/error-handler.service';
 
 @Component({
   selector: 'app-product-add',
@@ -32,6 +33,7 @@ export class ProductAddComponent implements OnInit {
     private form: FormBuilder,
     private notificationService: NotificationService,
     private validationMessagesService: ValidationMessagesService,
+    private errorHandler: ErrorHandlerService,
     private authorizationService: AuthorizationService,
     private actionsSubject$: ActionsSubject,
     private store$: Store<RootStoreState.State>,
@@ -53,8 +55,8 @@ export class ProductAddComponent implements OnInit {
   product$: Observable<Product>;
   isLoading$: Observable<boolean>;
   isLoadingAction$: Observable<boolean>;
-  loadingErrors$: Observable<String[]>;
-  actionErrors$: Observable<String[]>;
+  loadingErrors$: Observable<string[]>;
+  actionErrors$: Observable<string[]>;
 
   ngOnInit() {
     this.getCategories();
@@ -104,10 +106,8 @@ export class ProductAddComponent implements OnInit {
             action.type === ActionTypes.ADD_PRODUCT_FAILURE
         )
       )
-      .subscribe(() => {
-        this.notificationService.showError(
-          'An Error has Occurred. Please try again'
-        );
+       .subscribe(response => {
+        this.errorHandler.handleErrorResponse(response.payload.error);
       });
   }
 
@@ -145,21 +145,6 @@ export class ProductAddComponent implements OnInit {
     this.store$.dispatch(new CategoryStoreActions.LoadRequestAction());
     this.categories$ = this.store$.select(CategoryStoreSelectors.selectAllCategoryItems);
   }
-
-  // getProduct(id: number) {
-  //   this.isLoadingProduct = true;
-  //   this.productService.getProduct(id).subscribe(response => {
-  //     this.isLoadingProduct = false;
-  //     this.product = response;
-  //     if (this.product.media) {
-  //       this.imageUrl = this.product.media.imageUrl;
-  //     }
-  //     this.buildForm();
-  //   }, error => {
-  //     this.isLoading = false;
-  //     this.errorHandler.handleErrorResponse(error);
-  //   });
-  // }
 
   get name() {
     return this.productForm.get('name');

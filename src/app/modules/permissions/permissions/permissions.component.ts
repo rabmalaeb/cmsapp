@@ -13,6 +13,7 @@ import { NotificationService } from 'src/app/services/notification.service';
 import { PermissionStoreSelectors, PermissionStoreActions } from '../store';
 import { ActionTypes } from '../store/actions';
 import { filter } from 'rxjs/operators';
+import { ErrorHandlerService } from 'src/app/services/error-handler.service';
 
 @Component({
   selector: 'app-permissions',
@@ -32,6 +33,7 @@ export class PermissionsComponent implements OnInit {
   constructor(
     private alertService: AlertService,
     private authorizationService: AuthorizationService,
+    private errorHandler: ErrorHandlerService,
     private store$: Store<RootStoreState.State>,
     private actionsSubject$: ActionsSubject,
     private notificationService: NotificationService,
@@ -80,10 +82,8 @@ export class PermissionsComponent implements OnInit {
 
     this.actionsSubject$
       .pipe(filter((action: any) => action.type === ActionTypes.LOAD_FAILURE))
-      .subscribe(() => {
-        this.notificationService.showError(
-          'An Error has occurred. Please try again'
-        );
+       .subscribe(response => {
+        this.errorHandler.handleErrorResponse(response.payload.error);
       });
   }
 

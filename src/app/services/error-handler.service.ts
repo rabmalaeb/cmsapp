@@ -11,14 +11,13 @@ export class ErrorHandlerService {
   ) { }
 
   handleErrorResponse(errorResponse) {
-    if (errorResponse.error) {
+    if (errorResponse.error && errorResponse.error.errors) {
       errorResponse.error.errors.forEach(error => {
         this.notificationService.showError(error.detail);
       });
     } else {
-      this.notificationService.showError('An Error has Occured');
+      this.notificationService.showError('An Error has Occurred');
       console.warn('errorResponse ', errorResponse);
-
     }
   }
 }

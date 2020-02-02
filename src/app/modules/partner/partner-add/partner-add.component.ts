@@ -47,8 +47,8 @@ export class PartnerAddComponent implements OnInit {
   partner$: Observable<Partner>;
   isLoading$: Observable<boolean>;
   isLoadingAction$: Observable<boolean>;
-  loadingErrors$: Observable<String[]>;
-  actionErrors$: Observable<String[]>;
+  loadingErrors$: Observable<string[]>;
+  actionErrors$: Observable<string[]>;
 
   ngOnInit() {
     this.initializeStoreVariables();
@@ -97,10 +97,8 @@ export class PartnerAddComponent implements OnInit {
             action.type === ActionTypes.ADD_PARTNER_FAILURE
         )
       )
-      .subscribe(() => {
-        this.notificationService.showError(
-          'An Error has Occurred. Please try again'
-        );
+       .subscribe(response => {
+        this.errorHandler.handleErrorResponse(response.payload.error);
       });
   }
 

@@ -32,6 +32,7 @@ export class LanguageKeyAddComponent implements OnInit {
     private notificationService: NotificationService,
     private validationMessagesService: ValidationMessagesService,
     private authorizationService: AuthorizationService,
+    private errorHandler: ErrorHandlerService,
     private actionsSubject$: ActionsSubject,
     private store$: Store<RootStoreState.State>,
     private route: ActivatedRoute
@@ -46,8 +47,8 @@ export class LanguageKeyAddComponent implements OnInit {
   languageKey$: Observable<LanguageKey>;
   isLoading$: Observable<boolean>;
   isLoadingAction$: Observable<boolean>;
-  loadingErrors$: Observable<String[]>;
-  actionErrors$: Observable<String[]>;
+  loadingErrors$: Observable<string[]>;
+  actionErrors$: Observable<string[]>;
 
   ngOnInit() {
     this.initializeStoreVariables();
@@ -96,10 +97,8 @@ export class LanguageKeyAddComponent implements OnInit {
             action.type === ActionTypes.ADD_LANGUAGEKEY_FAILURE
         )
       )
-      .subscribe(() => {
-        this.notificationService.showError(
-          'An Error has Occurred. Please try again'
-        );
+       .subscribe(response => {
+        this.errorHandler.handleErrorResponse(response.payload.error);
       });
   }
 

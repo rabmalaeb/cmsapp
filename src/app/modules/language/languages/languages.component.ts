@@ -13,6 +13,7 @@ import { filter } from 'rxjs/operators';
 import { NotificationService } from 'src/app/services/notification.service';
 import { ActionsSubject, Store } from '@ngrx/store';
 import { RootStoreState } from 'src/app/root-store';
+import { ErrorHandlerService } from 'src/app/services/error-handler.service';
 
 @Component({
   selector: 'app-languages',
@@ -32,6 +33,7 @@ export class LanguagesComponent implements OnInit {
   constructor(
     private alertService: AlertService,
     private authorizationService: AuthorizationService,
+    private errorHandler: ErrorHandlerService,
     private router: Router,
     private store$: Store<RootStoreState.State>,
     private notificationService: NotificationService,
@@ -80,10 +82,8 @@ export class LanguagesComponent implements OnInit {
 
     this.actionsSubject$
       .pipe(filter((action: any) => action.type === ActionTypes.LOAD_FAILURE))
-      .subscribe(() => {
-        this.notificationService.showError(
-          'An Error has occurred. Please try again'
-        );
+       .subscribe(response => {
+        this.errorHandler.handleErrorResponse(response.payload.error);
       });
   }
 

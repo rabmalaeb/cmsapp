@@ -20,6 +20,7 @@ import {
 import { Observable } from 'rxjs';
 import { map, filter } from 'rxjs/operators';
 import { ActionTypes } from '../store/actions';
+import { ErrorHandlerService } from 'src/app/services/error-handler.service';
 
 @Component({
   selector: 'app-user-add',
@@ -32,6 +33,7 @@ export class UserAddComponent implements OnInit {
     private notificationService: NotificationService,
     private authorizationService: AuthorizationService,
     private validationMessagesService: ValidationMessagesService,
+    private errorHandler: ErrorHandlerService,
     private actionsSubject$: ActionsSubject,
     private store$: Store<RootStoreState.State>,
     private route: ActivatedRoute
@@ -95,10 +97,8 @@ export class UserAddComponent implements OnInit {
             action.type === ActionTypes.ADD_USER_FAILURE
         )
       )
-      .subscribe(() => {
-        this.notificationService.showError(
-          'An Error has Occurred. Please try again'
-        );
+       .subscribe(response => {
+        this.errorHandler.handleErrorResponse(response.payload.error);
       });
   }
 

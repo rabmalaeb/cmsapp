@@ -24,6 +24,7 @@ import {
 } from 'src/app/root-store';
 import { ActionTypes } from '../store/actions';
 import { filter, map } from 'rxjs/operators';
+import { ErrorHandlerService } from 'src/app/services/error-handler.service';
 
 @Component({
   selector: 'app-admin-add',
@@ -36,6 +37,7 @@ export class AdminAddComponent implements OnInit {
     private notificationService: NotificationService,
     private validationMessagesService: ValidationMessagesService,
     private authorizationService: AuthorizationService,
+    private errorHandler: ErrorHandlerService,
     private actionsSubject$: ActionsSubject,
     private store$: Store<RootStoreState.State>,
     private route: ActivatedRoute
@@ -53,8 +55,8 @@ export class AdminAddComponent implements OnInit {
   admin$: Observable<Admin>;
   isLoading$: Observable<boolean>;
   isLoadingAction$: Observable<boolean>;
-  loadingErrors$: Observable<String[]>;
-  actionErrors$: Observable<String[]>;
+  loadingErrors$: Observable<string[]>;
+  actionErrors$: Observable<string[]>;
 
   ngOnInit() {
     this.initializeStoreVariables();
@@ -107,10 +109,8 @@ export class AdminAddComponent implements OnInit {
             action.type === ActionTypes.ADD_ADMIN_FAILURE
         )
       )
-      .subscribe(() => {
-        this.notificationService.showError(
-          'An Error has Occurred. Please try again'
-        );
+       .subscribe(response => {
+        this.errorHandler.handleErrorResponse(response.payload.error);
       });
   }
 

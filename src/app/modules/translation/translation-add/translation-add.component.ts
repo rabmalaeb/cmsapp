@@ -32,6 +32,7 @@ import {
   LanguagekeyStoreActions,
   LanguagekeyStoreSelectors
 } from '../../language-key/store';
+import { ErrorHandlerService } from 'src/app/services/error-handler.service';
 
 @Component({
   selector: 'app-translation-add',
@@ -45,6 +46,7 @@ export class TranslationAddComponent implements OnInit {
     private validationMessagesService: ValidationMessagesService,
     private authorizationService: AuthorizationService,
     private notificationService: NotificationService,
+    private errorHandler: ErrorHandlerService,
     private route: ActivatedRoute,
     private actionsSubject$: ActionsSubject,
     private store$: Store<RootStoreState.State>
@@ -64,8 +66,8 @@ export class TranslationAddComponent implements OnInit {
   translation$: Observable<Translation>;
   isLoading$: Observable<boolean>;
   isLoadingAction$: Observable<boolean>;
-  loadingErrors$: Observable<String[]>;
-  actionErrors$: Observable<String[]>;
+  loadingErrors$: Observable<string[]>;
+  actionErrors$: Observable<string[]>;
 
   ngOnInit() {
     this.initializeStoreVariables();
@@ -117,10 +119,8 @@ export class TranslationAddComponent implements OnInit {
             action.type === ActionTypes.ADD_TRANSLATION_FAILURE
         )
       )
-      .subscribe(() => {
-        this.notificationService.showError(
-          'An Error has Occurred. Please try again'
-        );
+       .subscribe(response => {
+        this.errorHandler.handleErrorResponse(response.payload.error);
       });
   }
 

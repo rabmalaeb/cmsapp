@@ -25,6 +25,7 @@ import { Observable } from 'rxjs';
 import { PermissionStoreSelectors, PermissionStoreActions } from '../store';
 import { ActionTypes } from '../store/actions';
 import { filter, map } from 'rxjs/operators';
+import { ErrorHandlerService } from 'src/app/services/error-handler.service';
 
 @Component({
   selector: 'app-permission-add',
@@ -37,6 +38,7 @@ export class PermissionAddComponent implements OnInit {
     private notificationService: NotificationService,
     private validationMessagesService: ValidationMessagesService,
     private authorizationService: AuthorizationService,
+    private errorHandler: ErrorHandlerService,
     private route: ActivatedRoute,
     private actionsSubject$: ActionsSubject,
     private store$: Store<RootStoreState.State>,
@@ -59,8 +61,8 @@ export class PermissionAddComponent implements OnInit {
   permission$: Observable<Permission>;
   isLoading$: Observable<boolean>;
   isLoadingAction$: Observable<boolean>;
-  loadingErrors$: Observable<String[]>;
-  actionErrors$: Observable<String[]>;
+  loadingErrors$: Observable<string[]>;
+  actionErrors$: Observable<string[]>;
 
   ngOnInit() {
     this.getAppModules();
@@ -110,10 +112,8 @@ export class PermissionAddComponent implements OnInit {
             action.type === ActionTypes.ADD_PERMISSION_FAILURE
         )
       )
-      .subscribe(() => {
-        this.notificationService.showError(
-          'An Error has Occurred. Please try again'
-        );
+       .subscribe(response => {
+        this.errorHandler.handleErrorResponse(response.payload.error);
       });
   }
 
