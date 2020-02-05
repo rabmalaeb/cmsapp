@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Action } from '@ngrx/store';
 import { Observable, of as observableOf } from 'rxjs';
-import { catchError, map, startWith, switchMap } from 'rxjs/operators';
+import { catchError, map, switchMap } from 'rxjs/operators';
 import * as userActions from './actions';
 import { UserService } from '../user.service';
 
@@ -13,7 +13,6 @@ export class UserStoreEffects {
   @Effect()
   loadRequestEffect$: Observable<Action> = this.actions$.pipe(
     ofType<userActions.LoadRequestAction>(userActions.ActionTypes.LOAD_REQUEST),
-    startWith(new userActions.LoadRequestAction()),
     switchMap(action =>
       this.userService.getUsers().pipe(
         map(

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Action } from '@ngrx/store';
 import { Observable, of as observableOf } from 'rxjs';
-import { catchError, map, startWith, switchMap } from 'rxjs/operators';
+import { catchError, map, switchMap } from 'rxjs/operators';
 import * as roleActions from './actions';
 import { RoleService } from '../role.service';
 
@@ -13,7 +13,6 @@ export class RoleStoreEffects {
   @Effect()
   loadRequestEffect$: Observable<Action> = this.actions$.pipe(
     ofType<roleActions.LoadRequestAction>(roleActions.ActionTypes.LOAD_REQUEST),
-    startWith(new roleActions.LoadRequestAction()),
     switchMap(action =>
       this.roleService.getRoles().pipe(
         map(

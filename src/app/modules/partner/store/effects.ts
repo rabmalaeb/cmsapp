@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Action } from '@ngrx/store';
 import { Observable, of as observableOf } from 'rxjs';
-import { catchError, map, startWith, switchMap } from 'rxjs/operators';
+import { catchError, map, switchMap } from 'rxjs/operators';
 import * as partnerActions from './actions';
 import { PartnerService } from '../partner.service';
 
@@ -18,7 +18,6 @@ export class PartnerStoreEffects {
     ofType<partnerActions.LoadRequestAction>(
       partnerActions.ActionTypes.LOAD_REQUEST
     ),
-    startWith(new partnerActions.LoadRequestAction()),
     switchMap(action =>
       this.partnerService.getPartners().pipe(
         map(

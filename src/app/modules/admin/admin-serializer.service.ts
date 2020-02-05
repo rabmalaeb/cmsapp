@@ -19,7 +19,8 @@ export class AdminSerializerService {
       email: adminResponse.attributes.email,
       active: adminResponse.attributes.active ? true : false,
       roleId: parseInt(adminResponse.attributes.roleId, 0),
-      role: this.roleSerializer.getRole(adminResponse.relationships.role)
+      role: this.roleSerializer.getRole(adminResponse.relationships.role),
+      token: adminResponse.attributes.token ? adminResponse.attributes.token : ''
     };
     return admin;
   }

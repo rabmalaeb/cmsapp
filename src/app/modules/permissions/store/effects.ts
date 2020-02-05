@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Action } from '@ngrx/store';
 import { Observable, of as observableOf } from 'rxjs';
-import { catchError, map, startWith, switchMap } from 'rxjs/operators';
+import { catchError, map, switchMap } from 'rxjs/operators';
 import * as permissionActions from './actions';
 import { PermissionService } from '../permission.service';
 
@@ -18,7 +18,6 @@ export class PermissionStoreEffects {
     ofType<permissionActions.LoadRequestAction>(
       permissionActions.ActionTypes.LOAD_REQUEST
     ),
-    startWith(new permissionActions.LoadRequestAction()),
     switchMap(action =>
       this.permissionService.getPermissions().pipe(
         map(

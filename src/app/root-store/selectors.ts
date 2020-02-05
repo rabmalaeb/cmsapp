@@ -20,5 +20,3 @@ export const selectIsLoading: MemoizedSelector<
     return user || role;
   }
 );
-
-//https://itnext.io/ngrx-best-practices-for-enterprise-angular-applications-6f00bcdf36d7

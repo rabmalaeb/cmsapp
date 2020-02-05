@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Action } from '@ngrx/store';
 import { Observable, of as observableOf } from 'rxjs';
-import { catchError, map, startWith, switchMap } from 'rxjs/operators';
+import { catchError, map, switchMap } from 'rxjs/operators';
 import * as productActions from './actions';
 import { ProductService } from '../product.service';
 
@@ -18,7 +18,6 @@ export class ProductStoreEffects {
     ofType<productActions.LoadRequestAction>(
       productActions.ActionTypes.LOAD_REQUEST
     ),
-    startWith(new productActions.LoadRequestAction()),
     switchMap(action =>
       this.productService.getProducts().pipe(
         map(

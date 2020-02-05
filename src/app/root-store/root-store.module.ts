@@ -1,8 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { StoreModule } from '@ngrx/store';
-import { EffectsModule } from '@ngrx/effects';
-import { StoreRouterConnectingModule  } from '@ngrx/router-store';
 import { UserStoreModule } from '../modules/user/store';
 import { RoleStoreModule } from '../modules/role/store';
 import { PermissionStoreModule } from '../modules/permissions/store';
@@ -32,9 +29,6 @@ import { LoginStoreModule } from '../modules/login/store';
     CategoryStoreModule,
     LoginStoreModule,
     PermissionStoreModule,
-    StoreModule.forRoot({}),
-    EffectsModule.forRoot([]),
-    StoreRouterConnectingModule.forRoot()
   ]
 })
 export class RootStoreModule { }
