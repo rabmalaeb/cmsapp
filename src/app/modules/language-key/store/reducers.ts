@@ -35,11 +35,11 @@ export function languagekeyReducer(
       };
     }
     case ActionTypes.GET_LANGUAGEKEY_SUCCESS: {
-      return {
+      return languageKeyAdapter.addOne(action.payload.item, {
         ...state,
         isLoadingItem: false,
         actionError: null
-      };
+      });
     }
     case ActionTypes.GET_LANGUAGEKEY_FAILURE: {
       return {

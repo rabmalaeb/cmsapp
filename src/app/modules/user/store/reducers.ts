@@ -32,11 +32,11 @@ export function userReducer(state = initialState, action: Actions): State {
       };
     }
     case ActionTypes.GET_USER_SUCCESS: {
-      return {
+      return userAdapter.addOne(action.payload.item, {
         ...state,
         isLoadingItem: false,
         actionError: null
-      };
+      });
     }
     case ActionTypes.GET_USER_FAILURE: {
       return {

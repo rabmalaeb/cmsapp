@@ -32,11 +32,11 @@ export function productReducer(state = initialState, action: Actions): State {
       };
     }
     case ActionTypes.GET_PRODUCT_SUCCESS: {
-      return {
+      return productAdapter.addOne(action.payload.item, {
         ...state,
         isLoadingItem: false,
         actionError: null
-      };
+      });
     }
     case ActionTypes.GET_PRODUCT_FAILURE: {
       return {

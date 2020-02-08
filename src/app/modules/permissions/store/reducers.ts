@@ -60,11 +60,11 @@ export function permissionReducer(
       };
     }
     case ActionTypes.GET_PERMISSION_SUCCESS: {
-      return {
+      return permissionAdapter.addOne(action.payload.item, {
         ...state,
         isLoadingItem: false,
         actionError: null
-      };
+      });
     }
     case ActionTypes.GET_PERMISSION_FAILURE: {
       return {

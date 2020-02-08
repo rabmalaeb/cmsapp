@@ -32,11 +32,11 @@ export function languageReducer(state = initialState, action: Actions): State {
       };
     }
     case ActionTypes.GET_LANGUAGE_SUCCESS: {
-      return {
+      return languageAdapter.addOne(action.payload.item, {
         ...state,
         isLoadingItem: false,
         actionError: null
-      };
+      });
     }
     case ActionTypes.GET_LANGUAGE_FAILURE: {
       return {

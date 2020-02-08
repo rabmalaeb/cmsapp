@@ -4,8 +4,6 @@ import { Actions, ActionTypes } from './actions';
 export function roleReducer(state = initialState, action: Actions): State {
   switch (action.type) {
     case ActionTypes.LOAD_REQUEST: {
-      console.log('we are here');
-
       return {
         ...state,
         isLoading: true,
@@ -34,11 +32,11 @@ export function roleReducer(state = initialState, action: Actions): State {
       };
     }
     case ActionTypes.GET_ROLE_SUCCESS: {
-      return {
+      return roleAdapter.addOne(action.payload.item, {
         ...state,
         isLoadingItem: false,
         actionError: null
-      };
+      });
     }
     case ActionTypes.GET_ROLE_FAILURE: {
       return {

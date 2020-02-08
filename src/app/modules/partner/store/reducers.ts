@@ -32,11 +32,11 @@ export function partnerReducer(state = initialState, action: Actions): State {
       };
     }
     case ActionTypes.GET_PARTNER_SUCCESS: {
-      return {
+      return partnerAdapter.addOne(action.payload.item, {
         ...state,
         isLoadingItem: false,
         actionError: null
-      };
+      });
     }
     case ActionTypes.GET_PARTNER_FAILURE: {
       return {

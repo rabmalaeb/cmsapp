@@ -32,11 +32,11 @@ export function translationReducer(state = initialState, action: Actions): State
       };
     }
     case ActionTypes.GET_TRANSLATION_SUCCESS: {
-      return {
+      return translationAdapter.addOne(action.payload.item, {
         ...state,
         isLoadingItem: false,
         actionError: null
-      };
+      });
     }
     case ActionTypes.GET_TRANSLATION_FAILURE: {
       return {

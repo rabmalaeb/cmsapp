@@ -32,11 +32,11 @@ export function categoryReducer(state = initialState, action: Actions): State {
       };
     }
     case ActionTypes.GET_CATEGORY_SUCCESS: {
-      return {
+      return categoryAdapter.addOne(action.payload.item, {
         ...state,
         isLoadingItem: false,
         actionError: null
-      };
+      });
     }
     case ActionTypes.GET_CATEGORY_FAILURE: {
       return {
