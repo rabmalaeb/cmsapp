@@ -2,6 +2,7 @@
   #formDirective="ngForm"
   (ngSubmit)="performAction(formDirective)"
   class="page__form"
+  *ngIf="!isLoadingForm"
 >
   <div class="form-item">
     <div class="form-item__value form-item__value_is-textfield">
