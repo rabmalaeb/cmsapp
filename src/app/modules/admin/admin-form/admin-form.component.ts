@@ -164,10 +164,6 @@ export class AdminFormComponent implements OnInit, OnChanges {
     return this.adminForm.get('confirmPassword');
   }
 
-  get validationMessages() {
-    return this.validationMessagesService.getValidationMessages();
-  }
-
   get buttonLabel() {
     if (this.isLoadingAction) {
       return 'Loading';
@@ -196,5 +192,9 @@ export class AdminFormComponent implements OnInit, OnChanges {
       admin.password = form.get('password').value;
     }
     return admin;
+  }
+
+  get validationMessages() {
+    return this.validationMessagesService.getValidationMessages();
   }
 }
