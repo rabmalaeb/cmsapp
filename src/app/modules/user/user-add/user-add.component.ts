@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NotificationService } from 'src/app/services/notification.service';
-import { ActionType } from 'src/app/models/general';
+import { ActionType, ModuleName } from 'src/app/models/general';
 import { ActivatedRoute } from '@angular/router';
 import { User } from '../user';
 import { Store, ActionsSubject } from '@ngrx/store';
@@ -9,10 +9,11 @@ import {
   UserStoreActions,
   UserStoreSelectors
 } from 'src/app/root-store';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { ActionTypes } from '../store/actions';
 import { ErrorHandlerService } from 'src/app/services/error-handler.service';
+import { AuthorizationService } from 'src/app/services/authorization.service';
 
 @Component({
   selector: 'app-user-add',
@@ -25,6 +26,7 @@ export class UserAddComponent implements OnInit {
     private errorHandler: ErrorHandlerService,
     private actionsSubject$: ActionsSubject,
     private store$: Store<RootStoreState.State>,
+    private authorizationService: AuthorizationService,
     private route: ActivatedRoute
   ) {}
 
@@ -122,5 +124,15 @@ export class UserAddComponent implements OnInit {
       return 'View User';
     }
     return 'Add User';
+  }
+
+  get canEditUser$() {
+    if (this.actionType === ActionType.ADD) {
+      return of(true);
+    }
+    return (
+      this.actionType === ActionType.EDIT &&
+      this.authorizationService.canEdit(ModuleName.USERS)
+    );
   }
 }

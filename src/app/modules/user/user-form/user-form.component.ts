@@ -5,6 +5,7 @@ import { ActionType, ModuleName, ALERT_MESSAGES } from 'src/app/models/general';
 import { AuthorizationService } from 'src/app/services/authorization.service';
 import { NotificationService } from 'src/app/services/notification.service';
 import { ValidationMessagesService } from 'src/app/services/validation-messages.service';
+import { of } from 'rxjs';
 
 @Component({
   selector: 'app-user-form',
@@ -14,7 +15,6 @@ import { ValidationMessagesService } from 'src/app/services/validation-messages.
 export class UserFormComponent implements OnInit, OnChanges {
   constructor(
     private form: FormBuilder,
-    private authorizationService: AuthorizationService,
     private notificationService: NotificationService,
     private validationMessagesService: ValidationMessagesService
   ) {}
@@ -23,6 +23,7 @@ export class UserFormComponent implements OnInit, OnChanges {
   @Input() user: User;
   @Input() actionType: ActionType;
   @Input() isLoadingAction: boolean;
+  @Input() canEditUser = false;
   @Input() isLoading: boolean;
   @Output() submitForm = new EventEmitter<User>();
   formGroupDirective: FormGroupDirective;
@@ -84,16 +85,6 @@ export class UserFormComponent implements OnInit, OnChanges {
       email: this.email.value,
       mobile: this.mobile.value
     };
-  }
-
-  get canEditUser() {
-    if (this.actionType === ActionType.ADD) {
-      return true;
-    }
-    return (
-      this.actionType === ActionType.EDIT &&
-      this.authorizationService.canEdit(ModuleName.USERS)
-    );
   }
 
   get buttonLabel() {
