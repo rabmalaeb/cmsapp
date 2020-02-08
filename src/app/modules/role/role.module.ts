@@ -6,11 +6,13 @@ import { RoleAddComponent } from './role-add/role-add.component';
 import { SharedModule } from 'src/app/shared.module';
 import { ComponentsModule } from 'src/app/components/components.module';
 import { PermissionModule } from '../permissions/permission.module';
+import { RoleFormComponent } from './role-form/role-form.component';
 
 @NgModule({
   declarations: [
     RolesComponent,
-    RoleAddComponent
+    RoleAddComponent,
+    RoleFormComponent
   ],
   imports: [
     CommonModule,
