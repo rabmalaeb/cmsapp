@@ -1,20 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import {
-  Validators,
-  FormGroup,
-  FormBuilder,
-  FormGroupDirective
-} from '@angular/forms';
+import { FormGroup, FormBuilder } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Category } from '../category';
 import { AuthorizationService } from 'src/app/services/authorization.service';
-import { ActionType, ALERT_MESSAGES, ModuleName } from 'src/app/models/general';
+import { ActionType, ModuleName } from 'src/app/models/general';
 import { NotificationService } from 'src/app/services/notification.service';
 import { ValidationMessagesService } from 'src/app/services/validation-messages.service';
 import { map, filter } from 'rxjs/operators';
 import { ActionsSubject, Store } from '@ngrx/store';
 import { RootStoreState } from 'src/app/root-store';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { CategoryStoreSelectors, CategoryStoreActions } from '../store';
 import { ActionTypes } from '../store/actions';
 import { ErrorHandlerService } from 'src/app/services/error-handler.service';
@@ -26,7 +21,6 @@ import { ErrorHandlerService } from 'src/app/services/error-handler.service';
 })
 export class CategoryAddComponent implements OnInit {
   constructor(
-    private form: FormBuilder,
     private notificationService: NotificationService,
     private validationMessagesService: ValidationMessagesService,
     private authorizationService: AuthorizationService,
@@ -38,10 +32,6 @@ export class CategoryAddComponent implements OnInit {
 
   categoryForm: FormGroup;
   actionType: ActionType;
-  category: Category;
-  isLoadingCategory = false;
-  isLoadingCategories = false;
-  isLoading = false;
   categories: Category[] = [];
   category$: Observable<Category>;
   categories$: Observable<Category[]>;
@@ -60,7 +50,6 @@ export class CategoryAddComponent implements OnInit {
         this.actionType = ActionType.EDIT;
       } else {
         this.actionType = ActionType.ADD;
-        this.buildNewCategoryForm();
       }
     });
   }
@@ -72,6 +61,10 @@ export class CategoryAddComponent implements OnInit {
 
     this.isLoadingAction$ = this.store$.select(
       CategoryStoreSelectors.selectIsLoadingAction
+    );
+
+    this.isLoading$ = this.store$.select(
+      CategoryStoreSelectors.selectIsLoadingItem
     );
 
     this.actionsSubject$
@@ -98,7 +91,7 @@ export class CategoryAddComponent implements OnInit {
             action.type === ActionTypes.ADD_CATEGORY_FAILURE
         )
       )
-       .subscribe(response => {
+      .subscribe(response => {
         this.errorHandler.handleErrorResponse(response.payload.error);
       });
   }
@@ -111,26 +104,6 @@ export class CategoryAddComponent implements OnInit {
     this.loadingErrors$ = this.store$.select(
       CategoryStoreSelectors.selectCategoryLoadingError
     );
-    this.buildExistingCategoryForm();
-  }
-
-  buildNewCategoryForm() {
-    this.categoryForm = this.form.group({
-      name: ['', [Validators.required]],
-      description: ['', [Validators.required]],
-      parentId: ['', [Validators.required]]
-    });
-  }
-
-  buildExistingCategoryForm() {
-    this.category$.subscribe(category => {
-      this.category = category;
-      this.categoryForm = this.form.group({
-        name: [category.name, [Validators.required]],
-        description: [category.description, [Validators.required]],
-        parentId: [category.parentId, [Validators.required]]
-      });
-    });
   }
 
   getCategories() {
@@ -140,62 +113,24 @@ export class CategoryAddComponent implements OnInit {
     );
   }
 
-  get name() {
-    return this.categoryForm.get('name');
-  }
-
-  get description() {
-    return this.categoryForm.get('description');
-  }
-
-  get parentId() {
-    return this.categoryForm.get('parentId');
-  }
-
-  performAction(formData: any, formDirective: FormGroupDirective) {
-    if (!this.categoryForm.valid) {
-      this.notificationService.showError(ALERT_MESSAGES.FORM_NOT_VALID);
-      return;
-    }
-    if (this.category) {
-      this.updateCategory(this.buildCategoryParams());
+  performAction(category: Category) {
+    if (this.actionType === ActionType.EDIT) {
+      this.updateCategory(category);
     } else {
-      this.addCategory(this.buildCategoryParams());
+      this.addCategory(category);
     }
   }
 
-  buildCategoryParams(): Category {
-    const category = new Category();
-    category.name = this.name.value;
-    category.description = this.description.value;
-    category.parentId = this.parentId.value;
-    return category;
-  }
-
-  addCategory(params: Category) {
+  addCategory(category: Category) {
     this.store$.dispatch(
-      new CategoryStoreActions.AddCategoryRequestAction(params)
+      new CategoryStoreActions.AddCategoryRequestAction(category)
     );
   }
 
-  updateCategory(params: Category) {
-    const id = this.category.id;
+  updateCategory(category: Category) {
+    const id = category.id;
     this.store$.dispatch(
-      new CategoryStoreActions.UpdateCategoryRequestAction(id, params)
-    );
-  }
-
-  get buttonLabel() {
-    return this.isLoadingAction$.pipe(
-      map(isLoading => {
-        if (isLoading) {
-          return 'Loading';
-        }
-        if (this.actionType === ActionType.EDIT) {
-          return 'Update';
-        }
-        return 'Add';
-      })
+      new CategoryStoreActions.UpdateCategoryRequestAction(id, category)
     );
   }
 
@@ -210,9 +145,9 @@ export class CategoryAddComponent implements OnInit {
     return this.validationMessagesService.getValidationMessages();
   }
 
-  get canEditCategory() {
+  get canEditCategory$() {
     if (this.actionType === ActionType.ADD) {
-      return true;
+      return of(true);
     }
     return (
       this.actionType === ActionType.EDIT &&

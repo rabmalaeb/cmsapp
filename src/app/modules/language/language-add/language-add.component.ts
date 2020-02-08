@@ -4,7 +4,6 @@ import { NotificationService } from 'src/app/services/notification.service';
 import { ActionType, ModuleName } from 'src/app/models/general';
 import { ActivatedRoute } from '@angular/router';
 import { Language } from '../language';
-import { Category } from '../../category/category';
 import { AuthorizationService } from 'src/app/services/authorization.service';
 import { ActionsSubject, Store } from '@ngrx/store';
 import { RootStoreState } from 'src/app/root-store';
@@ -31,9 +30,6 @@ export class LanguageAddComponent implements OnInit {
   ) {}
 
   actionType: ActionType;
-  isLoadingLanguage = false;
-  isLoading = false;
-  categories: Category[] = [];
   language$: Observable<Language>;
   isLoading$: Observable<boolean>;
   isLoadingAction$: Observable<boolean>;
