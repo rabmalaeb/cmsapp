@@ -5,7 +5,7 @@ export function roleReducer(state = initialState, action: Actions): State {
   switch (action.type) {
     case ActionTypes.LOAD_REQUEST: {
       console.log('we are here');
-      
+
       return {
         ...state,
         isLoading: true,
@@ -29,21 +29,21 @@ export function roleReducer(state = initialState, action: Actions): State {
     case ActionTypes.GET_ROLE_REQUEST: {
       return {
         ...state,
-        isLoading: true,
+        isLoadingItem: true,
         actionError: null
       };
     }
     case ActionTypes.GET_ROLE_SUCCESS: {
       return {
         ...state,
-        isLoading: false,
+        isLoadingItem: false,
         actionError: null
       };
     }
     case ActionTypes.GET_ROLE_FAILURE: {
       return {
         ...state,
-        isLoading: false,
+        isLoadingItem: false,
         actionError: action.payload.error
       };
     }

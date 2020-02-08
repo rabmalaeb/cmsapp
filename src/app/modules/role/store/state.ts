@@ -9,6 +9,7 @@ export const roleAdapter: EntityAdapter<Role> = createEntityAdapter<Role>({
 export interface State extends EntityState<Role> {
   isLoading?: boolean;
   isLoadingAction?: boolean;
+  isLoadingItem?: boolean;
   loadingError?: any;
   actionError?: any;
 }

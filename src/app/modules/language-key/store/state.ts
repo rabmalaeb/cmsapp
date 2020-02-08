@@ -12,6 +12,7 @@ export const languageKeyAdapter: EntityAdapter<
 export interface State extends EntityState<LanguageKey> {
   isLoading?: boolean;
   isLoadingAction?: boolean;
+  isLoadingItem?: boolean;
   loadingError?: any;
   actionError?: any;
 }

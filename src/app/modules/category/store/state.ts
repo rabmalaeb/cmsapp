@@ -11,6 +11,7 @@ export const categoryAdapter: EntityAdapter<Category> = createEntityAdapter<
 export interface State extends EntityState<Category> {
   isLoading?: boolean;
   isLoadingAction?: boolean;
+  isLoadingItem?: boolean;
   loadingError?: any;
   actionError?: any;
 }

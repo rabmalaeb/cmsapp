@@ -9,6 +9,7 @@ export const userAdapter: EntityAdapter<User> = createEntityAdapter<User>({
 export interface State extends EntityState<User> {
   isLoading?: boolean;
   isLoadingAction?: boolean;
+  isLoadingItem?: boolean;
   loadingError?: any;
   actionError?: any;
 }

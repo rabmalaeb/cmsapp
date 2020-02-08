@@ -13,6 +13,8 @@ export const getActionError = (state: State): any => state.actionError;
 
 export const getIsLoading = (state: State): boolean => state.isLoading;
 
+export const getIsLoadingItem = (state: State): boolean => state.isLoadingItem;
+
 export const getIsLoadingAction = (state: State): boolean => state.isLoadingAction;
 
 export const selectProductState: MemoizedSelector<
@@ -61,4 +63,12 @@ export const selectIsLoadingAction: MemoizedSelector<
 > = createSelector(
   selectProductState,
   getIsLoadingAction
+);
+
+export const selectIsLoadingItem: MemoizedSelector<
+  object,
+  boolean
+> = createSelector(
+  selectProductState,
+  getIsLoadingItem
 );

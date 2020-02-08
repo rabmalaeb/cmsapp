@@ -27,21 +27,21 @@ export function userReducer(state = initialState, action: Actions): State {
     case ActionTypes.GET_USER_REQUEST: {
       return {
         ...state,
-        isLoading: true,
+        isLoadingItem: true,
         actionError: null
       };
     }
     case ActionTypes.GET_USER_SUCCESS: {
       return {
         ...state,
-        isLoading: false,
+        isLoadingItem: false,
         actionError: null
       };
     }
     case ActionTypes.GET_USER_FAILURE: {
       return {
         ...state,
-        isLoading: false,
+        isLoadingItem: false,
         actionError: action.payload.error
       };
     }

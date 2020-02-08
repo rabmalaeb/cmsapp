@@ -27,21 +27,21 @@ export function partnerReducer(state = initialState, action: Actions): State {
     case ActionTypes.GET_PARTNER_REQUEST: {
       return {
         ...state,
-        isLoading: true,
+        isLoadingItem: true,
         actionError: null
       };
     }
     case ActionTypes.GET_PARTNER_SUCCESS: {
       return {
         ...state,
-        isLoading: false,
+        isLoadingItem: false,
         actionError: null
       };
     }
     case ActionTypes.GET_PARTNER_FAILURE: {
       return {
         ...state,
-        isLoading: false,
+        isLoadingItem: false,
         actionError: action.payload.error
       };
     }

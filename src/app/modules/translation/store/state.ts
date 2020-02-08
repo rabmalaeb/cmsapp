@@ -10,6 +10,7 @@ export const translationAdapter: EntityAdapter<Translation> = createEntityAdapte
 export interface State extends EntityState<Translation> {
   isLoading?: boolean;
   isLoadingAction?: boolean;
+  isLoadingItem?: boolean;
   loadingError?: any;
   actionError?: any;
 }

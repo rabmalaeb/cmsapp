@@ -11,6 +11,7 @@ export const languageAdapter: EntityAdapter<Language> = createEntityAdapter<
 export interface State extends EntityState<Language> {
   isLoading?: boolean;
   isLoadingAction?: boolean;
+  isLoadingItem?: boolean;
   loadingError?: any;
   actionError?: any;
 }

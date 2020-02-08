@@ -11,6 +11,7 @@ export const partnerAdapter: EntityAdapter<Partner> = createEntityAdapter<
 export interface State extends EntityState<Partner> {
   isLoading?: boolean;
   isLoadingAction?: boolean;
+  isLoadingItem?: boolean;
   loadingError?: any;
   actionError?: any;
 }

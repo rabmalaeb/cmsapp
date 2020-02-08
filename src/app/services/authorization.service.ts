@@ -2,17 +2,15 @@ import { Injectable } from '@angular/core';
 
 import { ModuleName, PermissionType } from 'src/app/models/general';
 import { AuthenticationService } from './authentication.service';
-import { RoleService } from '../modules/role/role.service';
 import { Permission } from '../modules/permissions/permission';
-import { RootStoreState, RoleStoreActions } from '../root-store';
+import { RootStoreState } from '../root-store';
 import { Store } from '@ngrx/store';
 import {
   PermissionStoreActions,
   PermissionStoreSelectors
 } from '../modules/permissions/store';
-import { Observable, of } from 'rxjs';
-import { map, tap, take, filter, switchMap } from 'rxjs/operators';
-import { selectAllPermissionItems } from '../modules/permissions/store/selectors';
+import { Observable } from 'rxjs';
+import { map, take, filter, switchMap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'

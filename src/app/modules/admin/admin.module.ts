@@ -5,11 +5,13 @@ import { AdminRoutingModule } from './admin-routing.module';
 import { AdminAddComponent } from './admin-add/admin-add.component';
 import { ComponentsModule } from 'src/app/components/components.module';
 import { SharedModule } from 'src/app/shared.module';
+import { AdminFormComponent } from './admin-form/admin-form.component';
 
 @NgModule({
   declarations: [
     AdminsComponent,
-    AdminAddComponent
+    AdminAddComponent,
+    AdminFormComponent
   ],
   imports: [CommonModule, AdminRoutingModule, ComponentsModule, SharedModule]
 })

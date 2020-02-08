@@ -27,21 +27,21 @@ export function productReducer(state = initialState, action: Actions): State {
     case ActionTypes.GET_PRODUCT_REQUEST: {
       return {
         ...state,
-        isLoading: true,
+        isLoadingItem: true,
         actionError: null
       };
     }
     case ActionTypes.GET_PRODUCT_SUCCESS: {
       return {
         ...state,
-        isLoading: false,
+        isLoadingItem: false,
         actionError: null
       };
     }
     case ActionTypes.GET_PRODUCT_FAILURE: {
       return {
         ...state,
-        isLoading: false,
+        isLoadingItem: false,
         actionError: action.payload.error
       };
     }
