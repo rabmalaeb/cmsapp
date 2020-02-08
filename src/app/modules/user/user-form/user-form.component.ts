@@ -1,11 +1,9 @@
 import { Component, OnInit, Input, Output, EventEmitter, OnChanges } from '@angular/core';
 import { Validators, FormBuilder, FormGroup, FormGroupDirective } from '@angular/forms';
-import { User } from '../user';
-import { ActionType, ModuleName, ALERT_MESSAGES } from 'src/app/models/general';
-import { AuthorizationService } from 'src/app/services/authorization.service';
-import { NotificationService } from 'src/app/services/notification.service';
 import { ValidationMessagesService } from 'src/app/services/validation-messages.service';
-import { of } from 'rxjs';
+import { NotificationService } from 'src/app/services/notification.service';
+import { ActionType, ALERT_MESSAGES } from 'src/app/models/general';
+import { User } from '../user';
 
 @Component({
   selector: 'app-user-form',
@@ -55,6 +53,7 @@ export class UserFormComponent implements OnInit, OnChanges {
 
   buildExistingUserForm() {
     this.userForm = this.form.group({
+      id: [this.user.id],
       firstName: [this.user.firstName, [Validators.required]],
       lastName: [this.user.lastName, [Validators.required]],
       email: [this.user.email, [Validators.required, Validators.email]],
@@ -80,6 +79,7 @@ export class UserFormComponent implements OnInit, OnChanges {
 
   buildUserParams(): User {
     return {
+      id: this.userForm.get('id') ? this.userForm.get('id').value : '',
       firstName: this.firstName.value,
       lastName: this.lastName.value,
       email: this.email.value,
