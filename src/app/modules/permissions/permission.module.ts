@@ -7,7 +7,7 @@ import { PermissionAddComponent } from './permission-add/permission-add.componen
 import { SharedModule } from 'src/app/shared.module';
 import { ComponentsModule } from 'src/app/components/components.module';
 import { PermissionGroupComponent } from './permission-group/permission-group.component';
-import { PermissionsFormComponent } from './permissions-form/permissions-form.component';
+import { PermissionFormComponent } from './permissions-form/permissions-form.component';
 
 @NgModule({
   declarations: [
@@ -15,7 +15,7 @@ import { PermissionsFormComponent } from './permissions-form/permissions-form.co
     PermissionItemComponent,
     PermissionAddComponent,
     PermissionGroupComponent,
-    PermissionsFormComponent
+    PermissionFormComponent
   ],
   imports: [
     CommonModule,
