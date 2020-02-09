@@ -14,7 +14,6 @@ export class ErrorHandlerService {
       });
     } else {
       this.notificationService.showError('An Error has Occurred');
-      console.warn('errorResponse ', errorResponse);
     }
   }
 }

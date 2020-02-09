@@ -3,7 +3,7 @@
   [formGroup]="adminForm"
   (ngSubmit)="performAction(ngForm)"
   class="page__form"
-  *ngIf="!isLoadingForm"
+  *ngIf="!isLoadingForm else loadingMask"
 >
   <div class="form-item">
     <div class="form-item__value form-item__value_is-textfield">
@@ -180,3 +180,7 @@
     </div>
   </div>
 </form>
+
+<ng-template #loadingMask>
+  <app-form-loading [size]="6"></app-form-loading>
+</ng-template>

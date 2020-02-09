@@ -14,11 +14,15 @@ import {
 } from '@angular/forms';
 import { ValidationMessagesService } from 'src/app/services/validation-messages.service';
 import { NotificationService } from 'src/app/services/notification.service';
-import { ActionType, ALERT_MESSAGES, NavItem, PermissionType } from 'src/app/models/general';
+import {
+  ActionType,
+  ALERT_MESSAGES,
+  NavItem,
+  PermissionType
+} from 'src/app/models/general';
 import { Permission, PermissionRequest } from '../permission';
 import { capitalize } from 'src/app/utils/general';
 import { AppService } from 'src/app/services/app.service';
-import { AppModule } from 'src/app/app.module';
 
 @Component({
   selector: 'app-permissions-form',
@@ -33,7 +37,6 @@ export class PermissionFormComponent implements OnInit, OnChanges {
     private validationMessagesService: ValidationMessagesService
   ) {}
 
-  permissionForm: FormGroup;
   @Input() permission: Permission;
   @Input() actionType: ActionType;
   @Input() isLoadingAction: boolean;
@@ -41,6 +44,7 @@ export class PermissionFormComponent implements OnInit, OnChanges {
   @Input() isLoading: boolean;
   @Output() submitForm = new EventEmitter<PermissionRequest>();
   formGroupDirective: FormGroupDirective;
+  permissionForm: FormGroup;
   appModules: NavItem[];
   permissionTypes: PermissionType[] = [
     PermissionType.ADD,
@@ -49,7 +53,9 @@ export class PermissionFormComponent implements OnInit, OnChanges {
     PermissionType.DELETE
   ];
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.getAppModules();
+  }
 
   ngOnChanges() {
     if (this.isLoadingAction) {
