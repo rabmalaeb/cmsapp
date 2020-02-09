@@ -5,10 +5,7 @@ import { NotificationService } from './notification.service';
   providedIn: 'root'
 })
 export class ErrorHandlerService {
-
-  constructor(
-    private notificationService: NotificationService
-  ) { }
+  constructor(private notificationService: NotificationService) {}
 
   handleErrorResponse(errorResponse) {
     if (errorResponse.error && errorResponse.error.errors) {

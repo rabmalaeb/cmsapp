@@ -1,7 +1,7 @@
 <form
   [formGroup]="categoryForm"
   #formDirective="ngForm"
-  (ngSubmit)="performAction(categoryForm, formDirective)"
+  (ngSubmit)="performAction(formDirective)"
   class="page__form"
   *ngIf="!isLoadingForm"
 >

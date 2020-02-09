@@ -1,7 +1,7 @@
 <form
   [formGroup]="languageKeyForm"
   #formDirective="ngForm"
-  (ngSubmit)="performAction(languageKeyForm, formDirective)"
+  (ngSubmit)="performAction(formDirective)"
   class="page__form"
   *ngIf="!isLoadingForm"
 >
