@@ -59,10 +59,7 @@
       <mat-form-field appearance="outline">
         <mat-label>Parent Category</mat-label>
         <mat-select placeholder="Parent Category" formControlName="parentId">
-          <mat-option
-            *ngFor="let category of categories"
-            [value]="category.id"
-          >
+          <mat-option *ngFor="let category of categories" [value]="category.id">
             {{ category.name }}
           </mat-option>
         </mat-select>

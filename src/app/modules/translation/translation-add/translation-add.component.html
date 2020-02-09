@@ -7,104 +7,31 @@
         </div>
       </div>
       <div class="page__actions">
-        <button mat-button class="button button_is-primary" routerLink="/translations">
+        <button
+          mat-button
+          class="button button_is-primary"
+          routerLink="/translations"
+        >
           Back To Translations
         </button>
       </div>
     </div>
-    <div class="page__form-container" *ngIf="!isLoadingTranslation">
-      <form
-        [formGroup]="translationForm"
-        #formDirective="ngForm"
-        (ngSubmit)="performAction(translationForm, formDirective)"
-        class="page__form"
+    <div class="page__form-container">
+      <app-translation-form
+        [translation]="translation$ | async"
+        [languageKeys]="languageKeys$ | async"
+        [languages]="languages$ | async"
+        [partners]="partners$ | async"
+        [translation]="translation$ | async"
+        [isLoading]="isLoading$ | async"
+        [isLoadingPartners]="isLoadingPartners$ | async"
+        [isLoadingLanguageKeys]="isLoadingLanguageKeys$ | async"
+        [isLoadingLanguages]="isLoadingLanguages$ | async"
+        [canEditTranslation]="canEditTranslation$ | async"
+        [isLoadingAction]="isLoadingAction$ | async"
+        (submitForm)="performAction($event)"
       >
-        <div class="form-item" *ngIf="!isLoadingLanguages">
-          <div class="form-item__value form-item__value_is-textfield">
-            <mat-form-field appearance="outline">
-              <mat-label>Language</mat-label>
-              <mat-select placeholder="Language" formControlName="languageId">
-                <mat-option
-                  *ngFor="let language of languages$ | async"
-                  [value]="language.id"
-                >
-                  {{ language.name }}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
-          </div>
-        </div>
-        <div class="form-item" *ngIf="!isLoadingPartners">
-          <div class="form-item__value form-item__value_is-textfield">
-            <mat-form-field appearance="outline">
-              <mat-label>Partner</mat-label>
-              <mat-select placeholder="Partner" formControlName="partnerId">
-                <mat-option
-                  *ngFor="let partner of partners$ | async"
-                  [value]="partner.id"
-                >
-                  {{ partner.name }}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
-          </div>
-        </div>
-        <div class="form-item" *ngIf="!isLoadingLanguageKeys">
-          <div class="form-item__value form-item__value_is-textfield">
-            <mat-form-field appearance="outline">
-              <mat-label>Key</mat-label>
-              <mat-select placeholder="Key" formControlName="languageKeyId">
-                <mat-option
-                  *ngFor="let languageKey of languageKeys$ | async"
-                  [value]="languageKey.id"
-                >
-                  {{ languageKey.name }}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
-          </div>
-        </div>
-        <div class="form-item">
-          <div class="form-item__value form-item__value_is-textfield">
-            <mat-form-field appearance="outline">
-              <mat-label>Value</mat-label>
-              <input
-                matInput
-                id="value"
-                name="value"
-                placeholder="Value"
-                [formControl]="value"
-              />
-              <mat-error
-                *ngFor="let validation of validationMessages.requiredField"
-              >
-                <mat-error
-                  class="error-message"
-                  *ngIf="
-                    value.hasError(validation.type) &&
-                    (value.dirty || value.touched)
-                  "
-                >
-                  {{ validation.message }}</mat-error
-                >
-              </mat-error>
-            </mat-form-field>
-          </div>
-        </div>
-
-        <div class="page__form-button-container" *ngIf="canEditTranslation">
-          <div class="page__form__button">
-            <button mat-button type="reset" class="button button_is-secondary">
-              Reset
-            </button>
-          </div>
-          <div class="page__form__button">
-            <button mat-button type="submit" class="button button_is-primary">
-              {{ buttonLabel | async }}
-            </button>
-          </div>
-        </div>
-      </form>
+      </app-translation-form>
     </div>
   </div>
 </div>
