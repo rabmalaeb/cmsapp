@@ -2,6 +2,7 @@ import { Injectable, Inject } from '@angular/core';
 import { LOCAL_STORAGE, StorageService } from 'ngx-webstorage-service';
 import { AlertService } from './alert.service';
 import { Admin } from '../modules/admin/admin';
+import { LogoutService } from './logout.service';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +12,8 @@ export class AuthenticationService {
 
   constructor(
     @Inject(LOCAL_STORAGE) private storage: StorageService,
-    private alertService: AlertService
+    private alertService: AlertService,
+    private logoutService: LogoutService
   ) {}
 
   setUserSession(admin: Admin) {
@@ -44,8 +46,7 @@ export class AuthenticationService {
       'Yes',
       'No',
       () => {
-        this.storage.clear();
-        location.reload();
+       this.logoutService.logout();
       }
     );
   }

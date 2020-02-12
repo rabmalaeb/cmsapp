@@ -9,4 +9,5 @@ export interface Admin {
   roleId: number;
   role?: Role;
   password?: string;
+  token?: string;
 }

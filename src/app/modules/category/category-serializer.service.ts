@@ -18,7 +18,6 @@ export class CategorySerializerService {
     category.description = categoryResponse.attributes.description;
     category.parentId = categoryResponse.attributes.parentId;
     category.parent = this.getCategory(categoryResponse.relationships.parentCategory);
-    console.log('cate ', category);
     return category;
   }
 }

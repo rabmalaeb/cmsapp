@@ -1,11 +1,22 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { MatTableDataSource, MatPaginator } from '@angular/material';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
 import { AlertService } from 'src/app/services/alert.service';
 import { User } from '../user';
 import { UserService } from '../user.service';
 import { AuthorizationService } from 'src/app/services/authorization.service';
 import { ModuleName } from 'src/app/models/general';
+import { Observable } from 'rxjs';
+import { Store, ActionsSubject } from '@ngrx/store';
+import {
+  RootStoreState,
+  UserStoreSelectors,
+  UserStoreActions
+} from 'src/app/root-store';
+import { ActionTypes } from '../store/actions';
+import { NotificationService } from 'src/app/services/notification.service';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-users',
@@ -15,6 +26,11 @@ import { ModuleName } from 'src/app/models/general';
 export class UsersComponent implements OnInit {
   isLoading = false;
   users: User[] = [];
+
+  users$: Observable<User[]>;
+  error$: Observable<string>;
+  isLoading$: Observable<boolean>;
+
   displayedColumns: string[] = [
     'id',
     'first_name',
@@ -24,32 +40,66 @@ export class UsersComponent implements OnInit {
     'action'
   ];
   dataSource: MatTableDataSource<any>;
-  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 
   constructor(
     private userService: UserService,
     private alertService: AlertService,
     private authorizationService: AuthorizationService,
+    private store$: Store<RootStoreState.State>,
+    private actionsSubject$: ActionsSubject,
+    private notificationService: NotificationService,
     private router: Router
   ) {}
 
   ngOnInit() {
     this.getUsers();
+    this.initializeStoreVariables();
+  }
+
+  initializeStoreVariables() {
+    this.users$ = this.store$.select(UserStoreSelectors.selectAllUserItems);
+
+    this.error$ = this.store$.select(UserStoreSelectors.selectUserLoadingError);
+
+    this.isLoading$ = this.store$.select(
+      UserStoreSelectors.selectUserIsLoading
+    );
+
+    this.actionsSubject$
+      .pipe(
+        filter((action: any) => action.type === ActionTypes.DELETE_USER_SUCCESS)
+      )
+      .subscribe(() => {
+        this.notificationService.showSuccess('User Deleted Successfully');
+      });
+
+    this.actionsSubject$
+      .pipe(
+        filter((action: any) => action.type === ActionTypes.DELETE_USER_FAILURE)
+      )
+      .subscribe(() => {
+        this.notificationService.showError('Could not delete User. Please try again');
+      });
+
+    this.actionsSubject$
+      .pipe(
+        filter((action: any) => action.type === ActionTypes.LOAD_FAILURE)
+      )
+      .subscribe(() => {
+        this.notificationService.showError('An Error has occurred. Please try again');
+      });
   }
 
   getUsers() {
-    this.isLoading = true;
-    this.userService.getUsers().subscribe(response => {
-      this.isLoading = false;
-      this.users = response;
-      this.setDataSource();
-    });
+    this.store$.dispatch(new UserStoreActions.LoadRequestAction());
   }
 
   setDataSource() {
     this.dataSource = new MatTableDataSource<User>(this.users);
     this.dataSource.paginator = this.paginator;
   }
+
   addUser() {
     this.router.navigate(['users/add']);
   }
@@ -76,10 +126,7 @@ export class UsersComponent implements OnInit {
       'Yes',
       'No',
       () => {
-        this.userService.deleteUser(id).subscribe(response => {
-          this.users = response;
-          this.setDataSource();
-        });
+        this.store$.dispatch(new UserStoreActions.DeleteUserRequestAction(id));
       }
     );
   }

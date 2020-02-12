@@ -6,8 +6,15 @@ import {
   Validators,
   FormGroupDirective
 } from '@angular/forms';
-import { LoginService } from '../login.service';
 import { NotificationService } from 'src/app/services/notification.service';
+import { Store, ActionsSubject } from '@ngrx/store';
+import { RootStoreState } from 'src/app/root-store';
+import { LoginRequest } from '../login';
+import { LoginStoreActions, LoginStoreSelectors } from '../store';
+import { Observable } from 'rxjs';
+import { map, filter } from 'rxjs/operators';
+import { ActionTypes } from '../store/actions';
+import { AuthenticationService } from 'src/app/services/authentication.service';
 
 @Component({
   selector: 'app-login',
@@ -19,14 +26,17 @@ export class LoginComponent implements OnInit {
     private validationMessageService: ValidationMessagesService,
     private notificationService: NotificationService,
     private form: FormBuilder,
-    private loginService: LoginService
+    private store$: Store<RootStoreState.State>,
+    private actionsSubject$: ActionsSubject,
+    private authenticationService: AuthenticationService
   ) {}
 
   loginForm: FormGroup;
-  isLoading: boolean;
+  isLoading$: Observable<boolean>;
 
   ngOnInit() {
     this.buildForm();
+    this.initializeStoreVariables();
   }
 
   buildForm() {
@@ -36,23 +46,32 @@ export class LoginComponent implements OnInit {
     });
   }
 
+  initializeStoreVariables() {
+    this.isLoading$ = this.store$.select(
+      LoginStoreSelectors.selectLoginIsLoading
+    );
+
+    this.actionsSubject$
+      .pipe(filter((action: any) => action.type === ActionTypes.LOAD_SUCCESS))
+      .subscribe(response => {
+        this.authenticationService.setUserSession(response.payload.item);
+        location.reload();
+      });
+
+    this.actionsSubject$
+      .pipe(filter((action: any) => action.type === ActionTypes.LOAD_FAILURE))
+      .subscribe(() => {
+        const message = 'Could not log you in with the provided credentials';
+        this.notificationService.showSuccess(message);
+      });
+  }
+
   login(formData: any, formDirective: FormGroupDirective) {
-    this.isLoading = true;
-    const params = {
+    const params: LoginRequest = {
       email: this.email.value,
       password: this.password.value
     };
-    this.loginService.login(params).subscribe(
-      response => {
-        this.isLoading = false;
-      },
-      () => {
-        this.isLoading = false;
-        this.notificationService.showError(
-          'Could not login with the provided credentials'
-        );
-      }
-    );
+    this.store$.dispatch(new LoginStoreActions.LoadRequestAction(params));
   }
 
   get email() {
@@ -68,9 +87,13 @@ export class LoginComponent implements OnInit {
   }
 
   get loginLabel() {
-    if (this.isLoading) {
-      return 'Logging In';
-    }
-    return 'Login';
+    return this.isLoading$.pipe(
+      map(isLoading => {
+        if (isLoading) {
+          return 'Logging In';
+        }
+        return 'Login';
+      })
+    );
   }
 }

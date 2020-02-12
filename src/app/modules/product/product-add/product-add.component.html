@@ -80,7 +80,7 @@
               <mat-label>Category</mat-label>
               <mat-select placeholder="Category" formControlName="categoryId">
                 <mat-option
-                  *ngFor="let category of categories"
+                  *ngFor="let category of categories$ | async"
                   [value]="category.id"
                 >
                   {{ category.name }}
@@ -106,7 +106,7 @@
           </div>
           <div class="page__form__button">
             <button mat-button type="submit" class="button button_is-primary">
-              {{ buttonLabel }}
+              {{ buttonLabel | async }}
             </button>
           </div>
         </div>

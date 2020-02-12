@@ -1,15 +1,23 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes, PreloadAllModules } from '@angular/router';
 import { RolesComponent } from './roles/roles.component';
-import { RoleComponent } from './role/role.component';
 import { RoleAddComponent } from './role-add/role-add.component';
-
+import { ViewRoleGuard } from './guards/view-role.guard';
+import { EditRoleGuard } from './guards/edit-role.guard';
+import { AddRoleGuard } from './guards/add-role.guard';
 
 const routes: Routes = [
-  { path: 'roles', component: RolesComponent },
-  { path: 'role/:id', component: RoleComponent },
-  { path: 'roles/:id/view', component: RoleAddComponent },
-  { path: 'roles/add', component: RoleAddComponent},
+  { path: 'roles', component: RolesComponent, canActivate: [ViewRoleGuard] },
+  {
+    path: 'roles/:id/view',
+    component: RoleAddComponent,
+    canActivate: [EditRoleGuard]
+  },
+  {
+    path: 'roles/add',
+    component: RoleAddComponent,
+    canActivate: [AddRoleGuard]
+  }
 ];
 
 @NgModule({
@@ -21,5 +29,4 @@ const routes: Routes = [
   ],
   exports: [RouterModule]
 })
-
-export class RoleRoutingModule { }
+export class RoleRoutingModule {}

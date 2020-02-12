@@ -1,4 +1,4 @@
-<div class="app" *ngIf="!isAppLoading">
+<div class="app" *ngIf="!(isAppLoading$ | async)">
   <div class="app__header"></div>
   <div class="app__body" *ngIf="isLoggedIn; else login">
     <div class="app__nav-container">

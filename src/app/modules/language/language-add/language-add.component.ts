@@ -7,13 +7,18 @@ import {
 } from '@angular/forms';
 import { ValidationMessagesService } from 'src/app/services/validation-messages.service';
 import { NotificationService } from 'src/app/services/notification.service';
-import { ActionType, USER_MESSAGES, ModuleName } from 'src/app/models/general';
+import { ActionType, ALERT_MESSAGES, ModuleName } from 'src/app/models/general';
 import { ActivatedRoute } from '@angular/router';
 import { Language } from '../language';
-import { ErrorHandlerService } from 'src/app/services/error-handler.service';
-import { LanguageService } from '../language.service';
 import { Category } from '../../category/category';
 import { AuthorizationService } from 'src/app/services/authorization.service';
+import { ActionsSubject, Store } from '@ngrx/store';
+import { RootStoreState } from 'src/app/root-store';
+import { Observable } from 'rxjs';
+import { LanguageStoreSelectors, LanguageStoreActions } from '../store';
+import { filter, map } from 'rxjs/operators';
+import { ActionTypes } from '../store/actions';
+import { ErrorHandlerService } from 'src/app/services/error-handler.service';
 
 @Component({
   selector: 'app-language-add',
@@ -23,13 +28,14 @@ import { AuthorizationService } from 'src/app/services/authorization.service';
 export class LanguageAddComponent implements OnInit {
   constructor(
     private form: FormBuilder,
-    private languageService: LanguageService,
     private notificationService: NotificationService,
     private validationMessagesService: ValidationMessagesService,
     private authorizationService: AuthorizationService,
     private errorHandler: ErrorHandlerService,
+    private actionsSubject$: ActionsSubject,
+    private store$: Store<RootStoreState.State>,
     private route: ActivatedRoute
-  ) { }
+  ) {}
 
   languageForm: FormGroup;
   actionType: ActionType;
@@ -37,41 +43,89 @@ export class LanguageAddComponent implements OnInit {
   isLoadingLanguage = false;
   isLoading = false;
   categories: Category[] = [];
+  language$: Observable<Language>;
+  isLoading$: Observable<boolean>;
+  isLoadingAction$: Observable<boolean>;
+  loadingErrors$: Observable<string[]>;
+  actionErrors$: Observable<string[]>;
 
   ngOnInit() {
+    this.initializeStoreVariables();
     this.route.params.forEach(param => {
       if (param.id) {
-        this.getLanguage(param.id);
+        const id = parseInt(param.id, 0);
+        this.getLanguage(id);
         this.actionType = ActionType.EDIT;
       } else {
         this.actionType = ActionType.ADD;
-        this.buildForm();
+        this.buildNewLanguageForm();
       }
     });
   }
 
+  initializeStoreVariables() {
+    this.actionErrors$ = this.store$.select(
+      LanguageStoreSelectors.selectLanguageActionError
+    );
+
+    this.isLoadingAction$ = this.store$.select(
+      LanguageStoreSelectors.selectIsLoadingAction
+    );
+
+    this.actionsSubject$
+      .pipe(
+        filter(
+          (action: any) =>
+            action.type === ActionTypes.UPDATE_LANGUAGE_SUCCESS ||
+            action.type === ActionTypes.ADD_LANGUAGE_SUCCESS
+        )
+      )
+      .subscribe(() => {
+        let message = 'Language Updated Successfully';
+        if (this.actionType === ActionType.ADD) {
+          message = 'Language Added Successfully';
+        }
+        this.notificationService.showSuccess(message);
+      });
+
+    this.actionsSubject$
+      .pipe(
+        filter(
+          (action: any) =>
+            action.type === ActionTypes.UPDATE_LANGUAGE_FAILURE ||
+            action.type === ActionTypes.ADD_LANGUAGE_FAILURE
+        )
+      )
+       .subscribe(response => {
+        this.errorHandler.handleErrorResponse(response.payload.error);
+      });
+  }
+
   getLanguage(id: number) {
-    this.isLoadingLanguage = true;
-    this.languageService.getLanguage(id).subscribe(response => {
-      this.isLoadingLanguage = false;
-      this.language = response;
-      this.buildForm();
-    }, error => {
-      this.isLoading = false;
-      this.errorHandler.handleErrorResponse(error);
+    this.store$.dispatch(new LanguageStoreActions.GetLanguageRequestAction(id));
+    this.language$ = this.store$.select(
+      LanguageStoreSelectors.selectLanguageById(id)
+    );
+    this.loadingErrors$ = this.store$.select(
+      LanguageStoreSelectors.selectLanguageLoadingError
+    );
+    this.buildExistingLanguageForm();
+  }
+
+  buildNewLanguageForm() {
+    this.languageForm = this.form.group({
+      name: ['', [Validators.required]],
+      code: ['', [Validators.required]]
     });
   }
 
-  buildForm() {
-    let name = '';
-    let code = '';
-    if (this.language) {
-      name = this.language.name;
-      code = this.language.code;
-    }
-    this.languageForm = this.form.group({
-      name: [name, [Validators.required]],
-      code: [code, [Validators.required]],
+  buildExistingLanguageForm() {
+    this.language$.subscribe(language => {
+      this.language = language;
+      this.languageForm = this.form.group({
+        name: [language.name, [Validators.required]],
+        code: [language.code, [Validators.required]]
+      });
     });
   }
 
@@ -85,7 +139,7 @@ export class LanguageAddComponent implements OnInit {
 
   performAction(formData: any, formDirective: FormGroupDirective) {
     if (!this.languageForm.valid) {
-      this.notificationService.showError(USER_MESSAGES.FORM_NOT_VALID);
+      this.notificationService.showError(ALERT_MESSAGES.FORM_NOT_VALID);
       return;
     }
     if (this.language) {
@@ -102,41 +156,31 @@ export class LanguageAddComponent implements OnInit {
     return language;
   }
 
-  addLanguage(params) {
-    this.isLoading = true;
-    this.languageService
-      .addLanguage(params)
-      .subscribe(response => {
-        this.isLoading = false;
-        this.notificationService.showSuccess('Language added successfully');
-      }, error => {
-        this.isLoading = false;
-        this.errorHandler.handleErrorResponse(error);
-      });
+  addLanguage(params: Language) {
+    this.store$.dispatch(
+      new LanguageStoreActions.AddLanguageRequestAction(params)
+    );
   }
 
-  updateLanguage(params) {
-    this.isLoading = true;
+  updateLanguage(params: Language) {
     const id = this.language.id;
-    this.languageService
-      .updateLanguage(id, params)
-      .subscribe(response => {
-        this.isLoading = false;
-        this.notificationService.showSuccess('Language updated successfully');
-      }, error => {
-        this.isLoading = false;
-        this.errorHandler.handleErrorResponse(error);
-      });
+    this.store$.dispatch(
+      new LanguageStoreActions.UpdateLanguageRequestAction(id, params)
+    );
   }
 
   get buttonLabel() {
-    if (this.isLoading) {
-      return 'Loading';
-    }
-    if (this.actionType === ActionType.EDIT) {
-      return 'Update';
-    }
-    return 'Add';
+    return this.isLoadingAction$.pipe(
+      map(isLoading => {
+        if (isLoading) {
+          return 'Loading';
+        }
+        if (this.actionType === ActionType.EDIT) {
+          return 'Update';
+        }
+        return 'Add';
+      })
+    );
   }
 
   get title() {
@@ -151,10 +195,12 @@ export class LanguageAddComponent implements OnInit {
   }
 
   get canEditLanguage() {
-
     if (this.actionType === ActionType.ADD) {
       return true;
     }
-    return this.actionType === ActionType.EDIT && this.authorizationService.canEdit(ModuleName.LANGUAGES);
+    return (
+      this.actionType === ActionType.EDIT &&
+      this.authorizationService.canEdit(ModuleName.LANGUAGES)
+    );
   }
 }

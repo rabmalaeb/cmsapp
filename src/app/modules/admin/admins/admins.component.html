@@ -7,12 +7,17 @@
         </div>
       </div>
       <div class="page__actions">
-        <button mat-button class="button button_is-primary" (click)="addAdmin()" *ngIf="canAddAdmin">
+        <button
+          mat-button
+          class="button button_is-primary"
+          (click)="addAdmin()"
+          *ngIf="canAddAdmin | async"
+        >
           Add Admin
         </button>
       </div>
     </div>
-    <mat-table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+    <mat-table mat-table [dataSource]="admins$ | async" class="mat-elevation-z8">
       <ng-container matColumnDef="id">
         <mat-header-cell *matHeaderCellDef>Id</mat-header-cell>
         <mat-cell *matCellDef="let admin">{{ admin.id }}</mat-cell>
@@ -47,8 +52,15 @@
       <ng-container matColumnDef="action">
         <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
         <mat-cell *matCellDef="let admin" class="action-link">
-          <a class="table__action" (click)="editAdmin(admin.id)"><mat-icon>edit</mat-icon></a>
-          <a class="table__action" (click)="deleteAdmin(admin.id)" *ngIf="canDeleteAdmin"><mat-icon>delete</mat-icon></a>
+          <a class="table__action" (click)="editAdmin(admin.id)"
+            ><mat-icon>edit</mat-icon></a
+          >
+          <a
+            class="table__action"
+            (click)="deleteAdmin(admin.id)"
+            *ngIf="canDeleteAdmin | async"
+            ><mat-icon>delete</mat-icon></a
+          >
         </mat-cell>
       </ng-container>
 

@@ -7,12 +7,17 @@ import {
 } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Category } from '../category';
-import { CategoryService } from '../category.service';
 import { AuthorizationService } from 'src/app/services/authorization.service';
-import { ErrorHandlerService } from 'src/app/services/error-handler.service';
-import { ActionType, USER_MESSAGES, ModuleName } from 'src/app/models/general';
+import { ActionType, ALERT_MESSAGES, ModuleName } from 'src/app/models/general';
 import { NotificationService } from 'src/app/services/notification.service';
 import { ValidationMessagesService } from 'src/app/services/validation-messages.service';
+import { map, filter } from 'rxjs/operators';
+import { ActionsSubject, Store } from '@ngrx/store';
+import { RootStoreState } from 'src/app/root-store';
+import { Observable } from 'rxjs';
+import { CategoryStoreSelectors, CategoryStoreActions } from '../store';
+import { ActionTypes } from '../store/actions';
+import { ErrorHandlerService } from 'src/app/services/error-handler.service';
 
 @Component({
   selector: 'app-category-add',
@@ -22,11 +27,12 @@ import { ValidationMessagesService } from 'src/app/services/validation-messages.
 export class CategoryAddComponent implements OnInit {
   constructor(
     private form: FormBuilder,
-    private categoryService: CategoryService,
     private notificationService: NotificationService,
     private validationMessagesService: ValidationMessagesService,
     private authorizationService: AuthorizationService,
     private errorHandler: ErrorHandlerService,
+    private actionsSubject$: ActionsSubject,
+    private store$: Store<RootStoreState.State>,
     private route: ActivatedRoute
   ) {}
 
@@ -37,57 +43,101 @@ export class CategoryAddComponent implements OnInit {
   isLoadingCategories = false;
   isLoading = false;
   categories: Category[] = [];
+  category$: Observable<Category>;
+  categories$: Observable<Category[]>;
+  isLoading$: Observable<boolean>;
+  isLoadingAction$: Observable<boolean>;
+  loadingErrors$: Observable<string[]>;
+  actionErrors$: Observable<string[]>;
 
   ngOnInit() {
+    this.initializeStoreVariables();
     this.getCategories();
     this.route.params.forEach(param => {
       if (param.id) {
-        this.getCategory(param.id);
+        const id = parseInt(param.id, 0);
+        this.getCategory(id);
         this.actionType = ActionType.EDIT;
       } else {
         this.actionType = ActionType.ADD;
-        this.buildForm();
+        this.buildNewCategoryForm();
       }
     });
   }
 
-  getCategories() {
-    this.isLoadingCategories = true;
-    this.categoryService.getCategories().subscribe(categories => {
-      this.isLoadingCategories = false;
-      this.categories = categories;
-    }, error => {
-      this.errorHandler.handleErrorResponse(error);
-      this.isLoadingCategories = false;
-    });
+  initializeStoreVariables() {
+    this.actionErrors$ = this.store$.select(
+      CategoryStoreSelectors.selectCategoryActionError
+    );
+
+    this.isLoadingAction$ = this.store$.select(
+      CategoryStoreSelectors.selectIsLoadingAction
+    );
+
+    this.actionsSubject$
+      .pipe(
+        filter(
+          (action: any) =>
+            action.type === ActionTypes.UPDATE_CATEGORY_SUCCESS ||
+            action.type === ActionTypes.ADD_CATEGORY_SUCCESS
+        )
+      )
+      .subscribe(() => {
+        let message = 'Category Updated Successfully';
+        if (this.actionType === ActionType.ADD) {
+          message = 'Category Added Successfully';
+        }
+        this.notificationService.showSuccess(message);
+      });
+
+    this.actionsSubject$
+      .pipe(
+        filter(
+          (action: any) =>
+            action.type === ActionTypes.UPDATE_CATEGORY_FAILURE ||
+            action.type === ActionTypes.ADD_CATEGORY_FAILURE
+        )
+      )
+       .subscribe(response => {
+        this.errorHandler.handleErrorResponse(response.payload.error);
+      });
   }
 
   getCategory(id: number) {
-    this.isLoadingCategory = true;
-    this.categoryService.getCategory(id).subscribe(response => {
-      this.isLoadingCategory = false;
-      this.category = response;
-      this.buildForm();
-    }, error => {
-      this.isLoading = false;
-      this.errorHandler.handleErrorResponse(error);
+    this.store$.dispatch(new CategoryStoreActions.GetCategoryRequestAction(id));
+    this.category$ = this.store$.select(
+      CategoryStoreSelectors.selectCategoryById(id)
+    );
+    this.loadingErrors$ = this.store$.select(
+      CategoryStoreSelectors.selectCategoryLoadingError
+    );
+    this.buildExistingCategoryForm();
+  }
+
+  buildNewCategoryForm() {
+    this.categoryForm = this.form.group({
+      name: ['', [Validators.required]],
+      description: ['', [Validators.required]],
+      parentId: ['', [Validators.required]]
     });
   }
 
-  buildForm() {
-    let name = '';
-    let description = '';
-    let parentId;
-    if (this.category) {
-      name = this.category.name;
-      description = this.category.description;
-      parentId = this.category.parentId;
-    }
-    this.categoryForm = this.form.group({
-      name: [name, [Validators.required]],
-      description: [description, [Validators.required]],
-      parentId: [parentId, [Validators.required]],
+  buildExistingCategoryForm() {
+    this.category$.subscribe(category => {
+      this.category = category;
+      this.categoryForm = this.form.group({
+        name: [category.name, [Validators.required]],
+        description: [category.description, [Validators.required]],
+        parentId: [category.parentId, [Validators.required]]
+      });
     });
+  }
+
+  getCategories() {
+    this.store$.dispatch(new CategoryStoreActions.LoadRequestAction());
+    this.categories$ = this.store$.select(
+      CategoryStoreSelectors.selectAllCategoryItems
+    );
   }
 
   get name() {
@@ -104,7 +154,7 @@ export class CategoryAddComponent implements OnInit {
 
   performAction(formData: any, formDirective: FormGroupDirective) {
     if (!this.categoryForm.valid) {
-      this.notificationService.showError(USER_MESSAGES.FORM_NOT_VALID);
+      this.notificationService.showError(ALERT_MESSAGES.FORM_NOT_VALID);
       return;
     }
     if (this.category) {
@@ -122,41 +172,31 @@ export class CategoryAddComponent implements OnInit {
     return category;
   }
 
-  addCategory(params) {
-    this.isLoading = true;
-    this.categoryService
-      .addCategory(params)
-      .subscribe(response => {
-        this.isLoading = false;
-        this.notificationService.showSuccess('Category added successfully');
-      }, error => {
-        this.isLoading = false;
-        this.errorHandler.handleErrorResponse(error);
-      });
+  addCategory(params: Category) {
+    this.store$.dispatch(
+      new CategoryStoreActions.AddCategoryRequestAction(params)
+    );
   }
 
-  updateCategory(params) {
-    this.isLoading = true;
+  updateCategory(params: Category) {
     const id = this.category.id;
-    this.categoryService
-      .updateCategory(id, params)
-      .subscribe(response => {
-        this.isLoading = false;
-        this.notificationService.showSuccess('Category updated successfully');
-      }, error => {
-        this.isLoading = false;
-        this.errorHandler.handleErrorResponse(error);
-      });
+    this.store$.dispatch(
+      new CategoryStoreActions.UpdateCategoryRequestAction(id, params)
+    );
   }
 
   get buttonLabel() {
-    if (this.isLoading) {
-      return 'Loading';
-    }
-    if (this.actionType === ActionType.EDIT) {
-      return 'Update';
-    }
-    return 'Add';
+    return this.isLoadingAction$.pipe(
+      map(isLoading => {
+        if (isLoading) {
+          return 'Loading';
+        }
+        if (this.actionType === ActionType.EDIT) {
+          return 'Update';
+        }
+        return 'Add';
+      })
+    );
   }
 
   get title() {
@@ -171,10 +211,12 @@ export class CategoryAddComponent implements OnInit {
   }
 
   get canEditCategory() {
-
     if (this.actionType === ActionType.ADD) {
       return true;
     }
-    return this.actionType === ActionType.EDIT && this.authorizationService.canEdit(ModuleName.CATEGORIES);
+    return (
+      this.actionType === ActionType.EDIT &&
+      this.authorizationService.canEdit(ModuleName.CATEGORIES)
+    );
   }
 }

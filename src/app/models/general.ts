@@ -1,13 +1,14 @@
+import { Observable, of } from 'rxjs';
+
 export class NavItem {
   constructor(
-
     public name: ModuleName,
     public link: string,
-    public isActive: boolean = true
+    public isActive: Observable<boolean> = of(true)
   ) {}
 }
 
-export enum USER_MESSAGES {
+export enum ALERT_MESSAGES {
   FORM_NOT_VALID = 'The form is not valid'
 }
 
@@ -28,7 +29,7 @@ export enum PermissionType {
   VIEW = 'view',
   ADD = 'add',
   EDIT = 'edit',
-  DELETE = 'delete',
+  DELETE = 'delete'
 }
 
 export enum ActionType {
@@ -37,14 +38,14 @@ export enum ActionType {
 }
 
 export enum ModuleName {
-  ADMINS = 'admins',
-  USERS = 'users',
-  PARTNERS = 'partners',
-  PRODUCTS = 'products',
-  CATEGORIES = 'categories',
-  LANGUAGES = 'languages',
-  LANGUAGE_KEYS = 'language keys',
-  TRANSLATIONS = 'translations',
-  PERMISSIONS = 'permissions',
-  ROLES = 'roles',
+  ADMINS = 'Admins',
+  USERS = 'Users',
+  PARTNERS = 'Partners',
+  PRODUCTS = 'Products',
+  CATEGORIES = 'Categories',
+  LANGUAGES = 'Languages',
+  LANGUAGE_KEYS = 'Language Keys',
+  TRANSLATIONS = 'Translations',
+  PERMISSIONS = 'Permissions',
+  ROLES = 'Roles'
 }

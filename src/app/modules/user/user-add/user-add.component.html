@@ -12,7 +12,7 @@
         </button>
       </div>
     </div>
-    <div class="page__form-container" *ngIf="!isLoadingUser">
+    <div class="page__form-container">
       <form
         [formGroup]="userForm"
         #formDirective="ngForm"
@@ -129,7 +129,7 @@
           </div>
           <div class="page__form__button">
             <button mat-button type="submit" class="button button_is-primary">
-              {{ buttonLabel }}
+              {{ buttonLabel | async }}
             </button>
           </div>
         </div>

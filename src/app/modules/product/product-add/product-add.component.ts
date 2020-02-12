@@ -7,16 +7,21 @@ import {
 } from '@angular/forms';
 import { ValidationMessagesService } from 'src/app/services/validation-messages.service';
 import { NotificationService } from 'src/app/services/notification.service';
-import { ActionType, USER_MESSAGES, ModuleName } from 'src/app/models/general';
+import { ActionType, ALERT_MESSAGES, ModuleName } from 'src/app/models/general';
 import { ActivatedRoute } from '@angular/router';
 import { Product } from '../product';
-import { ErrorHandlerService } from 'src/app/services/error-handler.service';
-import { ProductService } from '../product.service';
-import { CategoryService } from '../../category/category.service';
 import { Category } from '../../category/category';
 import { MediaService } from '../../media/media.service';
 import { Media } from '../../media/media';
 import { AuthorizationService } from 'src/app/services/authorization.service';
+import { ActionsSubject, Store } from '@ngrx/store';
+import { RootStoreState } from 'src/app/root-store';
+import { Observable } from 'rxjs';
+import { ProductStoreSelectors, ProductStoreActions } from '../store';
+import { filter, map } from 'rxjs/operators';
+import { ActionTypes } from '../store/actions';
+import { CategoryStoreSelectors, CategoryStoreActions } from '../../category/store';
+import { ErrorHandlerService } from 'src/app/services/error-handler.service';
 
 @Component({
   selector: 'app-product-add',
@@ -26,12 +31,12 @@ import { AuthorizationService } from 'src/app/services/authorization.service';
 export class ProductAddComponent implements OnInit {
   constructor(
     private form: FormBuilder,
-    private productService: ProductService,
-    private categoryService: CategoryService,
     private notificationService: NotificationService,
     private validationMessagesService: ValidationMessagesService,
     private errorHandler: ErrorHandlerService,
     private authorizationService: AuthorizationService,
+    private actionsSubject$: ActionsSubject,
+    private store$: Store<RootStoreState.State>,
     private route: ActivatedRoute,
     private mediaService: MediaService
   ) {}
@@ -43,63 +48,102 @@ export class ProductAddComponent implements OnInit {
   isLoadingCategories = false;
   isLoading = false;
   categories: Category[] = [];
+  categories$: Observable<Category[]>;
   productImage: File;
   productMedia: Media;
   imageUrl: any;
+  product$: Observable<Product>;
+  isLoading$: Observable<boolean>;
+  isLoadingAction$: Observable<boolean>;
+  loadingErrors$: Observable<string[]>;
+  actionErrors$: Observable<string[]>;
 
   ngOnInit() {
     this.getCategories();
+    this.initializeStoreVariables();
     this.route.params.forEach(param => {
       if (param.id) {
-        this.getProduct(param.id);
+        const id = parseInt(param.id, 0);
+        this.getProduct(id);
         this.actionType = ActionType.EDIT;
       } else {
         this.actionType = ActionType.ADD;
-        this.buildForm();
+        this.buildNewProductForm();
       }
+    });
+  }
+
+  initializeStoreVariables() {
+    this.actionErrors$ = this.store$.select(
+      ProductStoreSelectors.selectProductActionError
+    );
+
+    this.isLoadingAction$ = this.store$.select(
+      ProductStoreSelectors.selectIsLoadingAction
+    );
+
+    this.actionsSubject$
+      .pipe(
+        filter(
+          (action: any) =>
+            action.type === ActionTypes.UPDATE_PRODUCT_SUCCESS ||
+            action.type === ActionTypes.ADD_PRODUCT_SUCCESS
+        )
+      )
+      .subscribe(() => {
+        let message = 'Product Updated Successfully';
+        if (this.actionType === ActionType.ADD) {
+          message = 'Product Added Successfully';
+        }
+        this.notificationService.showSuccess(message);
+      });
+
+    this.actionsSubject$
+      .pipe(
+        filter(
+          (action: any) =>
+            action.type === ActionTypes.UPDATE_PRODUCT_FAILURE ||
+            action.type === ActionTypes.ADD_PRODUCT_FAILURE
+        )
+      )
+       .subscribe(response => {
+        this.errorHandler.handleErrorResponse(response.payload.error);
+      });
+  }
+
+  getProduct(id: number) {
+    this.store$.dispatch(new ProductStoreActions.GetProductRequestAction(id));
+    this.product$ = this.store$.select(
+      ProductStoreSelectors.selectProductById(id)
+    );
+    this.loadingErrors$ = this.store$.select(
+      ProductStoreSelectors.selectProductLoadingError
+    );
+    this.buildExistingProductForm();
+  }
+
+  buildNewProductForm() {
+    this.productForm = this.form.group({
+      name: ['', [Validators.required]],
+      description: ['', [Validators.required]],
+      categoryId: ['', [Validators.required]]
+    });
+  }
+
+  buildExistingProductForm() {
+    this.product$.subscribe(product => {
+      this.product = product;
+      this.productForm = this.form.group({
+        name: [product.name, [Validators.required]],
+        description: [product.description, [Validators.required]],
+        categoryId: [product.categoryId, [Validators.required]]
+      });
     });
   }
 
   getCategories() {
-    this.isLoadingCategories = true;
-    this.categoryService.getCategories().subscribe(categories => {
-      this.isLoadingCategories = false;
-      this.categories = categories;
-    }, error => {
-      this.errorHandler.handleErrorResponse(error);
-      this.isLoadingCategories = false;
-    });
-  }
-
-  getProduct(id: number) {
-    this.isLoadingProduct = true;
-    this.productService.getProduct(id).subscribe(response => {
-      this.isLoadingProduct = false;
-      this.product = response;
-      if (this.product.media) {
-        this.imageUrl = this.product.media.imageUrl;
-      }
-      this.buildForm();
-    }, error => {
-      this.isLoading = false;
-      this.errorHandler.handleErrorResponse(error);
-    });
-  }
-
-  buildForm() {
-    let name = '';
-    let description = '';
-    let categoryId;
-    if (this.product) {
-      name = this.product.name;
-      description = this.product.description;
-      categoryId = this.product.categoryId;
-    }
-    this.productForm = this.form.group({
-      name: [name, [Validators.required]],
-      description: [description, [Validators.required]],
-      categoryId: [categoryId, [Validators.required]],
-    });
+    this.store$.dispatch(new CategoryStoreActions.LoadRequestAction());
+    this.categories$ = this.store$.select(CategoryStoreSelectors.selectAllCategoryItems);
   }
 
   get name() {
@@ -116,7 +160,7 @@ export class ProductAddComponent implements OnInit {
 
   performAction(formData: any, formDirective: FormGroupDirective) {
     if (!this.productForm.valid) {
-      this.notificationService.showError(USER_MESSAGES.FORM_NOT_VALID);
+      this.notificationService.showError(ALERT_MESSAGES.FORM_NOT_VALID);
       return;
     }
     if (this.productImage) {
@@ -142,43 +186,32 @@ export class ProductAddComponent implements OnInit {
     return product;
   }
 
-  addProduct(params) {
-    this.isLoading = true;
-    this.productService
-      .addProduct(params)
-      .subscribe(response => {
-        this.isLoading = false;
-        this.notificationService.showSuccess('Product added successfully');
-      }, error => {
-        this.isLoading = false;
-        this.errorHandler.handleErrorResponse(error);
-      });
+  addProduct(params: Product) {
+    this.store$.dispatch(
+      new ProductStoreActions.AddProductRequestAction(params)
+    );
   }
 
-  updateProduct(params) {
-    this.isLoading = true;
+  updateProduct(params: Product) {
     const id = this.product.id;
-    this.productService
-      .updateProduct(id, params)
-      .subscribe(response => {
-        this.isLoading = false;
-        this.notificationService.showSuccess('Product updated successfully');
-      }, error => {
-        this.isLoading = false;
-        this.errorHandler.handleErrorResponse(error);
-      });
+    this.store$.dispatch(
+      new ProductStoreActions.UpdateProductRequestAction(id, params)
+    );
   }
 
   get buttonLabel() {
-    if (this.isLoading) {
-      return 'Loading';
-    }
-    if (this.actionType === ActionType.EDIT) {
-      return 'Update';
-    }
-    return 'Add';
+    return this.isLoadingAction$.pipe(
+      map(isLoading => {
+        if (isLoading) {
+          return 'Loading';
+        }
+        if (this.actionType === ActionType.EDIT) {
+          return 'Update';
+        }
+        return 'Add';
+      })
+    );
   }
-
   get title() {
     if (this.actionType === ActionType.EDIT) {
       return 'View Product';
@@ -195,10 +228,12 @@ export class ProductAddComponent implements OnInit {
   }
 
   get canEditProduct() {
-
     if (this.actionType === ActionType.ADD) {
       return true;
     }
-    return this.actionType === ActionType.EDIT && this.authorizationService.canEdit(ModuleName.PRODUCTS);
+    return (
+      this.actionType === ActionType.EDIT &&
+      this.authorizationService.canEdit(ModuleName.PRODUCTS)
+    );
   }
 }

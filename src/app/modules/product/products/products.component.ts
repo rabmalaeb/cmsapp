@@ -1,11 +1,19 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { MatTableDataSource, MatPaginator } from '@angular/material';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
 import { AlertService } from 'src/app/services/alert.service';
 import { Product } from '../product';
-import { ProductService } from '../product.service';
 import { AuthorizationService } from 'src/app/services/authorization.service';
 import { ModuleName } from 'src/app/models/general';
+import { filter } from 'rxjs/operators';
+import { ProductStoreActions, ProductStoreSelectors } from '../store';
+import { ActionTypes } from '../store/actions';
+import { Observable } from 'rxjs';
+import { Store, ActionsSubject } from '@ngrx/store';
+import { RootStoreState } from 'src/app/root-store';
+import { NotificationService } from 'src/app/services/notification.service';
+import { ErrorHandlerService } from 'src/app/services/error-handler.service';
 
 @Component({
   selector: 'app-products',
@@ -23,26 +31,69 @@ export class ProductsComponent implements OnInit {
     'action'
   ];
   dataSource: MatTableDataSource<any>;
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-
+  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+  products$: Observable<Product[]>;
+  error$: Observable<string>;
+  isLoading$: Observable<boolean>;
   constructor(
-    private productService: ProductService,
     private alertService: AlertService,
     private authorizationService: AuthorizationService,
-    private router: Router
+    private errorHandler: ErrorHandlerService,
+    private router: Router,
+    private store$: Store<RootStoreState.State>,
+    private notificationService: NotificationService,
+    private actionsSubject$: ActionsSubject
   ) {}
 
   ngOnInit() {
     this.getProducts();
+    this.initializeStoreVariables();
+  }
+
+  initializeStoreVariables() {
+    this.products$ = this.store$.select(
+      ProductStoreSelectors.selectAllProductItems
+    );
+
+    this.error$ = this.store$.select(
+      ProductStoreSelectors.selectProductLoadingError
+    );
+
+    this.isLoading$ = this.store$.select(
+      ProductStoreSelectors.selectProductIsLoading
+    );
+
+    this.actionsSubject$
+      .pipe(
+        filter(
+          (action: any) => action.type === ActionTypes.DELETE_PRODUCT_SUCCESS
+        )
+      )
+      .subscribe(() => {
+        this.notificationService.showSuccess('Product Deleted Successfully');
+      });
+
+    this.actionsSubject$
+      .pipe(
+        filter(
+          (action: any) => action.type === ActionTypes.DELETE_PRODUCT_FAILURE
+        )
+      )
+      .subscribe(() => {
+        this.notificationService.showError(
+          'Could not delete Product. Please try again'
+        );
+      });
+
+    this.actionsSubject$
+      .pipe(filter((action: any) => action.type === ActionTypes.LOAD_FAILURE))
+       .subscribe(response => {
+        this.errorHandler.handleErrorResponse(response.payload.error);
+      });
   }
 
   getProducts() {
-    this.isLoading = true;
-    this.productService.getProducts().subscribe(response => {
-      this.isLoading = false;
-      this.products = response;
-      this.setDataSource();
-    });
+    this.store$.dispatch(new ProductStoreActions.LoadRequestAction());
   }
 
   setDataSource() {
@@ -67,10 +118,9 @@ export class ProductsComponent implements OnInit {
       'Yes',
       'No',
       () => {
-        this.productService.deleteProduct(id).subscribe(response => {
-          this.products = response;
-          this.setDataSource();
-        });
+        this.store$.dispatch(
+          new ProductStoreActions.DeleteProductRequestAction(id)
+        );
       }
     );
   }
@@ -82,5 +132,4 @@ export class ProductsComponent implements OnInit {
   get canDeleteProduct() {
     return this.authorizationService.canDelete(ModuleName.PRODUCTS);
   }
-
 }

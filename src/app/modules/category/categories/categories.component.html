@@ -7,12 +7,17 @@
         </div>
       </div>
       <div class="page__actions">
-        <button mat-button class="button button_is-primary" (click)="addCategory()" *ngIf="canAddCategory">
+        <button
+          mat-button
+          class="button button_is-primary"
+          (click)="addCategory()"
+          *ngIf="canAddCategory | async"
+        >
           Add Category
         </button>
       </div>
     </div>
-    <mat-table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+    <mat-table mat-table [dataSource]="categories$ | async" class="mat-elevation-z8">
       <ng-container matColumnDef="id">
         <mat-header-cell *matHeaderCellDef>Id</mat-header-cell>
         <mat-cell *matCellDef="let category">{{ category.id }}</mat-cell>
@@ -42,8 +47,15 @@
       <ng-container matColumnDef="action">
         <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
         <mat-cell *matCellDef="let category" class="action-link">
-          <a class="table__action" (click)="editCategory(category.id)"><mat-icon>edit</mat-icon></a>
-          <a class="table__action" (click)="deleteCategory(category.id)" *ngIf="canDeleteCategory"><mat-icon>delete</mat-icon></a>
+          <a class="table__action" (click)="editCategory(category.id)"
+            ><mat-icon>edit</mat-icon></a
+          >
+          <a
+            class="table__action"
+            (click)="deleteCategory(category.id)"
+            *ngIf="canDeleteCategory | async"
+            ><mat-icon>delete</mat-icon></a
+          >
         </mat-cell>
       </ng-container>
 

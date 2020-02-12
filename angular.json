@@ -138,5 +138,8 @@
       }
     }
   },
-  "defaultProject": "cmsapp"
+  "defaultProject": "cmsapp",
+  "cli": {
+    "defaultCollection": "@ngrx/schematics"
+  }
 }

@@ -6,6 +6,13 @@ export interface Permission {
   type: PermissionType;
   group ?: ModuleName;
   isChecked ?: boolean;
+  isRolePermission ?: boolean;
+}
+
+export interface PermissionRequest {
+  name: string;
+  type: string;
+  group: string;
 }
 
 

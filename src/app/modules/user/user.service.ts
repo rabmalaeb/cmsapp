@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpService } from 'src/app/services/http.service';
 import { UserSerializerService } from './user-serializer.service';
 import { map } from 'rxjs/operators';
+import { User } from './user';
 
 @Injectable({
   providedIn: 'root'
@@ -25,13 +26,13 @@ export class UserService {
     }));
   }
 
-  addUser(params) {
+  addUser(params: User) {
     return this.httpService.post('users', { ...params }).pipe(map(({ data }) => {
       return this.userSerializer.getUser(data);
     }));
   }
 
-  updateUser(id, params) {
+  updateUser(id: number, params: User) {
     return this.httpService.put(`users/${id}`, { ...params }).pipe(map(({ data }) => {
       return this.userSerializer.getUser(data);
     }));

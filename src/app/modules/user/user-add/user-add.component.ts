@@ -7,12 +7,20 @@ import {
 } from '@angular/forms';
 import { ValidationMessagesService } from 'src/app/services/validation-messages.service';
 import { NotificationService } from 'src/app/services/notification.service';
-import { ActionType, USER_MESSAGES, ModuleName } from 'src/app/models/general';
+import { ActionType, ALERT_MESSAGES, ModuleName } from 'src/app/models/general';
 import { ActivatedRoute } from '@angular/router';
 import { User } from '../user';
-import { ErrorHandlerService } from 'src/app/services/error-handler.service';
-import { UserService } from '../user.service';
 import { AuthorizationService } from 'src/app/services/authorization.service';
+import { Store, ActionsSubject } from '@ngrx/store';
+import {
+  RootStoreState,
+  UserStoreActions,
+  UserStoreSelectors
+} from 'src/app/root-store';
+import { Observable } from 'rxjs';
+import { map, filter } from 'rxjs/operators';
+import { ActionTypes } from '../store/actions';
+import { ErrorHandlerService } from 'src/app/services/error-handler.service';
 
 @Component({
   selector: 'app-user-add',
@@ -22,57 +30,105 @@ import { AuthorizationService } from 'src/app/services/authorization.service';
 export class UserAddComponent implements OnInit {
   constructor(
     private form: FormBuilder,
-    private userService: UserService,
     private notificationService: NotificationService,
     private authorizationService: AuthorizationService,
     private validationMessagesService: ValidationMessagesService,
     private errorHandler: ErrorHandlerService,
+    private actionsSubject$: ActionsSubject,
+    private store$: Store<RootStoreState.State>,
     private route: ActivatedRoute
   ) {}
 
   userForm: FormGroup;
   actionType: ActionType;
   user: User;
+  user$: Observable<User>;
+  isLoading$: Observable<boolean>;
+  isLoadingAction$: Observable<boolean>;
+  loadingErrors$: Observable<string[]>;
+  actionErrors$: Observable<string[]>;
   isLoadingUser = false;
   isLoading = false;
 
   ngOnInit() {
+    this.initializeStoreVariables();
     this.route.params.forEach(param => {
       if (param.id) {
-        this.getUser(param.id);
+        const id = parseInt(param.id, 0);
+        this.getUser(id);
         this.actionType = ActionType.EDIT;
       } else {
         this.actionType = ActionType.ADD;
-        this.buildForm();
+        this.buildNewUserForm();
       }
     });
   }
 
+  initializeStoreVariables() {
+    this.actionErrors$ = this.store$.select(
+      UserStoreSelectors.selectUserActionError
+    );
+
+    this.isLoadingAction$ = this.store$.select(
+      UserStoreSelectors.selectIsLoadingAction
+    );
+
+    this.actionsSubject$
+      .pipe(
+        filter(
+          (action: any) =>
+            action.type === ActionTypes.UPDATE_USER_SUCCESS ||
+            action.type === ActionTypes.ADD_USER_SUCCESS
+        )
+      )
+      .subscribe(() => {
+        let message = 'User Updated Successfully';
+        if (this.actionType === ActionType.ADD) {
+          message = 'User Added Successfully';
+        }
+        this.notificationService.showSuccess(message);
+      });
+
+    this.actionsSubject$
+      .pipe(
+        filter(
+          (action: any) =>
+            action.type === ActionTypes.UPDATE_USER_FAILURE ||
+            action.type === ActionTypes.ADD_USER_FAILURE
+        )
+      )
+       .subscribe(response => {
+        this.errorHandler.handleErrorResponse(response.payload.error);
+      });
+  }
+
   getUser(id: number) {
-    this.isLoadingUser = true;
-    this.userService.getUser(id).subscribe(response => {
-      this.isLoadingUser = false;
-      this.user = response;
-      this.buildForm();
+    this.store$.dispatch(new UserStoreActions.GetUserRequestAction(id));
+    this.user$ = this.store$.select(UserStoreSelectors.selectUserById(id));
+    this.loadingErrors$ = this.store$.select(
+      UserStoreSelectors.selectUserLoadingError
+    );
+    this.buildExistingUserForm();
+  }
+
+  buildNewUserForm() {
+    this.userForm = this.form.group({
+      firstName: ['', [Validators.required]],
+      lastName: ['', [Validators.required]],
+      email: ['', [Validators.required, Validators.email]],
+      mobile: ['', [Validators.required]]
     });
   }
 
-  buildForm() {
-    let firstName = '';
-    let lastName = '';
-    let email = '';
-    let mobile = '';
-    if (this.user) {
-      firstName = this.user.firstName;
-      lastName = this.user.lastName;
-      email = this.user.email;
-      mobile = this.user.mobile;
-    }
-    this.userForm = this.form.group({
-      firstName: [firstName, [Validators.required]],
-      lastName: [lastName, [Validators.required]],
-      email: [email, [Validators.required, Validators.email]],
-      mobile: [mobile, [Validators.required]]
+  buildExistingUserForm() {
+    this.user$.subscribe(user => {
+      this.user = user;
+      this.userForm = this.form.group({
+        firstName: [user.firstName, [Validators.required]],
+        lastName: [user.lastName, [Validators.required]],
+        email: [user.email, [Validators.required, Validators.email]],
+        mobile: [user.mobile, [Validators.required]]
+      });
     });
   }
 
@@ -94,10 +150,10 @@ export class UserAddComponent implements OnInit {
 
   performAction(formData: any, formDirective: FormGroupDirective) {
     if (!this.userForm.valid) {
-      this.notificationService.showError(USER_MESSAGES.FORM_NOT_VALID);
+      this.notificationService.showError(ALERT_MESSAGES.FORM_NOT_VALID);
       return;
     }
-    if (this.user) {
+    if (this.actionType === ActionType.EDIT) {
       this.updateUser(this.buildUserParams());
     } else {
       this.addUser(this.buildUserParams());
@@ -113,37 +169,29 @@ export class UserAddComponent implements OnInit {
     };
   }
 
-  addUser(params) {
-    this.isLoading = true;
-    this.userService.addUser(params).subscribe(
-      response => {
-        this.isLoading = false;
-        this.notificationService.showSuccess('User added successfully');
-      },
-      error => {
-        this.isLoading = false;
-        this.errorHandler.handleErrorResponse(error);
-      }
+  addUser(params: User) {
+    this.store$.dispatch(new UserStoreActions.AddUserRequestAction(params));
+  }
+
+  updateUser(params: User) {
+    const id = this.user.id;
+    this.store$.dispatch(
+      new UserStoreActions.UpdateUserRequestAction(id, params)
     );
   }
 
-  updateUser(params) {
-    this.isLoading = true;
-    const id = this.user.id;
-    this.userService.updateUser(id, params).subscribe(response => {
-      this.isLoading = false;
-      this.notificationService.showSuccess('User updated successfully');
-    });
-  }
-
   get buttonLabel() {
-    if (this.isLoading) {
-      return 'Loading';
-    }
-    if (this.actionType === ActionType.EDIT) {
-      return 'Update';
-    }
-    return 'Add';
+    return this.isLoadingAction$.pipe(
+      map(isLoading => {
+        if (isLoading) {
+          return 'Loading';
+        }
+        if (this.actionType === ActionType.EDIT) {
+          return 'Update';
+        }
+        return 'Add';
+      })
+    );
   }
 
   get title() {
@@ -158,10 +206,12 @@ export class UserAddComponent implements OnInit {
   }
 
   get canEditUser() {
-
     if (this.actionType === ActionType.ADD) {
       return true;
     }
-    return this.actionType === ActionType.EDIT && this.authorizationService.canEdit(ModuleName.USERS);
+    return (
+      this.actionType === ActionType.EDIT &&
+      this.authorizationService.canEdit(ModuleName.USERS)
+    );
   }
 }

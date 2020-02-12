@@ -25,10 +25,10 @@
               <mat-label>modules</mat-label>
               <mat-select placeholder="modules" formControlName="modules">
                 <mat-option
-                  *ngFor="let modules of appModules"
-                  [value]="modules.name"
+                  *ngFor="let module of appModules"
+                  [value]="module.name"
                 >
-                  {{ modules.name | titlecase }}
+                  {{ module.name | titlecase }}
                 </mat-option>
               </mat-select>
             </mat-form-field>
@@ -60,7 +60,7 @@
           </div>
           <div class="page__form__button">
             <button mat-button type="submit" class="button button_is-primary">
-              {{ buttonLabel }}
+              {{ buttonLabel | async }}
             </button>
           </div>
         </div>

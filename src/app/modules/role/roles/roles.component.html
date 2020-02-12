@@ -7,12 +7,17 @@
         </div>
       </div>
       <div class="page__actions">
-        <button mat-button class="button button_is-primary" (click)="addRole()" *ngIf="canAddRole">
+        <button
+          mat-button
+          class="button button_is-primary"
+          (click)="addRole()"
+          *ngIf="canAddRole | async"
+        >
           Add Role
         </button>
       </div>
     </div>
-    <mat-table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+    <mat-table mat-table [dataSource]="roles$ | async" class="mat-elevation-z8">
       <ng-container matColumnDef="id">
         <mat-header-cell *matHeaderCellDef>Id</mat-header-cell>
         <mat-cell *matCellDef="let role">{{ role.id }}</mat-cell>
@@ -26,8 +31,15 @@
       <ng-container matColumnDef="action">
         <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
         <mat-cell *matCellDef="let role" class="action-link">
-          <a class="table__action" (click)="editRole(role.id)"><mat-icon>edit</mat-icon></a>
-          <a class="table__action" (click)="deleteRole(role.id)" *ngIf="canDeleteRole"><mat-icon>delete</mat-icon></a>
+          <a class="table__action" (click)="editRole(role.id)"
+            ><mat-icon>edit</mat-icon></a
+          >
+          <a
+            class="table__action"
+            (click)="deleteRole(role.id)"
+            *ngIf="canDeleteRole | async"
+            ><mat-icon>delete</mat-icon></a
+          >
         </mat-cell>
       </ng-container>
 

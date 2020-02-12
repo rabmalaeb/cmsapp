@@ -1,4 +1,5 @@
 <div class="page">
+  <mat-progress-bar *ngIf="isLoading$ | async"></mat-progress-bar>
   <div class="page__container">
     <div class="page__section">
       <div class="page__title-container">
@@ -7,12 +8,17 @@
         </div>
       </div>
       <div class="page__actions">
-        <button mat-button class="button button_is-primary" (click)="addUser()" *ngIf="canAddUser">
+        <button
+          mat-button
+          class="button button_is-primary"
+          (click)="addUser()"
+          *ngIf="canAddUser | async"
+        >
           Add User
         </button>
       </div>
     </div>
-    <mat-table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+    <mat-table mat-table [dataSource]="users$ | async" class="mat-elevation-z8">
       <ng-container matColumnDef="id">
         <mat-header-cell *matHeaderCellDef>Id</mat-header-cell>
         <mat-cell *matCellDef="let user">{{ user.id }}</mat-cell>
@@ -47,8 +53,15 @@
       <ng-container matColumnDef="action">
         <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
         <mat-cell *matCellDef="let user" class="action-link">
-          <a class="table__action" (click)="editUser(user.id)"><mat-icon>edit</mat-icon></a>
-          <a class="table__action" (click)="deleteUser(user.id)" *ngIf="canDeleteUser"><mat-icon>delete</mat-icon></a>
+          <a class="table__action" (click)="editUser(user.id)"
+            ><mat-icon>edit</mat-icon></a
+          >
+          <a
+            class="table__action"
+            (click)="deleteUser(user.id)"
+            *ngIf="canDeleteUser | async"
+            ><mat-icon>delete</mat-icon></a
+          >
         </mat-cell>
       </ng-container>
 
