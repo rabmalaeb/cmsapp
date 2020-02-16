@@ -1,19 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import {
-  Validators,
-  FormGroup,
-  FormBuilder,
-  FormGroupDirective
-} from '@angular/forms';
 import { ValidationMessagesService } from 'src/app/services/validation-messages.service';
 import { NotificationService } from 'src/app/services/notification.service';
-import { ActionType, ALERT_MESSAGES, ModuleName } from 'src/app/models/general';
+import { ActionType, ModuleName } from 'src/app/models/general';
 import { ActivatedRoute } from '@angular/router';
 import { ErrorHandlerService } from 'src/app/services/error-handler.service';
-import { PartnerService } from '../partner.service';
-import { Category } from '../../category/category';
 import { AuthorizationService } from 'src/app/services/authorization.service';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { ActionTypes } from '../store/actions';
 import { filter, map } from 'rxjs/operators';
 import { PartnerStoreSelectors, PartnerStoreActions } from '../store';
@@ -28,8 +20,6 @@ import { Partner } from '../partner';
 })
 export class PartnerAddComponent implements OnInit {
   constructor(
-    private form: FormBuilder,
-    private partnerService: PartnerService,
     private notificationService: NotificationService,
     private validationMessagesService: ValidationMessagesService,
     private authorizationService: AuthorizationService,
@@ -39,11 +29,7 @@ export class PartnerAddComponent implements OnInit {
     private route: ActivatedRoute
   ) {}
 
-  partnerForm: FormGroup;
   actionType: ActionType;
-  partner: Partner;
-  isLoadingPartner = false;
-  isLoading = false;
   partner$: Observable<Partner>;
   isLoading$: Observable<boolean>;
   isLoadingAction$: Observable<boolean>;
@@ -59,7 +45,6 @@ export class PartnerAddComponent implements OnInit {
         this.actionType = ActionType.EDIT;
       } else {
         this.actionType = ActionType.ADD;
-        this.buildNewPartnerForm();
       }
     });
   }
@@ -71,6 +56,10 @@ export class PartnerAddComponent implements OnInit {
 
     this.isLoadingAction$ = this.store$.select(
       PartnerStoreSelectors.selectIsLoadingAction
+    );
+
+    this.isLoading$ = this.store$.select(
+      PartnerStoreSelectors.selectIsLoadingItem
     );
 
     this.actionsSubject$
@@ -97,7 +86,7 @@ export class PartnerAddComponent implements OnInit {
             action.type === ActionTypes.ADD_PARTNER_FAILURE
         )
       )
-       .subscribe(response => {
+      .subscribe(response => {
         this.errorHandler.handleErrorResponse(response.payload.error);
       });
   }
@@ -110,51 +99,14 @@ export class PartnerAddComponent implements OnInit {
     this.loadingErrors$ = this.store$.select(
       PartnerStoreSelectors.selectPartnerLoadingError
     );
-    this.buildExistingPartnerForm();
   }
 
-  buildNewPartnerForm() {
-    this.partnerForm = this.form.group({
-      name: ['', [Validators.required]],
-      code: ['', [Validators.required]]
-    });
-  }
-
-  buildExistingPartnerForm() {
-    this.partner$.subscribe(partner => {
-      this.partner = partner;
-      this.partnerForm = this.form.group({
-        name: [partner.name, [Validators.required]],
-        code: [partner.code, [Validators.required]]
-      });
-    });
-  }
-
-  get name() {
-    return this.partnerForm.get('name');
-  }
-
-  get code() {
-    return this.partnerForm.get('code');
-  }
-
-  performAction(formData: any, formDirective: FormGroupDirective) {
-    if (!this.partnerForm.valid) {
-      this.notificationService.showError(ALERT_MESSAGES.FORM_NOT_VALID);
-      return;
-    }
-    if (this.partner) {
-      this.updatePartner(this.buildPartnerParams());
+  performAction(partner: Partner) {
+    if (this.actionType === ActionType.EDIT) {
+      this.updatePartner(partner);
     } else {
-      this.addPartner(this.buildPartnerParams());
+      this.addPartner(partner);
     }
-  }
-
-  buildPartnerParams(): Partner {
-    const partner = new Partner();
-    partner.name = this.name.value;
-    partner.code = this.code.value;
-    return partner;
   }
 
   addPartner(params: Partner) {
@@ -164,7 +116,7 @@ export class PartnerAddComponent implements OnInit {
   }
 
   updatePartner(params: Partner) {
-    const id = this.partner.id;
+    const id = params.id;
     this.store$.dispatch(
       new PartnerStoreActions.UpdatePartnerRequestAction(id, params)
     );
@@ -195,9 +147,9 @@ export class PartnerAddComponent implements OnInit {
     return this.validationMessagesService.getValidationMessages();
   }
 
-  get canEditPartner() {
+  get canEditPartner$() {
     if (this.actionType === ActionType.ADD) {
-      return true;
+      return of(true);
     }
     return (
       this.actionType === ActionType.EDIT &&

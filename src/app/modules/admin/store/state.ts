@@ -9,6 +9,7 @@ export const adminAdapter: EntityAdapter<Admin> = createEntityAdapter<Admin>({
 export interface State extends EntityState<Admin> {
   isLoading?: boolean;
   isLoadingAction?: boolean;
+  isLoadingItem?: boolean;
   loadingError?: any;
   actionError?: any;
 }

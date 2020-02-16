@@ -7,101 +7,25 @@
         </div>
       </div>
       <div class="page__actions">
-        <button mat-button class="button button_is-primary" routerLink="/categories">
+        <button
+          mat-button
+          class="button button_is-primary"
+          routerLink="/categories"
+        >
           Back To Categories
         </button>
       </div>
     </div>
-    <div class="page__form-container" *ngIf="!isLoadingCategory && !isLoadingCategories">
-      <form
-        [formGroup]="categoryForm"
-        #formDirective="ngForm"
-        (ngSubmit)="performAction(categoryForm, formDirective)"
-        class="page__form"
+    <div class="page__form-container">
+      <app-category-form
+        [category]="category$ | async"
+        [categories]="categories$ | async"
+        [isLoading]="isLoading$ | async"
+        [canEditCategory]="canEditCategory$ | async"
+        [isLoadingAction]="isLoadingAction$ | async"
+        (submitForm)="performAction($event)"
       >
-        <div class="form-item">
-          <div class="form-item__value form-item__value_is-textfield">
-            <mat-form-field appearance="outline">
-              <mat-label>Name</mat-label>
-              <input
-                matInput
-                id="name"
-                name="name"
-                placeholder="Name"
-                [formControl]="name"
-              />
-              <mat-error *ngFor="let validation of validationMessages.name">
-                <mat-error
-                  class="error-message"
-                  *ngIf="
-                    name.hasError(validation.type) &&
-                    (name.dirty || name.touched)
-                  "
-                >
-                  {{ validation.message }}</mat-error
-                >
-              </mat-error>
-            </mat-form-field>
-          </div>
-        </div>
-        <div class="form-item">
-          <div class="form-item__value form-item__value_is-textfield">
-            <mat-form-field appearance="outline">
-              <mat-label>Description</mat-label>
-              <input
-                matInput
-                id="description"
-                name="description"
-                placeholder="Description"
-                [formControl]="description"
-              />
-              <mat-error
-                *ngFor="let validation of validationMessages.description"
-              >
-                <mat-error
-                  class="error-message"
-                  *ngIf="
-                    description.hasError(validation.type) &&
-                    (description.dirty || description.touched)
-                  "
-                >
-                  {{ validation.message }}</mat-error
-                >
-              </mat-error>
-            </mat-form-field>
-          </div>
-        </div>
-        <div class="form-item">
-          <div class="form-item__value form-item__value_is-textfield">
-            <mat-form-field appearance="outline">
-              <mat-label>Parent Category</mat-label>
-              <mat-select
-                placeholder="Parent Category"
-                formControlName="parentId"
-              >
-                <mat-option
-                  *ngFor="let category of categories$ | async"
-                  [value]="category.id"
-                >
-                  {{ category.name }}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
-          </div>
-        </div>
-        <div class="page__form-button-container" *ngIf="canEditCategory">
-          <div class="page__form__button">
-            <button mat-button type="reset" class="button button_is-secondary">
-              Reset
-            </button>
-          </div>
-          <div class="page__form__button">
-            <button mat-button type="submit" class="button button_is-primary">
-              {{ buttonLabel | async }}
-            </button>
-          </div>
-        </div>
-      </form>
+      </app-category-form>
     </div>
   </div>
 </div>

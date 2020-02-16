@@ -27,21 +27,21 @@ export function adminReducer(state = initialState, action: Actions): State {
     case ActionTypes.GET_ADMIN_REQUEST: {
       return {
         ...state,
-        isLoading: true,
+        isLoadingItem: true,
         actionError: null
       };
     }
     case ActionTypes.GET_ADMIN_SUCCESS: {
-      return {
+      return adminAdapter.addOne(action.payload.item, {
         ...state,
-        isLoading: false,
+        isLoadingItem: false,
         actionError: null
-      };
+      });
     }
     case ActionTypes.GET_ADMIN_FAILURE: {
       return {
         ...state,
-        isLoading: false,
+        isLoadingItem: false,
         actionError: action.payload.error
       };
     }

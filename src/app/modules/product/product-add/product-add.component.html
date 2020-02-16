@@ -7,110 +7,25 @@
         </div>
       </div>
       <div class="page__actions">
-        <button mat-button class="button button_is-primary" routerLink="/products">
+        <button
+          mat-button
+          class="button button_is-primary"
+          routerLink="/products"
+        >
           Back To Products
         </button>
       </div>
     </div>
-    <div
-      class="page__form-container"
-      *ngIf="!isLoadingProduct && !isLoadingCategories"
-    >
-      <form
-        [formGroup]="productForm"
-        #formDirective="ngForm"
-        (ngSubmit)="performAction(productForm, formDirective)"
-        class="page__form"
+    <div class="page__form-container">
+      <app-product-form
+        [product]="product$ | async"
+        [categories]="categories$ | async"
+        [isLoading]="isLoading$ | async"
+        [canEditProduct]="canEditProduct$ | async"
+        [isLoadingAction]="isLoadingAction$ | async"
+        (submitForm)="performAction($event)"
       >
-        <div class="form-item">
-          <div class="form-item__value form-item__value_is-textfield">
-            <mat-form-field appearance="outline">
-              <mat-label>Name</mat-label>
-              <input
-                matInput
-                id="name"
-                name="name"
-                placeholder="Name"
-                [formControl]="name"
-              />
-              <mat-error *ngFor="let validation of validationMessages.name">
-                <mat-error
-                  class="error-message"
-                  *ngIf="
-                    name.hasError(validation.type) &&
-                    (name.dirty || name.touched)
-                  "
-                >
-                  {{ validation.message }}</mat-error
-                >
-              </mat-error>
-            </mat-form-field>
-          </div>
-        </div>
-        <div class="form-item">
-          <div class="form-item__value form-item__value_is-textfield">
-            <mat-form-field appearance="outline">
-              <mat-label>Description</mat-label>
-              <input
-                matInput
-                id="description"
-                name="description"
-                placeholder="Description"
-                [formControl]="description"
-              />
-              <mat-error
-                *ngFor="let validation of validationMessages.description"
-              >
-                <mat-error
-                  class="error-message"
-                  *ngIf="
-                    description.hasError(validation.type) &&
-                    (description.dirty || description.touched)
-                  "
-                >
-                  {{ validation.message }}</mat-error
-                >
-              </mat-error>
-            </mat-form-field>
-          </div>
-        </div>
-        <div class="form-item">
-          <div class="form-item__value form-item__value_is-textfield">
-            <mat-form-field appearance="outline">
-              <mat-label>Category</mat-label>
-              <mat-select placeholder="Category" formControlName="categoryId">
-                <mat-option
-                  *ngFor="let category of categories$ | async"
-                  [value]="category.id"
-                >
-                  {{ category.name }}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
-          </div>
-        </div>
-        <div class="form-item">
-          <div class="form-item__value form-item__value_is-textfield">
-            <app-image-preview
-            (image)="uploadImage($event)"
-            [imageUrl]="imageUrl"
-            >
-            </app-image-preview>
-          </div>
-        </div>
-        <div class="page__form-button-container" *ngIf="canEditProduct">
-          <div class="page__form__button">
-            <button mat-button type="reset" class="button button_is-secondary">
-              Reset
-            </button>
-          </div>
-          <div class="page__form__button">
-            <button mat-button type="submit" class="button button_is-primary">
-              {{ buttonLabel | async }}
-            </button>
-          </div>
-        </div>
-      </form>
+      </app-product-form>
     </div>
   </div>
 </div>

@@ -11,6 +11,7 @@ export const permissionAdapter: EntityAdapter<Permission> = createEntityAdapter<
 export interface State extends EntityState<Permission> {
   isLoading?: boolean;
   isLoadingAction?: boolean;
+  isLoadingItem?: boolean;
   loadingError?: any;
   actionError?: any;
   isLoadingPermissionsForRole?: boolean;

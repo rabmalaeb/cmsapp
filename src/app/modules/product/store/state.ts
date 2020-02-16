@@ -11,6 +11,7 @@ export const productAdapter: EntityAdapter<Product> = createEntityAdapter<
 export interface State extends EntityState<Product> {
   isLoading?: boolean;
   isLoadingAction?: boolean;
+  isLoadingItem?: boolean;
   loadingError?: any;
   actionError?: any;
 }

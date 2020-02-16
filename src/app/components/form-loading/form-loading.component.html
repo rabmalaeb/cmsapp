@@ -1,0 +1,19 @@
+<div class="form-loading">
+  <div class="form-loading__items">
+    <div class="form-loading__item-container" *ngFor="let i of size | repeat">
+      <div class="form-loading__item"></div>
+    </div>
+  </div>
+  <div class="page__form-button-container">
+    <div class="page__form__button">
+      <button mat-button type="reset" class="button button_is-secondary">
+        Reset
+      </button>
+    </div>
+    <div class="page__form__button">
+      <button mat-button type="submit" class="button button_is-primary">
+        Save
+      </button>
+    </div>
+  </div>
+</div>

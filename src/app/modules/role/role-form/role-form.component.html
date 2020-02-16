@@ -1,0 +1,62 @@
+<form
+  [formGroup]="roleForm"
+  #formDirective="ngForm"
+  (ngSubmit)="performAction(formDirective)"
+  class="page__form"
+  *ngIf="!isLoadingForm else loadingMask"
+>
+  <div class="form-item">
+    <div class="form-item__value form-item__value_is-textfield">
+      <mat-form-field appearance="outline">
+        <mat-label>Name</mat-label>
+        <input
+          matInput
+          id="name"
+          name="name"
+          placeholder="Name"
+          [formControl]="name"
+        />
+        <mat-error *ngFor="let validation of validationMessages.name">
+          <mat-error
+            class="error-message"
+            *ngIf="
+              name.hasError(validation.type) && (name.dirty || name.touched)
+            "
+          >
+            {{ validation.message }}</mat-error
+          >
+        </mat-error>
+      </mat-form-field>
+    </div>
+  </div>
+  <div class="page__title-container">
+    <div class="page__title">
+      Set Permissions
+    </div>
+  </div>
+  <div class="page__form-container">
+    <div
+      class="page__form-item"
+      *ngFor="let permissionGroup of permissionGroups"
+    >
+      <app-permission-group
+        [permissionGroup]="permissionGroup"
+      ></app-permission-group>
+    </div>
+  </div>
+  <div class="page__form-button-container" *ngIf="canEditRole">
+    <div class="page__form__button">
+      <button mat-button type="reset" class="button button_is-secondary">
+        Reset
+      </button>
+    </div>
+    <div class="page__form__button">
+      <button mat-button type="submit" class="button button_is-primary">
+        {{ buttonLabel }}
+      </button>
+    </div>
+  </div>
+</form>
+<ng-template #loadingMask>
+  <app-form-loading [size]="1"></app-form-loading>
+</ng-template>

@@ -30,21 +30,21 @@ export function languagekeyReducer(
     case ActionTypes.GET_LANGUAGEKEY_REQUEST: {
       return {
         ...state,
-        isLoading: true,
+        isLoadingItem: true,
         actionError: null
       };
     }
     case ActionTypes.GET_LANGUAGEKEY_SUCCESS: {
-      return {
+      return languageKeyAdapter.addOne(action.payload.item, {
         ...state,
-        isLoading: false,
+        isLoadingItem: false,
         actionError: null
-      };
+      });
     }
     case ActionTypes.GET_LANGUAGEKEY_FAILURE: {
       return {
         ...state,
-        isLoading: false,
+        isLoadingItem: false,
         actionError: action.payload.error
       };
     }

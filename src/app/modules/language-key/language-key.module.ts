@@ -5,11 +5,13 @@ import { LanguageKeyRoutingModule } from './language-key-routing.module';
 import { LanguageKeyAddComponent } from './language-key-add/language-key-add.component';
 import { SharedModule } from 'src/app/shared.module';
 import { ComponentsModule } from 'src/app/components/components.module';
+import { LanguageKeyFormComponent } from './language-key-form/language-key-form.component';
 
 @NgModule({
   declarations: [
     LanguageKeysComponent,
-    LanguageKeyAddComponent
+    LanguageKeyAddComponent,
+    LanguageKeyFormComponent
   ],
   imports: [
     CommonModule,

@@ -55,21 +55,21 @@ export function permissionReducer(
     case ActionTypes.GET_PERMISSION_REQUEST: {
       return {
         ...state,
-        isLoading: true,
+        isLoadingItem: true,
         actionError: null
       };
     }
     case ActionTypes.GET_PERMISSION_SUCCESS: {
-      return {
+      return permissionAdapter.addOne(action.payload.item, {
         ...state,
-        isLoading: false,
+        isLoadingItem: false,
         actionError: null
-      };
+      });
     }
     case ActionTypes.GET_PERMISSION_FAILURE: {
       return {
         ...state,
-        isLoading: false,
+        isLoadingItem: false,
         actionError: action.payload.error
       };
     }

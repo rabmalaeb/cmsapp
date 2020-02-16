@@ -27,21 +27,21 @@ export function translationReducer(state = initialState, action: Actions): State
     case ActionTypes.GET_TRANSLATION_REQUEST: {
       return {
         ...state,
-        isLoading: true,
+        isLoadingItem: true,
         actionError: null
       };
     }
     case ActionTypes.GET_TRANSLATION_SUCCESS: {
-      return {
+      return translationAdapter.addOne(action.payload.item, {
         ...state,
-        isLoading: false,
+        isLoadingItem: false,
         actionError: null
-      };
+      });
     }
     case ActionTypes.GET_TRANSLATION_FAILURE: {
       return {
         ...state,
-        isLoading: false,
+        isLoadingItem: false,
         actionError: action.payload.error
       };
     }

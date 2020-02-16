@@ -1,26 +1,19 @@
 import { Component, OnInit } from '@angular/core';
-import {
-  Validators,
-  FormGroup,
-  FormBuilder,
-  FormGroupDirective
-} from '@angular/forms';
-import { ValidationMessagesService } from 'src/app/services/validation-messages.service';
 import { NotificationService } from 'src/app/services/notification.service';
-import { ActionType, ALERT_MESSAGES, ModuleName } from 'src/app/models/general';
+import { ActionType, ModuleName } from 'src/app/models/general';
 import { ActivatedRoute } from '@angular/router';
 import { User } from '../user';
-import { AuthorizationService } from 'src/app/services/authorization.service';
 import { Store, ActionsSubject } from '@ngrx/store';
 import {
   RootStoreState,
   UserStoreActions,
   UserStoreSelectors
 } from 'src/app/root-store';
-import { Observable } from 'rxjs';
-import { map, filter } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { filter } from 'rxjs/operators';
 import { ActionTypes } from '../store/actions';
 import { ErrorHandlerService } from 'src/app/services/error-handler.service';
+import { AuthorizationService } from 'src/app/services/authorization.service';
 
 @Component({
   selector: 'app-user-add',
@@ -29,26 +22,20 @@ import { ErrorHandlerService } from 'src/app/services/error-handler.service';
 })
 export class UserAddComponent implements OnInit {
   constructor(
-    private form: FormBuilder,
     private notificationService: NotificationService,
-    private authorizationService: AuthorizationService,
-    private validationMessagesService: ValidationMessagesService,
     private errorHandler: ErrorHandlerService,
     private actionsSubject$: ActionsSubject,
     private store$: Store<RootStoreState.State>,
+    private authorizationService: AuthorizationService,
     private route: ActivatedRoute
   ) {}
 
-  userForm: FormGroup;
   actionType: ActionType;
-  user: User;
   user$: Observable<User>;
   isLoading$: Observable<boolean>;
   isLoadingAction$: Observable<boolean>;
   loadingErrors$: Observable<string[]>;
   actionErrors$: Observable<string[]>;
-  isLoadingUser = false;
-  isLoading = false;
 
   ngOnInit() {
     this.initializeStoreVariables();
@@ -59,7 +46,6 @@ export class UserAddComponent implements OnInit {
         this.actionType = ActionType.EDIT;
       } else {
         this.actionType = ActionType.ADD;
-        this.buildNewUserForm();
       }
     });
   }
@@ -71,6 +57,10 @@ export class UserAddComponent implements OnInit {
 
     this.isLoadingAction$ = this.store$.select(
       UserStoreSelectors.selectIsLoadingAction
+    );
+
+    this.isLoading$ = this.store$.select(
+      UserStoreSelectors.selectIsLoadingItem
     );
 
     this.actionsSubject$
@@ -97,7 +87,7 @@ export class UserAddComponent implements OnInit {
             action.type === ActionTypes.ADD_USER_FAILURE
         )
       )
-       .subscribe(response => {
+      .subscribe(response => {
         this.errorHandler.handleErrorResponse(response.payload.error);
       });
   }
@@ -108,65 +98,14 @@ export class UserAddComponent implements OnInit {
     this.loadingErrors$ = this.store$.select(
       UserStoreSelectors.selectUserLoadingError
     );
-    this.buildExistingUserForm();
   }
 
-  buildNewUserForm() {
-    this.userForm = this.form.group({
-      firstName: ['', [Validators.required]],
-      lastName: ['', [Validators.required]],
-      email: ['', [Validators.required, Validators.email]],
-      mobile: ['', [Validators.required]]
-    });
-  }
-
-  buildExistingUserForm() {
-    this.user$.subscribe(user => {
-      this.user = user;
-      this.userForm = this.form.group({
-        firstName: [user.firstName, [Validators.required]],
-        lastName: [user.lastName, [Validators.required]],
-        email: [user.email, [Validators.required, Validators.email]],
-        mobile: [user.mobile, [Validators.required]]
-      });
-    });
-  }
-
-  get firstName() {
-    return this.userForm.get('firstName');
-  }
-
-  get lastName() {
-    return this.userForm.get('lastName');
-  }
-
-  get email() {
-    return this.userForm.get('email');
-  }
-
-  get mobile() {
-    return this.userForm.get('mobile');
-  }
-
-  performAction(formData: any, formDirective: FormGroupDirective) {
-    if (!this.userForm.valid) {
-      this.notificationService.showError(ALERT_MESSAGES.FORM_NOT_VALID);
-      return;
-    }
+  performAction(user: User) {
     if (this.actionType === ActionType.EDIT) {
-      this.updateUser(this.buildUserParams());
+      this.updateUser(user);
     } else {
-      this.addUser(this.buildUserParams());
+      this.addUser(user);
     }
-  }
-
-  buildUserParams(): User {
-    return {
-      firstName: this.firstName.value,
-      lastName: this.lastName.value,
-      email: this.email.value,
-      mobile: this.mobile.value
-    };
   }
 
   addUser(params: User) {
@@ -174,23 +113,9 @@ export class UserAddComponent implements OnInit {
   }
 
   updateUser(params: User) {
-    const id = this.user.id;
+    const id = params.id;
     this.store$.dispatch(
       new UserStoreActions.UpdateUserRequestAction(id, params)
-    );
-  }
-
-  get buttonLabel() {
-    return this.isLoadingAction$.pipe(
-      map(isLoading => {
-        if (isLoading) {
-          return 'Loading';
-        }
-        if (this.actionType === ActionType.EDIT) {
-          return 'Update';
-        }
-        return 'Add';
-      })
     );
   }
 
@@ -201,13 +126,9 @@ export class UserAddComponent implements OnInit {
     return 'Add User';
   }
 
-  get validationMessages() {
-    return this.validationMessagesService.getValidationMessages();
-  }
-
-  get canEditUser() {
+  get canEditUser$() {
     if (this.actionType === ActionType.ADD) {
-      return true;
+      return of(true);
     }
     return (
       this.actionType === ActionType.EDIT &&

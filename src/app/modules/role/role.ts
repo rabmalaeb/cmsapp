@@ -7,6 +7,7 @@ export interface Role {
 }
 
 export interface RoleRequest {
+  id?: number;
   name: string;
   permissions: number[];
 }

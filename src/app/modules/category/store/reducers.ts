@@ -27,21 +27,21 @@ export function categoryReducer(state = initialState, action: Actions): State {
     case ActionTypes.GET_CATEGORY_REQUEST: {
       return {
         ...state,
-        isLoading: true,
+        isLoadingItem: true,
         actionError: null
       };
     }
     case ActionTypes.GET_CATEGORY_SUCCESS: {
-      return {
+      return categoryAdapter.addOne(action.payload.item, {
         ...state,
-        isLoading: false,
+        isLoadingItem: false,
         actionError: null
-      };
+      });
     }
     case ActionTypes.GET_CATEGORY_FAILURE: {
       return {
         ...state,
-        isLoading: false,
+        isLoadingItem: false,
         actionError: action.payload.error
       };
     }
