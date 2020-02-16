@@ -60,10 +60,19 @@ export class AppService {
       ModuleName.ROLES,
       'roles',
       this.authorizationService.canView(ModuleName.ROLES)
+    ),
+    new NavItem(
+      ModuleName.BANNERS,
+      'banners',
+      this.authorizationService.canView(ModuleName.BANNERS)
     )
   ];
 
   get activeNavBarItems() {
     return this.navBarItems.filter(items => items);
+  }
+
+  getNavBarItems() {
+    return this.navBarItems;
   }
 }

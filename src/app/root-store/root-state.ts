@@ -7,6 +7,7 @@ import { LanguagekeyStoreState } from '../modules/language-key/store';
 import { LanguageStoreState } from '../modules/language/store';
 import { TranslationStoreState } from '../modules/translation/store';
 import { LoginStoreState } from '../modules/login/store';
+import { BannerStoreState } from '../modules/banner/store';
 
 export interface State {
   user: UserStoreState.State;
@@ -18,4 +19,5 @@ export interface State {
   language: LanguageStoreState.State;
   translation: TranslationStoreState.State;
   login: LoginStoreState.State;
+  banner: BannerStoreState.State;
 }

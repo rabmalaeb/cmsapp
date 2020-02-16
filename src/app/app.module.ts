@@ -25,6 +25,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { StoreRouterConnectingModule } from '@ngrx/router-store';
 import { BearerInterceptor } from './interceptors/bearer.interceptor';
 import { UnauthorizedInterceptor } from './interceptors/unauthorized.interceptor';
+import { BannerModule } from './modules/banner/banner.module';
 
 
 @NgModule({
@@ -44,6 +45,7 @@ import { UnauthorizedInterceptor } from './interceptors/unauthorized.interceptor
     TranslationModule,
     PermissionModule,
     RoleModule,
+    BannerModule,
     RootStoreModule,
     AppRoutingModule,
     StoreModule.forRoot({}),

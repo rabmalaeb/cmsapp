@@ -47,5 +47,6 @@ export enum ModuleName {
   LANGUAGE_KEYS = 'Language Keys',
   TRANSLATIONS = 'Translations',
   PERMISSIONS = 'Permissions',
-  ROLES = 'Roles'
+  ROLES = 'Roles',
+  BANNERS = 'Banners'
 }
