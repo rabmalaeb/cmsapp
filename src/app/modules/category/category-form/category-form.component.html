@@ -3,7 +3,7 @@
   #formDirective="ngForm"
   (ngSubmit)="performAction(formDirective)"
   class="page__form"
-  *ngIf="!isLoadingForm else loadingMask"
+  *ngIf="!isLoadingForm; else loadingMask"
 >
   <div class="form-item">
     <div class="form-item__value form-item__value_is-textfield">
@@ -64,6 +64,12 @@
           </mat-option>
         </mat-select>
       </mat-form-field>
+    </div>
+  </div>
+  <div class="form-item">
+    <div class="form-item__value form-item__value_is-textfield">
+      <app-image-preview (image)="uploadImage($event)" [imageUrl]="imageUrl">
+      </app-image-preview>
     </div>
   </div>
   <div class="page__form-button-container" *ngIf="canEditCategory">

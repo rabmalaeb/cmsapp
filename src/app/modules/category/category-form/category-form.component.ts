@@ -16,6 +16,8 @@ import { ValidationMessagesService } from 'src/app/services/validation-messages.
 import { NotificationService } from 'src/app/services/notification.service';
 import { ActionType, ALERT_MESSAGES } from 'src/app/models/general';
 import { Category } from '../category';
+import { Media } from '../../media/media';
+import { MediaService } from '../../media/media.service';
 
 @Component({
   selector: 'app-category-form',
@@ -26,7 +28,8 @@ export class CategoryFormComponent implements OnInit, OnChanges {
   constructor(
     private form: FormBuilder,
     private notificationService: NotificationService,
-    private validationMessagesService: ValidationMessagesService
+    private validationMessagesService: ValidationMessagesService,
+    private mediaService: MediaService
   ) {}
 
   @Input() category: Category;
@@ -38,6 +41,9 @@ export class CategoryFormComponent implements OnInit, OnChanges {
   @Output() submitForm = new EventEmitter<Category>();
   formGroupDirective: FormGroupDirective;
   categoryForm: FormGroup;
+  bannerMedia: Media;
+  bannerImage: File;
+  imageUrl: any;
 
   ngOnInit() {}
 
@@ -80,6 +86,7 @@ export class CategoryFormComponent implements OnInit, OnChanges {
     category.name = this.name.value;
     category.description = this.description.value;
     category.parentId = this.parentId.value;
+    category.mediaId = this.bannerMedia.id;
     return category;
   }
 
@@ -99,7 +106,18 @@ export class CategoryFormComponent implements OnInit, OnChanges {
       this.notificationService.showError(ALERT_MESSAGES.FORM_NOT_VALID);
       return;
     }
-    this.submitForm.emit(this.buildCategoryParams());
+    if (this.bannerImage) {
+      const data = new FormData();
+      data.append('image', this.bannerImage, this.bannerImage.name);
+      this.mediaService.addMedia(data).subscribe(response => {
+        this.bannerMedia = response;
+        this.submitForm.emit(this.buildCategoryParams());
+      });
+    }
+  }
+
+  uploadImage(image: File) {
+    this.bannerImage = image;
   }
 
   get validationMessages() {
