@@ -70,7 +70,7 @@ export function permissionReducer(
       return {
         ...state,
         isLoadingItem: false,
-        actionError: action.payload.error
+        actionError: action.payload.error.message
       };
     }
     case ActionTypes.ADD_PERMISSION_REQUEST: {
@@ -91,7 +91,7 @@ export function permissionReducer(
       return {
         ...state,
         isLoadingAction: false,
-        actionError: action.payload.error
+        actionError: action.payload.error.message
       };
     }
     case ActionTypes.UPDATE_PERMISSION_REQUEST: {
@@ -115,7 +115,7 @@ export function permissionReducer(
       return {
         ...state,
         isLoadingAction: false,
-        actionError: action.payload.error
+        actionError: action.payload.error.message
       };
     }
     case ActionTypes.DELETE_PERMISSION_REQUEST: {
@@ -136,7 +136,7 @@ export function permissionReducer(
       return {
         ...state,
         isLoadingAction: false,
-        actionError: action.payload.error
+        actionError: action.payload.error.message
       };
     }
     default: {

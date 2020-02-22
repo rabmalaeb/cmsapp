@@ -1,5 +1,6 @@
 import { Action } from '@ngrx/store';
 import { Admin } from 'src/app/modules/admin/admin';
+import { ErrorResponse } from 'src/app/models/general';
 
 export enum ActionTypes {
   LOAD_REQUEST = '[Admin] Load Request',
@@ -25,7 +26,7 @@ export class LoadRequestAction implements Action {
 
 export class LoadFailureAction implements Action {
   readonly type = ActionTypes.LOAD_FAILURE;
-  constructor(public payload: { error: string }) {}
+  constructor(public payload: { error: ErrorResponse }) {}
 }
 
 export class LoadSuccessAction implements Action {
@@ -45,7 +46,7 @@ export class GetAdminSuccessAction implements Action {
 
 export class GetAdminFailureAction implements Action {
   readonly type = ActionTypes.GET_ADMIN_FAILURE;
-  constructor(public payload: { error: string }) {}
+  constructor(public payload: { error: ErrorResponse }) {}
 }
 export class AddAdminRequestAction implements Action {
   readonly type = ActionTypes.ADD_ADMIN_REQUEST;
@@ -59,7 +60,7 @@ export class AddAdminSuccessAction implements Action {
 
 export class AddAdminFailureAction implements Action {
   readonly type = ActionTypes.ADD_ADMIN_FAILURE;
-  constructor(public payload: { error: string }) {}
+  constructor(public payload: { error: ErrorResponse }) {}
 }
 
 export class UpdateAdminRequestAction implements Action {
@@ -74,7 +75,7 @@ export class UpdateAdminSuccessAction implements Action {
 
 export class UpdateAdminFailureAction implements Action {
   readonly type = ActionTypes.UPDATE_ADMIN_FAILURE;
-  constructor(public payload: { error: string }) {}
+  constructor(public payload: { error: ErrorResponse }) {}
 }
 
 export class DeleteAdminRequestAction implements Action {
@@ -89,7 +90,7 @@ export class DeleteAdminSuccessAction implements Action {
 
 export class DeleteAdminFailureAction implements Action {
   readonly type = ActionTypes.DELETE_ADMIN_FAILURE;
-  constructor(public payload: { error: string }) {}
+  constructor(public payload: { error: ErrorResponse }) {}
 }
 
 export type Actions =

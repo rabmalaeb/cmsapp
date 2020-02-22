@@ -15,7 +15,7 @@ export class LoadRequestAction implements Action {
 
 export class LoadFailureAction implements Action {
   readonly type = ActionTypes.LOAD_FAILURE;
-  constructor(public payload: { error: string }) {}
+  constructor(public payload: { error: ErrorResponse }) { }
 }
 
 export class LoadSuccessAction implements Action {

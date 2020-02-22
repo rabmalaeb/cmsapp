@@ -1,5 +1,6 @@
 import { Action } from '@ngrx/store';
 import { Role, RoleRequest } from 'src/app/modules/role/role';
+import { ErrorResponse } from 'src/app/models/general';
 
 export enum ActionTypes {
   LOAD_REQUEST = '[Role] Load Request',
@@ -25,7 +26,7 @@ export class LoadRequestAction implements Action {
 
 export class LoadFailureAction implements Action {
   readonly type = ActionTypes.LOAD_FAILURE;
-  constructor(public payload: { error: string }) {}
+  constructor(public payload: { error: ErrorResponse }) { }
 }
 
 export class LoadSuccessAction implements Action {
@@ -45,7 +46,7 @@ export class GetRoleSuccessAction implements Action {
 
 export class GetRoleFailureAction implements Action {
   readonly type = ActionTypes.GET_ROLE_FAILURE;
-  constructor(public payload: { error: string }) {}
+  constructor(public payload: { error: ErrorResponse }) { }
 }
 export class AddRoleRequestAction implements Action {
   readonly type = ActionTypes.ADD_ROLE_REQUEST;
@@ -59,7 +60,7 @@ export class AddRoleSuccessAction implements Action {
 
 export class AddRoleFailureAction implements Action {
   readonly type = ActionTypes.ADD_ROLE_FAILURE;
-  constructor(public payload: { error: string }) {}
+  constructor(public payload: { error: ErrorResponse }) { }
 }
 
 export class UpdateRoleRequestAction implements Action {
@@ -74,7 +75,7 @@ export class UpdateRoleSuccessAction implements Action {
 
 export class UpdateRoleFailureAction implements Action {
   readonly type = ActionTypes.UPDATE_ROLE_FAILURE;
-  constructor(public payload: { error: string }) {}
+  constructor(public payload: { error: ErrorResponse }) { }
 }
 
 export class DeleteRoleRequestAction implements Action {
@@ -89,7 +90,7 @@ export class DeleteRoleSuccessAction implements Action {
 
 export class DeleteRoleFailureAction implements Action {
   readonly type = ActionTypes.DELETE_ROLE_FAILURE;
-  constructor(public payload: { error: string }) {}
+  constructor(public payload: { error: ErrorResponse }) { }
 }
 
 export type Actions =

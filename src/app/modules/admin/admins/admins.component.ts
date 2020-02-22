@@ -43,8 +43,8 @@ export class AdminsComponent implements OnInit {
     private authorizationService: AuthorizationService,
     private notificationService: NotificationService,
     private store$: Store<RootStoreState.State>,
-    private actionsSubject$: ActionsSubject,
-  ) { }
+    private actionsSubject$: ActionsSubject
+  ) {}
 
   ngOnInit() {
     this.getAdmins();
@@ -54,7 +54,9 @@ export class AdminsComponent implements OnInit {
   initializeStoreVariables() {
     this.admins$ = this.store$.select(AdminStoreSelectors.selectAllAdminItems);
 
-    this.error$ = this.store$.select(AdminStoreSelectors.selectAdminLoadingError);
+    this.error$ = this.store$.select(
+      AdminStoreSelectors.selectAdminLoadingError
+    );
 
     this.isLoading$ = this.store$.select(
       AdminStoreSelectors.selectAdminIsLoading
@@ -62,7 +64,9 @@ export class AdminsComponent implements OnInit {
 
     this.actionsSubject$
       .pipe(
-        filter((action: any) => action.type === ActionTypes.DELETE_ADMIN_SUCCESS)
+        filter(
+          (action: any) => action.type === ActionTypes.DELETE_ADMIN_SUCCESS
+        )
       )
       .subscribe(() => {
         this.notificationService.showSuccess('Admin Deleted Successfully');
@@ -70,18 +74,18 @@ export class AdminsComponent implements OnInit {
 
     this.actionsSubject$
       .pipe(
-        filter((action: any) => action.type === ActionTypes.DELETE_ADMIN_FAILURE)
+        filter(
+          (action: any) => action.type === ActionTypes.DELETE_ADMIN_FAILURE
+        )
       )
-      .subscribe(() => {
-        this.notificationService.showError('Could not delete Admin. Please try again');
+      .subscribe(errorResponse => {
+        this.notificationService.showError(errorResponse.payload.error.message);
       });
 
     this.actionsSubject$
-      .pipe(
-        filter((action: any) => action.type === ActionTypes.LOAD_FAILURE)
-      )
-      .subscribe(() => {
-        this.notificationService.showError('An Error has occurred. Please try again');
+      .pipe(filter((action: any) => action.type === ActionTypes.LOAD_FAILURE))
+      .subscribe(errorResponse => {
+        this.notificationService.showError(errorResponse.payload.error.message);
       });
   }
 
@@ -112,7 +116,9 @@ export class AdminsComponent implements OnInit {
       'Yes',
       'No',
       () => {
-        this.store$.dispatch(new AdminStoreActions.DeleteAdminRequestAction(id));
+        this.store$.dispatch(
+          new AdminStoreActions.DeleteAdminRequestAction(id)
+        );
       }
     );
   }

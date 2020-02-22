@@ -25,7 +25,6 @@ import {
   LanguagekeyStoreActions,
   LanguagekeyStoreSelectors
 } from '../../language-key/store';
-import { ErrorHandlerService } from 'src/app/services/error-handler.service';
 
 @Component({
   selector: 'app-translation-add',
@@ -36,7 +35,6 @@ export class TranslationAddComponent implements OnInit {
   constructor(
     private authorizationService: AuthorizationService,
     private notificationService: NotificationService,
-    private errorHandler: ErrorHandlerService,
     private route: ActivatedRoute,
     private actionsSubject$: ActionsSubject,
     private store$: Store<RootStoreState.State>
@@ -110,8 +108,8 @@ export class TranslationAddComponent implements OnInit {
             action.type === ActionTypes.ADD_TRANSLATION_FAILURE
         )
       )
-       .subscribe(response => {
-        this.errorHandler.handleErrorResponse(response.payload.error);
+       .subscribe(errorResponse => {
+        this.notificationService.showError(errorResponse.payload.error.message);
       });
   }
 

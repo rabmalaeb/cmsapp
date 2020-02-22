@@ -11,8 +11,6 @@ export class MediaSerializerService {
   private imagePath = 'http://192.168.10.10/storage/';
 
   getMedia(mediaResponse: any) {
-    console.log('media is ', mediaResponse);
-
     if (!mediaResponse) {
       return null;
     }

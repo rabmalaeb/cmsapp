@@ -42,7 +42,7 @@ export function bannerReducer(state = initialState, action: Actions): State {
       return {
         ...state,
         isLoadingItem: false,
-        actionError: action.payload.error
+        actionError: action.payload.error.message
       };
     }
     case ActionTypes.ADD_PRODUCT_REQUEST: {
@@ -63,7 +63,7 @@ export function bannerReducer(state = initialState, action: Actions): State {
       return {
         ...state,
         isLoadingAction: false,
-        actionError: action.payload.error
+        actionError: action.payload.error.message
       };
     }
     case ActionTypes.UPDATE_PRODUCT_REQUEST: {
@@ -84,7 +84,7 @@ export function bannerReducer(state = initialState, action: Actions): State {
       return {
         ...state,
         isLoadingAction: false,
-        actionError: action.payload.error
+        actionError: action.payload.error.message
       };
     }
     case ActionTypes.DELETE_PRODUCT_REQUEST: {
@@ -105,7 +105,7 @@ export function bannerReducer(state = initialState, action: Actions): State {
       return {
         ...state,
         isLoadingAction: false,
-        actionError: action.payload.error
+        actionError: action.payload.error.message
       };
     }
     default: {

@@ -31,11 +31,7 @@ export class RolesComponent implements OnInit {
   error$: Observable<string>;
   isLoading$: Observable<boolean>;
 
-  displayedColumns: string[] = [
-    'id',
-    'name',
-    'action'
-  ];
+  displayedColumns: string[] = ['id', 'name', 'action'];
   dataSource: MatTableDataSource<any>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 
@@ -47,7 +43,7 @@ export class RolesComponent implements OnInit {
     private actionsSubject$: ActionsSubject,
     private notificationService: NotificationService,
     private router: Router
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.getRoles();
@@ -75,16 +71,14 @@ export class RolesComponent implements OnInit {
       .pipe(
         filter((action: any) => action.type === ActionTypes.DELETE_ROLE_FAILURE)
       )
-      .subscribe(() => {
-        this.notificationService.showError('Could not delete Role. Please try again');
+      .subscribe(errorResponse => {
+        this.notificationService.showError(errorResponse.payload.error.message);
       });
 
     this.actionsSubject$
-      .pipe(
-        filter((action: any) => action.type === ActionTypes.LOAD_FAILURE)
-      )
-      .subscribe(() => {
-        this.notificationService.showError('An Error has occurred. Please try again');
+      .pipe(filter((action: any) => action.type === ActionTypes.LOAD_FAILURE))
+      .subscribe(errorResponse => {
+        this.notificationService.showError(errorResponse.payload.error.message);
       });
   }
 

@@ -1,5 +1,17 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnChanges } from '@angular/core';
-import { Validators, FormBuilder, FormGroup, FormGroupDirective } from '@angular/forms';
+import {
+  Component,
+  OnInit,
+  Input,
+  Output,
+  EventEmitter,
+  OnChanges
+} from '@angular/core';
+import {
+  Validators,
+  FormBuilder,
+  FormGroup,
+  FormGroupDirective
+} from '@angular/forms';
 import { ValidationMessagesService } from 'src/app/services/validation-messages.service';
 import { NotificationService } from 'src/app/services/notification.service';
 import { ActionType, ALERT_MESSAGES } from 'src/app/models/general';
@@ -103,7 +115,7 @@ export class UserFormComponent implements OnInit, OnChanges {
       this.notificationService.showError(ALERT_MESSAGES.FORM_NOT_VALID);
       return;
     }
-    this.submitForm.emit(this.buildUserParams())
+    this.submitForm.emit(this.buildUserParams());
   }
 
   get validationMessages() {

@@ -13,7 +13,6 @@ import { Observable } from 'rxjs';
 import { Store, ActionsSubject } from '@ngrx/store';
 import { RootStoreState } from 'src/app/root-store';
 import { NotificationService } from 'src/app/services/notification.service';
-import { ErrorHandlerService } from 'src/app/services/error-handler.service';
 
 @Component({
   selector: 'app-banners',
@@ -23,13 +22,7 @@ import { ErrorHandlerService } from 'src/app/services/error-handler.service';
 export class BannersComponent implements OnInit {
   isLoading = false;
   banners: Banner[] = [];
-  displayedColumns: string[] = [
-    'id',
-    'name',
-    'description',
-    'image',
-    'action'
-  ];
+  displayedColumns: string[] = ['id', 'name', 'description', 'image', 'action'];
   dataSource: MatTableDataSource<any>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   banners$: Observable<Banner[]>;
@@ -38,7 +31,6 @@ export class BannersComponent implements OnInit {
   constructor(
     private alertService: AlertService,
     private authorizationService: AuthorizationService,
-    private errorHandler: ErrorHandlerService,
     private router: Router,
     private store$: Store<RootStoreState.State>,
     private notificationService: NotificationService,
@@ -79,16 +71,14 @@ export class BannersComponent implements OnInit {
           (action: any) => action.type === ActionTypes.DELETE_PRODUCT_FAILURE
         )
       )
-      .subscribe(() => {
-        this.notificationService.showError(
-          'Could not delete Banner. Please try again'
-        );
+      .subscribe(errorResponse => {
+        this.notificationService.showError(errorResponse.payload.error.message);
       });
 
     this.actionsSubject$
       .pipe(filter((action: any) => action.type === ActionTypes.LOAD_FAILURE))
-       .subscribe(response => {
-        this.errorHandler.handleErrorResponse(response.payload.error);
+      .subscribe(errorResponse => {
+        this.notificationService.showError(errorResponse.payload.error.message);
       });
   }
 

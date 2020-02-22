@@ -1,5 +1,6 @@
 import { Action } from '@ngrx/store';
 import { Language } from 'src/app/modules/language/language';
+import { ErrorResponse } from 'src/app/models/general';
 
 export enum ActionTypes {
   LOAD_REQUEST = '[Language] Load Request',
@@ -25,7 +26,7 @@ export class LoadRequestAction implements Action {
 
 export class LoadFailureAction implements Action {
   readonly type = ActionTypes.LOAD_FAILURE;
-  constructor(public payload: { error: string }) {}
+  constructor(public payload: { error: ErrorResponse }) { }
 }
 
 export class LoadSuccessAction implements Action {
@@ -45,7 +46,7 @@ export class GetLanguageSuccessAction implements Action {
 
 export class GetLanguageFailureAction implements Action {
   readonly type = ActionTypes.GET_LANGUAGE_FAILURE;
-  constructor(public payload: { error: string }) {}
+  constructor(public payload: { error: ErrorResponse }) { }
 }
 export class AddLanguageRequestAction implements Action {
   readonly type = ActionTypes.ADD_LANGUAGE_REQUEST;
@@ -59,7 +60,7 @@ export class AddLanguageSuccessAction implements Action {
 
 export class AddLanguageFailureAction implements Action {
   readonly type = ActionTypes.ADD_LANGUAGE_FAILURE;
-  constructor(public payload: { error: string }) {}
+  constructor(public payload: { error: ErrorResponse }) { }
 }
 
 export class UpdateLanguageRequestAction implements Action {
@@ -74,7 +75,7 @@ export class UpdateLanguageSuccessAction implements Action {
 
 export class UpdateLanguageFailureAction implements Action {
   readonly type = ActionTypes.UPDATE_LANGUAGE_FAILURE;
-  constructor(public payload: { error: string }) {}
+  constructor(public payload: { error: ErrorResponse }) { }
 }
 
 export class DeleteLanguageRequestAction implements Action {
@@ -89,7 +90,7 @@ export class DeleteLanguageSuccessAction implements Action {
 
 export class DeleteLanguageFailureAction implements Action {
   readonly type = ActionTypes.DELETE_LANGUAGE_FAILURE;
-  constructor(public payload: { error: string }) {}
+  constructor(public payload: { error: ErrorResponse }) { }
 }
 
 export type Actions =

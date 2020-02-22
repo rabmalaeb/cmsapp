@@ -14,7 +14,6 @@ import {
   LanguageStoreSelectors,
   LanguageStoreActions
 } from '../../language/store';
-import { ErrorHandlerService } from 'src/app/services/error-handler.service';
 import { Language } from '../../language/language';
 
 @Component({
@@ -25,7 +24,6 @@ import { Language } from '../../language/language';
 export class BannerAddComponent implements OnInit {
   constructor(
     private notificationService: NotificationService,
-    private errorHandler: ErrorHandlerService,
     private authorizationService: AuthorizationService,
     private actionsSubject$: ActionsSubject,
     private store$: Store<RootStoreState.State>,
@@ -88,8 +86,8 @@ export class BannerAddComponent implements OnInit {
             action.type === ActionTypes.ADD_PRODUCT_FAILURE
         )
       )
-      .subscribe(response => {
-        this.errorHandler.handleErrorResponse(response.payload.error);
+      .subscribe(errorResponse => {
+        this.notificationService.showError(errorResponse.payload.error.message);
       });
   }
 

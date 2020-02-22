@@ -45,7 +45,7 @@ export function languagekeyReducer(
       return {
         ...state,
         isLoadingItem: false,
-        actionError: action.payload.error
+        actionError: action.payload.error.message
       };
     }
     case ActionTypes.ADD_LANGUAGEKEY_REQUEST: {
@@ -66,7 +66,7 @@ export function languagekeyReducer(
       return {
         ...state,
         isLoadingAction: false,
-        actionError: action.payload.error
+        actionError: action.payload.error.message
       };
     }
     case ActionTypes.UPDATE_LANGUAGEKEY_REQUEST: {
@@ -90,7 +90,7 @@ export function languagekeyReducer(
       return {
         ...state,
         isLoadingAction: false,
-        actionError: action.payload.error
+        actionError: action.payload.error.message
       };
     }
     case ActionTypes.DELETE_LANGUAGEKEY_REQUEST: {
@@ -111,7 +111,7 @@ export function languagekeyReducer(
       return {
         ...state,
         isLoadingAction: false,
-        actionError: action.payload.error
+        actionError: action.payload.error.message
       };
     }
     default: {

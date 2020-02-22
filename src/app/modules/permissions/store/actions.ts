@@ -1,5 +1,6 @@
 import { Action } from '@ngrx/store';
 import { Permission, PermissionRequest } from '../permission';
+import { ErrorResponse } from 'src/app/models/general';
 
 export enum ActionTypes {
   LOAD_REQUEST = '[Permission] Load Request',
@@ -28,7 +29,7 @@ export class LoadRequestAction implements Action {
 
 export class LoadFailureAction implements Action {
   readonly type = ActionTypes.LOAD_FAILURE;
-  constructor(public payload: { error: string }) {}
+  constructor(public payload: { error: ErrorResponse }) { }
 }
 
 export class LoadSuccessAction implements Action {
@@ -48,7 +49,7 @@ export class LoadRolePermissionSuccessAction implements Action {
 
 export class LoadRolePermissionFailureAction implements Action {
   readonly type = ActionTypes.LOAD_PERMISSIONS_BY_ROLE_FAILURE;
-  constructor(public payload: { error: string }) {}
+  constructor(public payload: { error: ErrorResponse }) { }
 }
 
 export class GetPermissionRequestAction implements Action {
@@ -63,7 +64,7 @@ export class GetPermissionSuccessAction implements Action {
 
 export class GetPermissionFailureAction implements Action {
   readonly type = ActionTypes.GET_PERMISSION_FAILURE;
-  constructor(public payload: { error: string }) {}
+  constructor(public payload: { error: ErrorResponse }) { }
 }
 export class AddPermissionRequestAction implements Action {
   readonly type = ActionTypes.ADD_PERMISSION_REQUEST;
@@ -77,7 +78,7 @@ export class AddPermissionSuccessAction implements Action {
 
 export class AddPermissionFailureAction implements Action {
   readonly type = ActionTypes.ADD_PERMISSION_FAILURE;
-  constructor(public payload: { error: string }) {}
+  constructor(public payload: { error: ErrorResponse }) { }
 }
 
 export class UpdatePermissionRequestAction implements Action {
@@ -92,7 +93,7 @@ export class UpdatePermissionSuccessAction implements Action {
 
 export class UpdatePermissionFailureAction implements Action {
   readonly type = ActionTypes.UPDATE_PERMISSION_FAILURE;
-  constructor(public payload: { error: string }) {}
+  constructor(public payload: { error: ErrorResponse }) { }
 }
 
 export class DeletePermissionRequestAction implements Action {
@@ -107,7 +108,7 @@ export class DeletePermissionSuccessAction implements Action {
 
 export class DeletePermissionFailureAction implements Action {
   readonly type = ActionTypes.DELETE_PERMISSION_FAILURE;
-  constructor(public payload: { error: string }) {}
+  constructor(public payload: { error: ErrorResponse }) { }
 }
 
 export type Actions =

@@ -25,7 +25,7 @@ export class LoadRequestAction implements Action {
 
 export class LoadFailureAction implements Action {
   readonly type = ActionTypes.LOAD_FAILURE;
-  constructor(public payload: { error: string }) {}
+  constructor(public payload: { error: ErrorResponse }) { }
 }
 
 export class LoadSuccessAction implements Action {
@@ -45,7 +45,7 @@ export class GetTranslationSuccessAction implements Action {
 
 export class GetTranslationFailureAction implements Action {
   readonly type = ActionTypes.GET_TRANSLATION_FAILURE;
-  constructor(public payload: { error: string }) {}
+  constructor(public payload: { error: ErrorResponse }) { }
 }
 export class AddTranslationRequestAction implements Action {
   readonly type = ActionTypes.ADD_TRANSLATION_REQUEST;
@@ -59,7 +59,7 @@ export class AddTranslationSuccessAction implements Action {
 
 export class AddTranslationFailureAction implements Action {
   readonly type = ActionTypes.ADD_TRANSLATION_FAILURE;
-  constructor(public payload: { error: string }) {}
+  constructor(public payload: { error: ErrorResponse }) { }
 }
 
 export class UpdateTranslationRequestAction implements Action {
@@ -74,7 +74,7 @@ export class UpdateTranslationSuccessAction implements Action {
 
 export class UpdateTranslationFailureAction implements Action {
   readonly type = ActionTypes.UPDATE_TRANSLATION_FAILURE;
-  constructor(public payload: { error: string }) {}
+  constructor(public payload: { error: ErrorResponse }) { }
 }
 
 export class DeleteTranslationRequestAction implements Action {
@@ -89,7 +89,7 @@ export class DeleteTranslationSuccessAction implements Action {
 
 export class DeleteTranslationFailureAction implements Action {
   readonly type = ActionTypes.DELETE_TRANSLATION_FAILURE;
-  constructor(public payload: { error: string }) {}
+  constructor(public payload: { error: ErrorResponse }) { }
 }
 
 export type Actions =

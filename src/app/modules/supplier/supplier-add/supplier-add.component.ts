@@ -3,7 +3,6 @@ import { ValidationMessagesService } from 'src/app/services/validation-messages.
 import { NotificationService } from 'src/app/services/notification.service';
 import { ActionType, ModuleName } from 'src/app/models/general';
 import { ActivatedRoute } from '@angular/router';
-import { ErrorHandlerService } from 'src/app/services/error-handler.service';
 import { AuthorizationService } from 'src/app/services/authorization.service';
 import { Observable, of } from 'rxjs';
 import { ActionTypes } from '../store/actions';
@@ -23,7 +22,6 @@ export class SupplierAddComponent implements OnInit {
     private notificationService: NotificationService,
     private validationMessagesService: ValidationMessagesService,
     private authorizationService: AuthorizationService,
-    private errorHandler: ErrorHandlerService,
     private actionsSubject$: ActionsSubject,
     private store$: Store<RootStoreState.State>,
     private route: ActivatedRoute
@@ -86,8 +84,8 @@ export class SupplierAddComponent implements OnInit {
             action.type === ActionTypes.ADD_SUPPLIER_FAILURE
         )
       )
-      .subscribe(response => {
-        this.errorHandler.handleErrorResponse(response.payload.error);
+      .subscribe(errorResponse => {
+        this.notificationService.showError(errorResponse.payload.error.message);
       });
   }
 

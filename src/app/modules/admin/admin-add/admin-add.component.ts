@@ -15,7 +15,6 @@ import {
 } from 'src/app/root-store';
 import { ActionTypes } from '../store/actions';
 import { filter } from 'rxjs/operators';
-import { ErrorHandlerService } from 'src/app/services/error-handler.service';
 
 @Component({
   selector: 'app-admin-add',
@@ -26,7 +25,6 @@ export class AdminAddComponent implements OnInit {
   constructor(
     private notificationService: NotificationService,
     private authorizationService: AuthorizationService,
-    private errorHandler: ErrorHandlerService,
     private actionsSubject$: ActionsSubject,
     private store$: Store<RootStoreState.State>,
     private route: ActivatedRoute
@@ -90,8 +88,8 @@ export class AdminAddComponent implements OnInit {
             action.type === ActionTypes.ADD_ADMIN_FAILURE
         )
       )
-      .subscribe(response => {
-        this.errorHandler.handleErrorResponse(response.payload.error);
+      .subscribe(errorResponse => {
+        this.notificationService.showError(errorResponse.payload.error.message);
       });
   }
 

@@ -78,16 +78,14 @@ export class UsersComponent implements OnInit {
       .pipe(
         filter((action: any) => action.type === ActionTypes.DELETE_USER_FAILURE)
       )
-      .subscribe(() => {
-        this.notificationService.showError('Could not delete User. Please try again');
+      .subscribe(errorResponse => {
+        this.notificationService.showError(errorResponse.payload.error.message);
       });
 
     this.actionsSubject$
-      .pipe(
-        filter((action: any) => action.type === ActionTypes.LOAD_FAILURE)
-      )
-      .subscribe(() => {
-        this.notificationService.showError('An Error has occurred. Please try again');
+      .pipe(filter((action: any) => action.type === ActionTypes.LOAD_FAILURE))
+      .subscribe(errorResponse => {
+        this.notificationService.showError(errorResponse.payload.error.message);
       });
   }
 

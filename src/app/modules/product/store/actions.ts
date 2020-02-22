@@ -25,7 +25,7 @@ export class LoadRequestAction implements Action {
 
 export class LoadFailureAction implements Action {
   readonly type = ActionTypes.LOAD_FAILURE;
-  constructor(public payload: { error: string }) {}
+  constructor(public payload: { error: ErrorResponse }) { }
 }
 
 export class LoadSuccessAction implements Action {
@@ -45,7 +45,7 @@ export class GetProductSuccessAction implements Action {
 
 export class GetProductFailureAction implements Action {
   readonly type = ActionTypes.GET_PRODUCT_FAILURE;
-  constructor(public payload: { error: string }) {}
+  constructor(public payload: { error: ErrorResponse }) { }
 }
 export class AddProductRequestAction implements Action {
   readonly type = ActionTypes.ADD_PRODUCT_REQUEST;
@@ -59,7 +59,7 @@ export class AddProductSuccessAction implements Action {
 
 export class AddProductFailureAction implements Action {
   readonly type = ActionTypes.ADD_PRODUCT_FAILURE;
-  constructor(public payload: { error: string }) {}
+  constructor(public payload: { error: ErrorResponse }) { }
 }
 
 export class UpdateProductRequestAction implements Action {
@@ -74,7 +74,7 @@ export class UpdateProductSuccessAction implements Action {
 
 export class UpdateProductFailureAction implements Action {
   readonly type = ActionTypes.UPDATE_PRODUCT_FAILURE;
-  constructor(public payload: { error: string }) {}
+  constructor(public payload: { error: ErrorResponse }) { }
 }
 
 export class DeleteProductRequestAction implements Action {
@@ -89,7 +89,7 @@ export class DeleteProductSuccessAction implements Action {
 
 export class DeleteProductFailureAction implements Action {
   readonly type = ActionTypes.DELETE_PRODUCT_FAILURE;
-  constructor(public payload: { error: string }) {}
+  constructor(public payload: { error: ErrorResponse }) { }
 }
 
 export type Actions =

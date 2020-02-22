@@ -17,7 +17,6 @@ import { Observable, of } from 'rxjs';
 import { PermissionStoreSelectors, PermissionStoreActions } from '../store';
 import { ActionTypes } from '../store/actions';
 import { filter } from 'rxjs/operators';
-import { ErrorHandlerService } from 'src/app/services/error-handler.service';
 
 @Component({
   selector: 'app-permission-add',
@@ -28,7 +27,6 @@ export class PermissionAddComponent implements OnInit {
   constructor(
     private notificationService: NotificationService,
     private authorizationService: AuthorizationService,
-    private errorHandler: ErrorHandlerService,
     private route: ActivatedRoute,
     private actionsSubject$: ActionsSubject,
     private store$: Store<RootStoreState.State>,
@@ -94,8 +92,8 @@ export class PermissionAddComponent implements OnInit {
             action.type === ActionTypes.ADD_PERMISSION_FAILURE
         )
       )
-      .subscribe(response => {
-        this.errorHandler.handleErrorResponse(response.payload.error);
+      .subscribe(errorResponse => {
+        this.notificationService.showError(errorResponse.payload.error.message);
       });
   }
 

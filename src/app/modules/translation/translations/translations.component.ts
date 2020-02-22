@@ -44,8 +44,8 @@ export class TranslationsComponent implements OnInit {
     private router: Router,
     private store$: Store<RootStoreState.State>,
     private notificationService: NotificationService,
-    private actionsSubject$: ActionsSubject,
-  ) { }
+    private actionsSubject$: ActionsSubject
+  ) {}
 
   ngOnInit() {
     this.getTranslations();
@@ -53,9 +53,13 @@ export class TranslationsComponent implements OnInit {
   }
 
   initializeStoreVariables() {
-    this.translations$ = this.store$.select(TranslationStoreSelectors.selectAllTranslationItems);
+    this.translations$ = this.store$.select(
+      TranslationStoreSelectors.selectAllTranslationItems
+    );
 
-    this.error$ = this.store$.select(TranslationStoreSelectors.selectTranslationLoadingError);
+    this.error$ = this.store$.select(
+      TranslationStoreSelectors.selectTranslationLoadingError
+    );
 
     this.isLoading$ = this.store$.select(
       TranslationStoreSelectors.selectTranslationIsLoading
@@ -63,26 +67,32 @@ export class TranslationsComponent implements OnInit {
 
     this.actionsSubject$
       .pipe(
-        filter((action: any) => action.type === ActionTypes.DELETE_TRANSLATION_SUCCESS)
+        filter(
+          (action: any) =>
+            action.type === ActionTypes.DELETE_TRANSLATION_SUCCESS
+        )
       )
       .subscribe(() => {
-        this.notificationService.showSuccess('Translation Deleted Successfully');
+        this.notificationService.showSuccess(
+          'Translation Deleted Successfully'
+        );
       });
 
     this.actionsSubject$
       .pipe(
-        filter((action: any) => action.type === ActionTypes.DELETE_TRANSLATION_FAILURE)
+        filter(
+          (action: any) =>
+            action.type === ActionTypes.DELETE_TRANSLATION_FAILURE
+        )
       )
-      .subscribe(() => {
-        this.notificationService.showError('Could not delete Translation. Please try again');
+      .subscribe(errorResponse => {
+        this.notificationService.showError(errorResponse.payload.error.message);
       });
 
     this.actionsSubject$
-      .pipe(
-        filter((action: any) => action.type === ActionTypes.LOAD_FAILURE)
-      )
-      .subscribe(() => {
-        this.notificationService.showError('An Error has occurred. Please try again');
+      .pipe(filter((action: any) => action.type === ActionTypes.LOAD_FAILURE))
+      .subscribe(errorResponse => {
+        this.notificationService.showError(errorResponse.payload.error.message);
       });
   }
 
@@ -113,8 +123,9 @@ export class TranslationsComponent implements OnInit {
       'Yes',
       'No',
       () => {
-        this.store$.dispatch(new TranslationStoreActions.DeleteTranslationRequestAction(id));
-
+        this.store$.dispatch(
+          new TranslationStoreActions.DeleteTranslationRequestAction(id)
+        );
       }
     );
   }

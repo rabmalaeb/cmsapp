@@ -49,5 +49,10 @@ export enum ModuleName {
   PERMISSIONS = 'Permissions',
   ROLES = 'Roles',
   BANNERS = 'Banners',
-  SUPPLIERS = 'Suppliers',
+  SUPPLIERS = 'Suppliers'
+}
+
+export interface ErrorResponse {
+  status: number;
+  message: string;
 }
