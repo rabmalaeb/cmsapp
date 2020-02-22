@@ -28,6 +28,7 @@ export class ProductsComponent implements OnInit {
     'name',
     'description',
     'category',
+    'image',
     'action'
   ];
   dataSource: MatTableDataSource<any>;

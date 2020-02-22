@@ -27,7 +27,7 @@ export class BannersComponent implements OnInit {
     'id',
     'name',
     'description',
-    'category',
+    'image',
     'action'
   ];
   dataSource: MatTableDataSource<any>;
