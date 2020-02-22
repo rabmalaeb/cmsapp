@@ -12,6 +12,7 @@ import { TranslationStoreModule } from '../modules/translation/store';
 import { LanguageKeyStoreModule } from '../modules/language-key/store';
 import { LoginStoreModule } from '../modules/login/store';
 import { BannerStoreModule } from '../modules/banner/store';
+import { SupplierStoreModule } from '../modules/supplier/store';
 
 
 
@@ -31,7 +32,8 @@ import { BannerStoreModule } from '../modules/banner/store';
     LoginStoreModule,
     PermissionStoreModule,
     AdminStoreModule,
-    BannerStoreModule
+    BannerStoreModule,
+    SupplierStoreModule
   ]
 })
 export class RootStoreModule { }

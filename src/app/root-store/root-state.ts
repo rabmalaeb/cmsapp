@@ -8,6 +8,7 @@ import { LanguageStoreState } from '../modules/language/store';
 import { TranslationStoreState } from '../modules/translation/store';
 import { LoginStoreState } from '../modules/login/store';
 import { BannerStoreState } from '../modules/banner/store';
+import { SupplierStoreState } from '../modules/supplier/store';
 
 export interface State {
   user: UserStoreState.State;
@@ -20,4 +21,5 @@ export interface State {
   translation: TranslationStoreState.State;
   login: LoginStoreState.State;
   banner: BannerStoreState.State;
+  supplier: SupplierStoreState.State;
 }

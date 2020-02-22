@@ -7,7 +7,7 @@ import { LogoutService } from '../services/logout.service';
 
 
 @Injectable()
-export class UnauthorizedInterceptor implements HttpInterceptor {
+export class ErrorInterceptor implements HttpInterceptor {
   constructor(
     private logoutService: LogoutService,
   ) { }

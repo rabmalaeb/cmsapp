@@ -24,8 +24,9 @@ import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreRouterConnectingModule } from '@ngrx/router-store';
 import { BearerInterceptor } from './interceptors/bearer.interceptor';
-import { UnauthorizedInterceptor } from './interceptors/unauthorized.interceptor';
+import { ErrorInterceptor } from './interceptors/error.interceptor';
 import { BannerModule } from './modules/banner/banner.module';
+import { SupplierModule } from './modules/supplier/supplier.module';
 
 
 @NgModule({
@@ -44,6 +45,7 @@ import { BannerModule } from './modules/banner/banner.module';
     LanguageKeyModule,
     TranslationModule,
     PermissionModule,
+    SupplierModule,
     RoleModule,
     BannerModule,
     RootStoreModule,
@@ -60,7 +62,7 @@ import { BannerModule } from './modules/banner/banner.module';
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: BearerInterceptor, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: UnauthorizedInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
   ],
   bootstrap: [AppComponent]
 })

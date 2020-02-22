@@ -1,0 +1,30 @@
+<div class="page">
+  <div class="page__container">
+    <div class="page__section">
+      <div class="page__title-container">
+        <div class="page__title">
+          {{ title }}
+        </div>
+      </div>
+      <div class="page__actions">
+        <button
+          mat-button
+          class="button button_is-primary"
+          routerLink="/suppliers"
+        >
+          Back To Suppliers
+        </button>
+      </div>
+    </div>
+    <div class="page__form-container">
+      <app-supplier-form
+        [supplier]="supplier$ | async"
+        [isLoading]="isLoading$ | async"
+        [canEditSupplier]="canEditSupplier$ | async"
+        [isLoadingAction]="isLoadingAction$ | async"
+        (submitForm)="performAction($event)"
+      >
+      </app-supplier-form>
+    </div>
+  </div>
+</div>

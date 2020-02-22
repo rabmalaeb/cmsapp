@@ -65,6 +65,11 @@ export class AppService {
       ModuleName.BANNERS,
       'banners',
       this.authorizationService.canView(ModuleName.BANNERS)
+    ),
+    new NavItem(
+      ModuleName.SUPPLIERS,
+      'suppliers',
+      this.authorizationService.canView(ModuleName.SUPPLIERS)
     )
   ];
 

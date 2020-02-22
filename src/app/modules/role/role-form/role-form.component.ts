@@ -66,8 +66,6 @@ export class RoleFormComponent implements OnInit, OnChanges {
   }
 
   setPermissionGroups() {
-    console.log('permissions are ', this.permissions);
-
     this.permissionGroups = this.permissionSerializer.groupPermissions(
       this.permissions
     );
