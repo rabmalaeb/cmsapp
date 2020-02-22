@@ -21,7 +21,11 @@ export class ProductSerializerService {
     product.id = parseInt(productResponse.id, 0);
     product.name = productResponse.attributes.name;
     product.description = productResponse.attributes.description;
-    product.categoryId = productResponse.attributes.categoryId;
+    product.categoryId = parseInt(productResponse.attributes.categoryId, 0);
+    product.retailPrice = parseInt(productResponse.attributes.retailPrice, 0);
+    product.originalPrice = parseInt(productResponse.attributes.originalPrice, 0);
+    product.quantity = parseInt(productResponse.attributes.quantity, 0);
+    product.unitOfCount = productResponse.attributes.unitOfCount;
     product.category = this.categorySerializer.getCategory(productResponse.relationships.category);
     product.media = this.mediaSerializer.getMedia(productResponse.relationships.media);
     return product;

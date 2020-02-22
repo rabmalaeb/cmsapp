@@ -3,57 +3,56 @@
   #formDirective="ngForm"
   (ngSubmit)="performAction(formDirective)"
   class="page__form"
-  *ngIf="!isLoadingForm else loadingMask"
+  *ngIf="!isLoadingForm; else loadingMask"
 >
-  <div class="form-item">
-    <div class="form-item__value form-item__value_is-textfield">
-      <mat-form-field appearance="outline">
-        <mat-label>Name</mat-label>
-        <input
-          matInput
-          id="name"
-          name="name"
-          placeholder="Name"
-          [formControl]="name"
-        />
-        <mat-error *ngFor="let validation of validationMessages.name">
-          <mat-error
-            class="error-message"
-            *ngIf="
-              name.hasError(validation.type) && (name.dirty || name.touched)
-            "
-          >
-            {{ validation.message }}</mat-error
-          >
-        </mat-error>
-      </mat-form-field>
-    </div>
-  </div>
-  <div class="form-item">
-    <div class="form-item__value form-item__value_is-textfield">
-      <mat-form-field appearance="outline">
-        <mat-label>Description</mat-label>
-        <input
-          matInput
-          id="description"
-          name="description"
-          placeholder="Description"
-          [formControl]="description"
-        />
-        <mat-error *ngFor="let validation of validationMessages.description">
-          <mat-error
-            class="error-message"
-            *ngIf="
-              description.hasError(validation.type) &&
-              (description.dirty || description.touched)
-            "
-          >
-            {{ validation.message }}</mat-error
-          >
-        </mat-error>
-      </mat-form-field>
-    </div>
-  </div>
+  <app-input-item
+    id="name"
+    name="name"
+    title="Name"
+    [formControlItem]="name"
+    [validationMessages]="validationMessages"
+  >
+  </app-input-item>
+
+  <app-input-item
+    id="description"
+    name="description"
+    title="Description"
+    [formControlItem]="description"
+    [validationMessages]="validationMessages"
+  >
+  </app-input-item>
+
+  <app-input-item
+    id="retailPrice"
+    name="retailPrice"
+    title="Retail Price"
+    type="number"
+    [formControlItem]="retailPrice"
+    [validationMessages]="validationMessages"
+  >
+  </app-input-item>
+
+  <app-input-item
+    id="originalPrice"
+    name="originalPrice"
+    title="Original Price"
+    type="number"
+    [formControlItem]="originalPrice"
+    [validationMessages]="validationMessages"
+  >
+  </app-input-item>
+
+  <app-input-item
+    id="quantity"
+    name="quantity"
+    title="Quantity"
+    type="number"
+    [formControlItem]="quantity"
+    [validationMessages]="validationMessages"
+  >
+  </app-input-item>
+
   <div class="form-item">
     <div class="form-item__value form-item__value_is-textfield">
       <mat-form-field appearance="outline">

@@ -7,6 +7,10 @@ export class Product {
   description: string;
   categoryId: number;
   mediaId: number;
+  retailPrice: number;
+  originalPrice: number;
+  unitOfCount: string;
+  quantity: number;
   category: Category;
   media: Media;
 }

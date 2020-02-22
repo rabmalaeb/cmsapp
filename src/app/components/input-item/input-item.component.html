@@ -1,0 +1,28 @@
+<div class="input-item">
+  <div class="form-item">
+    <div class="form-item__value form-item__value_is-textfield">
+      <mat-form-field appearance="outline">
+        <mat-label>{{ title }}</mat-label>
+        <input
+          matInput
+          [id]="id"
+          [name]="name"
+          [placeholder]="title"
+          [formControl]="formControlItem"
+          [type]="type"
+        />
+        <mat-error *ngFor="let validation of validationMessages.requiredField">
+          <mat-error
+            class="error-message"
+            *ngIf="
+              formControlItem.hasError(validation.type) &&
+              (formControlItem.dirty || formControlItem.touched)
+            "
+          >
+            {{ validation.message }}</mat-error
+          >
+        </mat-error>
+      </mat-form-field>
+    </div>
+  </div>
+</div>

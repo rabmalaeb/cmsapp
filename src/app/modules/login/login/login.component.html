@@ -7,59 +7,25 @@
       class="login__form"
     >
       <div class="login__form-item">
-        <div class="form-item">
-          <div class="form-item__value form-item__value_is-textfield">
-            <mat-form-field appearance="outline">
-              <mat-label>Email</mat-label>
-              <input
-                matInput
-                id="email"
-                name="email"
-                placeholder="Email"
-                [formControl]="email"
-              />
-              <mat-error *ngFor="let validation of validationMessages.email">
-                <mat-error
-                  class="error-message"
-                  *ngIf="
-                    email.hasError(validation.type) &&
-                    (email.dirty || email.touched)
-                  "
-                >
-                  {{ validation.message }}</mat-error
-                >
-              </mat-error>
-            </mat-form-field>
-          </div>
-        </div>
+        <app-input-item
+          id="email"
+          name="email"
+          title="Email"
+          [formControlItem]="email"
+          [validationMessages]="validationMessages"
+        >
+        </app-input-item>
       </div>
       <div class="login__form-item">
-        <div class="form-item">
-          <div class="form-item__value form-item__value_is-textfield">
-            <mat-form-field appearance="outline">
-              <mat-label>Password</mat-label>
-              <input
-                matInput
-                id="password"
-                type="password"
-                name="password"
-                placeholder="Password"
-                [formControl]="password"
-              />
-              <mat-error *ngFor="let validation of validationMessages.password">
-                <mat-error
-                  class="error-message"
-                  *ngIf="
-                    password.hasError(validation.type) &&
-                    (password.dirty || password.touched)
-                  "
-                >
-                  {{ validation.message }}</mat-error
-                >
-              </mat-error>
-            </mat-form-field>
-          </div>
-        </div>
+        <app-input-item
+          id="password"
+          name="password"
+          type="password"
+          title="Password"
+          [formControlItem]="password"
+          [validationMessages]="validationMessages"
+        >
+        </app-input-item>
       </div>
       <button mat-button class="button button_is-primary">
         {{ loginLabel | async }}

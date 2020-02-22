@@ -7,20 +7,11 @@ export class ValidationMessagesService {
   constructor() {}
 
   private validationMessages = {
-    name: [{ type: 'required', message: 'This field is required' }],
-    firstName: [{ type: 'required', message: 'This field is required' }],
-    lastName: [{ type: 'required', message: 'This field is required' }],
-    description: [{ type: 'required', message: 'This field is required' }],
-    mobile: [{ type: 'required', message: 'This field is required' }],
-    email: [
+    requiredField: [
       { type: 'required', message: 'This field is required' },
+      { type: 'MatchPasswords', message: 'The passwords does not match' },
       { type: 'email', message: 'Enter a valid email address' }
     ],
-    requiredField: [{ type: 'required', message: 'This field is required' }],
-    password: [{ type: 'required', message: 'This field is required' }],
-    confirmPassword: [
-      { type: 'MatchPasswords', message: 'The passwords does not match' }
-    ]
   };
 
   getValidationMessages() {

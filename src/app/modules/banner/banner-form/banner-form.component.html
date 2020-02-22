@@ -5,79 +5,33 @@
   class="page__form"
   *ngIf="!isLoadingForm; else loadingMask"
 >
-  <div class="form-item">
-    <div class="form-item__value form-item__value_is-textfield">
-      <mat-form-field appearance="outline">
-        <mat-label>Name</mat-label>
-        <input
-          matInput
-          id="name"
-          name="name"
-          placeholder="Name"
-          [formControl]="name"
-        />
-        <mat-error *ngFor="let validation of validationMessages.name">
-          <mat-error
-            class="error-message"
-            *ngIf="
-              name.hasError(validation.type) && (name.dirty || name.touched)
-            "
-          >
-            {{ validation.message }}</mat-error
-          >
-        </mat-error>
-      </mat-form-field>
-    </div>
-  </div>
-  <div class="form-item">
-    <div class="form-item__value form-item__value_is-textfield">
-      <mat-form-field appearance="outline">
-        <mat-label>Description</mat-label>
-        <input
-          matInput
-          id="description"
-          name="description"
-          placeholder="Description"
-          [formControl]="description"
-        />
-        <mat-error *ngFor="let validation of validationMessages.description">
-          <mat-error
-            class="error-message"
-            *ngIf="
-              description.hasError(validation.type) &&
-              (description.dirty || description.touched)
-            "
-          >
-            {{ validation.message }}</mat-error
-          >
-        </mat-error>
-      </mat-form-field>
-    </div>
-  </div>
-  <div class="form-item">
-    <div class="form-item__value form-item__value_is-textfield">
-      <mat-form-field appearance="outline">
-        <mat-label>Link</mat-label>
-        <input
-          matInput
-          id="link"
-          name="link"
-          placeholder="Link"
-          [formControl]="link"
-        />
-        <mat-error *ngFor="let validation of validationMessages.requiredField">
-          <mat-error
-            class="error-message"
-            *ngIf="
-              link.hasError(validation.type) && (link.dirty || link.touched)
-            "
-          >
-            {{ validation.message }}</mat-error
-          >
-        </mat-error>
-      </mat-form-field>
-    </div>
-  </div>
+  <app-input-item
+    id="name"
+    name="name"
+    title="Name"
+    [formControlItem]="name"
+    [validationMessages]="validationMessages"
+  >
+  </app-input-item>
+
+  <app-input-item
+    id="description"
+    name="description"
+    title="Description"
+    [formControlItem]="description"
+    [validationMessages]="validationMessages"
+  >
+  </app-input-item>
+
+  <app-input-item
+    id="link"
+    name="link"
+    title="Link"
+    [formControlItem]="link"
+    [validationMessages]="validationMessages"
+  >
+  </app-input-item>
+
   <div class="form-item">
     <div class="form-item__value form-item__value_is-textfield">
       <mat-form-field appearance="outline">

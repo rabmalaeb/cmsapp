@@ -3,7 +3,7 @@
   #formDirective="ngForm"
   (ngSubmit)="performAction(formDirective)"
   class="page__form"
-  *ngIf="!isLoadingForm else loadingMask"
+  *ngIf="!isLoadingForm; else loadingMask"
 >
   <div class="form-item" *ngIf="!isLoadingLanguages">
     <div class="form-item__value form-item__value_is-textfield">
@@ -44,30 +44,15 @@
       </mat-form-field>
     </div>
   </div>
-  <div class="form-item">
-    <div class="form-item__value form-item__value_is-textfield">
-      <mat-form-field appearance="outline">
-        <mat-label>Value</mat-label>
-        <input
-          matInput
-          id="value"
-          name="value"
-          placeholder="Value"
-          [formControl]="value"
-        />
-        <mat-error *ngFor="let validation of validationMessages.requiredField">
-          <mat-error
-            class="error-message"
-            *ngIf="
-              value.hasError(validation.type) && (value.dirty || value.touched)
-            "
-          >
-            {{ validation.message }}</mat-error
-          >
-        </mat-error>
-      </mat-form-field>
-    </div>
-  </div>
+
+  <app-input-item
+    id="value"
+    name="value"
+    title="Value"
+    [formControlItem]="value"
+    [validationMessages]="validationMessages"
+  >
+  </app-input-item>
 
   <div class="page__form-button-container" *ngIf="canEditTranslation">
     <div class="page__form__button">
