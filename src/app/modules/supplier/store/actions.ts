@@ -1,5 +1,6 @@
 import { Action } from '@ngrx/store';
 import { Supplier } from 'src/app/modules/supplier/supplier';
+import { ErrorResponse } from 'src/app/models/general';
 
 export enum ActionTypes {
   LOAD_REQUEST = '[Supplier] Load Request',

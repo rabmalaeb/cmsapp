@@ -10,6 +10,6 @@ export interface Admin {
   role?: Role;
   password?: string;
   token?: string;
-  partnerId: number;
-  apiKey: string;
+  partnerId?: number;
+  apiKey?: string;
 }
