@@ -19,11 +19,11 @@ export class NotificationService {
     );
   }
 
-  showError(message: string) {;
+  showError(message: string) {
     return this.errorMessage.next(message);
   }
 
-  showSuccess(message: string) {;
+  showSuccess(message: string) {
     return this.successMessage.next(message);
   }
 

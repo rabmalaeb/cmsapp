@@ -20,6 +20,8 @@ export class AdminSerializerService {
       active: adminResponse.attributes.active ? true : false,
       roleId: parseInt(adminResponse.attributes.roleId, 0),
       role: this.roleSerializer.getRole(adminResponse.relationships.role),
+      partnerId: parseInt(adminResponse.attributes.partnerId, 0),
+      apiKey: adminResponse.attributes.apiKey,
       token: adminResponse.attributes.token ? adminResponse.attributes.token : ''
     };
     return admin;

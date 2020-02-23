@@ -27,6 +27,7 @@ import { BearerInterceptor } from './interceptors/bearer.interceptor';
 import { ErrorInterceptor } from './interceptors/error.interceptor';
 import { BannerModule } from './modules/banner/banner.module';
 import { SupplierModule } from './modules/supplier/supplier.module';
+import { ApiKeyInterceptor } from './interceptors/apiKey.interceptor';
 
 
 @NgModule({
@@ -63,6 +64,7 @@ import { SupplierModule } from './modules/supplier/supplier.module';
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: BearerInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: ApiKeyInterceptor, multi: true },
   ],
   bootstrap: [AppComponent]
 })

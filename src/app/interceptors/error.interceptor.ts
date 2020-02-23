@@ -4,7 +4,6 @@ import {
   HttpHandler,
   HttpEvent,
   HttpInterceptor,
-  HttpResponse,
   HttpErrorResponse
 } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
@@ -16,6 +15,8 @@ import { ErrorResponse } from '../models/general';
 export class ErrorInterceptor implements HttpInterceptor {
   constructor(private logoutService: LogoutService) {}
 
+  DEFAULT_ERROR_MESSAGE = 'An Error has occurred. Please try again';
+
   intercept(
     request: HttpRequest<any>,
     next: HttpHandler
@@ -25,6 +26,12 @@ export class ErrorInterceptor implements HttpInterceptor {
         if (error.status === 401) {
           // auto logout if 401 response returned from api
           this.logoutService.logout();
+        } else if (error.status === 500) {
+          console.warn('thrown error ', error);
+          return throwError({
+            status: 500,
+            message: this.DEFAULT_ERROR_MESSAGE
+          });
         }
         return throwError(this.handleErrorResponse(error));
       })
@@ -43,7 +50,7 @@ export class ErrorInterceptor implements HttpInterceptor {
       } else {
         message = error.error.message
           ? error.error.message
-          : 'An Error has occurred. Please try again';
+          : this.DEFAULT_ERROR_MESSAGE;
       }
     }
     return {

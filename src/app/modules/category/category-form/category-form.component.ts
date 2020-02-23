@@ -65,7 +65,7 @@ export class CategoryFormComponent implements OnInit, OnChanges {
     this.categoryForm = this.form.group({
       name: ['', [Validators.required]],
       description: ['', [Validators.required]],
-      parentId: ['', [Validators.required]]
+      parentId: ['']
     });
   }
 
@@ -74,7 +74,7 @@ export class CategoryFormComponent implements OnInit, OnChanges {
       id: [this.category.id],
       name: [this.category.name, [Validators.required]],
       description: [this.category.description, [Validators.required]],
-      parentId: [this.category.parentId, [Validators.required]]
+      parentId: [this.category.parentId]
     });
   }
 

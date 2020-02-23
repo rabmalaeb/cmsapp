@@ -22,13 +22,12 @@ export class AppComponent implements OnInit {
     public successSnackBar: MatSnackBar,
     public authenticationService: AuthenticationService,
     private authorizationService: AuthorizationService,
-    private store$: Store<RootStoreState.State>,
   ) {
     const errorClass = ['snack-bar_is-error'];
     const successClass = ['snack-bar_is-success'];
     this.notificationService.getErrorMessage().subscribe(message => {
       errorSnackBar.open(message, 'Close', {
-        duration: 10000,
+        duration: 1000,
         panelClass: errorClass,
         verticalPosition: 'top'
       });
