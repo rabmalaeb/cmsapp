@@ -19,6 +19,8 @@ import { ValidationMessagesService } from 'src/app/services/validation-messages.
 import { Role } from '../../role/role';
 import { NotificationService } from 'src/app/services/notification.service';
 import { ALERT_MESSAGES, ActionType } from 'src/app/models/general';
+import { Partner } from '../../partner/partner';
+import { AuthenticationService } from 'src/app/services/authentication.service';
 
 @Component({
   selector: 'app-admin-form',
@@ -29,11 +31,13 @@ export class AdminFormComponent implements OnInit, OnChanges {
   constructor(
     private form: FormBuilder,
     private validationMessagesService: ValidationMessagesService,
+    private authenticationService: AuthenticationService,
     private notificationService: NotificationService
   ) {}
 
   @Input() admin: Admin;
   @Input() roles: Role[];
+  @Input() partners: Partner[];
   @Input() isLoading = false;
   @Input() canEditAdmin = false;
   @Input() isLoadingAction = false;
@@ -68,11 +72,13 @@ export class AdminFormComponent implements OnInit, OnChanges {
   }
 
   buildNewAdminForm() {
+    const partnerId = this.authenticationService.getCurrentUser().partnerId;
     this.adminForm = this.form.group({
       name: ['', [Validators.required]],
       description: ['', [Validators.required]],
       email: ['', [Validators.required, Validators.email]],
       roleId: ['', [Validators.required]],
+      partnerId: [partnerId ? partnerId : '', [Validators.required]],
       active: ['', [Validators.required]]
     });
     if (!this.showTogglePassword) {
@@ -86,6 +92,7 @@ export class AdminFormComponent implements OnInit, OnChanges {
       name: [this.admin.name, [Validators.required]],
       description: [this.admin.description, [Validators.required]],
       email: [this.admin.email, [Validators.required, Validators.email]],
+      partnerId: [this.admin.partnerId, [Validators.required]],
       roleId: [this.admin.roleId, [Validators.required]],
       active: [this.admin.active, [Validators.required]]
     });
@@ -152,6 +159,10 @@ export class AdminFormComponent implements OnInit, OnChanges {
     return this.adminForm.get('roleId');
   }
 
+  get partnerId() {
+    return this.adminForm.get('partnerId');
+  }
+
   get active() {
     return this.adminForm.get('active');
   }
@@ -186,6 +197,7 @@ export class AdminFormComponent implements OnInit, OnChanges {
       description: this.description.value,
       email: this.email.value,
       active: this.active.value,
+      partnerId: this.partnerId.value,
       roleId: this.roleId.value
     };
     if (this.willSetPassword) {

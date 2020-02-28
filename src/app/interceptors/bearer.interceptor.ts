@@ -17,11 +17,9 @@ export class BearerInterceptor implements HttpInterceptor {
   ): Observable<HttpEvent<any>> {
     // add authorization header with jwt token if available
     if (this.authenticationService.isLoggedIn) {
-      const loginToken = encodeURIComponent(
-        this.authenticationService.getCurrentUser().token
-      );
+      const loginToken = this.authenticationService.getCurrentUser().token;
       request = request.clone({
-         headers: request.headers.append('Authorization', `Bearer ${loginToken}`)
+        headers: request.headers.append('Authorization', `Bearer ${loginToken}`)
       });
     }
     return next.handle(request);

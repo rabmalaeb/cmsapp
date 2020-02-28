@@ -34,6 +34,19 @@
   <div class="form-item">
     <div class="form-item__value form-item__value_is-textfield">
       <mat-form-field appearance="outline">
+        <mat-label>Partner</mat-label>
+        <mat-select placeholder="Partner" formControlName="partnerId">
+          <mat-option *ngFor="let partner of partners" [value]="partner.id">
+            {{ partner.name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </div>
+
+  <div class="form-item">
+    <div class="form-item__value form-item__value_is-textfield">
+      <mat-form-field appearance="outline">
         <mat-label>Role</mat-label>
         <mat-select placeholder="Role" formControlName="roleId">
           <mat-option *ngFor="let role of roles" [value]="role.id">

@@ -1,5 +1,11 @@
 <div class="login">
+<div class="login__logo">
+  <img  class="login__logo-image" src="assets/logos/logo.png" alt="smartways">
+</div>
   <div class="login__container">
+    <div class="login__title">
+      Login
+    </div>
     <form
       [formGroup]="loginForm"
       #formDirective="ngForm"
@@ -27,9 +33,16 @@
         >
         </app-input-item>
       </div>
-      <button mat-button class="button button_is-primary">
-        {{ loginLabel | async }}
-      </button>
+      <div class="login__form-item">
+        <button mat-button class="button button_is-primary">
+          {{ loginLabel | async }}
+        </button>
+      </div>
+      <div class="login__form-item login__form-item_is-link">
+        <a class="login__form-link">
+          Forgot your password?
+        </a>
+      </div>
     </form>
   </div>
 </div>

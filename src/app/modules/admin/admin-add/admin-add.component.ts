@@ -11,10 +11,13 @@ import { ActionsSubject, Store } from '@ngrx/store';
 import {
   RootStoreState,
   RoleStoreSelectors,
-  RoleStoreActions
+  RoleStoreActions,
+  PartnerStoreActions,
+  PartnerStoreSelectors
 } from 'src/app/root-store';
 import { ActionTypes } from '../store/actions';
 import { filter } from 'rxjs/operators';
+import { Partner } from '../../partner/partner';
 
 @Component({
   selector: 'app-admin-add',
@@ -31,6 +34,7 @@ export class AdminAddComponent implements OnInit {
   ) {}
   actionType: ActionType;
   roles$: Observable<Role[]>;
+  partners$: Observable<Partner[]>;
   admin$: Observable<Admin>;
   isLoading$: Observable<boolean>;
   isLoadingAction$: Observable<boolean>;
@@ -40,6 +44,7 @@ export class AdminAddComponent implements OnInit {
   ngOnInit() {
     this.initializeStoreVariables();
     this.getRoles();
+    this.getPartners();
     this.route.params.forEach(param => {
       if (param.id) {
         const id = parseInt(param.id, 0);
@@ -104,6 +109,11 @@ export class AdminAddComponent implements OnInit {
   getRoles() {
     this.store$.dispatch(new RoleStoreActions.LoadRequestAction());
     this.roles$ = this.store$.select(RoleStoreSelectors.selectAllRoleItems);
+  }
+
+  getPartners() {
+    this.store$.dispatch(new PartnerStoreActions.LoadRequestAction());
+    this.partners$ = this.store$.select(PartnerStoreSelectors.selectAllPartnerItems);
   }
 
   performAction(admin: Admin) {

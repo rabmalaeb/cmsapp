@@ -62,7 +62,7 @@ export class LoginComponent implements OnInit {
       .pipe(filter((action: any) => action.type === ActionTypes.LOAD_FAILURE))
       .subscribe(() => {
         const message = 'Could not log you in with the provided credentials';
-        this.notificationService.showSuccess(message);
+        this.notificationService.showError(message);
       });
   }
 
