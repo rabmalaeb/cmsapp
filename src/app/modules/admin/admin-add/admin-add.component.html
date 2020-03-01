@@ -25,6 +25,7 @@
         [actionType]="actionType"
         [isLoadingAction]="isLoadingAction$ | async"
         [canEditAdmin]="canEditAdmin$ | async"
+        (getRolesForPartner)="getRoles($event)"
         (submitForm)="performAction($event)"
       >
       </app-admin-form>

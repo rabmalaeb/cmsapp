@@ -5,6 +5,8 @@ import {
   Output,
   EventEmitter,
   OnChanges,
+  SimpleChange,
+  SimpleChanges
 } from '@angular/core';
 import { Admin } from '../admin';
 import {
@@ -12,7 +14,7 @@ import {
   FormBuilder,
   Validators,
   FormControl,
-  FormGroupDirective,
+  FormGroupDirective
 } from '@angular/forms';
 import { CustomValidations } from 'src/app/validators/custom-validations';
 import { ValidationMessagesService } from 'src/app/services/validation-messages.service';
@@ -43,6 +45,7 @@ export class AdminFormComponent implements OnInit, OnChanges {
   @Input() isLoadingAction = false;
   @Input() actionType: ActionType;
   @Output() submitForm = new EventEmitter<Admin>();
+  @Output() getRolesForPartner = new EventEmitter<number>();
   formGroupDirective: FormGroupDirective;
   showTogglePassword = false;
   willSetPassword = false;
@@ -57,17 +60,23 @@ export class AdminFormComponent implements OnInit, OnChanges {
     }
   }
 
-  ngOnChanges() {
+  ngOnChanges(changes: SimpleChanges) {
     if (this.isLoadingAction) {
       return false;
     }
-    if (this.admin) {
-      this.buildExistingAdminForm();
-    } else {
-      this.buildNewAdminForm();
-      if (this.formGroupDirective) {
-        this.formGroupDirective.resetForm();
+    if (changes.admin && changes.admin.isFirstChange()) {
+      if (this.admin) {
+        this.buildExistingAdminForm();
+      } else {
+        this.buildNewAdminForm();
       }
+    }
+    if (
+      changes.isLoadingAction &&
+      !changes.isLoadingAction.isFirstChange() &&
+      !changes.isLoadingAction.currentValue
+    ) {
+      this.formGroupDirective.resetForm();
     }
   }
 
@@ -78,6 +87,7 @@ export class AdminFormComponent implements OnInit, OnChanges {
       description: ['', [Validators.required]],
       email: ['', [Validators.required, Validators.email]],
       roleId: ['', [Validators.required]],
+      country: ['', [Validators.required]],
       partnerId: [partnerId ? partnerId : '', [Validators.required]],
       active: ['', [Validators.required]]
     });
@@ -93,6 +103,7 @@ export class AdminFormComponent implements OnInit, OnChanges {
       description: [this.admin.description, [Validators.required]],
       email: [this.admin.email, [Validators.required, Validators.email]],
       partnerId: [this.admin.partnerId, [Validators.required]],
+      country: [this.admin.country, [Validators.required]],
       roleId: [this.admin.roleId, [Validators.required]],
       active: [this.admin.active, [Validators.required]]
     });
@@ -171,6 +182,10 @@ export class AdminFormComponent implements OnInit, OnChanges {
     return this.adminForm.get('password');
   }
 
+  get country() {
+    return this.adminForm.get('country');
+  }
+
   get confirmPassword() {
     return this.adminForm.get('confirmPassword');
   }
@@ -197,6 +212,7 @@ export class AdminFormComponent implements OnInit, OnChanges {
       description: this.description.value,
       email: this.email.value,
       active: this.active.value,
+      country: this.country.value,
       partnerId: this.partnerId.value,
       roleId: this.roleId.value
     };
@@ -204,6 +220,10 @@ export class AdminFormComponent implements OnInit, OnChanges {
       admin.password = form.get('password').value;
     }
     return admin;
+  }
+
+  getRoles() {
+    this.getRolesForPartner.emit(this.partnerId.value);
   }
 
   get validationMessages() {

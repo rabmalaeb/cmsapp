@@ -9,7 +9,7 @@ import { AuthorizationService } from 'src/app/services/authorization.service';
 import { Observable, of } from 'rxjs';
 import { RoleStoreSelectors, RoleStoreActions } from '../store';
 import { Store, ActionsSubject } from '@ngrx/store';
-import { RootStoreState } from 'src/app/root-store';
+import { RootStoreState, PartnerStoreActions, PartnerStoreSelectors } from 'src/app/root-store';
 import { filter } from 'rxjs/operators';
 import {
   PermissionStoreActions,
@@ -17,6 +17,7 @@ import {
 } from '../../permissions/store';
 import { PermissionSerializerService } from '../../permissions/permission-serializer.service';
 import { ActionTypes } from '../store/actions';
+import { Partner } from '../../partner/partner';
 
 @Component({
   selector: 'app-role-add',
@@ -38,12 +39,14 @@ export class RoleAddComponent implements OnInit {
   actionErrors$: Observable<string[]>;
   isLoading$: Observable<boolean>;
   role$: Observable<Role>;
+  partners$: Observable<Partner[]>;
   actionType: ActionType;
   role: Role;
 
   ngOnInit() {
     this.initializeStoreVariables();
     this.getPermissions();
+    this.getPartners();
     this.route.params.forEach(param => {
       if (param.id) {
         const id = parseInt(param.id, 0);
@@ -104,6 +107,12 @@ export class RoleAddComponent implements OnInit {
       RoleStoreSelectors.selectRoleLoadingError
     );
   }
+
+  getPartners() {
+    this.store$.dispatch(new PartnerStoreActions.LoadRequestAction());
+    this.partners$ = this.store$.select(PartnerStoreSelectors.selectAllPartnerItems);
+  }
+
 
   getPermissions() {
     this.store$.dispatch(new PermissionStoreActions.LoadRequestAction());

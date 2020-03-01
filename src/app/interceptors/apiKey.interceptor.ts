@@ -6,19 +6,24 @@ import {
   HttpInterceptor
 } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { AuthenticationService } from '../services/authentication.service';
 
 @Injectable()
 export class ApiKeyInterceptor implements HttpInterceptor {
-  constructor() {}
+  constructor(
+    private authenticationService: AuthenticationService
+  ) {}
   intercept(
     request: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
+    if (!this.authenticationService.isLoggedIn) {
+      return next.handle(request);
+    }
     request = request.clone({
       setParams: {
         ...request.body,
-        apiKey: 'kpIVrmD9PPoFssuS952OSBpJlQdOxjh46GHSyCfrA0DIVySAIQxZduff9Qmq' //rabih
-        // apiKey: '0TarKCt2QtR19PVZ6yW2emKN7d2CNlvczO50IcFfapWrdjRobcEddHuojd7k' //ramzi
+        apiKey: this.authenticationService.getCurrentUser().apiKey
       }
     });
     return next.handle(request);

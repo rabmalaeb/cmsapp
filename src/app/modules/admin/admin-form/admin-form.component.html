@@ -31,11 +31,24 @@
   >
   </app-input-item>
 
+  <app-input-item
+    id="country"
+    name="country"
+    title="Country"
+    [formControlItem]="country"
+    [validationMessages]="validationMessages"
+  >
+  </app-input-item>
+
   <div class="form-item">
     <div class="form-item__value form-item__value_is-textfield">
       <mat-form-field appearance="outline">
         <mat-label>Partner</mat-label>
-        <mat-select placeholder="Partner" formControlName="partnerId">
+        <mat-select
+          placeholder="Partner"
+          (selectionChange)="getRoles()"
+          formControlName="partnerId"
+        >
           <mat-option *ngFor="let partner of partners" [value]="partner.id">
             {{ partner.name }}
           </mat-option>

@@ -5,6 +5,7 @@ export interface Admin {
   name: string;
   description: string;
   email: string;
+  country: string;
   active: boolean;
   roleId: number;
   role?: Role;

@@ -18,6 +18,8 @@ import { ActionType, ALERT_MESSAGES } from 'src/app/models/general';
 import { Role, RoleRequest } from '../role';
 import { PermissionGroup, Permission } from '../../permissions/permission';
 import { PermissionSerializerService } from '../../permissions/permission-serializer.service';
+import { AuthenticationService } from 'src/app/services/authentication.service';
+import { Partner } from '../../partner/partner';
 
 @Component({
   selector: 'app-role-form',
@@ -29,6 +31,7 @@ export class RoleFormComponent implements OnInit, OnChanges {
     private form: FormBuilder,
     private notificationService: NotificationService,
     private validationMessagesService: ValidationMessagesService,
+    private authenticationService: AuthenticationService,
     private permissionSerializer: PermissionSerializerService
   ) {}
 
@@ -37,15 +40,14 @@ export class RoleFormComponent implements OnInit, OnChanges {
   formGroupDirective: FormGroupDirective;
   @Input() role: Role;
   @Input() actionType: ActionType;
+  @Input() partners: Partner[];
   @Input() permissions: Permission[];
   @Input() isLoadingAction: boolean;
   @Input() isLoading: boolean;
   @Input() canEditRole = false;
   @Output() submitForm = new EventEmitter<RoleRequest>();
 
-  ngOnInit() {
-
-  }
+  ngOnInit() {}
 
   ngOnChanges() {
     if (this.isLoadingAction) {
@@ -86,15 +88,18 @@ export class RoleFormComponent implements OnInit, OnChanges {
   }
 
   buildNewRoleForm() {
+    const partnerId = this.authenticationService.getCurrentUser().partnerId;
     this.roleForm = this.form.group({
-      name: ['', [Validators.required]]
+      name: ['', [Validators.required]],
+      partnerId: [partnerId ? partnerId : '', [Validators.required]],
     });
   }
 
   buildExistingRoleForm() {
     this.roleForm = this.form.group({
       id: [this.role.id],
-      name: [this.role.name, [Validators.required]]
+      name: [this.role.name, [Validators.required]],
+      partnerId: ['', [Validators.required]],
     });
   }
 
@@ -102,10 +107,15 @@ export class RoleFormComponent implements OnInit, OnChanges {
     return this.roleForm.get('name');
   }
 
+  get partnerId() {
+    return this.roleForm.get('partnerId');
+  }
+
   buildRoleParams(): RoleRequest {
     return {
       id: this.roleForm.get('id') ? this.roleForm.get('id').value : '',
       name: this.name.value,
+      partnerId: this.partnerId.value,
       permissions: this.getSelectedPermissions()
     };
   }

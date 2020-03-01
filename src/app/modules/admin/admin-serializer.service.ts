@@ -17,6 +17,7 @@ export class AdminSerializerService {
       name: adminResponse.attributes.name,
       description: adminResponse.attributes.description,
       email: adminResponse.attributes.email,
+      country: adminResponse.attributes.country,
       active: adminResponse.attributes.active ? true : false,
       roleId: parseInt(adminResponse.attributes.roleId, 0),
       role: this.roleSerializer.getRole(adminResponse.relationships.role),

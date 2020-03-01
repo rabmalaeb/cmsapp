@@ -18,6 +18,7 @@ export class RoleSerializerService {
     const role: Role = {
       id: parseInt(roleResponse.id, 0),
       name: roleResponse.attributes.name,
+      partnerId: parseInt(roleResponse.attributes.partnerId, 0),
       permissions: this.getRolePermissions(
         roleResponse.relationships.permissions
       )

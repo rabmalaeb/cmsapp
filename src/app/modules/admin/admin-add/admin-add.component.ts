@@ -18,6 +18,7 @@ import {
 import { ActionTypes } from '../store/actions';
 import { filter } from 'rxjs/operators';
 import { Partner } from '../../partner/partner';
+import { AuthenticationService } from 'src/app/services/authentication.service';
 
 @Component({
   selector: 'app-admin-add',
@@ -28,6 +29,7 @@ export class AdminAddComponent implements OnInit {
   constructor(
     private notificationService: NotificationService,
     private authorizationService: AuthorizationService,
+    private authenticationService: AuthenticationService,
     private actionsSubject$: ActionsSubject,
     private store$: Store<RootStoreState.State>,
     private route: ActivatedRoute
@@ -42,8 +44,9 @@ export class AdminAddComponent implements OnInit {
   actionErrors$: Observable<string[]>;
 
   ngOnInit() {
+    const partnerId = this.authenticationService.getCurrentUser().partnerId;
+    this.getRoles(partnerId);
     this.initializeStoreVariables();
-    this.getRoles();
     this.getPartners();
     this.route.params.forEach(param => {
       if (param.id) {
@@ -106,14 +109,20 @@ export class AdminAddComponent implements OnInit {
     );
   }
 
-  getRoles() {
-    this.store$.dispatch(new RoleStoreActions.LoadRequestAction());
-    this.roles$ = this.store$.select(RoleStoreSelectors.selectAllRoleItems);
+  getRoles(partnerId: number) {
+    this.store$.dispatch(
+      new RoleStoreActions.GetRolesByPartnerRequestAction(partnerId)
+    );
+    this.roles$ = this.store$.select(
+      RoleStoreSelectors.selectRoleByPartnerId(partnerId)
+    );
   }
 
   getPartners() {
     this.store$.dispatch(new PartnerStoreActions.LoadRequestAction());
-    this.partners$ = this.store$.select(PartnerStoreSelectors.selectAllPartnerItems);
+    this.partners$ = this.store$.select(
+      PartnerStoreSelectors.selectAllPartnerItems
+    );
   }
 
   performAction(admin: Admin) {

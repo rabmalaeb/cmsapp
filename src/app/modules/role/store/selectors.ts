@@ -39,6 +39,18 @@ export const selectRoleById = (id: number) =>
     }
   );
 
+export const selectRoleByPartnerId = (partnerId: number) =>
+  createSelector(
+    selectAllRoleItems,
+    (allRoles: Role[]) => {
+      if (allRoles) {
+        return allRoles.filter(role => role.partnerId === partnerId);
+      } else {
+        return null;
+      }
+    }
+  );
+
 export const selectRoleLoadingError: MemoizedSelector<
   object,
   any
@@ -69,7 +81,7 @@ export const selectIsLoadingAction: MemoizedSelector<
 > = createSelector(
   selectRoleState,
   getIsLoadingAction
-  );
+);
 
 export const selectIsLoadingItem: MemoizedSelector<
   object,
