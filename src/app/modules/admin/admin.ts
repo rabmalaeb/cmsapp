@@ -1,4 +1,5 @@
 import { Role } from '../role/role';
+import Request from 'src/app/shared/request';
 
 export interface Admin {
   id?: number;
@@ -15,7 +16,7 @@ export interface Admin {
   apiKey?: string;
 }
 
-export interface AdminRequest {
+export interface AdminRequest extends Request {
   name?: string;
   email?: string;
 }

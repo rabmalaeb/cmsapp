@@ -1,17 +1,19 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { AdminRequest } from '../admin';
+import FilterComponent from 'src/app/shared/filter';
 
 @Component({
   selector: 'app-admin-filters',
   templateUrl: './admin-filters.component.html',
   styleUrls: ['./admin-filters.component.sass']
 })
-export class AdminFiltersComponent implements OnInit {
+export class AdminFiltersComponent implements OnInit, FilterComponent {
   constructor(private form: FormBuilder) {}
 
-  filterForm: FormGroup;
   @Output() filter = new EventEmitter<AdminRequest>();
+
+  filterForm: FormGroup;
 
   ngOnInit() {
     this.buildForm();
@@ -32,15 +34,23 @@ export class AdminFiltersComponent implements OnInit {
     return this.filterForm.get('email');
   }
 
-  performAction() {
-    const adminRequest: AdminRequest = {
-      name: this.name.value,
-      email: this.email.value
-    };
-    this.filter.emit(adminRequest);
+  submitFilters() {
+    this.filter.emit(this.buildRequest());
   }
 
   resetFilters() {
     this.filterForm.reset();
+    this.filter.emit(this.buildRequest());
+  }
+
+  get isFormEmpty(): boolean {
+    return !this.email.value && !this.name.value;
+  }
+
+  buildRequest(): AdminRequest {
+    return {
+      name: this.name.value ? this.name.value : '',
+      email: this.email.value ? this.email.value : ''
+    };
   }
 }

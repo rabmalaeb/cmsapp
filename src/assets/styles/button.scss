@@ -13,12 +13,15 @@
   }
 
   &_is-secondary {
-
     background-color: #808080;
     color: #fff;
     &:hover {
     background-color: #9e9e9e;
     }
+  }
+
+  &:disabled {
+    background-color: #b9b9b9;
   }
 
 }
