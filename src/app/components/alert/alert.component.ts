@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject, ViewEncapsulation } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { AlertType } from 'src/app/models/general';
+import { AlertType } from 'src/app/shared/models/general';
 
 @Component({
   selector: 'app-alert',

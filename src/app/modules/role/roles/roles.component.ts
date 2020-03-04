@@ -2,11 +2,11 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
-import { AlertService } from 'src/app/services/alert.service';
+import { AlertService } from 'src/app/core/services/alert.service';
 import { Role } from '../role';
 import { RoleService } from '../role.service';
-import { AuthorizationService } from 'src/app/services/authorization.service';
-import { ModuleName } from 'src/app/models/general';
+import { AuthorizationService } from 'src/app/core/services/authorization.service';
+import { ModuleName } from 'src/app/shared/models/general';
 import { Observable } from 'rxjs';
 import { Store, ActionsSubject } from '@ngrx/store';
 import {
@@ -15,7 +15,7 @@ import {
   RoleStoreActions
 } from 'src/app/root-store';
 import { ActionTypes } from '../store/actions';
-import { NotificationService } from 'src/app/services/notification.service';
+import { NotificationService } from 'src/app/core/services/notification.service';
 import { filter } from 'rxjs/operators';
 
 @Component({

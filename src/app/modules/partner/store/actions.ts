@@ -1,6 +1,6 @@
 import { Action } from '@ngrx/store';
 import { Partner } from 'src/app/modules/partner/partner';
-import { ErrorResponse } from 'src/app/models/general';
+import { ErrorResponse } from 'src/app/shared/models/general';
 
 export enum ActionTypes {
   LOAD_REQUEST = '[Partner] Load Request',

@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { ValidationMessagesService } from 'src/app/services/validation-messages.service';
+import { ValidationMessagesService } from 'src/app/core/services/validation-messages.service';
 
 @Component({
   selector: 'app-input-item',

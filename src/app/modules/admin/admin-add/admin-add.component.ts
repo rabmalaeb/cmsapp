@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Admin } from '../admin';
 import { Role } from '../../role/role';
-import { NotificationService } from 'src/app/services/notification.service';
-import { AuthorizationService } from 'src/app/services/authorization.service';
-import { ActionType, ModuleName } from 'src/app/models/general';
+import { NotificationService } from 'src/app/core/services/notification.service';
+import { AuthorizationService } from 'src/app/core/services/authorization.service';
+import { ActionType, ModuleName } from 'src/app/shared/models/general';
 import { Observable, of } from 'rxjs';
 import { AdminStoreSelectors, AdminStoreActions } from '../store';
 import { ActionsSubject, Store } from '@ngrx/store';
@@ -18,7 +18,7 @@ import {
 import { ActionTypes } from '../store/actions';
 import { filter } from 'rxjs/operators';
 import { Partner } from '../../partner/partner';
-import { AuthenticationService } from 'src/app/services/authentication.service';
+import { AuthenticationService } from 'src/app/core/services/authentication.service';
 
 @Component({
   selector: 'app-admin-add',

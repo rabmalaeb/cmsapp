@@ -1,6 +1,6 @@
 import { Action } from '@ngrx/store';
 import { Role, RoleRequest } from 'src/app/modules/role/role';
-import { ErrorResponse } from 'src/app/models/general';
+import { ErrorResponse } from 'src/app/shared/models/general';
 
 export enum ActionTypes {
   LOAD_REQUEST = '[Role] Load Request',

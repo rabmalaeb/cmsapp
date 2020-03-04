@@ -1,6 +1,6 @@
 import { Action } from '@ngrx/store';
 import { User } from 'src/app/modules/user/user';
-import { ErrorResponse } from 'src/app/models/general';
+import { ErrorResponse } from 'src/app/shared/models/general';
 
 export enum ActionTypes {
   LOAD_REQUEST = '[User] Load Request',

@@ -23,11 +23,11 @@ import { RootStoreModule } from './root-store';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreRouterConnectingModule } from '@ngrx/router-store';
-import { BearerInterceptor } from './interceptors/bearer.interceptor';
-import { ErrorInterceptor } from './interceptors/error.interceptor';
+import { BearerInterceptor } from './core/interceptors/bearer.interceptor';
+import { ErrorInterceptor } from './core/interceptors/error.interceptor';
 import { BannerModule } from './modules/banner/banner.module';
 import { SupplierModule } from './modules/supplier/supplier.module';
-import { ApiKeyInterceptor } from './interceptors/apiKey.interceptor';
+import { ApiKeyInterceptor } from './core/interceptors/apiKey.interceptor';
 
 
 @NgModule({

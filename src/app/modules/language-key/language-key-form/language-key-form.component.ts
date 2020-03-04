@@ -12,9 +12,9 @@ import {
   FormGroup,
   FormGroupDirective
 } from '@angular/forms';
-import { ValidationMessagesService } from 'src/app/services/validation-messages.service';
-import { NotificationService } from 'src/app/services/notification.service';
-import { ActionType, ALERT_MESSAGES } from 'src/app/models/general';
+import { ValidationMessagesService } from 'src/app/core/services/validation-messages.service';
+import { NotificationService } from 'src/app/core/services/notification.service';
+import { ActionType, ALERT_MESSAGES } from 'src/app/shared/models/general';
 import { LanguageKey } from '../language-key';
 
 @Component({

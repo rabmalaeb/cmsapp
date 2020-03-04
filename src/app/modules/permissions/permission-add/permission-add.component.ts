@@ -1,16 +1,16 @@
 import { Component, OnInit } from '@angular/core';
-import { ValidationMessagesService } from 'src/app/services/validation-messages.service';
-import { NotificationService } from 'src/app/services/notification.service';
+import { ValidationMessagesService } from 'src/app/core/services/validation-messages.service';
+import { NotificationService } from 'src/app/core/services/notification.service';
 import { ActivatedRoute } from '@angular/router';
 import { Permission, PermissionRequest } from '../permission';
-import { AuthorizationService } from 'src/app/services/authorization.service';
-import { AppService } from 'src/app/services/app.service';
+import { AuthorizationService } from 'src/app/core/services/authorization.service';
+import { AppService } from 'src/app/core/services/app.service';
 import {
   PermissionType,
   NavItem,
   ModuleName,
   ActionType
-} from 'src/app/models/general';
+} from 'src/app/shared/models/general';
 import { ActionsSubject, Store } from '@ngrx/store';
 import { RootStoreState } from 'src/app/root-store';
 import { Observable, of } from 'rxjs';

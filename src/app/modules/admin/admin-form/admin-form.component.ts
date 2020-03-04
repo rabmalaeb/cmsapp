@@ -16,13 +16,13 @@ import {
   FormControl,
   FormGroupDirective
 } from '@angular/forms';
-import { CustomValidations } from 'src/app/validators/custom-validations';
-import { ValidationMessagesService } from 'src/app/services/validation-messages.service';
+import { CustomValidations } from 'src/app/shared/validators/custom-validations';
+import { ValidationMessagesService } from 'src/app/core/services/validation-messages.service';
 import { Role } from '../../role/role';
-import { NotificationService } from 'src/app/services/notification.service';
-import { ALERT_MESSAGES, ActionType } from 'src/app/models/general';
+import { NotificationService } from 'src/app/core/services/notification.service';
+import { ALERT_MESSAGES, ActionType } from 'src/app/shared/models/general';
 import { Partner } from '../../partner/partner';
-import { AuthenticationService } from 'src/app/services/authentication.service';
+import { AuthenticationService } from 'src/app/core/services/authentication.service';
 
 @Component({
   selector: 'app-admin-form',

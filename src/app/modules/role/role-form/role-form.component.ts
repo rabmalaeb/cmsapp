@@ -12,13 +12,13 @@ import {
   FormGroup,
   FormGroupDirective
 } from '@angular/forms';
-import { ValidationMessagesService } from 'src/app/services/validation-messages.service';
-import { NotificationService } from 'src/app/services/notification.service';
-import { ActionType, ALERT_MESSAGES } from 'src/app/models/general';
+import { ValidationMessagesService } from 'src/app/core/services/validation-messages.service';
+import { NotificationService } from 'src/app/core/services/notification.service';
+import { ActionType, ALERT_MESSAGES } from 'src/app/shared/models/general';
 import { Role, RoleRequest } from '../role';
 import { PermissionGroup, Permission } from '../../permissions/permission';
 import { PermissionSerializerService } from '../../permissions/permission-serializer.service';
-import { AuthenticationService } from 'src/app/services/authentication.service';
+import { AuthenticationService } from 'src/app/core/services/authentication.service';
 import { Partner } from '../../partner/partner';
 
 @Component({

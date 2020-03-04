@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpService } from 'src/app/services/http.service';
+import { HttpService } from 'src/app/core/services/http.service';
 import { BannerSerializerService } from './banner-serializer.service';
 import { map } from 'rxjs/operators';
 import { Banner } from './banner';

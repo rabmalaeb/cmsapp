@@ -1,4 +1,4 @@
-import { ModuleName, PermissionType } from 'src/app/models/general';
+import { ModuleName, PermissionType } from 'src/app/shared/models/general';
 
 export interface Permission {
   id: number;

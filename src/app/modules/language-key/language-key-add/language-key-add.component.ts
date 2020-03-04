@@ -5,14 +5,14 @@ import {
   FormBuilder,
   FormGroupDirective
 } from '@angular/forms';
-import { ValidationMessagesService } from 'src/app/services/validation-messages.service';
-import { NotificationService } from 'src/app/services/notification.service';
-import { ActionType, ALERT_MESSAGES, ModuleName } from 'src/app/models/general';
+import { ValidationMessagesService } from 'src/app/core/services/validation-messages.service';
+import { NotificationService } from 'src/app/core/services/notification.service';
+import { ActionType, ALERT_MESSAGES, ModuleName } from 'src/app/shared/models/general';
 import { ActivatedRoute } from '@angular/router';
 import { LanguageKey } from '../language-key';
 import { LanguageKeyService } from '../language-key.service';
 import { Category } from '../../category/category';
-import { AuthorizationService } from 'src/app/services/authorization.service';
+import { AuthorizationService } from 'src/app/core/services/authorization.service';
 import { LanguagekeyStoreSelectors, LanguagekeyStoreActions } from '../store';
 import { ActionsSubject, Store } from '@ngrx/store';
 import { RootStoreState } from 'src/app/root-store';

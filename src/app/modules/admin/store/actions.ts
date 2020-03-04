@@ -1,6 +1,6 @@
 import { Action } from '@ngrx/store';
 import { Admin, AdminRequest } from 'src/app/modules/admin/admin';
-import { ErrorResponse } from 'src/app/models/general';
+import { ErrorResponse } from 'src/app/shared/models/general';
 
 export enum ActionTypes {
   LOAD_REQUEST = '[Admin] Load Request',

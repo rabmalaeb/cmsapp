@@ -1,7 +1,7 @@
 import { Injectable, Inject } from '@angular/core';
 import { LOCAL_STORAGE, StorageService } from 'ngx-webstorage-service';
 import { AlertService } from './alert.service';
-import { Admin } from '../modules/admin/admin';
+import { Admin } from '../../modules/admin/admin';
 import { LogoutService } from './logout.service';
 
 @Injectable({

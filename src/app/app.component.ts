@@ -1,10 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { NotificationService } from './services/notification.service';
-import { AuthenticationService } from './services/authentication.service';
-import { AuthorizationService } from './services/authorization.service';
+import { NotificationService } from './core/services/notification.service';
+import { AuthenticationService } from './core/services/authentication.service';
+import { AuthorizationService } from './core/services/authorization.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Store } from '@ngrx/store';
-import { RootStoreState } from './root-store';
 import { Observable } from 'rxjs';
 
 @Component({

@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RepeatPipe } from 'src/app/pipes/repeat.pipe';
+import { RepeatPipe } from './repeat.pipe';
 
 @NgModule({
   declarations: [

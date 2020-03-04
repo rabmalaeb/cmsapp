@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
 
-import { ModuleName, PermissionType } from 'src/app/models/general';
+import { ModuleName, PermissionType } from 'src/app/shared/models/general';
 import { AuthenticationService } from './authentication.service';
-import { Permission } from '../modules/permissions/permission';
-import { RootStoreState } from '../root-store';
+import { Permission } from '../../modules/permissions/permission';
+import { RootStoreState } from '../../root-store';
 import { Store } from '@ngrx/store';
 import {
   PermissionStoreActions,
   PermissionStoreSelectors
-} from '../modules/permissions/store';
+} from '../../modules/permissions/store';
 import { Observable } from 'rxjs';
 import { map, take, filter, switchMap } from 'rxjs/operators';
 

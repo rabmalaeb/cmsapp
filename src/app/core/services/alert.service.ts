@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { Subject } from 'rxjs';
 
-import { Alert, AlertType } from 'src/app/models/general';
-import { AlertComponent } from '../components/alert/alert.component';
+import { Alert, AlertType } from 'src/app/shared/models/general';
+import { AlertComponent } from '../../components/alert/alert.component';
 
 @Injectable({
   providedIn: 'root',

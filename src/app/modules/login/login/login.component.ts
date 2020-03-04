@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { ValidationMessagesService } from 'src/app/services/validation-messages.service';
+import { ValidationMessagesService } from 'src/app/core/services/validation-messages.service';
 import {
   FormGroup,
   FormBuilder,
   Validators,
   FormGroupDirective
 } from '@angular/forms';
-import { NotificationService } from 'src/app/services/notification.service';
+import { NotificationService } from 'src/app/core/services/notification.service';
 import { Store, ActionsSubject } from '@ngrx/store';
 import { RootStoreState } from 'src/app/root-store';
 import { LoginRequest } from '../login';
@@ -14,7 +14,7 @@ import { LoginStoreActions, LoginStoreSelectors } from '../store';
 import { Observable } from 'rxjs';
 import { map, filter } from 'rxjs/operators';
 import { ActionTypes } from '../store/actions';
-import { AuthenticationService } from 'src/app/services/authentication.service';
+import { AuthenticationService } from 'src/app/core/services/authentication.service';
 
 @Component({
   selector: 'app-login',

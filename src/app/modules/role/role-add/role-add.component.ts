@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { ValidationMessagesService } from 'src/app/services/validation-messages.service';
-import { NotificationService } from 'src/app/services/notification.service';
-import { ActionType, ModuleName } from 'src/app/models/general';
+import { ValidationMessagesService } from 'src/app/core/services/validation-messages.service';
+import { NotificationService } from 'src/app/core/services/notification.service';
+import { ActionType, ModuleName } from 'src/app/shared/models/general';
 import { ActivatedRoute } from '@angular/router';
 import { Role, RoleRequest } from '../role';
 import { PermissionGroup, Permission } from '../../permissions/permission';
-import { AuthorizationService } from 'src/app/services/authorization.service';
+import { AuthorizationService } from 'src/app/core/services/authorization.service';
 import { Observable, of } from 'rxjs';
 import { RoleStoreSelectors, RoleStoreActions } from '../store';
 import { Store, ActionsSubject } from '@ngrx/store';

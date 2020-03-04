@@ -1,8 +1,7 @@
 import { map } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { isArray } from 'util';
+import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 
 @Injectable({ providedIn: 'root' })
@@ -22,7 +21,6 @@ export class HttpService {
     const url = `${this.url}${endpoint}`;
     return this.http.get<any>(url, { params, withCredentials: false }).pipe(
       map(response => {
-        this.checkErrors(params, response);
         return response;
       })
     );
@@ -33,7 +31,6 @@ export class HttpService {
     const url = `${this.url}${endpoint}`;
     return this.http.post<any>(url, data, { withCredentials: false }).pipe(
       map(response => {
-        this.checkErrors(data, response);
         return response;
       })
     );
@@ -44,7 +41,6 @@ export class HttpService {
     const url = `${this.url}${endpoint}`;
     return this.http.put<any>(url, data, { withCredentials: false }).pipe(
       map(response => {
-        this.checkErrors(data, response);
         return response;
       })
     );
@@ -57,25 +53,5 @@ export class HttpService {
         return response;
       })
     );
-  }
-
-  checkErrors(data: any, response: any) {
-    if (response && response.errors) {
-      if (isArray(response.errors)) {
-        response.errors.forEach(error => {
-          this.checkError(error);
-        });
-      } else {
-        this.checkError(response.errors);
-      }
-    }
-  }
-
-  checkError(error: any) {
-    // if (error.code === ErrorCodes.Bearer) {
-    //   console.error('data is ', this.data);
-    //   localStorage.setItem('sessionExpired', 'true');
-    //   this.logoutService.logout();
-    // }
   }
 }

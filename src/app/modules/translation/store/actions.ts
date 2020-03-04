@@ -1,6 +1,6 @@
 import { Action } from '@ngrx/store';
 import { Translation } from 'src/app/modules/translation/translation';
-import { ErrorResponse } from 'src/app/models/general';
+import { ErrorResponse } from 'src/app/shared/models/general';
 
 export enum ActionTypes {
   LOAD_REQUEST = '[Translation] Load Request',

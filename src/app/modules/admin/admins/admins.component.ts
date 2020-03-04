@@ -4,15 +4,15 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { Admin, AdminRequest } from '../admin';
 import { AdminService } from '../admin.service';
-import { AuthorizationService } from 'src/app/services/authorization.service';
-import { ModuleName } from 'src/app/models/general';
-import { AlertService } from 'src/app/services/alert.service';
+import { AuthorizationService } from 'src/app/core/services/authorization.service';
+import { ModuleName } from 'src/app/shared/models/general';
+import { AlertService } from 'src/app/core/services/alert.service';
 import { Observable } from 'rxjs';
 import { Store, ActionsSubject } from '@ngrx/store';
 import { RootStoreState } from 'src/app/root-store';
 import { AdminStoreSelectors, AdminStoreActions } from '../store';
 import { ActionTypes } from '../store/actions';
-import { NotificationService } from 'src/app/services/notification.service';
+import { NotificationService } from 'src/app/core/services/notification.service';
 import { filter } from 'rxjs/operators';
 
 @Component({
