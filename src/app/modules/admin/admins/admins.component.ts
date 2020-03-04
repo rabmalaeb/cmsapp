@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
-import { Admin } from '../admin';
+import { Admin, AdminRequest } from '../admin';
 import { AdminService } from '../admin.service';
 import { AuthorizationService } from 'src/app/services/authorization.service';
 import { ModuleName } from 'src/app/models/general';
@@ -89,8 +89,8 @@ export class AdminsComponent implements OnInit {
       });
   }
 
-  getAdmins() {
-    this.store$.dispatch(new AdminStoreActions.LoadRequestAction());
+  getAdmins(adminRequest: AdminRequest = null) {
+    this.store$.dispatch(new AdminStoreActions.LoadRequestAction(adminRequest));
   }
 
   setDataSource() {

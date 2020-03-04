@@ -16,7 +16,7 @@ export class AdminStoreEffects {
       adminActions.ActionTypes.LOAD_REQUEST
     ),
     switchMap(action =>
-      this.adminService.getAdmins().pipe(
+      this.adminService.getAdmins(action.adminRequest).pipe(
         map(
           items =>
             new adminActions.LoadSuccessAction({

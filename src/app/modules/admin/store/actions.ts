@@ -1,5 +1,5 @@
 import { Action } from '@ngrx/store';
-import { Admin } from 'src/app/modules/admin/admin';
+import { Admin, AdminRequest } from 'src/app/modules/admin/admin';
 import { ErrorResponse } from 'src/app/models/general';
 
 export enum ActionTypes {
@@ -22,6 +22,7 @@ export enum ActionTypes {
 
 export class LoadRequestAction implements Action {
   readonly type = ActionTypes.LOAD_REQUEST;
+  constructor(public adminRequest: AdminRequest) {}
 }
 
 export class LoadFailureAction implements Action {

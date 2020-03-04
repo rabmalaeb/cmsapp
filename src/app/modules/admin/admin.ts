@@ -14,3 +14,8 @@ export interface Admin {
   partnerId?: number;
   apiKey?: string;
 }
+
+export interface AdminRequest {
+  name?: string;
+  email?: string;
+}

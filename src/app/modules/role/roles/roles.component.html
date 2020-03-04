@@ -28,6 +28,11 @@
         <mat-cell *matCellDef="let role">{{ role.name }}</mat-cell>
       </ng-container>
 
+      <ng-container matColumnDef="partner">
+        <mat-header-cell *matHeaderCellDef>Partner</mat-header-cell>
+        <mat-cell *matCellDef="let role">{{ role.partner.name }}</mat-cell>
+      </ng-container>
+
       <ng-container matColumnDef="action">
         <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
         <mat-cell *matCellDef="let role" class="action-link">

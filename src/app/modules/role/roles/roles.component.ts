@@ -31,12 +31,11 @@ export class RolesComponent implements OnInit {
   error$: Observable<string>;
   isLoading$: Observable<boolean>;
 
-  displayedColumns: string[] = ['id', 'name', 'action'];
+  displayedColumns: string[] = ['id', 'name', 'partner', 'action'];
   dataSource: MatTableDataSource<any>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 
   constructor(
-    private roleService: RoleService,
     private alertService: AlertService,
     private authorizationService: AuthorizationService,
     private store$: Store<RootStoreState.State>,

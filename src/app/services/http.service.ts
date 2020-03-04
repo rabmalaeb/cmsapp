@@ -18,18 +18,11 @@ export class HttpService {
   url: string = environment.apiUrl;
   data: any;
 
-  request(endpoint: string, data: any) {
-    this.data = data;
-
-    let httpParams = new HttpParams();
+  request(endpoint: string, params: any) {
     const url = `${this.url}${endpoint}`;
-    Object.keys(data).forEach(key => {
-      httpParams = httpParams.append(key, data[key]);
-    });
-
-    return this.http.get<any>(url, { params: httpParams, withCredentials: false }).pipe(
+    return this.http.get<any>(url, { params, withCredentials: false }).pipe(
       map(response => {
-        this.checkErrors(data, response);
+        this.checkErrors(params, response);
         return response;
       })
     );

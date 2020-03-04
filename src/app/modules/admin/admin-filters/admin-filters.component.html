@@ -1,0 +1,40 @@
+<div class="filters__container">
+  <form
+    class="filters__form"
+    #ngForm="ngForm"
+    [formGroup]="filterForm"
+    (ngSubmit)="performAction()"
+  >
+    <div class="filters__item">
+      <app-input-item
+        id="name"
+        name="name"
+        title="Name"
+        [formControlItem]="name"
+      >
+      </app-input-item>
+    </div>
+    <div class="filters__item">
+      <app-input-item
+        id="email"
+        email="email"
+        title="Email"
+        [formControlItem]="email"
+      >
+      </app-input-item>
+    </div>
+    <div class="filters__button-container">
+      <div class="filters__button">
+        <button type="reset" mat-button class="button button_is-secondary" (click)="resetFilters()">
+          Clear Filters
+        </button>
+      </div>
+
+      <div class="filters__button">
+        <button type="submit" mat-button class="button button_is-primary">
+          Apply Filters
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
