@@ -1,3 +1,1 @@
-export default interface Request {
-  id?: number;
-}
+export default class Request {}

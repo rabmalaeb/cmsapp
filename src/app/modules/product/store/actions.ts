@@ -1,5 +1,5 @@
 import { Action } from '@ngrx/store';
-import { Product } from 'src/app/modules/product/product';
+import { Product, ProductRequest } from 'src/app/modules/product/product';
 import { ErrorResponse } from 'src/app/shared/models/general';
 
 export enum ActionTypes {
@@ -22,6 +22,7 @@ export enum ActionTypes {
 
 export class LoadRequestAction implements Action {
   readonly type = ActionTypes.LOAD_REQUEST;
+  constructor(public productRequest: ProductRequest) { }
 }
 
 export class LoadFailureAction implements Action {

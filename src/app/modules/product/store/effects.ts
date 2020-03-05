@@ -19,7 +19,7 @@ export class ProductStoreEffects {
       productActions.ActionTypes.LOAD_REQUEST
     ),
     switchMap(action =>
-      this.productService.getProducts().pipe(
+      this.productService.getProducts(action.productRequest).pipe(
         map(
           items =>
             new productActions.LoadSuccessAction({

@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { AlertService } from 'src/app/core/services/alert.service';
-import { Product } from '../product';
+import { Product, ProductRequest } from '../product';
 import { AuthorizationService } from 'src/app/core/services/authorization.service';
 import { ModuleName } from 'src/app/shared/models/general';
 import { filter } from 'rxjs/operators';
@@ -89,8 +89,10 @@ export class ProductsComponent implements OnInit {
       });
   }
 
-  getProducts() {
-    this.store$.dispatch(new ProductStoreActions.LoadRequestAction());
+  getProducts(productRequest: ProductRequest = null) {
+    this.store$.dispatch(
+      new ProductStoreActions.LoadRequestAction(productRequest)
+    );
   }
 
   setDataSource() {
