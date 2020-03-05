@@ -89,8 +89,8 @@ export class UsersComponent implements OnInit {
       });
   }
 
-  getUsers() {
-    this.store$.dispatch(new UserStoreActions.LoadRequestAction());
+  getUsers(userRequest: User = null) {
+    this.store$.dispatch(new UserStoreActions.LoadRequestAction(userRequest));
   }
 
   setDataSource() {

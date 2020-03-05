@@ -14,8 +14,8 @@ export class UserService {
     private userSerializer: UserSerializerService,
   ) { }
 
-  getUsers() {
-    return this.httpService.request('users', {}).pipe(map(response => {
+  getUsers(userRequest: User) {
+    return this.httpService.request('users', userRequest).pipe(map(response => {
       return response.map(data => this.userSerializer.getUser(data));
     }));
   }

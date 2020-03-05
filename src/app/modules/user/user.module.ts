@@ -6,12 +6,14 @@ import { UsersComponent } from './users/users.component';
 import { SharedModule } from 'src/app/shared.module';
 import { ComponentsModule } from 'src/app/components/components.module';
 import { UserFormComponent } from './user-form/user-form.component';
+import { UserFiltersComponent } from './user-filters/user-filters.component';
 
 @NgModule({
   declarations: [
     UsersComponent,
     UserAddComponent,
-    UserFormComponent
+    UserFormComponent,
+    UserFiltersComponent
   ],
   imports: [CommonModule, UserRoutingModule, ComponentsModule, SharedModule]
 })

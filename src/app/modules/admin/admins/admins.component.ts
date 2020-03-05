@@ -37,7 +37,6 @@ export class AdminsComponent implements OnInit {
   error$: Observable<string>;
   isLoading$: Observable<boolean>;
   constructor(
-    private adminService: AdminService,
     private alertService: AlertService,
     private router: Router,
     private authorizationService: AuthorizationService,

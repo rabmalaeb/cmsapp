@@ -40,7 +40,7 @@ export class AdminFiltersComponent implements OnInit, FilterComponent {
 
   resetFilters() {
     this.filterForm.reset();
-    this.filter.emit(this.buildRequest());
+    this.submitFilters();
   }
 
   get isFormEmpty(): boolean {
