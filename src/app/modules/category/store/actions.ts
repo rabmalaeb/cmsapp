@@ -1,5 +1,5 @@
 import { Action } from '@ngrx/store';
-import { Category } from 'src/app/modules/category/category';
+import { Category, CategoryRequest } from 'src/app/modules/category/category';
 import { ErrorResponse } from 'src/app/shared/models/general';
 
 export enum ActionTypes {
@@ -22,6 +22,7 @@ export enum ActionTypes {
 
 export class LoadRequestAction implements Action {
   readonly type = ActionTypes.LOAD_REQUEST;
+  constructor(public categoryRequest: CategoryRequest) { }
 }
 
 export class LoadFailureAction implements Action {

@@ -6,12 +6,14 @@ import { LanguageKeyAddComponent } from './language-key-add/language-key-add.com
 import { SharedModule } from 'src/app/shared.module';
 import { ComponentsModule } from 'src/app/components/components.module';
 import { LanguageKeyFormComponent } from './language-key-form/language-key-form.component';
+import { LanguageKeyFiltersComponent } from './language-key-filters/language-key-filters.component';
 
 @NgModule({
   declarations: [
     LanguageKeysComponent,
     LanguageKeyAddComponent,
-    LanguageKeyFormComponent
+    LanguageKeyFormComponent,
+    LanguageKeyFiltersComponent
   ],
   imports: [
     CommonModule,

@@ -19,7 +19,7 @@ export class SupplierStoreEffects {
       supplierActions.ActionTypes.LOAD_REQUEST
     ),
     switchMap(action =>
-      this.supplierService.getSuppliers().pipe(
+      this.supplierService.getSuppliers(action.supplierRequest).pipe(
         map(
           items =>
             new supplierActions.LoadSuccessAction({

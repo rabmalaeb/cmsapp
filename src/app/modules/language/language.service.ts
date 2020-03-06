@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpService } from 'src/app/core/services/http.service';
 import { LanguageSerializerService } from './language-serializer.service';
 import { map } from 'rxjs/operators';
+import { LanguageRequest } from './language';
 
 @Injectable({
   providedIn: 'root'
@@ -14,8 +15,8 @@ export class LanguageService {
   ) { }
 
 
-  getLanguages() {
-    return this.httpService.request('languages', {}).pipe(map(response => {
+  getLanguages(languageRequest: LanguageRequest) {
+    return this.httpService.request('languages', languageRequest).pipe(map(response => {
       return response.map(data => this.languageSerializer.getLanguage(data));
     }));
   }

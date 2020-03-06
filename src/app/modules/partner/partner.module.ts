@@ -6,9 +6,10 @@ import { PartnerAddComponent } from './partner-add/partner-add.component';
 import { SharedModule } from 'src/app/shared.module';
 import { ComponentsModule } from 'src/app/components/components.module';
 import { PartnerFormComponent } from './partner-form/partner-form.component';
+import { PartnerFiltersComponent } from './partner-filters/partner-filters.component';
 
 @NgModule({
-  declarations: [PartnersComponent, PartnerAddComponent, PartnerFormComponent],
+  declarations: [PartnersComponent, PartnerAddComponent, PartnerFormComponent, PartnerFiltersComponent],
   imports: [CommonModule, PartnerRoutingModule, ComponentsModule, SharedModule]
 })
 export class PartnerModule {}

@@ -1,5 +1,5 @@
 import { Action } from '@ngrx/store';
-import { LanguageKey } from '../language-key';
+import { LanguageKey, LanguageKeyRequest } from '../language-key';
 import { ErrorResponse } from 'src/app/shared/models/general';
 
 export enum ActionTypes {
@@ -22,6 +22,7 @@ export enum ActionTypes {
 
 export class LoadRequestAction implements Action {
   readonly type = ActionTypes.LOAD_REQUEST;
+  constructor(public languageKeyRequest: LanguageKeyRequest) { }
 }
 
 export class LoadFailureAction implements Action {

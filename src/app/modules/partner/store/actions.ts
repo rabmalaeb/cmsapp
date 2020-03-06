@@ -1,5 +1,5 @@
 import { Action } from '@ngrx/store';
-import { Partner } from 'src/app/modules/partner/partner';
+import { Partner, PartnerRequest } from 'src/app/modules/partner/partner';
 import { ErrorResponse } from 'src/app/shared/models/general';
 
 export enum ActionTypes {
@@ -22,11 +22,12 @@ export enum ActionTypes {
 
 export class LoadRequestAction implements Action {
   readonly type = ActionTypes.LOAD_REQUEST;
+  constructor(public partnerRequest: PartnerRequest = null) {}
 }
 
 export class LoadFailureAction implements Action {
   readonly type = ActionTypes.LOAD_FAILURE;
-  constructor(public payload: { error: ErrorResponse }) { }
+  constructor(public payload: { error: ErrorResponse }) {}
 }
 
 export class LoadSuccessAction implements Action {
@@ -46,7 +47,7 @@ export class GetPartnerSuccessAction implements Action {
 
 export class GetPartnerFailureAction implements Action {
   readonly type = ActionTypes.GET_PARTNER_FAILURE;
-  constructor(public payload: { error: ErrorResponse }) { }
+  constructor(public payload: { error: ErrorResponse }) {}
 }
 export class AddPartnerRequestAction implements Action {
   readonly type = ActionTypes.ADD_PARTNER_REQUEST;
@@ -60,7 +61,7 @@ export class AddPartnerSuccessAction implements Action {
 
 export class AddPartnerFailureAction implements Action {
   readonly type = ActionTypes.ADD_PARTNER_FAILURE;
-  constructor(public payload: { error: ErrorResponse }) { }
+  constructor(public payload: { error: ErrorResponse }) {}
 }
 
 export class UpdatePartnerRequestAction implements Action {
@@ -75,7 +76,7 @@ export class UpdatePartnerSuccessAction implements Action {
 
 export class UpdatePartnerFailureAction implements Action {
   readonly type = ActionTypes.UPDATE_PARTNER_FAILURE;
-  constructor(public payload: { error: ErrorResponse }) { }
+  constructor(public payload: { error: ErrorResponse }) {}
 }
 
 export class DeletePartnerRequestAction implements Action {
@@ -90,7 +91,7 @@ export class DeletePartnerSuccessAction implements Action {
 
 export class DeletePartnerFailureAction implements Action {
   readonly type = ActionTypes.DELETE_PARTNER_FAILURE;
-  constructor(public payload: { error: ErrorResponse }) { }
+  constructor(public payload: { error: ErrorResponse }) {}
 }
 
 export type Actions =

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpService } from 'src/app/core/services/http.service';
 import { SupplierSerializerService } from './supplier-serializer.service';
 import { map } from 'rxjs/operators';
+import { SupplierRequest } from './supplier';
 
 @Injectable({
   providedIn: 'root'
@@ -13,8 +14,8 @@ export class SupplierService {
     private supplierSerializer: SupplierSerializerService,
   ) { }
 
-  getSuppliers() {
-    return this.httpService.request('suppliers', {}).pipe(map(response => {
+  getSuppliers(supplierRequest: SupplierRequest) {
+    return this.httpService.request('suppliers', supplierRequest).pipe(map(response => {
       return response.map(data => this.supplierSerializer.getSupplier(data));
     }));
   }

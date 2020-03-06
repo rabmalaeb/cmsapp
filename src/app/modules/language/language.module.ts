@@ -6,12 +6,14 @@ import { LanguageAddComponent } from './language-add/language-add.component';
 import { SharedModule } from 'src/app/shared.module';
 import { ComponentsModule } from 'src/app/components/components.module';
 import { LanguageFormComponent } from './language-form/language-form.component';
+import { LanguageFiltersComponent } from './language-filters/language-filters.component';
 
 @NgModule({
   declarations: [
     LanguagesComponent,
     LanguageAddComponent,
-    LanguageFormComponent
+    LanguageFormComponent,
+    LanguageFiltersComponent
   ],
   imports: [CommonModule, LanguageRoutingModule, ComponentsModule, SharedModule]
 })

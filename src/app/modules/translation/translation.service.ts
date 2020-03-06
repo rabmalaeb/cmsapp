@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpService } from 'src/app/core/services/http.service';
 import { map } from 'rxjs/operators';
 import { TranslationSerializerService } from './translation-serializer.service';
+import { TranslationRequest } from './translation';
 
 @Injectable({
   providedIn: 'root'
@@ -13,8 +14,8 @@ export class TranslationService {
     private translationSerializer: TranslationSerializerService,
   ) { }
 
-  getTranslations() {
-    return this.httpService.request('language-partner-translations', {}).pipe(map(response => {
+  getTranslations(request: TranslationRequest) {
+    return this.httpService.request('language-partner-translations', request).pipe(map(response => {
       return response.map(data => this.translationSerializer.getTranslation(data));
     }));
   }

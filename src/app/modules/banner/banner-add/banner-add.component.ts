@@ -14,7 +14,7 @@ import {
   LanguageStoreSelectors,
   LanguageStoreActions
 } from '../../language/store';
-import { Language } from '../../language/language';
+import { Language, LanguageRequest } from '../../language/language';
 
 @Component({
   selector: 'app-banner-add',
@@ -104,8 +104,10 @@ export class BannerAddComponent implements OnInit {
     );
   }
 
-  getLanguages() {
-    this.store$.dispatch(new LanguageStoreActions.LoadRequestAction());
+  getLanguages(languageRequest: LanguageRequest = null) {
+    this.store$.dispatch(
+      new LanguageStoreActions.LoadRequestAction(languageRequest)
+    );
     this.languages$ = this.store$.select(
       LanguageStoreSelectors.selectAllLanguageItems
     );
@@ -123,9 +125,7 @@ export class BannerAddComponent implements OnInit {
   }
 
   addBanner(banner: Banner) {
-    this.store$.dispatch(
-      new BannerStoreActions.AddBannerRequestAction(banner)
-    );
+    this.store$.dispatch(new BannerStoreActions.AddBannerRequestAction(banner));
   }
 
   updateBanner(banner: Banner) {

@@ -12,3 +12,6 @@ export class Banner {
   languageId: number;
   language: Language;
 }
+export class BannerRequest {
+  name?: string;
+}

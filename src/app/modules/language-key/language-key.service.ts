@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpService } from 'src/app/core/services/http.service';
 import { LanguageKeySerializerService } from './language-key-serializer.service';
 import { map } from 'rxjs/operators';
+import { LanguageKeyRequest } from './language-key';
 
 @Injectable({
   providedIn: 'root'
@@ -13,8 +14,8 @@ export class LanguageKeyService {
     private languageKeySerializer: LanguageKeySerializerService,
   ) { }
 
-  getLanguageKeys() {
-    return this.httpService.request('language-keys', {}).pipe(map(response => {
+  getLanguageKeys(languageKeyRequest: LanguageKeyRequest) {
+    return this.httpService.request('language-keys', languageKeyRequest).pipe(map(response => {
       return response.map(data => this.languageKeySerializer.getLanguageKey(data));
     }));
   }

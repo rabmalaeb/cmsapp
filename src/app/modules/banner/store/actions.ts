@@ -1,5 +1,5 @@
 import { Action } from '@ngrx/store';
-import { Banner } from 'src/app/modules/banner/banner';
+import { Banner, BannerRequest } from 'src/app/modules/banner/banner';
 import { ErrorResponse } from 'src/app/shared/models/general';
 
 export enum ActionTypes {
@@ -22,11 +22,12 @@ export enum ActionTypes {
 
 export class LoadRequestAction implements Action {
   readonly type = ActionTypes.LOAD_REQUEST;
+  constructor(public bannerRequest: BannerRequest) {}
 }
 
 export class LoadFailureAction implements Action {
   readonly type = ActionTypes.LOAD_FAILURE;
-  constructor(public payload: { error: ErrorResponse }) { }
+  constructor(public payload: { error: ErrorResponse }) {}
 }
 
 export class LoadSuccessAction implements Action {
@@ -46,7 +47,7 @@ export class GetBannerSuccessAction implements Action {
 
 export class GetBannerFailureAction implements Action {
   readonly type = ActionTypes.GET_PRODUCT_FAILURE;
-  constructor(public payload: { error: ErrorResponse }) { }
+  constructor(public payload: { error: ErrorResponse }) {}
 }
 export class AddBannerRequestAction implements Action {
   readonly type = ActionTypes.ADD_PRODUCT_REQUEST;
@@ -60,7 +61,7 @@ export class AddBannerSuccessAction implements Action {
 
 export class AddBannerFailureAction implements Action {
   readonly type = ActionTypes.ADD_PRODUCT_FAILURE;
-  constructor(public payload: { error: ErrorResponse }) { }
+  constructor(public payload: { error: ErrorResponse }) {}
 }
 
 export class UpdateBannerRequestAction implements Action {
@@ -75,7 +76,7 @@ export class UpdateBannerSuccessAction implements Action {
 
 export class UpdateBannerFailureAction implements Action {
   readonly type = ActionTypes.UPDATE_PRODUCT_FAILURE;
-  constructor(public payload: { error: ErrorResponse }) { }
+  constructor(public payload: { error: ErrorResponse }) {}
 }
 
 export class DeleteBannerRequestAction implements Action {
@@ -90,7 +91,7 @@ export class DeleteBannerSuccessAction implements Action {
 
 export class DeleteBannerFailureAction implements Action {
   readonly type = ActionTypes.DELETE_PRODUCT_FAILURE;
-  constructor(public payload: { error: ErrorResponse }) { }
+  constructor(public payload: { error: ErrorResponse }) {}
 }
 
 export type Actions =

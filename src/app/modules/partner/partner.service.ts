@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpService } from 'src/app/core/services/http.service';
 import { PartnerSerializerService } from './partner-serializer.service';
 import { map } from 'rxjs/operators';
+import { PartnerRequest } from './partner';
 
 @Injectable({
   providedIn: 'root'
@@ -13,8 +14,8 @@ export class PartnerService {
     private partnerSerializer: PartnerSerializerService,
   ) { }
 
-  getPartners() {
-    return this.httpService.request('partners', {}).pipe(map(response => {
+  getPartners(partnerRequest: PartnerRequest) {
+    return this.httpService.request('partners', partnerRequest).pipe(map(response => {
       return response.map(data => this.partnerSerializer.getPartner(data));
     }));
   }

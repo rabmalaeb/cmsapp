@@ -19,7 +19,7 @@ export class CategoryStoreEffects {
       categoryActions.ActionTypes.LOAD_REQUEST
     ),
     switchMap(action =>
-      this.categoryService.getCategories().pipe(
+      this.categoryService.getCategories(action.categoryRequest).pipe(
         map(
           items =>
             new categoryActions.LoadSuccessAction({

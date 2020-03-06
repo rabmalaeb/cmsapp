@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { AlertService } from 'src/app/core/services/alert.service';
-import { Supplier } from '../supplier';
+import { Supplier, SupplierRequest } from '../supplier';
 import { ModuleName } from 'src/app/shared/models/general';
 import { AuthorizationService } from 'src/app/core/services/authorization.service';
 import { Observable } from 'rxjs';
@@ -83,8 +83,10 @@ export class SuppliersComponent implements OnInit {
       });
   }
 
-  getSuppliers() {
-    this.store$.dispatch(new SupplierStoreActions.LoadRequestAction());
+  getSuppliers(supplierRequest: SupplierRequest = null) {
+    this.store$.dispatch(
+      new SupplierStoreActions.LoadRequestAction(supplierRequest)
+    );
   }
 
   setDataSource() {

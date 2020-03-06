@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { AlertService } from 'src/app/core/services/alert.service';
-import { Role } from '../role';
+import { Role, RoleRequest } from '../role';
 import { RoleService } from '../role.service';
 import { AuthorizationService } from 'src/app/core/services/authorization.service';
 import { ModuleName } from 'src/app/shared/models/general';
@@ -81,8 +81,8 @@ export class RolesComponent implements OnInit {
       });
   }
 
-  getRoles() {
-    this.store$.dispatch(new RoleStoreActions.LoadRequestAction());
+  getRoles(roleRequest: RoleRequest = null) {
+    this.store$.dispatch(new RoleStoreActions.LoadRequestAction(roleRequest));
   }
 
   setDataSource() {

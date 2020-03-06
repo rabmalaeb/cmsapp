@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpService } from 'src/app/core/services/http.service';
 import { CategorySerializerService } from './category-serializer.service';
 import { map } from 'rxjs/operators';
+import { CategoryRequest } from './category';
 
 @Injectable({
   providedIn: 'root'
@@ -13,8 +14,8 @@ export class CategoryService {
     private categorySerializer: CategorySerializerService,
   ) { }
 
-  getCategories() {
-    return this.httpService.request('categories', {}).pipe(map(response => {
+  getCategories(categoryRequest: CategoryRequest) {
+    return this.httpService.request('categories', categoryRequest).pipe(map(response => {
       return response.map(data => this.categorySerializer.getCategory(data));
     }));
   }

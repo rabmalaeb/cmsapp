@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { Category } from '../category';
+import { Category, CategoryRequest } from '../category';
 import { AuthorizationService } from 'src/app/core/services/authorization.service';
 import { ActionType, ModuleName } from 'src/app/shared/models/general';
 import { NotificationService } from 'src/app/core/services/notification.service';
@@ -104,8 +104,8 @@ export class CategoryAddComponent implements OnInit {
     );
   }
 
-  getCategories() {
-    this.store$.dispatch(new CategoryStoreActions.LoadRequestAction());
+  getCategories(categoryRequest: CategoryRequest = null) {
+    this.store$.dispatch(new CategoryStoreActions.LoadRequestAction(categoryRequest));
     this.categories$ = this.store$.select(
       CategoryStoreSelectors.selectAllCategoryItems
     );

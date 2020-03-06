@@ -25,6 +25,7 @@ export enum ActionTypes {
 
 export class LoadRequestAction implements Action {
   readonly type = ActionTypes.LOAD_REQUEST;
+  constructor(public roleRequest: RoleRequest) {}
 }
 
 export class LoadSuccessAction implements Action {

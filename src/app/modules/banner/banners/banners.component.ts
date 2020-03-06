@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { AlertService } from 'src/app/core/services/alert.service';
-import { Banner } from '../banner';
+import { Banner, BannerRequest } from '../banner';
 import { AuthorizationService } from 'src/app/core/services/authorization.service';
 import { ModuleName } from 'src/app/shared/models/general';
 import { filter } from 'rxjs/operators';
@@ -82,8 +82,8 @@ export class BannersComponent implements OnInit {
       });
   }
 
-  getBanners() {
-    this.store$.dispatch(new BannerStoreActions.LoadRequestAction());
+  getBanners(bannerRequest: BannerRequest = null) {
+    this.store$.dispatch(new BannerStoreActions.LoadRequestAction(bannerRequest));
   }
 
   setDataSource() {

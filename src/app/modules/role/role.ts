@@ -1,5 +1,6 @@
 import { Permission } from '../permissions/permission';
 import { Partner } from '../partner/partner';
+import Request from 'src/app/shared/request';
 
 export interface Role {
   id: number;
@@ -9,9 +10,9 @@ export interface Role {
   permissions: Permission[];
 }
 
-export interface RoleRequest {
+export interface RoleRequest extends Request {
   id?: number;
-  name: string;
-  partnerId: number;
-  permissions: number[];
+  name?: string;
+  partnerId?: number;
+  permissions?: number[];
 }

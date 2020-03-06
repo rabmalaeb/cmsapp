@@ -13,8 +13,8 @@ export class PermissionService {
     private permissionSerializer: PermissionSerializerService
   ) {}
 
-  getPermissions() {
-    return this.httpService.request('permissions', {}).pipe(
+  getPermissions(permissionRequest: PermissionRequest) {
+    return this.httpService.request('permissions', permissionRequest).pipe(
       map(response => {
         return response.map(data =>
           this.permissionSerializer.getPermission(data)

@@ -6,12 +6,14 @@ import { TranslationAddComponent } from './translation-add/translation-add.compo
 import { SharedModule } from 'src/app/shared.module';
 import { ComponentsModule } from 'src/app/components/components.module';
 import { TranslationFormComponent } from './translation-form/translation-form.component';
+import { TranslationFiltersComponent } from './translation-filters/translation-filters.component';
 
 @NgModule({
   declarations: [
     TranslationsComponent,
     TranslationAddComponent,
-    TranslationFormComponent
+    TranslationFormComponent,
+    TranslationFiltersComponent
   ],
   imports: [
     CommonModule,

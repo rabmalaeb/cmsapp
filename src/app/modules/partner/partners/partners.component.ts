@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { AlertService } from 'src/app/core/services/alert.service';
-import { Partner } from '../partner';
+import { Partner, PartnerRequest } from '../partner';
 import { ModuleName } from 'src/app/shared/models/general';
 import { AuthorizationService } from 'src/app/core/services/authorization.service';
 import { Observable } from 'rxjs';
@@ -83,8 +83,8 @@ export class PartnersComponent implements OnInit {
       });
   }
 
-  getPartners() {
-    this.store$.dispatch(new PartnerStoreActions.LoadRequestAction());
+  getPartners(partnerRequest: PartnerRequest = null) {
+    this.store$.dispatch(new PartnerStoreActions.LoadRequestAction(partnerRequest));
   }
 
   setDataSource() {

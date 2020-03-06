@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpService } from 'src/app/core/services/http.service';
 import { BannerSerializerService } from './banner-serializer.service';
 import { map } from 'rxjs/operators';
-import { Banner } from './banner';
+import { Banner, BannerRequest } from './banner';
 
 @Injectable({
   providedIn: 'root'
@@ -14,8 +14,8 @@ export class BannerService {
     private bannerSerializer: BannerSerializerService,
   ) { }
 
-  getBanners() {
-    return this.httpService.request('banners', {}).pipe(map(response => {
+  getBanners(bannerRequest: BannerRequest) {
+    return this.httpService.request('banners', bannerRequest).pipe(map(response => {
       return response.map(data => this.bannerSerializer.getBanner(data));
     }));
   }

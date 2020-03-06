@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpService } from 'src/app/core/services/http.service';
 import { RoleSerializerService } from './role-serializer.service';
 import { map } from 'rxjs/operators';
+import { RoleRequest } from './role';
 
 @Injectable({
   providedIn: 'root'
@@ -12,8 +13,8 @@ export class RoleService {
     private roleSerializer: RoleSerializerService
   ) {}
 
-  getRoles() {
-    return this.httpService.request('roles', {}).pipe(
+  getRoles(roleRequest: RoleRequest) {
+    return this.httpService.request('roles', roleRequest).pipe(
       map(response => {
         return response.map(data => this.roleSerializer.getRole(data));
       })

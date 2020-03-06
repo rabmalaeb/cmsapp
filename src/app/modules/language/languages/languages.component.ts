@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { AlertService } from 'src/app/core/services/alert.service';
-import { Language } from '../language';
+import { Language, LanguageRequest } from '../language';
 import { AuthorizationService } from 'src/app/core/services/authorization.service';
 import { ModuleName } from 'src/app/shared/models/general';
 import { Observable } from 'rxjs';
@@ -83,8 +83,10 @@ export class LanguagesComponent implements OnInit {
       });
   }
 
-  getLanguages() {
-    this.store$.dispatch(new LanguageStoreActions.LoadRequestAction());
+  getLanguages(languageRequest: LanguageRequest = null) {
+    this.store$.dispatch(
+      new LanguageStoreActions.LoadRequestAction(languageRequest)
+    );
   }
 
   setDataSource() {

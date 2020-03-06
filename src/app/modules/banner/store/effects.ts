@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Actions, Effect, ofType } from '@ngrx/effects';
+import { Actions, Effect, ofType, act } from '@ngrx/effects';
 import { Action } from '@ngrx/store';
 import { Observable, of as observableOf } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
@@ -19,7 +19,7 @@ export class BannerStoreEffects {
       bannerActions.ActionTypes.LOAD_REQUEST
     ),
     switchMap(action =>
-      this.bannerService.getBanners().pipe(
+      this.bannerService.getBanners(action.bannerRequest).pipe(
         map(
           items =>
             new bannerActions.LoadSuccessAction({

@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { AlertService } from 'src/app/core/services/alert.service';
-import { Translation } from '../translation';
+import { Translation, TranslationRequest } from '../translation';
 import { TranslationService } from '../translation.service';
 import { AuthorizationService } from 'src/app/core/services/authorization.service';
 import { ModuleName } from 'src/app/shared/models/general';
@@ -96,8 +96,10 @@ export class TranslationsComponent implements OnInit {
       });
   }
 
-  getTranslations() {
-    this.store$.dispatch(new TranslationStoreActions.LoadRequestAction());
+  getTranslations(translationRequest: TranslationRequest = null) {
+    this.store$.dispatch(
+      new TranslationStoreActions.LoadRequestAction(translationRequest)
+    );
   }
 
   setDataSource() {

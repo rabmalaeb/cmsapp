@@ -1,4 +1,5 @@
 import { Media } from '../media/media';
+import Request from 'src/app/shared/request';
 
 export class Category {
   id: number;
@@ -8,4 +9,7 @@ export class Category {
   parent: Category;
   mediaId: number;
   media: Media;
+}
+export class CategoryRequest extends Request {
+  name?: string;
 }

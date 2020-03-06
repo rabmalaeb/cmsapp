@@ -17,7 +17,18 @@
         </button>
       </div>
     </div>
-    <mat-table mat-table [dataSource]="categories$ | async" class="mat-elevation-z8">
+    <div class="page__section">
+      <div class="page__filters">
+        <app-category-filters
+          (filter)="getCategories($event)"
+        ></app-category-filters>
+      </div>
+    </div>
+    <mat-table
+      mat-table
+      [dataSource]="categories$ | async"
+      class="mat-elevation-z8"
+    >
       <ng-container matColumnDef="id">
         <mat-header-cell *matHeaderCellDef>Id</mat-header-cell>
         <mat-cell *matCellDef="let category">{{ category.id }}</mat-cell>
