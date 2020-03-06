@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpService } from 'src/app/core/services/http.service';
 import { map } from 'rxjs/operators';
 import { TranslationSerializerService } from './translation-serializer.service';
-import { TranslationRequest } from './translation';
+import { TranslationRequest, Translation } from './translation';
 
 @Injectable({
   providedIn: 'root'
@@ -26,13 +26,13 @@ export class TranslationService {
     }));
   }
 
-  addTranslation(params) {
+  addTranslation(params: Translation) {
     return this.httpService.post('language-partner-translations', { ...params }).pipe(map(({ data }) => {
       return this.translationSerializer.getTranslation(data);
     }));
   }
 
-  updateTranslation(id, params) {
+  updateTranslation(id: number, params: Translation) {
     return this.httpService.put(`language-partner-translations/${id}`, { ...params }).pipe(map(({ data }) => {
       return this.translationSerializer.getTranslation(data);
     }));

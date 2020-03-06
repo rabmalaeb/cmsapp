@@ -22,7 +22,7 @@ export enum ActionTypes {
 
 export class LoadRequestAction implements Action {
   readonly type = ActionTypes.LOAD_REQUEST;
-  constructor(public languageKeyRequest: LanguageKeyRequest) { }
+  constructor(public languageKeyRequest: LanguageKeyRequest = null) { }
 }
 
 export class LoadFailureAction implements Action {

@@ -32,7 +32,7 @@ export class BannerService {
     }));
   }
 
-  updateBanner(id, params) {
+  updateBanner(id: number, params: Banner) {
     return this.httpService.put(`banners/${id}`, { ...params }).pipe(map(({ data }) => {
       return this.bannerSerializer.getBanner(data);
     }));

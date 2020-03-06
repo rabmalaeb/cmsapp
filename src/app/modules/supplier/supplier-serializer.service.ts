@@ -1,15 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Supplier } from './supplier';
-import { CategorySerializerService } from '../category/category-serializer.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SupplierSerializerService {
 
-  constructor(
-    private categorySerializer: CategorySerializerService
-  ) { }
+  constructor() { }
 
   getSupplier(supplierResponse: any) {
     if (!supplierResponse) {

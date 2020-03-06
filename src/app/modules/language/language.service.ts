@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpService } from 'src/app/core/services/http.service';
 import { LanguageSerializerService } from './language-serializer.service';
 import { map } from 'rxjs/operators';
-import { LanguageRequest } from './language';
+import { LanguageRequest, Language } from './language';
 
 @Injectable({
   providedIn: 'root'
@@ -27,13 +27,13 @@ export class LanguageService {
     }));
   }
 
-  addLanguage(params) {
+  addLanguage(params: Language) {
     return this.httpService.post('languages', { ...params }).pipe(map(({ data }) => {
       return this.languageSerializer.getLanguage(data);
     }));
   }
 
-  updateLanguage(id, params) {
+  updateLanguage(id: number, params: Language) {
     return this.httpService.put(`languages/${id}`, { ...params }).pipe(map(({ data }) => {
       return this.languageSerializer.getLanguage(data);
     }));

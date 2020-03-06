@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { AlertService } from 'src/app/core/services/alert.service';
-import { Category } from '../category';
+import { Category, CategoryRequest } from '../category';
 import { ModuleName } from 'src/app/shared/models/general';
 import { AuthorizationService } from 'src/app/core/services/authorization.service';
 import { Observable } from 'rxjs';
@@ -88,8 +88,10 @@ export class CategoriesComponent implements OnInit {
       });
   }
 
-  getCategories() {
-    this.store$.dispatch(new CategoryStoreActions.LoadRequestAction());
+  getCategories(categories: CategoryRequest = null) {
+    this.store$.dispatch(
+      new CategoryStoreActions.LoadRequestAction(categories)
+    );
   }
 
   setDataSource() {

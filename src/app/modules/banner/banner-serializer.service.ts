@@ -7,11 +7,10 @@ import { LanguageSerializerService } from '../language/language-serializer.servi
   providedIn: 'root'
 })
 export class BannerSerializerService {
-
   constructor(
     private languageSerializer: LanguageSerializerService,
     private mediaSerializer: MediaSerializerService
-  ) { }
+  ) {}
 
   getBanner(bannerResponse: any) {
     if (!bannerResponse) {
@@ -22,8 +21,12 @@ export class BannerSerializerService {
     banner.name = bannerResponse.attributes.name;
     banner.description = bannerResponse.attributes.description;
     banner.mediaId = bannerResponse.attributes.mediaId;
-    banner.media = this.mediaSerializer.getMedia(bannerResponse.relationships.media);
-    banner.language = this.languageSerializer.getLanguage(bannerResponse.relationships.language);
+    banner.media = this.mediaSerializer.getMedia(
+      bannerResponse.relationships.media
+    );
+    banner.language = this.languageSerializer.getLanguage(
+      bannerResponse.relationships.language
+    );
     banner.languageId = bannerResponse.relationships.mediaId;
     return banner;
   }

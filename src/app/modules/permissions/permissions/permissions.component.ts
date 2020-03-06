@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { AlertService } from 'src/app/core/services/alert.service';
-import { Permission } from '../permission';
+import { Permission, PermissionRequest } from '../permission';
 import { AuthorizationService } from 'src/app/core/services/authorization.service';
 import { ModuleName } from 'src/app/shared/models/general';
 import { Observable } from 'rxjs';
@@ -83,8 +83,10 @@ export class PermissionsComponent implements OnInit {
       });
   }
 
-  getPermissions() {
-    this.store$.dispatch(new PermissionStoreActions.LoadRequestAction());
+  getPermissions(permissionRequest: PermissionRequest = null) {
+    this.store$.dispatch(
+      new PermissionStoreActions.LoadRequestAction(permissionRequest)
+    );
   }
 
   setDataSource() {

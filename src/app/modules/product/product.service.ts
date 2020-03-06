@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpService } from 'src/app/core/services/http.service';
 import { ProductSerializerService } from './product-serializer.service';
 import { map } from 'rxjs/operators';
-import { ProductRequest } from './product';
+import { ProductRequest, Product } from './product';
 
 @Injectable({
   providedIn: 'root'
@@ -29,7 +29,7 @@ export class ProductService {
     );
   }
 
-  addProduct(params) {
+  addProduct(params: Product) {
     return this.httpService.post('products', { ...params }).pipe(
       map(({ data }) => {
         return this.productSerializer.getProduct(data);
@@ -37,7 +37,7 @@ export class ProductService {
     );
   }
 
-  updateProduct(id, params) {
+  updateProduct(id: number, params: Product) {
     return this.httpService.put(`products/${id}`, { ...params }).pipe(
       map(({ data }) => {
         return this.productSerializer.getProduct(data);

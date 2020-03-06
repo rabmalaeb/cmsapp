@@ -88,7 +88,9 @@ export class SupplierStoreEffects {
             })
         ),
         catchError(error =>
-          observableOf(new supplierActions.UpdateSupplierFailureAction({ error }))
+          observableOf(
+            new supplierActions.UpdateSupplierFailureAction({ error })
+          )
         )
       )
     )
@@ -109,7 +111,9 @@ export class SupplierStoreEffects {
             })
         ),
         catchError(error =>
-          observableOf(new supplierActions.DeleteSupplierFailureAction({ error }))
+          observableOf(
+            new supplierActions.DeleteSupplierFailureAction({ error })
+          )
         )
       )
     )
