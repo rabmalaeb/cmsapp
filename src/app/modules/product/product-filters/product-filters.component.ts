@@ -4,7 +4,8 @@ import {
   Output,
   EventEmitter,
   Input,
-  OnChanges
+  OnChanges,
+  SimpleChanges
 } from '@angular/core';
 import FilterComponent from 'src/app/shared/filter';
 import { FormGroup, FormBuilder } from '@angular/forms';
@@ -20,11 +21,11 @@ import { NumberRange } from 'src/app/shared/models/general';
 export class ProductFiltersComponent
   implements OnInit, OnChanges, FilterComponent {
   @Output() filter = new EventEmitter<ProductRequest>();
-  @Input() retailPriceRange: NumberRange;
   @Input() originalPriceRange: NumberRange;
-  filterForm: FormGroup;
-  retailPriceSliderOptions: Options;
+  @Input() retailPriceRange: NumberRange;
   originalPriceSliderOptions: Options;
+  retailPriceSliderOptions: Options;
+  filterForm: FormGroup;
 
   constructor(private form: FormBuilder) {}
 
@@ -35,8 +36,25 @@ export class ProductFiltersComponent
     console.log('retailPriceRange', this.retailPriceRange);
   }
 
-  ngOnChanges() {
-    this.setSliderOptions();
+  ngOnChanges(changes: SimpleChanges) {
+    if (this.isFirstChange(changes)) {
+      this.setSliderOptions();
+    }
+  }
+
+  isFirstChange(changes: SimpleChanges) {
+    if (!changes.originalPriceRange.previousValue) {
+      return false;
+    }
+    if (
+      changes.originalPriceRange.previousValue.minimum === 0 &&
+      changes.originalPriceRange.previousValue.maximum === 0 &&
+      changes.retailPriceRange.previousValue.minimum === 0 &&
+      changes.retailPriceRange.previousValue.maximum === 0
+    ) {
+      return true;
+    }
+    return false;
   }
 
   submitFilters(): void {
@@ -54,7 +72,7 @@ export class ProductFiltersComponent
       minimumRetailPrice: this.retailPriceRange.minimum,
       maximumRetailPrice: this.retailPriceRange.maximum,
       minimumOriginalPrice: this.originalPriceRange.minimum,
-      maximumOriginalPrice: this.originalPriceRange.maximum,
+      maximumOriginalPrice: this.originalPriceRange.maximum
     };
   }
 
