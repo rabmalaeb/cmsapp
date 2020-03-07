@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { PipesModule } from '../shared/pipes/pipes.module';
 import { AlertComponent } from './alert/alert.component';
 import { ImagePreviewComponent } from './image-preview/image-preview.component';
-import { SharedModule } from 'src/app/shared.module';
+import { SharedModule } from 'src/app/shared/shared.module';
 import { FormLoadingComponent } from './form-loading/form-loading.component';
 import { InputItemComponent } from './input-item/input-item.component';
 

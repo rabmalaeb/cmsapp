@@ -20,6 +20,8 @@
     <div class="page__section">
       <div class="page__filters">
         <app-product-filters
+          [retailPriceRange]="retailPriceRange$ | async"
+          [originalPriceRange]="originalPriceRange$ | async"
           (filter)="getProducts($event)"
         ></app-product-filters>
       </div>

@@ -15,8 +15,24 @@
         >
         </app-input-item>
       </div>
-    </div>
+      <div class="filters__item">
+        <ng5-slider
+          [options]="retailPriceSliderOptions"
+          [(value)]="retailPriceRange.minimum"
+          [(highValue)]="retailPriceRange.maximum"
+          (userChangeEnd)="submitFilters()"
+        ></ng5-slider>
+      </div>
 
+      <div class="filters__item">
+        <ng5-slider
+          [options]="originalPriceSliderOptions"
+          [(value)]="originalPriceRange.minimum"
+          [(highValue)]="originalPriceRange.maximum"
+          (userChangeEnd)="submitFilters()"
+        ></ng5-slider>
+      </div>
+    </div>
     <div class="filters__button-container">
       <div class="filters__button">
         <button

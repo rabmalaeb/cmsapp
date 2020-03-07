@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RolesComponent } from './roles/roles.component';
 import { RoleRoutingModule } from './role-routing.module';
 import { RoleAddComponent } from './role-add/role-add.component';
-import { SharedModule } from 'src/app/shared.module';
+import { SharedModule } from 'src/app/shared/shared.module';
 import { ComponentsModule } from 'src/app/components/components.module';
 import { PermissionModule } from '../permissions/permission.module';
 import { RoleFormComponent } from './role-form/role-form.component';

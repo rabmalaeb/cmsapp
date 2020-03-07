@@ -18,6 +18,8 @@ export class Product {
 
 export class ProductRequest extends Request {
   name?: string;
-  minimumPrice?: number;
-  maximumPrice?: number;
+  minimumRetailPrice?: number;
+  maximumRetailPrice?: number;
+  minimumOriginalPrice?: number;
+  maximumOriginalPrice?: number;
 }

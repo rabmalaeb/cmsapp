@@ -56,3 +56,8 @@ export interface ErrorResponse {
   status: number;
   message: string;
 }
+
+export interface NumberRange {
+  minimum: number;
+  maximum: number;
+}

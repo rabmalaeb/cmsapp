@@ -5,7 +5,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { AlertService } from 'src/app/core/services/alert.service';
 import { Product, ProductRequest } from '../product';
 import { AuthorizationService } from 'src/app/core/services/authorization.service';
-import { ModuleName } from 'src/app/shared/models/general';
+import { ModuleName, NumberRange } from 'src/app/shared/models/general';
 import { filter } from 'rxjs/operators';
 import { ProductStoreActions, ProductStoreSelectors } from '../store';
 import { ActionTypes } from '../store/actions';
@@ -34,6 +34,8 @@ export class ProductsComponent implements OnInit {
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   products$: Observable<Product[]>;
   error$: Observable<string>;
+  retailPriceRange$: Observable<NumberRange>;
+  originalPriceRange$: Observable<NumberRange>;
   isLoading$: Observable<boolean>;
   constructor(
     private alertService: AlertService,
@@ -52,6 +54,14 @@ export class ProductsComponent implements OnInit {
   initializeStoreVariables() {
     this.products$ = this.store$.select(
       ProductStoreSelectors.selectAllProductItems
+    );
+
+    this.originalPriceRange$ = this.store$.select(
+      ProductStoreSelectors.selectOriginalPriceRange()
+    );
+
+    this.retailPriceRange$ = this.store$.select(
+      ProductStoreSelectors.selectRetailPriceRange()
     );
 
     this.error$ = this.store$.select(

@@ -22,6 +22,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { AlertComponent } from 'src/app/components/alert/alert.component';
+import { Ng5SliderModule } from 'ng5-slider';
 
 @NgModule({
   imports: [
@@ -45,7 +46,8 @@ import { AlertComponent } from 'src/app/components/alert/alert.component';
     MatProgressBarModule,
     MatIconModule,
     MatProgressSpinnerModule,
-    MatDialogModule
+    MatDialogModule,
+    Ng5SliderModule
   ],
   declarations: [],
   exports: [
@@ -69,7 +71,8 @@ import { AlertComponent } from 'src/app/components/alert/alert.component';
     MatIconModule,
     MatProgressSpinnerModule,
     MatDialogModule,
-    MatTableModule
+    MatTableModule,
+    Ng5SliderModule
   ],
   providers: [],
   entryComponents: [AlertComponent]
