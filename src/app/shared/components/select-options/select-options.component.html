@@ -1,14 +1,35 @@
 <div class="select-options">
-  <div class="select-options__item">
-    <mat-checkbox [checked]="selectAllChecked">
-      Select All
-    </mat-checkbox>
-  </div>
-  <div class="select-options__list">
-    <div class="select-options__item" *ngFor="let option of options">
-      <mat-checkbox [value]="option.value" [checked]="option.selected">
-        {{ option.label }}
+  <div class="select-options__container">
+    <div class="select-options__title">
+      {{ title }}
+    </div>
+    <div class="select-options__item">
+      <mat-checkbox [checked]="selectAllChecked" (change)="toggleOptions()">
+        Select All
       </mat-checkbox>
+    </div>
+    <div class="select-options__list">
+      <div class="select-options__item" *ngFor="let option of options">
+        <mat-checkbox
+          [value]="option.value"
+          [checked]="option.selected"
+          (change)="toggle(option)"
+        >
+          {{ option.label }}
+        </mat-checkbox>
+      </div>
+    </div>
+    <div class="select-options__button-container">
+      <div class="select-option__button">
+        <button
+          mat-button
+          class="button button_is-primary"
+          (click)="submitFilters()"
+          [disabled]="!atLeaseOneOptionChecked"
+        >
+          Apply Filter
+        </button>
+      </div>
     </div>
   </div>
 </div>

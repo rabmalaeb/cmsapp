@@ -22,6 +22,7 @@
         <app-product-filters
           [retailPriceRange]="retailPriceRange$ | async"
           [originalPriceRange]="originalPriceRange$ | async"
+          [categories]="categories$ | async"
           (filter)="getProducts($event)"
         ></app-product-filters>
       </div>

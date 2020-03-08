@@ -31,8 +31,15 @@
           (userChangeEnd)="submitFilters()"
         ></ng5-slider>
       </div>
-      <div class="filters__item" (click)="showCategoriesModal()">
-        Categories
+      <div class="filters__item">
+        <button
+          mat-button
+          type="button"
+          class="button button_is-primary"
+          (click)="showCategoriesModal()"
+        >
+          Filter by Categories
+        </button>
       </div>
     </div>
     <div class="filters__button-container">
@@ -61,7 +68,10 @@
     </div>
   </form>
 </div>
-
 <app-x-modal *ngIf="showCategories" (closeModal)="showCategories = false">
-  <app-select-options></app-select-options>
+  <app-select-options
+    title="Filter By Categories"
+    [options]="categoryOptionItems"
+    (selected)="submitFilters()"
+  ></app-select-options>
 </app-x-modal>

@@ -13,6 +13,8 @@ import { Observable } from 'rxjs';
 import { Store, ActionsSubject } from '@ngrx/store';
 import { RootStoreState } from 'src/app/root-store';
 import { NotificationService } from 'src/app/core/services/notification.service';
+import { Category } from '../../category/category';
+import { CategoryStoreActions, CategoryStoreSelectors } from '../../category/store';
 
 @Component({
   selector: 'app-products',
@@ -21,7 +23,6 @@ import { NotificationService } from 'src/app/core/services/notification.service'
 })
 export class ProductsComponent implements OnInit {
   isLoading = false;
-  products: Product[] = [];
   displayedColumns: string[] = [
     'id',
     'name',
@@ -33,6 +34,7 @@ export class ProductsComponent implements OnInit {
   dataSource: MatTableDataSource<any>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   products$: Observable<Product[]>;
+  categories$: Observable<Category[]>;
   error$: Observable<string>;
   retailPriceRange$: Observable<NumberRange>;
   originalPriceRange$: Observable<NumberRange>;
@@ -48,12 +50,17 @@ export class ProductsComponent implements OnInit {
 
   ngOnInit() {
     this.getProducts();
+    this.getCategories();
     this.initializeStoreVariables();
   }
 
   initializeStoreVariables() {
     this.products$ = this.store$.select(
       ProductStoreSelectors.selectAllProductItems
+    );
+
+    this.categories$ = this.store$.select(
+      CategoryStoreSelectors.selectAllCategoryItems
     );
 
     this.originalPriceRange$ = this.store$.select(
@@ -105,10 +112,12 @@ export class ProductsComponent implements OnInit {
     );
   }
 
-  setDataSource() {
-    this.dataSource = new MatTableDataSource<Product>(this.products);
-    this.dataSource.paginator = this.paginator;
+  getCategories() {
+    this.store$.dispatch(
+      new CategoryStoreActions.LoadRequestAction()
+    );
   }
+
   addProduct() {
     this.router.navigate(['products/add']);
   }
