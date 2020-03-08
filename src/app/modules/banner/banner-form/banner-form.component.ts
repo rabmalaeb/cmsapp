@@ -74,6 +74,7 @@ export class BannerFormComponent implements OnInit, OnChanges {
 
   buildExistingBannerForm() {
     this.bannerForm = this.form.group({
+      id: [this.banner.id],
       name: [this.banner.name, [Validators.required]],
       description: [this.banner.description, [Validators.required]],
       link: [this.banner.link, [Validators.required]],

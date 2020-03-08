@@ -76,6 +76,7 @@ export class ProductFormComponent implements OnInit, OnChanges {
 
   buildExistingProductForm() {
     this.productForm = this.form.group({
+      id: [this.product.id],
       name: [this.product.name, [Validators.required]],
       description: [this.product.description, [Validators.required]],
       categoryId: [this.product.categoryId, [Validators.required]],
