@@ -6,9 +6,9 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { FormLoadingComponent } from './form-loading/form-loading.component';
 import { InputItemComponent } from './input-item/input-item.component';
 import { XModalComponent } from './x-modal/x-modal.component';
-import { DirectivesModule } from '../shared/directives/directives.module';
-import { PipesModule } from '../shared/pipes/pipes.module';
 import { SelectOptionsComponent } from './select-options/select-options.component';
+import { PipesModule } from '../pipes/pipes.module';
+import { DirectivesModule } from '../directives/directives.module';
 
 @NgModule({
   declarations: [

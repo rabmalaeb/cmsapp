@@ -21,7 +21,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { AlertComponent } from 'src/app/components/alert/alert.component';
+import { AlertComponent } from 'src/app/shared/components/alert/alert.component';
 import { Ng5SliderModule } from 'ng5-slider';
 
 @NgModule({
