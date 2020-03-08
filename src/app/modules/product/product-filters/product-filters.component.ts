@@ -4,14 +4,15 @@ import {
   Output,
   EventEmitter,
   Input,
-  OnChanges,
-  SimpleChanges
+  OnChanges
 } from '@angular/core';
 import FilterComponent from 'src/app/shared/filter';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { ProductRequest } from '../product';
 import { Options, LabelType } from 'ng5-slider';
 import { NumberRange } from 'src/app/shared/models/general';
+import { isRangeValid } from 'src/app/shared/utils/general';
+import { from } from 'rxjs';
 
 @Component({
   selector: 'app-product-filters',
@@ -23,6 +24,15 @@ export class ProductFiltersComponent
   @Output() filter = new EventEmitter<ProductRequest>();
   @Input() originalPriceRange: NumberRange;
   @Input() retailPriceRange: NumberRange;
+  selectedOriginalPriceRange: NumberRange = {
+    minimum: 0,
+    maximum: 10000
+  };
+  selectedRetailPriceRange: NumberRange = {
+    minimum: 0,
+    maximum: 10000
+  };
+  isInputChangeComingFromParentComponent = true;
   originalPriceSliderOptions: Options;
   retailPriceSliderOptions: Options;
   filterForm: FormGroup;
@@ -32,32 +42,17 @@ export class ProductFiltersComponent
   ngOnInit() {
     this.buildForm();
     this.setSliderOptions();
-    console.log('originalPr', this.originalPriceRange);
-    console.log('retailPriceRange', this.retailPriceRange);
   }
 
-  ngOnChanges(changes: SimpleChanges) {
-    if (this.isFirstChange(changes)) {
+  ngOnChanges() {
+    if (this.isInputChangeComingFromParentComponent) {
       this.setSliderOptions();
+      this.setSelectedRanges();
     }
-  }
-
-  isFirstChange(changes: SimpleChanges) {
-    if (!changes.originalPriceRange.previousValue) {
-      return false;
-    }
-    if (
-      changes.originalPriceRange.previousValue.minimum === 0 &&
-      changes.originalPriceRange.previousValue.maximum === 0 &&
-      changes.retailPriceRange.previousValue.minimum === 0 &&
-      changes.retailPriceRange.previousValue.maximum === 0
-    ) {
-      return true;
-    }
-    return false;
   }
 
   submitFilters(): void {
+    this.isInputChangeComingFromParentComponent = false;
     this.filter.emit(this.buildRequest());
   }
 
@@ -69,10 +64,10 @@ export class ProductFiltersComponent
   buildRequest(): ProductRequest {
     return {
       name: this.name.value ? this.name.value : '',
-      minimumRetailPrice: this.retailPriceRange.minimum,
-      maximumRetailPrice: this.retailPriceRange.maximum,
-      minimumOriginalPrice: this.originalPriceRange.minimum,
-      maximumOriginalPrice: this.originalPriceRange.maximum
+      minimumRetailPrice: this.selectedRetailPriceRange.minimum,
+      maximumRetailPrice: this.selectedRetailPriceRange.maximum,
+      minimumOriginalPrice: this.selectedOriginalPriceRange.minimum,
+      maximumOriginalPrice: this.selectedOriginalPriceRange.maximum
     };
   }
 
@@ -84,19 +79,32 @@ export class ProductFiltersComponent
 
   setSliderOptions() {
     this.originalPriceSliderOptions = {
-      floor: this.originalPriceRange.minimum,
-      ceil: this.originalPriceRange.maximum,
+      floor: isRangeValid(this.originalPriceRange)
+        ? this.originalPriceRange.minimum
+        : 0,
+      ceil: isRangeValid(this.originalPriceRange)
+        ? this.originalPriceRange.maximum
+        : 100000,
       translate: (value: number, label: LabelType): string => {
         return '$' + value;
       }
     };
     this.retailPriceSliderOptions = {
-      floor: this.retailPriceRange.minimum,
-      ceil: this.retailPriceRange.maximum,
+      floor: isRangeValid(this.retailPriceRange)
+        ? this.retailPriceRange.minimum
+        : 0,
+      ceil: isRangeValid(this.retailPriceRange)
+        ? this.retailPriceRange.maximum
+        : 100000,
       translate: (value: number, label: LabelType): string => {
         return '$' + value;
       }
     };
+  }
+
+  setSelectedRanges() {
+    this.selectedOriginalPriceRange = this.originalPriceRange;
+    this.selectedRetailPriceRange = this.retailPriceRange;
   }
 
   get name() {

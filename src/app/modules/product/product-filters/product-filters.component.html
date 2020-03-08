@@ -18,8 +18,8 @@
       <div class="filters__item">
         <ng5-slider
           [options]="retailPriceSliderOptions"
-          [(value)]="retailPriceRange.minimum"
-          [(highValue)]="retailPriceRange.maximum"
+          [(value)]="selectedRetailPriceRange.minimum"
+          [(highValue)]="selectedRetailPriceRange.maximum"
           (userChangeEnd)="submitFilters()"
         ></ng5-slider>
       </div>
@@ -27,8 +27,8 @@
       <div class="filters__item">
         <ng5-slider
           [options]="originalPriceSliderOptions"
-          [(value)]="originalPriceRange.minimum"
-          [(highValue)]="originalPriceRange.maximum"
+          [(value)]="selectedOriginalPriceRange.minimum"
+          [(highValue)]="selectedOriginalPriceRange.maximum"
           (userChangeEnd)="submitFilters()"
         ></ng5-slider>
       </div>
