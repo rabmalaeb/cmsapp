@@ -1,17 +1,16 @@
 import { Component, OnInit } from '@angular/core';
-import { ValidationMessagesService } from 'src/app/services/validation-messages.service';
-import { NotificationService } from 'src/app/services/notification.service';
-import { ActionType, ModuleName } from 'src/app/models/general';
+import { ValidationMessagesService } from 'src/app/core/services/validation-messages.service';
+import { NotificationService } from 'src/app/core/services/notification.service';
+import { ActionType, ModuleName } from 'src/app/shared/models/general';
 import { ActivatedRoute } from '@angular/router';
 import { Language } from '../language';
-import { AuthorizationService } from 'src/app/services/authorization.service';
+import { AuthorizationService } from 'src/app/core/services/authorization.service';
 import { ActionsSubject, Store } from '@ngrx/store';
 import { RootStoreState } from 'src/app/root-store';
 import { Observable, of } from 'rxjs';
 import { LanguageStoreSelectors, LanguageStoreActions } from '../store';
 import { filter } from 'rxjs/operators';
 import { ActionTypes } from '../store/actions';
-import { ErrorHandlerService } from 'src/app/services/error-handler.service';
 
 @Component({
   selector: 'app-language-add',
@@ -23,7 +22,6 @@ export class LanguageAddComponent implements OnInit {
     private notificationService: NotificationService,
     private validationMessagesService: ValidationMessagesService,
     private authorizationService: AuthorizationService,
-    private errorHandler: ErrorHandlerService,
     private actionsSubject$: ActionsSubject,
     private store$: Store<RootStoreState.State>,
     private route: ActivatedRoute
@@ -86,8 +84,8 @@ export class LanguageAddComponent implements OnInit {
             action.type === ActionTypes.ADD_LANGUAGE_FAILURE
         )
       )
-      .subscribe(response => {
-        this.errorHandler.handleErrorResponse(response.payload.error);
+      .subscribe(errorResponse => {
+        this.notificationService.showError(errorResponse.payload.error.message);
       });
   }
 

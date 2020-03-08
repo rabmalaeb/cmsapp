@@ -12,17 +12,17 @@ import {
   FormGroup,
   FormGroupDirective
 } from '@angular/forms';
-import { ValidationMessagesService } from 'src/app/services/validation-messages.service';
-import { NotificationService } from 'src/app/services/notification.service';
+import { ValidationMessagesService } from '../../../core/services/validation-messages.service';
+import { NotificationService } from '../../../core/services/notification.service';
 import {
   ActionType,
   ALERT_MESSAGES,
   NavItem,
   PermissionType
-} from 'src/app/models/general';
+} from '../../../shared/models/general';
 import { Permission, PermissionRequest } from '../permission';
-import { capitalize } from 'src/app/utils/general';
-import { AppService } from 'src/app/services/app.service';
+import { capitalize } from '../../../shared/utils/general';
+import { AppService } from '../../../core/services/app.service';
 
 @Component({
   selector: 'app-permissions-form',

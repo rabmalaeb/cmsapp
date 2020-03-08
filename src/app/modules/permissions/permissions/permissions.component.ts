@@ -2,18 +2,17 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
-import { AlertService } from 'src/app/services/alert.service';
-import { Permission } from '../permission';
-import { AuthorizationService } from 'src/app/services/authorization.service';
-import { ModuleName } from 'src/app/models/general';
+import { AlertService } from 'src/app/core/services/alert.service';
+import { Permission, PermissionRequest } from '../permission';
+import { AuthorizationService } from 'src/app/core/services/authorization.service';
+import { ModuleName } from 'src/app/shared/models/general';
 import { Observable } from 'rxjs';
 import { Store, ActionsSubject } from '@ngrx/store';
 import { RootStoreState } from 'src/app/root-store';
-import { NotificationService } from 'src/app/services/notification.service';
+import { NotificationService } from 'src/app/core/services/notification.service';
 import { PermissionStoreSelectors, PermissionStoreActions } from '../store';
 import { ActionTypes } from '../store/actions';
 import { filter } from 'rxjs/operators';
-import { ErrorHandlerService } from 'src/app/services/error-handler.service';
 
 @Component({
   selector: 'app-permissions',
@@ -33,7 +32,6 @@ export class PermissionsComponent implements OnInit {
   constructor(
     private alertService: AlertService,
     private authorizationService: AuthorizationService,
-    private errorHandler: ErrorHandlerService,
     private store$: Store<RootStoreState.State>,
     private actionsSubject$: ActionsSubject,
     private notificationService: NotificationService,
@@ -74,21 +72,21 @@ export class PermissionsComponent implements OnInit {
           (action: any) => action.type === ActionTypes.DELETE_PERMISSION_FAILURE
         )
       )
-      .subscribe(() => {
-        this.notificationService.showError(
-          'Could not delete Permission. Please try again'
-        );
+      .subscribe(errorResponse => {
+        this.notificationService.showError(errorResponse.payload.error.message);
       });
 
     this.actionsSubject$
       .pipe(filter((action: any) => action.type === ActionTypes.LOAD_FAILURE))
-       .subscribe(response => {
-        this.errorHandler.handleErrorResponse(response.payload.error);
+      .subscribe(errorResponse => {
+        this.notificationService.showError(errorResponse.payload.error.message);
       });
   }
 
-  getPermissions() {
-    this.store$.dispatch(new PermissionStoreActions.LoadRequestAction());
+  getPermissions(permissionRequest: PermissionRequest = null) {
+    this.store$.dispatch(
+      new PermissionStoreActions.LoadRequestAction(permissionRequest)
+    );
   }
 
   setDataSource() {

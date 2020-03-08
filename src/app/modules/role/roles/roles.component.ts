@@ -2,11 +2,11 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
-import { AlertService } from 'src/app/services/alert.service';
-import { Role } from '../role';
+import { AlertService } from 'src/app/core/services/alert.service';
+import { Role, RoleRequest } from '../role';
 import { RoleService } from '../role.service';
-import { AuthorizationService } from 'src/app/services/authorization.service';
-import { ModuleName } from 'src/app/models/general';
+import { AuthorizationService } from 'src/app/core/services/authorization.service';
+import { ModuleName } from 'src/app/shared/models/general';
 import { Observable } from 'rxjs';
 import { Store, ActionsSubject } from '@ngrx/store';
 import {
@@ -15,7 +15,7 @@ import {
   RoleStoreActions
 } from 'src/app/root-store';
 import { ActionTypes } from '../store/actions';
-import { NotificationService } from 'src/app/services/notification.service';
+import { NotificationService } from 'src/app/core/services/notification.service';
 import { filter } from 'rxjs/operators';
 
 @Component({
@@ -31,23 +31,18 @@ export class RolesComponent implements OnInit {
   error$: Observable<string>;
   isLoading$: Observable<boolean>;
 
-  displayedColumns: string[] = [
-    'id',
-    'name',
-    'action'
-  ];
+  displayedColumns: string[] = ['id', 'name', 'partner', 'action'];
   dataSource: MatTableDataSource<any>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 
   constructor(
-    private roleService: RoleService,
     private alertService: AlertService,
     private authorizationService: AuthorizationService,
     private store$: Store<RootStoreState.State>,
     private actionsSubject$: ActionsSubject,
     private notificationService: NotificationService,
     private router: Router
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.getRoles();
@@ -75,21 +70,19 @@ export class RolesComponent implements OnInit {
       .pipe(
         filter((action: any) => action.type === ActionTypes.DELETE_ROLE_FAILURE)
       )
-      .subscribe(() => {
-        this.notificationService.showError('Could not delete Role. Please try again');
+      .subscribe(errorResponse => {
+        this.notificationService.showError(errorResponse.payload.error.message);
       });
 
     this.actionsSubject$
-      .pipe(
-        filter((action: any) => action.type === ActionTypes.LOAD_FAILURE)
-      )
-      .subscribe(() => {
-        this.notificationService.showError('An Error has occurred. Please try again');
+      .pipe(filter((action: any) => action.type === ActionTypes.LOAD_FAILURE))
+      .subscribe(errorResponse => {
+        this.notificationService.showError(errorResponse.payload.error.message);
       });
   }
 
-  getRoles() {
-    this.store$.dispatch(new RoleStoreActions.LoadRequestAction());
+  getRoles(roleRequest: RoleRequest = null) {
+    this.store$.dispatch(new RoleStoreActions.LoadRequestAction(roleRequest));
   }
 
   setDataSource() {

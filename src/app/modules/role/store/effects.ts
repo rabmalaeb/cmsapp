@@ -14,7 +14,7 @@ export class RoleStoreEffects {
   loadRequestEffect$: Observable<Action> = this.actions$.pipe(
     ofType<roleActions.LoadRequestAction>(roleActions.ActionTypes.LOAD_REQUEST),
     switchMap(action =>
-      this.roleService.getRoles().pipe(
+      this.roleService.getRoles(action.roleRequest).pipe(
         map(
           items =>
             new roleActions.LoadSuccessAction({
@@ -43,6 +43,26 @@ export class RoleStoreEffects {
         ),
         catchError(error =>
           observableOf(new roleActions.GetRoleFailureAction({ error }))
+        )
+      )
+    )
+  );
+
+  @Effect()
+  getRoleByPartnerEffect$: Observable<Action> = this.actions$.pipe(
+    ofType<roleActions.GetRolesByPartnerRequestAction>(
+      roleActions.ActionTypes.GET_ROLE_BY_PARTNER_REQUEST
+    ),
+    switchMap(action =>
+      this.roleService.getRoleByPartner(action.partnerId).pipe(
+        map(
+          items =>
+            new roleActions.GetRolesByPartnerSuccessAction({
+              items
+            })
+        ),
+        catchError(error =>
+          observableOf(new roleActions.GetRolesByPartnerFailureAction({ error }))
         )
       )
     )

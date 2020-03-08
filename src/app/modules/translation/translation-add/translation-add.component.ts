@@ -1,17 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { NotificationService } from 'src/app/services/notification.service';
-import { ActionType, ModuleName } from 'src/app/models/general';
+import { NotificationService } from 'src/app/core/services/notification.service';
+import { ActionType, ModuleName } from 'src/app/shared/models/general';
 import { ActivatedRoute } from '@angular/router';
 import { Translation } from '../translation';
-import { Partner } from '../../partner/partner';
 import { LanguageKey } from '../../language-key/language-key';
 import { Language } from '../../language/language';
-import { AuthorizationService } from 'src/app/services/authorization.service';
+import { AuthorizationService } from 'src/app/core/services/authorization.service';
 import { ActionsSubject, Store } from '@ngrx/store';
 import {
   RootStoreState,
-  PartnerStoreActions,
-  PartnerStoreSelectors
 } from 'src/app/root-store';
 import { Observable, of } from 'rxjs';
 import { TranslationStoreSelectors, TranslationStoreActions } from '../store';
@@ -25,7 +22,6 @@ import {
   LanguagekeyStoreActions,
   LanguagekeyStoreSelectors
 } from '../../language-key/store';
-import { ErrorHandlerService } from 'src/app/services/error-handler.service';
 
 @Component({
   selector: 'app-translation-add',
@@ -36,7 +32,6 @@ export class TranslationAddComponent implements OnInit {
   constructor(
     private authorizationService: AuthorizationService,
     private notificationService: NotificationService,
-    private errorHandler: ErrorHandlerService,
     private route: ActivatedRoute,
     private actionsSubject$: ActionsSubject,
     private store$: Store<RootStoreState.State>
@@ -46,9 +41,7 @@ export class TranslationAddComponent implements OnInit {
   translation: Translation;
   isLoadingTranslation$: Observable<boolean>;
   isLoadingLanguages$: Observable<boolean>;
-  isLoadingPartners$: Observable<boolean>;
   isLoadingLanguageKeys$: Observable<boolean>;
-  partners$: Observable<Partner[]>;
   languages$: Observable<Language[]>;
   languageKeys$: Observable<LanguageKey[]>;
   translation$: Observable<Translation>;
@@ -61,7 +54,6 @@ export class TranslationAddComponent implements OnInit {
     this.initializeStoreVariables();
     this.getLanguageKeys();
     this.getLanguages();
-    this.getPartners();
     this.route.params.forEach(param => {
       if (param.id) {
         const id = parseInt(param.id, 0);
@@ -110,8 +102,8 @@ export class TranslationAddComponent implements OnInit {
             action.type === ActionTypes.ADD_TRANSLATION_FAILURE
         )
       )
-       .subscribe(response => {
-        this.errorHandler.handleErrorResponse(response.payload.error);
+       .subscribe(errorResponse => {
+        this.notificationService.showError(errorResponse.payload.error.message);
       });
   }
 
@@ -137,16 +129,6 @@ export class TranslationAddComponent implements OnInit {
     );
     this.isLoadingLanguages$ = this.store$.select(
       LanguageStoreSelectors.selectIsLoadingItem
-    );
-  }
-
-  getPartners() {
-    this.store$.dispatch(new PartnerStoreActions.LoadRequestAction());
-    this.partners$ = this.store$.select(
-      PartnerStoreSelectors.selectAllPartnerItems
-    );
-    this.isLoadingPartners$ = this.store$.select(
-      PartnerStoreSelectors.selectIsLoadingItem
     );
   }
 

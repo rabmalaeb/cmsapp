@@ -8,13 +8,18 @@ import { TranslationService } from '../translation.service';
 
 @Injectable()
 export class TranslationStoreEffects {
-  constructor(private translationService: TranslationService, private actions$: Actions) {}
+  constructor(
+    private translationService: TranslationService,
+    private actions$: Actions
+  ) {}
 
   @Effect()
   loadRequestEffect$: Observable<Action> = this.actions$.pipe(
-    ofType<translationActions.LoadRequestAction>(translationActions.ActionTypes.LOAD_REQUEST),
+    ofType<translationActions.LoadRequestAction>(
+      translationActions.ActionTypes.LOAD_REQUEST
+    ),
     switchMap(action =>
-      this.translationService.getTranslations().pipe(
+      this.translationService.getTranslations(action.translationRequest).pipe(
         map(
           items =>
             new translationActions.LoadSuccessAction({
@@ -42,7 +47,9 @@ export class TranslationStoreEffects {
             })
         ),
         catchError(error =>
-          observableOf(new translationActions.GetTranslationFailureAction({ error }))
+          observableOf(
+            new translationActions.GetTranslationFailureAction({ error })
+          )
         )
       )
     )
@@ -62,7 +69,9 @@ export class TranslationStoreEffects {
             })
         ),
         catchError(error =>
-          observableOf(new translationActions.AddTranslationFailureAction({ error }))
+          observableOf(
+            new translationActions.AddTranslationFailureAction({ error })
+          )
         )
       )
     )
@@ -74,18 +83,22 @@ export class TranslationStoreEffects {
       translationActions.ActionTypes.UPDATE_TRANSLATION_REQUEST
     ),
     switchMap(action =>
-      this.translationService.updateTranslation(action.id, action.translation).pipe(
-        map(
-          item =>
-            new translationActions.UpdateTranslationSuccessAction({
-              id: action.id,
-              item
-            })
-        ),
-        catchError(error =>
-          observableOf(new translationActions.UpdateTranslationFailureAction({ error }))
+      this.translationService
+        .updateTranslation(action.id, action.translation)
+        .pipe(
+          map(
+            item =>
+              new translationActions.UpdateTranslationSuccessAction({
+                id: action.id,
+                item
+              })
+          ),
+          catchError(error =>
+            observableOf(
+              new translationActions.UpdateTranslationFailureAction({ error })
+            )
+          )
         )
-      )
     )
   );
 
@@ -104,7 +117,9 @@ export class TranslationStoreEffects {
             })
         ),
         catchError(error =>
-          observableOf(new translationActions.DeleteTranslationFailureAction({ error }))
+          observableOf(
+            new translationActions.DeleteTranslationFailureAction({ error })
+          )
         )
       )
     )

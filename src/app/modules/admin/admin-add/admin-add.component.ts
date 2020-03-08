@@ -2,20 +2,23 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Admin } from '../admin';
 import { Role } from '../../role/role';
-import { NotificationService } from 'src/app/services/notification.service';
-import { AuthorizationService } from 'src/app/services/authorization.service';
-import { ActionType, ModuleName } from 'src/app/models/general';
+import { NotificationService } from 'src/app/core/services/notification.service';
+import { AuthorizationService } from 'src/app/core/services/authorization.service';
+import { ActionType, ModuleName } from 'src/app/shared/models/general';
 import { Observable, of } from 'rxjs';
 import { AdminStoreSelectors, AdminStoreActions } from '../store';
 import { ActionsSubject, Store } from '@ngrx/store';
 import {
   RootStoreState,
   RoleStoreSelectors,
-  RoleStoreActions
+  RoleStoreActions,
+  PartnerStoreActions,
+  PartnerStoreSelectors
 } from 'src/app/root-store';
 import { ActionTypes } from '../store/actions';
 import { filter } from 'rxjs/operators';
-import { ErrorHandlerService } from 'src/app/services/error-handler.service';
+import { Partner } from '../../partner/partner';
+import { AuthenticationService } from 'src/app/core/services/authentication.service';
 
 @Component({
   selector: 'app-admin-add',
@@ -26,13 +29,14 @@ export class AdminAddComponent implements OnInit {
   constructor(
     private notificationService: NotificationService,
     private authorizationService: AuthorizationService,
-    private errorHandler: ErrorHandlerService,
+    private authenticationService: AuthenticationService,
     private actionsSubject$: ActionsSubject,
     private store$: Store<RootStoreState.State>,
     private route: ActivatedRoute
   ) {}
   actionType: ActionType;
   roles$: Observable<Role[]>;
+  partners$: Observable<Partner[]>;
   admin$: Observable<Admin>;
   isLoading$: Observable<boolean>;
   isLoadingAction$: Observable<boolean>;
@@ -40,8 +44,10 @@ export class AdminAddComponent implements OnInit {
   actionErrors$: Observable<string[]>;
 
   ngOnInit() {
+    const partnerId = this.authenticationService.getCurrentUser().partnerId;
+    this.getRoles(partnerId);
     this.initializeStoreVariables();
-    this.getRoles();
+    this.getPartners();
     this.route.params.forEach(param => {
       if (param.id) {
         const id = parseInt(param.id, 0);
@@ -90,8 +96,8 @@ export class AdminAddComponent implements OnInit {
             action.type === ActionTypes.ADD_ADMIN_FAILURE
         )
       )
-      .subscribe(response => {
-        this.errorHandler.handleErrorResponse(response.payload.error);
+      .subscribe(errorResponse => {
+        this.notificationService.showError(errorResponse.payload.error.message);
       });
   }
 
@@ -103,9 +109,20 @@ export class AdminAddComponent implements OnInit {
     );
   }
 
-  getRoles() {
-    this.store$.dispatch(new RoleStoreActions.LoadRequestAction());
-    this.roles$ = this.store$.select(RoleStoreSelectors.selectAllRoleItems);
+  getRoles(partnerId: number) {
+    this.store$.dispatch(
+      new RoleStoreActions.GetRolesByPartnerRequestAction(partnerId)
+    );
+    this.roles$ = this.store$.select(
+      RoleStoreSelectors.selectRoleByPartnerId(partnerId)
+    );
+  }
+
+  getPartners() {
+    this.store$.dispatch(new PartnerStoreActions.LoadRequestAction());
+    this.partners$ = this.store$.select(
+      PartnerStoreSelectors.selectAllPartnerItems
+    );
   }
 
   performAction(admin: Admin) {

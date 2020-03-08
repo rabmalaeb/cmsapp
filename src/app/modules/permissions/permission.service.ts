@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpService } from 'src/app/services/http.service';
+import { HttpService } from 'src/app/core/services/http.service';
 import { PermissionSerializerService } from './permission-serializer.service';
 import { map } from 'rxjs/operators';
 import { PermissionRequest } from './permission';
@@ -13,8 +13,8 @@ export class PermissionService {
     private permissionSerializer: PermissionSerializerService
   ) {}
 
-  getPermissions() {
-    return this.httpService.request('permissions', {}).pipe(
+  getPermissions(permissionRequest: PermissionRequest) {
+    return this.httpService.request('permissions', permissionRequest).pipe(
       map(response => {
         return response.map(data =>
           this.permissionSerializer.getPermission(data)

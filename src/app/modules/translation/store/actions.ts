@@ -1,5 +1,9 @@
 import { Action } from '@ngrx/store';
-import { Translation } from 'src/app/modules/translation/translation';
+import {
+  Translation,
+  TranslationRequest
+} from 'src/app/modules/translation/translation';
+import { ErrorResponse } from 'src/app/shared/models/general';
 
 export enum ActionTypes {
   LOAD_REQUEST = '[Translation] Load Request',
@@ -21,11 +25,12 @@ export enum ActionTypes {
 
 export class LoadRequestAction implements Action {
   readonly type = ActionTypes.LOAD_REQUEST;
+  constructor(public translationRequest: TranslationRequest) {}
 }
 
 export class LoadFailureAction implements Action {
   readonly type = ActionTypes.LOAD_FAILURE;
-  constructor(public payload: { error: string }) {}
+  constructor(public payload: { error: ErrorResponse }) {}
 }
 
 export class LoadSuccessAction implements Action {
@@ -45,7 +50,7 @@ export class GetTranslationSuccessAction implements Action {
 
 export class GetTranslationFailureAction implements Action {
   readonly type = ActionTypes.GET_TRANSLATION_FAILURE;
-  constructor(public payload: { error: string }) {}
+  constructor(public payload: { error: ErrorResponse }) {}
 }
 export class AddTranslationRequestAction implements Action {
   readonly type = ActionTypes.ADD_TRANSLATION_REQUEST;
@@ -59,7 +64,7 @@ export class AddTranslationSuccessAction implements Action {
 
 export class AddTranslationFailureAction implements Action {
   readonly type = ActionTypes.ADD_TRANSLATION_FAILURE;
-  constructor(public payload: { error: string }) {}
+  constructor(public payload: { error: ErrorResponse }) {}
 }
 
 export class UpdateTranslationRequestAction implements Action {
@@ -69,12 +74,12 @@ export class UpdateTranslationRequestAction implements Action {
 
 export class UpdateTranslationSuccessAction implements Action {
   readonly type = ActionTypes.UPDATE_TRANSLATION_SUCCESS;
-  constructor(public payload: { id: number, item: Translation }) {}
+  constructor(public payload: { id: number; item: Translation }) {}
 }
 
 export class UpdateTranslationFailureAction implements Action {
   readonly type = ActionTypes.UPDATE_TRANSLATION_FAILURE;
-  constructor(public payload: { error: string }) {}
+  constructor(public payload: { error: ErrorResponse }) {}
 }
 
 export class DeleteTranslationRequestAction implements Action {
@@ -84,12 +89,12 @@ export class DeleteTranslationRequestAction implements Action {
 
 export class DeleteTranslationSuccessAction implements Action {
   readonly type = ActionTypes.DELETE_TRANSLATION_SUCCESS;
-  constructor(public payload: { id: number, items: Translation[] }) {}
+  constructor(public payload: { id: number; items: Translation[] }) {}
 }
 
 export class DeleteTranslationFailureAction implements Action {
   readonly type = ActionTypes.DELETE_TRANSLATION_FAILURE;
-  constructor(public payload: { error: string }) {}
+  constructor(public payload: { error: ErrorResponse }) {}
 }
 
 export type Actions =

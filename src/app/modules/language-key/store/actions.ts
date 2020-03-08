@@ -1,5 +1,6 @@
 import { Action } from '@ngrx/store';
-import { LanguageKey } from '../language-key';
+import { LanguageKey, LanguageKeyRequest } from '../language-key';
+import { ErrorResponse } from 'src/app/shared/models/general';
 
 export enum ActionTypes {
   LOAD_REQUEST = '[LanguageKey] Load Request',
@@ -21,11 +22,12 @@ export enum ActionTypes {
 
 export class LoadRequestAction implements Action {
   readonly type = ActionTypes.LOAD_REQUEST;
+  constructor(public languageKeyRequest: LanguageKeyRequest = null) { }
 }
 
 export class LoadFailureAction implements Action {
   readonly type = ActionTypes.LOAD_FAILURE;
-  constructor(public payload: { error: string }) {}
+  constructor(public payload: { error: ErrorResponse }) { }
 }
 
 export class LoadSuccessAction implements Action {
@@ -45,7 +47,7 @@ export class GetLanguageKeySuccessAction implements Action {
 
 export class GetLanguageKeyFailureAction implements Action {
   readonly type = ActionTypes.GET_LANGUAGEKEY_FAILURE;
-  constructor(public payload: { error: string }) {}
+  constructor(public payload: { error: ErrorResponse }) { }
 }
 export class AddLanguageKeyRequestAction implements Action {
   readonly type = ActionTypes.ADD_LANGUAGEKEY_REQUEST;
@@ -59,7 +61,7 @@ export class AddLanguageKeySuccessAction implements Action {
 
 export class AddLanguageKeyFailureAction implements Action {
   readonly type = ActionTypes.ADD_LANGUAGEKEY_FAILURE;
-  constructor(public payload: { error: string }) {}
+  constructor(public payload: { error: ErrorResponse }) { }
 }
 
 export class UpdateLanguageKeyRequestAction implements Action {
@@ -74,7 +76,7 @@ export class UpdateLanguageKeySuccessAction implements Action {
 
 export class UpdateLanguageKeyFailureAction implements Action {
   readonly type = ActionTypes.UPDATE_LANGUAGEKEY_FAILURE;
-  constructor(public payload: { error: string }) {}
+  constructor(public payload: { error: ErrorResponse }) { }
 }
 
 export class DeleteLanguageKeyRequestAction implements Action {
@@ -89,7 +91,7 @@ export class DeleteLanguageKeySuccessAction implements Action {
 
 export class DeleteLanguageKeyFailureAction implements Action {
   readonly type = ActionTypes.DELETE_LANGUAGEKEY_FAILURE;
-  constructor(public payload: { error: string }) {}
+  constructor(public payload: { error: ErrorResponse }) { }
 }
 
 export type Actions =

@@ -12,12 +12,11 @@ import {
   FormGroup,
   FormGroupDirective
 } from '@angular/forms';
-import { ValidationMessagesService } from 'src/app/services/validation-messages.service';
-import { NotificationService } from 'src/app/services/notification.service';
-import { ActionType, ALERT_MESSAGES } from 'src/app/models/general';
+import { ValidationMessagesService } from 'src/app/core/services/validation-messages.service';
+import { NotificationService } from 'src/app/core/services/notification.service';
+import { ActionType, ALERT_MESSAGES } from 'src/app/shared/models/general';
 import { Translation } from '../translation';
 import { Language } from '../../language/language';
-import { Partner } from '../../partner/partner';
 import { LanguageKey } from '../../language-key/language-key';
 
 @Component({
@@ -36,13 +35,11 @@ export class TranslationFormComponent implements OnInit, OnChanges {
   @Input() translation: Translation;
   @Input() actionType: ActionType;
   @Input() languages: Language[];
-  @Input() partners: Partner[];
   @Input() languageKeys: LanguageKey[];
   @Input() isLoadingAction: boolean;
   @Input() canEditTranslation = false;
   @Input() isLoading: boolean;
   @Input() isLoadingLanguageKeys: boolean;
-  @Input() isLoadingPartners: boolean;
   @Input() isLoadingLanguages: boolean;
   @Output() submitForm = new EventEmitter<Translation>();
   formGroupDirective: FormGroupDirective;
@@ -66,7 +63,6 @@ export class TranslationFormComponent implements OnInit, OnChanges {
   buildNewTranslationForm() {
     this.translationForm = this.form.group({
       languageId: ['', [Validators.required]],
-      partnerId: ['', [Validators.required]],
       languageKeyId: ['', [Validators.required]],
       value: ['', [Validators.required]]
     });
@@ -76,7 +72,6 @@ export class TranslationFormComponent implements OnInit, OnChanges {
     this.translationForm = this.form.group({
       id: [this.translation.id],
       languageId: [this.translation.languageId, [Validators.required]],
-      partnerId: [this.translation.partnerId, [Validators.required]],
       languageKeyId: [this.translation.languageKeyId, [Validators.required]],
       value: [this.translation.value, [Validators.required]]
     });
@@ -84,10 +79,6 @@ export class TranslationFormComponent implements OnInit, OnChanges {
 
   get languageId() {
     return this.translationForm.get('languageId');
-  }
-
-  get partnerId() {
-    return this.translationForm.get('partnerId');
   }
 
   get languageKeyId() {
@@ -101,7 +92,6 @@ export class TranslationFormComponent implements OnInit, OnChanges {
   buildTranslationParams(): Translation {
     const translation = new Translation();
     translation.id = this.translationForm.get('id') ? this.translationForm.get('id').value : '',
-    translation.partnerId = this.partnerId.value;
     translation.languageId = this.languageId.value;
     translation.languageKeyId = this.languageKeyId.value;
     translation.value = this.value.value;

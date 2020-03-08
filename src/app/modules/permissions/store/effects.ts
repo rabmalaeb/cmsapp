@@ -19,7 +19,7 @@ export class PermissionStoreEffects {
       permissionActions.ActionTypes.LOAD_REQUEST
     ),
     switchMap(action =>
-      this.permissionService.getPermissions().pipe(
+      this.permissionService.getPermissions(action.permissionRequest).pipe(
         map(
           items =>
             new permissionActions.LoadSuccessAction({

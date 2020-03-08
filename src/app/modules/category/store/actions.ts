@@ -1,5 +1,6 @@
 import { Action } from '@ngrx/store';
-import { Category } from 'src/app/modules/category/category';
+import { Category, CategoryRequest } from 'src/app/modules/category/category';
+import { ErrorResponse } from 'src/app/shared/models/general';
 
 export enum ActionTypes {
   LOAD_REQUEST = '[Category] Load Request',
@@ -21,11 +22,12 @@ export enum ActionTypes {
 
 export class LoadRequestAction implements Action {
   readonly type = ActionTypes.LOAD_REQUEST;
+  constructor(public categoryRequest: CategoryRequest = null) { }
 }
 
 export class LoadFailureAction implements Action {
   readonly type = ActionTypes.LOAD_FAILURE;
-  constructor(public payload: { error: string }) {}
+  constructor(public payload: { error: ErrorResponse }) {}
 }
 
 export class LoadSuccessAction implements Action {
@@ -45,7 +47,7 @@ export class GetCategorySuccessAction implements Action {
 
 export class GetCategoryFailureAction implements Action {
   readonly type = ActionTypes.GET_CATEGORY_FAILURE;
-  constructor(public payload: { error: string }) {}
+  constructor(public payload: { error: ErrorResponse }) {}
 }
 export class AddCategoryRequestAction implements Action {
   readonly type = ActionTypes.ADD_CATEGORY_REQUEST;
@@ -59,7 +61,7 @@ export class AddCategorySuccessAction implements Action {
 
 export class AddCategoryFailureAction implements Action {
   readonly type = ActionTypes.ADD_CATEGORY_FAILURE;
-  constructor(public payload: { error: string }) {}
+  constructor(public payload: { error: ErrorResponse }) {}
 }
 
 export class UpdateCategoryRequestAction implements Action {
@@ -74,7 +76,7 @@ export class UpdateCategorySuccessAction implements Action {
 
 export class UpdateCategoryFailureAction implements Action {
   readonly type = ActionTypes.UPDATE_CATEGORY_FAILURE;
-  constructor(public payload: { error: string }) {}
+  constructor(public payload: { error: ErrorResponse }) {}
 }
 
 export class DeleteCategoryRequestAction implements Action {
@@ -89,7 +91,7 @@ export class DeleteCategorySuccessAction implements Action {
 
 export class DeleteCategoryFailureAction implements Action {
   readonly type = ActionTypes.DELETE_CATEGORY_FAILURE;
-  constructor(public payload: { error: string }) {}
+  constructor(public payload: { error: ErrorResponse }) {}
 }
 
 export type Actions =

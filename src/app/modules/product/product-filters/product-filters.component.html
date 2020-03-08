@@ -1,0 +1,61 @@
+<div class="filters__container">
+  <form
+    class="filters__form"
+    #ngForm="ngForm"
+    [formGroup]="filterForm"
+    (ngSubmit)="submitFilters()"
+  >
+    <div class="filters__item-container">
+      <div class="filters__item">
+        <app-input-item
+          id="name"
+          name="name"
+          title="Name"
+          [formControlItem]="name"
+        >
+        </app-input-item>
+      </div>
+      <div class="filters__item">
+        <ng5-slider
+          [options]="retailPriceSliderOptions"
+          [(value)]="selectedRetailPriceRange.minimum"
+          [(highValue)]="selectedRetailPriceRange.maximum"
+          (userChangeEnd)="submitFilters()"
+        ></ng5-slider>
+      </div>
+
+      <div class="filters__item">
+        <ng5-slider
+          [options]="originalPriceSliderOptions"
+          [(value)]="selectedOriginalPriceRange.minimum"
+          [(highValue)]="selectedOriginalPriceRange.maximum"
+          (userChangeEnd)="submitFilters()"
+        ></ng5-slider>
+      </div>
+    </div>
+    <div class="filters__button-container">
+      <div class="filters__button">
+        <button
+          [disabled]="isFormEmpty"
+          type="reset"
+          mat-button
+          class="button button_is-secondary"
+          (click)="resetFilters()"
+        >
+          Clear Filters
+        </button>
+      </div>
+
+      <div class="filters__button">
+        <button
+          [disabled]="isFormEmpty"
+          type="submit"
+          mat-button
+          class="button button_is-primary"
+        >
+          Apply Filters
+        </button>
+      </div>
+    </div>
+  </form>
+</div>

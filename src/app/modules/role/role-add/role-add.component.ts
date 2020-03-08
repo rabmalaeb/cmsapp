@@ -1,15 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import { ValidationMessagesService } from 'src/app/services/validation-messages.service';
-import { NotificationService } from 'src/app/services/notification.service';
-import { ActionType, ModuleName } from 'src/app/models/general';
+import { ValidationMessagesService } from 'src/app/core/services/validation-messages.service';
+import { NotificationService } from 'src/app/core/services/notification.service';
+import { ActionType, ModuleName } from 'src/app/shared/models/general';
 import { ActivatedRoute } from '@angular/router';
 import { Role, RoleRequest } from '../role';
 import { PermissionGroup, Permission } from '../../permissions/permission';
-import { AuthorizationService } from 'src/app/services/authorization.service';
+import { AuthorizationService } from 'src/app/core/services/authorization.service';
 import { Observable, of } from 'rxjs';
 import { RoleStoreSelectors, RoleStoreActions } from '../store';
 import { Store, ActionsSubject } from '@ngrx/store';
-import { RootStoreState } from 'src/app/root-store';
+import { RootStoreState, PartnerStoreActions, PartnerStoreSelectors } from 'src/app/root-store';
 import { filter } from 'rxjs/operators';
 import {
   PermissionStoreActions,
@@ -17,7 +17,7 @@ import {
 } from '../../permissions/store';
 import { PermissionSerializerService } from '../../permissions/permission-serializer.service';
 import { ActionTypes } from '../store/actions';
-import { ErrorHandlerService } from 'src/app/services/error-handler.service';
+import { Partner } from '../../partner/partner';
 
 @Component({
   selector: 'app-role-add',
@@ -29,7 +29,6 @@ export class RoleAddComponent implements OnInit {
     private notificationService: NotificationService,
     private validationMessagesService: ValidationMessagesService,
     private authorizationService: AuthorizationService,
-    private errorHandler: ErrorHandlerService,
     private actionsSubject$: ActionsSubject,
     private store$: Store<RootStoreState.State>,
     private route: ActivatedRoute
@@ -40,12 +39,14 @@ export class RoleAddComponent implements OnInit {
   actionErrors$: Observable<string[]>;
   isLoading$: Observable<boolean>;
   role$: Observable<Role>;
+  partners$: Observable<Partner[]>;
   actionType: ActionType;
   role: Role;
 
   ngOnInit() {
     this.initializeStoreVariables();
     this.getPermissions();
+    this.getPartners();
     this.route.params.forEach(param => {
       if (param.id) {
         const id = parseInt(param.id, 0);
@@ -94,8 +95,8 @@ export class RoleAddComponent implements OnInit {
             action.type === ActionTypes.ADD_ROLE_FAILURE
         )
       )
-      .subscribe(response => {
-        this.errorHandler.handleErrorResponse(response.payload.error);
+      .subscribe(errorResponse => {
+        this.notificationService.showError(errorResponse.payload.error.message);
       });
   }
 
@@ -106,6 +107,12 @@ export class RoleAddComponent implements OnInit {
       RoleStoreSelectors.selectRoleLoadingError
     );
   }
+
+  getPartners() {
+    this.store$.dispatch(new PartnerStoreActions.LoadRequestAction());
+    this.partners$ = this.store$.select(PartnerStoreSelectors.selectAllPartnerItems);
+  }
+
 
   getPermissions() {
     this.store$.dispatch(new PermissionStoreActions.LoadRequestAction());

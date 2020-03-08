@@ -4,10 +4,11 @@ import { PermissionsComponent } from './permissions/permissions.component';
 import { PermissionItemComponent } from './permission-item/permission-item.component';
 import { PermissionRoutingModule } from './permission-routing.module';
 import { PermissionAddComponent } from './permission-add/permission-add.component';
-import { SharedModule } from 'src/app/shared.module';
+import { SharedModule } from 'src/app/shared/shared.module';
 import { ComponentsModule } from 'src/app/components/components.module';
 import { PermissionGroupComponent } from './permission-group/permission-group.component';
 import { PermissionFormComponent } from './permissions-form/permissions-form.component';
+import { PermissionFiltersComponent } from './permission-filters/permission-filters.component';
 
 @NgModule({
   declarations: [
@@ -15,7 +16,8 @@ import { PermissionFormComponent } from './permissions-form/permissions-form.com
     PermissionItemComponent,
     PermissionAddComponent,
     PermissionGroupComponent,
-    PermissionFormComponent
+    PermissionFormComponent,
+    PermissionFiltersComponent
   ],
   imports: [
     CommonModule,

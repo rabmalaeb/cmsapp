@@ -2,18 +2,17 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
-import { AlertService } from 'src/app/services/alert.service';
-import { LanguageKey } from '../language-key';
-import { AuthorizationService } from 'src/app/services/authorization.service';
-import { ModuleName } from 'src/app/models/general';
+import { AlertService } from 'src/app/core/services/alert.service';
+import { LanguageKey, LanguageKeyRequest } from '../language-key';
+import { AuthorizationService } from 'src/app/core/services/authorization.service';
+import { ModuleName } from 'src/app/shared/models/general';
 import { Store, ActionsSubject } from '@ngrx/store';
 import { RootStoreState } from 'src/app/root-store';
 import { LanguagekeyStoreSelectors, LanguagekeyStoreActions } from '../store';
 import { ActionTypes } from '../store/actions';
 import { Observable } from 'rxjs';
-import { NotificationService } from 'src/app/services/notification.service';
+import { NotificationService } from 'src/app/core/services/notification.service';
 import { filter } from 'rxjs/operators';
-import { ErrorHandlerService } from 'src/app/services/error-handler.service';
 
 @Component({
   selector: 'app-languagekeys',
@@ -33,7 +32,6 @@ export class LanguageKeysComponent implements OnInit {
   constructor(
     private alertService: AlertService,
     private authorizationService: AuthorizationService,
-    private errorHandler: ErrorHandlerService,
     private router: Router,
     private store$: Store<RootStoreState.State>,
     private notificationService: NotificationService,
@@ -78,21 +76,21 @@ export class LanguageKeysComponent implements OnInit {
             action.type === ActionTypes.DELETE_LANGUAGEKEY_FAILURE
         )
       )
-      .subscribe(() => {
-        this.notificationService.showError(
-          'Could not delete LanguageKey. Please try again'
-        );
+      .subscribe(errorResponse => {
+        this.notificationService.showError(errorResponse.payload.error.message);
       });
 
     this.actionsSubject$
       .pipe(filter((action: any) => action.type === ActionTypes.LOAD_FAILURE))
-       .subscribe(response => {
-        this.errorHandler.handleErrorResponse(response.payload.error);
+      .subscribe(errorResponse => {
+        this.notificationService.showError(errorResponse.payload.error.message);
       });
   }
 
-  getLanguageKeys() {
-    this.store$.dispatch(new LanguagekeyStoreActions.LoadRequestAction());
+  getLanguageKeys(languageKeyRequest: LanguageKeyRequest = null) {
+    this.store$.dispatch(
+      new LanguagekeyStoreActions.LoadRequestAction(languageKeyRequest)
+    );
   }
 
   setDataSource() {

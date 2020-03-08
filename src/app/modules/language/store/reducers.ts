@@ -42,7 +42,7 @@ export function languageReducer(state = initialState, action: Actions): State {
       return {
         ...state,
         isLoadingItem: false,
-        actionError: action.payload.error
+        actionError: action.payload.error.message
       };
     }
     case ActionTypes.ADD_LANGUAGE_REQUEST: {
@@ -63,7 +63,7 @@ export function languageReducer(state = initialState, action: Actions): State {
       return {
         ...state,
         isLoadingAction: false,
-        actionError: action.payload.error
+        actionError: action.payload.error.message
       };
     }
     case ActionTypes.UPDATE_LANGUAGE_REQUEST: {
@@ -87,7 +87,7 @@ export function languageReducer(state = initialState, action: Actions): State {
       return {
         ...state,
         isLoadingAction: false,
-        actionError: action.payload.error
+        actionError: action.payload.error.message
       };
     }
     case ActionTypes.DELETE_LANGUAGE_REQUEST: {
@@ -108,7 +108,7 @@ export function languageReducer(state = initialState, action: Actions): State {
       return {
         ...state,
         isLoadingAction: false,
-        actionError: action.payload.error
+        actionError: action.payload.error.message
       };
     }
     default: {

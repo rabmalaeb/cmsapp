@@ -1,0 +1,65 @@
+<form
+  [formGroup]="bannerForm"
+  #formDirective="ngForm"
+  (ngSubmit)="performAction(formDirective)"
+  class="page__form"
+  *ngIf="!isLoadingForm; else loadingMask"
+>
+  <app-input-item
+    id="name"
+    name="name"
+    title="Name"
+    [formControlItem]="name"
+  >
+  </app-input-item>
+
+  <app-input-item
+    id="description"
+    name="description"
+    title="Description"
+    [formControlItem]="description"
+  >
+  </app-input-item>
+
+  <app-input-item
+    id="link"
+    name="link"
+    title="Link"
+    [formControlItem]="link"
+  >
+  </app-input-item>
+
+  <div class="form-item">
+    <div class="form-item__value form-item__value_is-textfield">
+      <mat-form-field appearance="outline">
+        <mat-label>Language</mat-label>
+        <mat-select placeholder="Language" formControlName="languageId">
+          <mat-option *ngFor="let language of languages" [value]="language.id">
+            {{ language.name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </div>
+  <div class="form-item">
+    <div class="form-item__value form-item__value_is-textfield">
+      <app-image-preview (image)="uploadImage($event)" [imageUrl]="imageUrl">
+      </app-image-preview>
+    </div>
+  </div>
+  <div class="page__form-button-container" *ngIf="canEditBanner">
+    <div class="page__form__button">
+      <button mat-button type="reset" class="button button_is-secondary">
+        Reset
+      </button>
+    </div>
+    <div class="page__form__button">
+      <button mat-button type="submit" class="button button_is-primary">
+        {{ buttonLabel }}
+      </button>
+    </div>
+  </div>
+</form>
+<ng-template #loadingMask>
+  <app-form-loading [size]="4"></app-form-loading>
+</ng-template>

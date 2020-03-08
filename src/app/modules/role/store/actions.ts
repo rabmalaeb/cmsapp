@@ -1,5 +1,6 @@
 import { Action } from '@ngrx/store';
 import { Role, RoleRequest } from 'src/app/modules/role/role';
+import { ErrorResponse } from 'src/app/shared/models/general';
 
 export enum ActionTypes {
   LOAD_REQUEST = '[Role] Load Request',
@@ -8,6 +9,9 @@ export enum ActionTypes {
   GET_ROLE_REQUEST = '[Role] Get Role Request',
   GET_ROLE_SUCCESS = '[Role] Get Role Success',
   GET_ROLE_FAILURE = '[Role] Get Role Failure',
+  GET_ROLE_BY_PARTNER_REQUEST = '[Role] Get Role By Partner Request',
+  GET_ROLE_BY_PARTNER_SUCCESS = '[Role] Get Role By Partner Success',
+  GET_ROLE_BY_PARTNER_FAILURE = '[Role] Get Role By Partner Failure',
   ADD_ROLE_REQUEST = '[Role] Add Role Request',
   ADD_ROLE_SUCCESS = '[Role] Add Role Success',
   ADD_ROLE_FAILURE = '[Role] Add Role Failure',
@@ -21,16 +25,32 @@ export enum ActionTypes {
 
 export class LoadRequestAction implements Action {
   readonly type = ActionTypes.LOAD_REQUEST;
-}
-
-export class LoadFailureAction implements Action {
-  readonly type = ActionTypes.LOAD_FAILURE;
-  constructor(public payload: { error: string }) {}
+  constructor(public roleRequest: RoleRequest) {}
 }
 
 export class LoadSuccessAction implements Action {
   readonly type = ActionTypes.LOAD_SUCCESS;
   constructor(public payload: { items: Role[] }) {}
+}
+
+export class LoadFailureAction implements Action {
+  readonly type = ActionTypes.LOAD_FAILURE;
+  constructor(public payload: { error: ErrorResponse }) {}
+}
+
+export class GetRolesByPartnerRequestAction implements Action {
+  readonly type = ActionTypes.GET_ROLE_BY_PARTNER_REQUEST;
+  constructor(public partnerId: number) {}
+}
+
+export class GetRolesByPartnerSuccessAction implements Action {
+  readonly type = ActionTypes.GET_ROLE_BY_PARTNER_SUCCESS;
+  constructor(public payload: { items: Role[] }) {}
+}
+
+export class GetRolesByPartnerFailureAction implements Action {
+  readonly type = ActionTypes.GET_ROLE_BY_PARTNER_FAILURE;
+  constructor(public payload: { error: ErrorResponse }) {}
 }
 
 export class GetRoleRequestAction implements Action {
@@ -45,7 +65,7 @@ export class GetRoleSuccessAction implements Action {
 
 export class GetRoleFailureAction implements Action {
   readonly type = ActionTypes.GET_ROLE_FAILURE;
-  constructor(public payload: { error: string }) {}
+  constructor(public payload: { error: ErrorResponse }) {}
 }
 export class AddRoleRequestAction implements Action {
   readonly type = ActionTypes.ADD_ROLE_REQUEST;
@@ -59,7 +79,7 @@ export class AddRoleSuccessAction implements Action {
 
 export class AddRoleFailureAction implements Action {
   readonly type = ActionTypes.ADD_ROLE_FAILURE;
-  constructor(public payload: { error: string }) {}
+  constructor(public payload: { error: ErrorResponse }) {}
 }
 
 export class UpdateRoleRequestAction implements Action {
@@ -69,12 +89,12 @@ export class UpdateRoleRequestAction implements Action {
 
 export class UpdateRoleSuccessAction implements Action {
   readonly type = ActionTypes.UPDATE_ROLE_SUCCESS;
-  constructor(public payload: { id: number, item: Role }) {}
+  constructor(public payload: { id: number; item: Role }) {}
 }
 
 export class UpdateRoleFailureAction implements Action {
   readonly type = ActionTypes.UPDATE_ROLE_FAILURE;
-  constructor(public payload: { error: string }) {}
+  constructor(public payload: { error: ErrorResponse }) {}
 }
 
 export class DeleteRoleRequestAction implements Action {
@@ -84,12 +104,12 @@ export class DeleteRoleRequestAction implements Action {
 
 export class DeleteRoleSuccessAction implements Action {
   readonly type = ActionTypes.DELETE_ROLE_SUCCESS;
-  constructor(public payload: { id: number, items: Role[] }) {}
+  constructor(public payload: { id: number; items: Role[] }) {}
 }
 
 export class DeleteRoleFailureAction implements Action {
   readonly type = ActionTypes.DELETE_ROLE_FAILURE;
-  constructor(public payload: { error: string }) {}
+  constructor(public payload: { error: ErrorResponse }) {}
 }
 
 export type Actions =
@@ -105,6 +125,9 @@ export type Actions =
   | AddRoleRequestAction
   | AddRoleSuccessAction
   | AddRoleFailureAction
+  | GetRolesByPartnerFailureAction
+  | GetRolesByPartnerRequestAction
+  | GetRolesByPartnerSuccessAction
   | UpdateRoleRequestAction
   | UpdateRoleSuccessAction
   | UpdateRoleFailureAction;

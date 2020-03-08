@@ -3,3 +3,6 @@ export class Language {
   name: string;
   code: string;
 }
+export class LanguageRequest {
+  name?: string;
+}

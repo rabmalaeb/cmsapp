@@ -1,0 +1,38 @@
+<form
+  #formDirective="ngForm"
+  (ngSubmit)="performAction(formDirective)"
+  class="page__form"
+  *ngIf="!isLoadingForm; else loadingMask"
+>
+  <app-input-item
+    id="name"
+    name="name"
+    title="Name"
+    [formControlItem]="name"
+  >
+  </app-input-item>
+
+  <app-input-item
+    id="code"
+    name="code"
+    title="Code"
+    [formControlItem]="code"
+  >
+  </app-input-item>
+
+  <div class="page__form-button-container" *ngIf="canEditSupplier">
+    <div class="page__form__button">
+      <button mat-button type="reset" class="button button_is-secondary">
+        Reset
+      </button>
+    </div>
+    <div class="page__form__button">
+      <button mat-button type="submit" class="button button_is-primary">
+        {{ buttonLabel }}
+      </button>
+    </div>
+  </div>
+</form>
+<ng-template #loadingMask>
+  <app-form-loading [size]="2"></app-form-loading>
+</ng-template>

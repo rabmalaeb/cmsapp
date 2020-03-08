@@ -1,6 +1,7 @@
 import { Action } from '@ngrx/store';
 import { LoginRequest } from '../login';
 import { Admin } from '../../admin/admin';
+import { ErrorResponse } from 'src/app/shared/models/general';
 
 export enum ActionTypes {
   LOAD_REQUEST = '[Login] Load Request',
@@ -15,7 +16,7 @@ export class LoadRequestAction implements Action {
 
 export class LoadFailureAction implements Action {
   readonly type = ActionTypes.LOAD_FAILURE;
-  constructor(public payload: { error: string }) {}
+  constructor(public payload: { error: ErrorResponse }) { }
 }
 
 export class LoadSuccessAction implements Action {

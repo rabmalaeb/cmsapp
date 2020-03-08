@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Actions, Effect, ofType } from '@ngrx/effects';
+import { Actions, Effect, ofType, act } from '@ngrx/effects';
 import { Action } from '@ngrx/store';
 import { Observable, of as observableOf } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
@@ -19,7 +19,7 @@ export class LanguageStoreEffects {
       languageActions.ActionTypes.LOAD_REQUEST
     ),
     switchMap(action =>
-      this.languageService.getLanguages().pipe(
+      this.languageService.getLanguages(action.languageRequest).pipe(
         map(
           items =>
             new languageActions.LoadSuccessAction({

@@ -42,7 +42,7 @@ export function translationReducer(state = initialState, action: Actions): State
       return {
         ...state,
         isLoadingItem: false,
-        actionError: action.payload.error
+        actionError: action.payload.error.message
       };
     }
     case ActionTypes.ADD_TRANSLATION_REQUEST: {
@@ -63,7 +63,7 @@ export function translationReducer(state = initialState, action: Actions): State
       return {
         ...state,
         isLoadingAction: false,
-        actionError: action.payload.error
+        actionError: action.payload.error.message
       };
     }
     case ActionTypes.UPDATE_TRANSLATION_REQUEST: {
@@ -84,7 +84,7 @@ export function translationReducer(state = initialState, action: Actions): State
       return {
         ...state,
         isLoadingAction: false,
-        actionError: action.payload.error
+        actionError: action.payload.error.message
       };
     }
     case ActionTypes.DELETE_TRANSLATION_REQUEST: {
@@ -105,7 +105,7 @@ export function translationReducer(state = initialState, action: Actions): State
       return {
         ...state,
         isLoadingAction: false,
-        actionError: action.payload.error
+        actionError: action.payload.error.message
       };
     }
     default: {

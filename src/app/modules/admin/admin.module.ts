@@ -4,14 +4,16 @@ import { AdminsComponent } from './admins/admins.component';
 import { AdminRoutingModule } from './admin-routing.module';
 import { AdminAddComponent } from './admin-add/admin-add.component';
 import { ComponentsModule } from 'src/app/components/components.module';
-import { SharedModule } from 'src/app/shared.module';
+import { SharedModule } from 'src/app/shared/shared.module';
 import { AdminFormComponent } from './admin-form/admin-form.component';
+import { AdminFiltersComponent } from './admin-filters/admin-filters.component';
 
 @NgModule({
   declarations: [
     AdminsComponent,
     AdminAddComponent,
-    AdminFormComponent
+    AdminFormComponent,
+    AdminFiltersComponent
   ],
   imports: [CommonModule, AdminRoutingModule, ComponentsModule, SharedModule]
 })

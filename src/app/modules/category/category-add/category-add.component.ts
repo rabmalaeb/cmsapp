@@ -1,18 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { Category } from '../category';
-import { AuthorizationService } from 'src/app/services/authorization.service';
-import { ActionType, ModuleName } from 'src/app/models/general';
-import { NotificationService } from 'src/app/services/notification.service';
-import { ValidationMessagesService } from 'src/app/services/validation-messages.service';
+import { Category, CategoryRequest } from '../category';
+import { AuthorizationService } from 'src/app/core/services/authorization.service';
+import { ActionType, ModuleName } from 'src/app/shared/models/general';
+import { NotificationService } from 'src/app/core/services/notification.service';
+import { ValidationMessagesService } from 'src/app/core/services/validation-messages.service';
 import { map, filter } from 'rxjs/operators';
 import { ActionsSubject, Store } from '@ngrx/store';
 import { RootStoreState } from 'src/app/root-store';
 import { Observable, of } from 'rxjs';
 import { CategoryStoreSelectors, CategoryStoreActions } from '../store';
 import { ActionTypes } from '../store/actions';
-import { ErrorHandlerService } from 'src/app/services/error-handler.service';
 
 @Component({
   selector: 'app-category-add',
@@ -24,7 +23,6 @@ export class CategoryAddComponent implements OnInit {
     private notificationService: NotificationService,
     private validationMessagesService: ValidationMessagesService,
     private authorizationService: AuthorizationService,
-    private errorHandler: ErrorHandlerService,
     private actionsSubject$: ActionsSubject,
     private store$: Store<RootStoreState.State>,
     private route: ActivatedRoute
@@ -91,8 +89,8 @@ export class CategoryAddComponent implements OnInit {
             action.type === ActionTypes.ADD_CATEGORY_FAILURE
         )
       )
-      .subscribe(response => {
-        this.errorHandler.handleErrorResponse(response.payload.error);
+      .subscribe(errorResponse => {
+        this.notificationService.showError(errorResponse.payload.error.message);
       });
   }
 
@@ -106,8 +104,8 @@ export class CategoryAddComponent implements OnInit {
     );
   }
 
-  getCategories() {
-    this.store$.dispatch(new CategoryStoreActions.LoadRequestAction());
+  getCategories(categoryRequest: CategoryRequest = null) {
+    this.store$.dispatch(new CategoryStoreActions.LoadRequestAction(categoryRequest));
     this.categories$ = this.store$.select(
       CategoryStoreSelectors.selectAllCategoryItems
     );

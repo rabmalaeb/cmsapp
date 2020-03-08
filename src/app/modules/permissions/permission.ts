@@ -1,4 +1,5 @@
-import { ModuleName, PermissionType } from 'src/app/models/general';
+import { ModuleName, PermissionType } from 'src/app/shared/models/general';
+import Request from 'src/app/shared/request';
 
 export interface Permission {
   id: number;
@@ -9,11 +10,11 @@ export interface Permission {
   isRolePermission ?: boolean;
 }
 
-export interface PermissionRequest {
-  id: number;
-  name: string;
-  type: string;
-  group: string;
+export interface PermissionRequest extends Request {
+  id?: number;
+  name?: string;
+  type?: string;
+  group?: string;
 }
 
 

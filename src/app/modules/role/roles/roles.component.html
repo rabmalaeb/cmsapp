@@ -17,6 +17,13 @@
         </button>
       </div>
     </div>
+    <div class="page__section">
+      <div class="page__filters">
+        <app-role-filters
+          (filter)="getRoles($event)"
+        ></app-role-filters>
+      </div>
+    </div>
     <mat-table mat-table [dataSource]="roles$ | async" class="mat-elevation-z8">
       <ng-container matColumnDef="id">
         <mat-header-cell *matHeaderCellDef>Id</mat-header-cell>
@@ -26,6 +33,11 @@
       <ng-container matColumnDef="name">
         <mat-header-cell *matHeaderCellDef>Name</mat-header-cell>
         <mat-cell *matCellDef="let role">{{ role.name }}</mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="partner">
+        <mat-header-cell *matHeaderCellDef>Partner</mat-header-cell>
+        <mat-cell *matCellDef="let role">{{ role.partner.name }}</mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="action">

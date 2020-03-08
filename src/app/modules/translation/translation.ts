@@ -1,6 +1,7 @@
 import { Language } from '../language/language';
 import { Partner } from '../partner/partner';
 import { LanguageKey } from '../language-key/language-key';
+import Request from 'src/app/shared/request';
 
 export class Translation {
   id: number;
@@ -11,4 +12,8 @@ export class Translation {
   language: Language;
   languageKey: LanguageKey;
   value: string;
+}
+
+export class TranslationRequest extends Request {
+  value?: string;
 }

@@ -2,16 +2,16 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
-import { AlertService } from 'src/app/services/alert.service';
-import { Translation } from '../translation';
+import { AlertService } from 'src/app/core/services/alert.service';
+import { Translation, TranslationRequest } from '../translation';
 import { TranslationService } from '../translation.service';
-import { AuthorizationService } from 'src/app/services/authorization.service';
-import { ModuleName } from 'src/app/models/general';
+import { AuthorizationService } from 'src/app/core/services/authorization.service';
+import { ModuleName } from 'src/app/shared/models/general';
 import { ActionTypes } from '../store/actions';
 import { filter } from 'rxjs/operators';
 import { TranslationStoreSelectors, TranslationStoreActions } from '../store';
 import { ActionsSubject, Store } from '@ngrx/store';
-import { NotificationService } from 'src/app/services/notification.service';
+import { NotificationService } from 'src/app/core/services/notification.service';
 import { RootStoreState } from 'src/app/root-store';
 import { Observable } from 'rxjs';
 
@@ -44,8 +44,8 @@ export class TranslationsComponent implements OnInit {
     private router: Router,
     private store$: Store<RootStoreState.State>,
     private notificationService: NotificationService,
-    private actionsSubject$: ActionsSubject,
-  ) { }
+    private actionsSubject$: ActionsSubject
+  ) {}
 
   ngOnInit() {
     this.getTranslations();
@@ -53,9 +53,13 @@ export class TranslationsComponent implements OnInit {
   }
 
   initializeStoreVariables() {
-    this.translations$ = this.store$.select(TranslationStoreSelectors.selectAllTranslationItems);
+    this.translations$ = this.store$.select(
+      TranslationStoreSelectors.selectAllTranslationItems
+    );
 
-    this.error$ = this.store$.select(TranslationStoreSelectors.selectTranslationLoadingError);
+    this.error$ = this.store$.select(
+      TranslationStoreSelectors.selectTranslationLoadingError
+    );
 
     this.isLoading$ = this.store$.select(
       TranslationStoreSelectors.selectTranslationIsLoading
@@ -63,31 +67,39 @@ export class TranslationsComponent implements OnInit {
 
     this.actionsSubject$
       .pipe(
-        filter((action: any) => action.type === ActionTypes.DELETE_TRANSLATION_SUCCESS)
+        filter(
+          (action: any) =>
+            action.type === ActionTypes.DELETE_TRANSLATION_SUCCESS
+        )
       )
       .subscribe(() => {
-        this.notificationService.showSuccess('Translation Deleted Successfully');
+        this.notificationService.showSuccess(
+          'Translation Deleted Successfully'
+        );
       });
 
     this.actionsSubject$
       .pipe(
-        filter((action: any) => action.type === ActionTypes.DELETE_TRANSLATION_FAILURE)
+        filter(
+          (action: any) =>
+            action.type === ActionTypes.DELETE_TRANSLATION_FAILURE
+        )
       )
-      .subscribe(() => {
-        this.notificationService.showError('Could not delete Translation. Please try again');
+      .subscribe(errorResponse => {
+        this.notificationService.showError(errorResponse.payload.error.message);
       });
 
     this.actionsSubject$
-      .pipe(
-        filter((action: any) => action.type === ActionTypes.LOAD_FAILURE)
-      )
-      .subscribe(() => {
-        this.notificationService.showError('An Error has occurred. Please try again');
+      .pipe(filter((action: any) => action.type === ActionTypes.LOAD_FAILURE))
+      .subscribe(errorResponse => {
+        this.notificationService.showError(errorResponse.payload.error.message);
       });
   }
 
-  getTranslations() {
-    this.store$.dispatch(new TranslationStoreActions.LoadRequestAction());
+  getTranslations(translationRequest: TranslationRequest = null) {
+    this.store$.dispatch(
+      new TranslationStoreActions.LoadRequestAction(translationRequest)
+    );
   }
 
   setDataSource() {
@@ -113,8 +125,9 @@ export class TranslationsComponent implements OnInit {
       'Yes',
       'No',
       () => {
-        this.store$.dispatch(new TranslationStoreActions.DeleteTranslationRequestAction(id));
-
+        this.store$.dispatch(
+          new TranslationStoreActions.DeleteTranslationRequestAction(id)
+        );
       }
     );
   }

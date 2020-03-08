@@ -3,81 +3,60 @@
   [formGroup]="adminForm"
   (ngSubmit)="performAction(ngForm)"
   class="page__form"
-  *ngIf="!isLoadingForm else loadingMask"
+  *ngIf="!isLoadingForm; else loadingMask"
 >
+  <app-input-item
+    id="name"
+    name="name"
+    title="Name"
+    [formControlItem]="name"
+
+  >
+  </app-input-item>
+  <app-input-item
+    id="description"
+    name="description"
+    title="Description"
+    [formControlItem]="description"
+
+  >
+  </app-input-item>
+
+  <app-input-item
+    id="descriptiemailon"
+    name="email"
+    title="Email"
+    [formControlItem]="email"
+
+  >
+  </app-input-item>
+
+  <app-input-item
+    id="country"
+    name="country"
+    title="Country"
+    [formControlItem]="country"
+
+  >
+  </app-input-item>
+
   <div class="form-item">
     <div class="form-item__value form-item__value_is-textfield">
       <mat-form-field appearance="outline">
-        <mat-label>Name</mat-label>
-        <input
-          matInput
-          id="name"
-          name="name"
-          placeholder="Name"
-          [formControl]="name"
-        />
-        <mat-error *ngFor="let validation of validationMessages.name">
-          <mat-error
-            class="error-message"
-            *ngIf="
-              name.hasError(validation.type) && (name.dirty || name.touched)
-            "
-          >
-            {{ validation.message }}</mat-error
-          >
-        </mat-error>
+        <mat-label>Partner</mat-label>
+        <mat-select
+          placeholder="Partner"
+          (selectionChange)="getRoles()"
+          formControlName="partnerId"
+        >
+          <mat-option *ngFor="let partner of partners" [value]="partner.id">
+            {{ partner.name }}
+          </mat-option>
+        </mat-select>
       </mat-form-field>
     </div>
   </div>
-  <div class="form-item">
-    <div class="form-item__value form-item__value_is-textfield">
-      <mat-form-field appearance="outline">
-        <mat-label>Description</mat-label>
-        <input
-          matInput
-          id="description"
-          name="description"
-          placeholder="Description"
-          [formControl]="description"
-        />
-        <mat-error *ngFor="let validation of validationMessages.description">
-          <mat-error
-            class="error-message"
-            *ngIf="
-              description.hasError(validation.type) &&
-              (description.dirty || description.touched)
-            "
-          >
-            {{ validation.message }}</mat-error
-          >
-        </mat-error>
-      </mat-form-field>
-    </div>
-  </div>
-  <div class="form-item">
-    <div class="form-item__value form-item__value_is-textfield">
-      <mat-form-field appearance="outline">
-        <mat-label>Email</mat-label>
-        <input
-          matInput
-          id="email"
-          name="email"
-          placeholder="Email"
-          [formControl]="email"
-        />
-        <mat-error *ngFor="let validation of validationMessages.email">
-          <mat-error
-            class="error-message"
-            *ngIf="
-              email.hasError(validation.type) && (email.dirty || email.touched)
-            "
-          >
-            {{ validation.message }}</mat-error
-          >
-        </mat-error>
-      </mat-form-field>
-    </div>
-  </div>
+
   <div class="form-item">
     <div class="form-item__value form-item__value_is-textfield">
       <mat-form-field appearance="outline">
@@ -97,76 +76,38 @@
       </mat-checkbox>
     </div>
   </div>
+
   <div class="form-item__container" *ngIf="willSetPassword">
-    <div class="form-item">
-      <div class="form-item__value form-item__value_is-textfield">
-        <mat-form-field appearance="outline">
-          <mat-label>Password</mat-label>
-          <input
-            matInput
-            id="password"
-            name="password"
-            type="password"
-            placeholder="Password"
-            [formControl]="password"
-          />
-          <mat-error *ngFor="let validation of validationMessages.description">
-            <mat-error
-              class="error-message"
-              *ngIf="
-                password.hasError(validation.type) &&
-                (password.dirty || password.touched)
-              "
-            >
-              {{ validation.message }}</mat-error
-            >
-          </mat-error>
-        </mat-form-field>
-      </div>
-    </div>
-    <div class="form-item">
-      <div class="form-item__value form-item__value_is-textfield">
-        <mat-form-field appearance="outline">
-          <mat-label>Confirm Password</mat-label>
-          <input
-            matInput
-            id="confirmPassword"
-            name="confirmPassword"
-            type="password"
-            placeholder="Confirm Password"
-            [formControl]="confirmPassword"
-          />
-          <mat-error
-            *ngFor="let validation of validationMessages.confirmPassword"
-          >
-            <mat-error
-              class="error-message"
-              *ngIf="
-                confirmPassword.hasError(validation.type) &&
-                (confirmPassword.dirty || confirmPassword.touched)
-              "
-            >
-              {{ validation.message }}</mat-error
-            >
-          </mat-error>
-        </mat-form-field>
-      </div>
-    </div>
+    <app-input-item
+      id="password"
+      name="password"
+      type="password"
+      title="Password"
+      [formControlItem]="password"
+
+    >
+    </app-input-item>
+
+    <app-input-item
+      id="confirmPassword"
+      name="confirmPassword"
+      type="password"
+      title="Confirm Password"
+      [formControlItem]="confirmPassword"
+
+    >
+    </app-input-item>
   </div>
-  <div class="form-item">
-    <div class="form-item__value form-item__value_is-textfield">
-      <mat-form-field appearance="outline">
-        <mat-label>Active</mat-label>
-        <input
-          matInput
-          id="active"
-          name="active"
-          placeholder="active"
-          [formControl]="active"
-        />
-      </mat-form-field>
-    </div>
-  </div>
+
+  <app-input-item
+    id="active"
+    name="active"
+    title="Active"
+    [formControlItem]="active"
+
+  >
+  </app-input-item>
+
   <div class="page__form-button-container" *ngIf="canEditAdmin">
     <div class="page__form__button">
       <button mat-button type="reset" class="button button_is-secondary">

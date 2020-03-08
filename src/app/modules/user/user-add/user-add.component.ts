@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { NotificationService } from 'src/app/services/notification.service';
-import { ActionType, ModuleName } from 'src/app/models/general';
+import { NotificationService } from 'src/app/core/services/notification.service';
+import { ActionType, ModuleName } from 'src/app/shared/models/general';
 import { ActivatedRoute } from '@angular/router';
 import { User } from '../user';
 import { Store, ActionsSubject } from '@ngrx/store';
@@ -12,8 +12,7 @@ import {
 import { Observable, of } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { ActionTypes } from '../store/actions';
-import { ErrorHandlerService } from 'src/app/services/error-handler.service';
-import { AuthorizationService } from 'src/app/services/authorization.service';
+import { AuthorizationService } from 'src/app/core/services/authorization.service';
 
 @Component({
   selector: 'app-user-add',
@@ -23,7 +22,6 @@ import { AuthorizationService } from 'src/app/services/authorization.service';
 export class UserAddComponent implements OnInit {
   constructor(
     private notificationService: NotificationService,
-    private errorHandler: ErrorHandlerService,
     private actionsSubject$: ActionsSubject,
     private store$: Store<RootStoreState.State>,
     private authorizationService: AuthorizationService,
@@ -87,8 +85,8 @@ export class UserAddComponent implements OnInit {
             action.type === ActionTypes.ADD_USER_FAILURE
         )
       )
-      .subscribe(response => {
-        this.errorHandler.handleErrorResponse(response.payload.error);
+      .subscribe(errorResponse => {
+        this.notificationService.showError(errorResponse.payload.error.message);
       });
   }
 

@@ -5,6 +5,8 @@ import {
   Output,
   EventEmitter,
   OnChanges,
+  SimpleChange,
+  SimpleChanges
 } from '@angular/core';
 import { Admin } from '../admin';
 import {
@@ -12,13 +14,15 @@ import {
   FormBuilder,
   Validators,
   FormControl,
-  FormGroupDirective,
+  FormGroupDirective
 } from '@angular/forms';
-import { CustomValidations } from 'src/app/validators/custom-validations';
-import { ValidationMessagesService } from 'src/app/services/validation-messages.service';
+import { CustomValidations } from 'src/app/shared/validators/custom-validations';
+import { ValidationMessagesService } from 'src/app/core/services/validation-messages.service';
 import { Role } from '../../role/role';
-import { NotificationService } from 'src/app/services/notification.service';
-import { ALERT_MESSAGES, ActionType } from 'src/app/models/general';
+import { NotificationService } from 'src/app/core/services/notification.service';
+import { ALERT_MESSAGES, ActionType } from 'src/app/shared/models/general';
+import { Partner } from '../../partner/partner';
+import { AuthenticationService } from 'src/app/core/services/authentication.service';
 
 @Component({
   selector: 'app-admin-form',
@@ -29,16 +33,19 @@ export class AdminFormComponent implements OnInit, OnChanges {
   constructor(
     private form: FormBuilder,
     private validationMessagesService: ValidationMessagesService,
+    private authenticationService: AuthenticationService,
     private notificationService: NotificationService
   ) {}
 
   @Input() admin: Admin;
   @Input() roles: Role[];
+  @Input() partners: Partner[];
   @Input() isLoading = false;
   @Input() canEditAdmin = false;
   @Input() isLoadingAction = false;
   @Input() actionType: ActionType;
   @Output() submitForm = new EventEmitter<Admin>();
+  @Output() getRolesForPartner = new EventEmitter<number>();
   formGroupDirective: FormGroupDirective;
   showTogglePassword = false;
   willSetPassword = false;
@@ -53,26 +60,35 @@ export class AdminFormComponent implements OnInit, OnChanges {
     }
   }
 
-  ngOnChanges() {
+  ngOnChanges(changes: SimpleChanges) {
     if (this.isLoadingAction) {
       return false;
     }
-    if (this.admin) {
-      this.buildExistingAdminForm();
-    } else {
-      this.buildNewAdminForm();
-      if (this.formGroupDirective) {
-        this.formGroupDirective.resetForm();
+    if (changes.admin && changes.admin.isFirstChange()) {
+      if (this.admin) {
+        this.buildExistingAdminForm();
+      } else {
+        this.buildNewAdminForm();
       }
+    }
+    if (
+      changes.isLoadingAction &&
+      !changes.isLoadingAction.isFirstChange() &&
+      !changes.isLoadingAction.currentValue
+    ) {
+      this.formGroupDirective.resetForm();
     }
   }
 
   buildNewAdminForm() {
+    const partnerId = this.authenticationService.getCurrentUser().partnerId;
     this.adminForm = this.form.group({
       name: ['', [Validators.required]],
       description: ['', [Validators.required]],
       email: ['', [Validators.required, Validators.email]],
       roleId: ['', [Validators.required]],
+      country: ['', [Validators.required]],
+      partnerId: [partnerId ? partnerId : '', [Validators.required]],
       active: ['', [Validators.required]]
     });
     if (!this.showTogglePassword) {
@@ -86,6 +102,8 @@ export class AdminFormComponent implements OnInit, OnChanges {
       name: [this.admin.name, [Validators.required]],
       description: [this.admin.description, [Validators.required]],
       email: [this.admin.email, [Validators.required, Validators.email]],
+      partnerId: [this.admin.partnerId, [Validators.required]],
+      country: [this.admin.country, [Validators.required]],
       roleId: [this.admin.roleId, [Validators.required]],
       active: [this.admin.active, [Validators.required]]
     });
@@ -152,12 +170,20 @@ export class AdminFormComponent implements OnInit, OnChanges {
     return this.adminForm.get('roleId');
   }
 
+  get partnerId() {
+    return this.adminForm.get('partnerId');
+  }
+
   get active() {
     return this.adminForm.get('active');
   }
 
   get password() {
     return this.adminForm.get('password');
+  }
+
+  get country() {
+    return this.adminForm.get('country');
   }
 
   get confirmPassword() {
@@ -186,12 +212,18 @@ export class AdminFormComponent implements OnInit, OnChanges {
       description: this.description.value,
       email: this.email.value,
       active: this.active.value,
+      country: this.country.value,
+      partnerId: this.partnerId.value,
       roleId: this.roleId.value
     };
     if (this.willSetPassword) {
       admin.password = form.get('password').value;
     }
     return admin;
+  }
+
+  getRoles() {
+    this.getRolesForPartner.emit(this.partnerId.value);
   }
 
   get validationMessages() {

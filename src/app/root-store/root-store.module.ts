@@ -11,6 +11,8 @@ import { CategoryStoreModule } from '../modules/category/store';
 import { TranslationStoreModule } from '../modules/translation/store';
 import { LanguageKeyStoreModule } from '../modules/language-key/store';
 import { LoginStoreModule } from '../modules/login/store';
+import { BannerStoreModule } from '../modules/banner/store';
+import { SupplierStoreModule } from '../modules/supplier/store';
 
 
 
@@ -29,6 +31,9 @@ import { LoginStoreModule } from '../modules/login/store';
     CategoryStoreModule,
     LoginStoreModule,
     PermissionStoreModule,
+    AdminStoreModule,
+    BannerStoreModule,
+    SupplierStoreModule
   ]
 })
 export class RootStoreModule { }

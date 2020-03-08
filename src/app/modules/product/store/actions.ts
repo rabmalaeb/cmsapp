@@ -1,5 +1,6 @@
 import { Action } from '@ngrx/store';
-import { Product } from 'src/app/modules/product/product';
+import { Product, ProductRequest } from 'src/app/modules/product/product';
+import { ErrorResponse } from 'src/app/shared/models/general';
 
 export enum ActionTypes {
   LOAD_REQUEST = '[Product] Load Request',
@@ -21,11 +22,12 @@ export enum ActionTypes {
 
 export class LoadRequestAction implements Action {
   readonly type = ActionTypes.LOAD_REQUEST;
+  constructor(public productRequest: ProductRequest) { }
 }
 
 export class LoadFailureAction implements Action {
   readonly type = ActionTypes.LOAD_FAILURE;
-  constructor(public payload: { error: string }) {}
+  constructor(public payload: { error: ErrorResponse }) { }
 }
 
 export class LoadSuccessAction implements Action {
@@ -45,7 +47,7 @@ export class GetProductSuccessAction implements Action {
 
 export class GetProductFailureAction implements Action {
   readonly type = ActionTypes.GET_PRODUCT_FAILURE;
-  constructor(public payload: { error: string }) {}
+  constructor(public payload: { error: ErrorResponse }) { }
 }
 export class AddProductRequestAction implements Action {
   readonly type = ActionTypes.ADD_PRODUCT_REQUEST;
@@ -59,7 +61,7 @@ export class AddProductSuccessAction implements Action {
 
 export class AddProductFailureAction implements Action {
   readonly type = ActionTypes.ADD_PRODUCT_FAILURE;
-  constructor(public payload: { error: string }) {}
+  constructor(public payload: { error: ErrorResponse }) { }
 }
 
 export class UpdateProductRequestAction implements Action {
@@ -74,7 +76,7 @@ export class UpdateProductSuccessAction implements Action {
 
 export class UpdateProductFailureAction implements Action {
   readonly type = ActionTypes.UPDATE_PRODUCT_FAILURE;
-  constructor(public payload: { error: string }) {}
+  constructor(public payload: { error: ErrorResponse }) { }
 }
 
 export class DeleteProductRequestAction implements Action {
@@ -89,7 +91,7 @@ export class DeleteProductSuccessAction implements Action {
 
 export class DeleteProductFailureAction implements Action {
   readonly type = ActionTypes.DELETE_PRODUCT_FAILURE;
-  constructor(public payload: { error: string }) {}
+  constructor(public payload: { error: ErrorResponse }) { }
 }
 
 export type Actions =

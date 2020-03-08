@@ -42,7 +42,7 @@ export function roleReducer(state = initialState, action: Actions): State {
       return {
         ...state,
         isLoadingItem: false,
-        actionError: action.payload.error
+        actionError: action.payload.error.message
       };
     }
     case ActionTypes.ADD_ROLE_REQUEST: {
@@ -63,7 +63,7 @@ export function roleReducer(state = initialState, action: Actions): State {
       return {
         ...state,
         isLoadingAction: false,
-        actionError: action.payload.error
+        actionError: action.payload.error.message
       };
     }
     case ActionTypes.UPDATE_ROLE_REQUEST: {
@@ -74,17 +74,20 @@ export function roleReducer(state = initialState, action: Actions): State {
       };
     }
     case ActionTypes.UPDATE_ROLE_SUCCESS: {
-      return roleAdapter.updateOne({id: action.payload.id, changes: action.payload.item}, {
-        ...state,
-        isLoadingAction: false,
-        actionError: null
-      });
+      return roleAdapter.updateOne(
+        { id: action.payload.id, changes: action.payload.item },
+        {
+          ...state,
+          isLoadingAction: false,
+          actionError: null
+        }
+      );
     }
     case ActionTypes.UPDATE_ROLE_FAILURE: {
       return {
         ...state,
         isLoadingAction: false,
-        actionError: action.payload.error
+        actionError: action.payload.error.message
       };
     }
     case ActionTypes.DELETE_ROLE_REQUEST: {
@@ -105,7 +108,28 @@ export function roleReducer(state = initialState, action: Actions): State {
       return {
         ...state,
         isLoadingAction: false,
-        actionError: action.payload.error
+        actionError: action.payload.error.message
+      };
+    }
+    case ActionTypes.GET_ROLE_BY_PARTNER_REQUEST: {
+      return {
+        ...state,
+        isLoading: true,
+        loadingError: null
+      };
+    }
+    case ActionTypes.GET_ROLE_BY_PARTNER_SUCCESS: {
+      return roleAdapter.addAll(action.payload.items, {
+        ...state,
+        isLoading: false,
+        loadingError: null
+      });
+    }
+    case ActionTypes.GET_ROLE_BY_PARTNER_FAILURE: {
+      return {
+        ...state,
+        isLoading: false,
+        loadingError: action.payload.error
       };
     }
     default: {

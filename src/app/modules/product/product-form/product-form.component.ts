@@ -12,9 +12,9 @@ import {
   FormGroup,
   FormGroupDirective
 } from '@angular/forms';
-import { ValidationMessagesService } from 'src/app/services/validation-messages.service';
-import { NotificationService } from 'src/app/services/notification.service';
-import { ActionType, ALERT_MESSAGES } from 'src/app/models/general';
+import { ValidationMessagesService } from 'src/app/core/services/validation-messages.service';
+import { NotificationService } from 'src/app/core/services/notification.service';
+import { ActionType, ALERT_MESSAGES } from 'src/app/shared/models/general';
 import { Product } from '../product';
 import { Media } from '../../media/media';
 import { MediaService } from '../../media/media.service';
@@ -66,15 +66,24 @@ export class ProductFormComponent implements OnInit, OnChanges {
     this.productForm = this.form.group({
       name: ['', [Validators.required]],
       description: ['', [Validators.required]],
-      categoryId: ['', [Validators.required]]
+      categoryId: ['', [Validators.required]],
+      retailPrice: [0, [Validators.required]],
+      originalPrice: [0, [Validators.required]],
+      quantity: [0, [Validators.required]],
+      unitOfCount: [0, [Validators.required]]
     });
   }
 
   buildExistingProductForm() {
     this.productForm = this.form.group({
+      id: [this.product.id],
       name: [this.product.name, [Validators.required]],
       description: [this.product.description, [Validators.required]],
-      categoryId: [this.product.categoryId, [Validators.required]]
+      categoryId: [this.product.categoryId, [Validators.required]],
+      retailPrice: [this.product.retailPrice, [Validators.required]],
+      originalPrice: [this.product.originalPrice, [Validators.required]],
+      quantity: [this.product.quantity, [Validators.required]],
+      unitOfCount: [this.product.unitOfCount, [Validators.required]]
     });
   }
 
@@ -84,6 +93,22 @@ export class ProductFormComponent implements OnInit, OnChanges {
 
   get description() {
     return this.productForm.get('description');
+  }
+
+  get retailPrice() {
+    return this.productForm.get('retailPrice');
+  }
+
+  get originalPrice() {
+    return this.productForm.get('originalPrice');
+  }
+
+  get quantity() {
+    return this.productForm.get('quantity');
+  }
+
+  get unitOfCount() {
+    return this.productForm.get('unitOfCount');
   }
 
   get categoryId() {
@@ -99,6 +124,10 @@ export class ProductFormComponent implements OnInit, OnChanges {
     product.description = this.description.value;
     product.categoryId = this.categoryId.value;
     product.mediaId = this.productMedia.id;
+    product.retailPrice = this.retailPrice.value;
+    product.originalPrice = this.originalPrice.value;
+    product.quantity = this.quantity.value;
+    product.unitOfCount = this.unitOfCount.value;
     return product;
   }
 

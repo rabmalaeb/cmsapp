@@ -17,7 +17,20 @@
         </button>
       </div>
     </div>
-    <mat-table mat-table [dataSource]="products$ | async" class="mat-elevation-z8">
+    <div class="page__section">
+      <div class="page__filters">
+        <app-product-filters
+          [retailPriceRange]="retailPriceRange$ | async"
+          [originalPriceRange]="originalPriceRange$ | async"
+          (filter)="getProducts($event)"
+        ></app-product-filters>
+      </div>
+    </div>
+    <mat-table
+      mat-table
+      [dataSource]="products$ | async"
+      class="mat-elevation-z8"
+    >
       <ng-container matColumnDef="id">
         <mat-header-cell *matHeaderCellDef>Id</mat-header-cell>
         <mat-cell *matCellDef="let product">{{ product.id }}</mat-cell>
@@ -32,6 +45,15 @@
         <mat-header-cell *matHeaderCellDef>Description</mat-header-cell>
         <mat-cell *matCellDef="let product">
           {{ product.description }}
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="image">
+        <mat-header-cell *matHeaderCellDef>Image</mat-header-cell>
+        <mat-cell *matCellDef="let product">
+          <div class="table__image-container">
+            <img class="table__image" [src]="product.media.imageUrl" alt="" />
+          </div>
         </mat-cell>
       </ng-container>
 

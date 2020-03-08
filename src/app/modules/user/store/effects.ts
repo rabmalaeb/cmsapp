@@ -14,7 +14,7 @@ export class UserStoreEffects {
   loadRequestEffect$: Observable<Action> = this.actions$.pipe(
     ofType<userActions.LoadRequestAction>(userActions.ActionTypes.LOAD_REQUEST),
     switchMap(action =>
-      this.userService.getUsers().pipe(
+      this.userService.getUsers(action.userRequest).pipe(
         map(
           items =>
             new userActions.LoadSuccessAction({

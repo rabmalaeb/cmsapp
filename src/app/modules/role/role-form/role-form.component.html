@@ -3,32 +3,29 @@
   #formDirective="ngForm"
   (ngSubmit)="performAction(formDirective)"
   class="page__form"
-  *ngIf="!isLoadingForm else loadingMask"
+  *ngIf="!isLoadingForm; else loadingMask"
 >
+  <app-input-item
+    id="name"
+    name="name"
+    title="Name"
+    [formControlItem]="name"
+  >
+  </app-input-item>
+
   <div class="form-item">
     <div class="form-item__value form-item__value_is-textfield">
       <mat-form-field appearance="outline">
-        <mat-label>Name</mat-label>
-        <input
-          matInput
-          id="name"
-          name="name"
-          placeholder="Name"
-          [formControl]="name"
-        />
-        <mat-error *ngFor="let validation of validationMessages.name">
-          <mat-error
-            class="error-message"
-            *ngIf="
-              name.hasError(validation.type) && (name.dirty || name.touched)
-            "
-          >
-            {{ validation.message }}</mat-error
-          >
-        </mat-error>
+        <mat-label>Partner</mat-label>
+        <mat-select placeholder="Partner" formControlName="partnerId">
+          <mat-option *ngFor="let partner of partners" [value]="partner.id">
+            {{ partner.name }}
+          </mat-option>
+        </mat-select>
       </mat-form-field>
     </div>
   </div>
+
   <div class="page__title-container">
     <div class="page__title">
       Set Permissions

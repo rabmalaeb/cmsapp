@@ -5,8 +5,8 @@ import {
   ActivatedRouteSnapshot,
   RouterStateSnapshot,
 } from '@angular/router';
-import { AuthorizationService } from 'src/app/services/authorization.service';
-import { ModuleName } from 'src/app/models/general';
+import { AuthorizationService } from 'src/app/core/services/authorization.service';
+import { ModuleName } from 'src/app/shared/models/general';
 
 @Injectable({ providedIn: 'root' })
 export class ViewProductGuard implements CanActivate {

@@ -2,11 +2,11 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
-import { AlertService } from 'src/app/services/alert.service';
+import { AlertService } from 'src/app/core/services/alert.service';
 import { User } from '../user';
 import { UserService } from '../user.service';
-import { AuthorizationService } from 'src/app/services/authorization.service';
-import { ModuleName } from 'src/app/models/general';
+import { AuthorizationService } from 'src/app/core/services/authorization.service';
+import { ModuleName } from 'src/app/shared/models/general';
 import { Observable } from 'rxjs';
 import { Store, ActionsSubject } from '@ngrx/store';
 import {
@@ -15,7 +15,7 @@ import {
   UserStoreActions
 } from 'src/app/root-store';
 import { ActionTypes } from '../store/actions';
-import { NotificationService } from 'src/app/services/notification.service';
+import { NotificationService } from 'src/app/core/services/notification.service';
 import { filter } from 'rxjs/operators';
 
 @Component({
@@ -78,21 +78,19 @@ export class UsersComponent implements OnInit {
       .pipe(
         filter((action: any) => action.type === ActionTypes.DELETE_USER_FAILURE)
       )
-      .subscribe(() => {
-        this.notificationService.showError('Could not delete User. Please try again');
+      .subscribe(errorResponse => {
+        this.notificationService.showError(errorResponse.payload.error.message);
       });
 
     this.actionsSubject$
-      .pipe(
-        filter((action: any) => action.type === ActionTypes.LOAD_FAILURE)
-      )
-      .subscribe(() => {
-        this.notificationService.showError('An Error has occurred. Please try again');
+      .pipe(filter((action: any) => action.type === ActionTypes.LOAD_FAILURE))
+      .subscribe(errorResponse => {
+        this.notificationService.showError(errorResponse.payload.error.message);
       });
   }
 
-  getUsers() {
-    this.store$.dispatch(new UserStoreActions.LoadRequestAction());
+  getUsers(userRequest: User = null) {
+    this.store$.dispatch(new UserStoreActions.LoadRequestAction(userRequest));
   }
 
   setDataSource() {

@@ -3,7 +3,7 @@
   #formDirective="ngForm"
   (ngSubmit)="performAction(formDirective)"
   class="page__form"
-  *ngIf="!isLoadingForm else loadingMask"
+  *ngIf="!isLoadingForm; else loadingMask"
 >
   <div class="form-item">
     <div class="form-item__value form-item__value_is-textfield">

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { AppService } from 'src/app/services/app.service';
-import { NavItem } from 'src/app/models/general';
+import { NavItem } from '../../shared/models/general';
+import { AppService } from '../../core/services/app.service';
 
 @Component({
   selector: 'app-nav-bar',

@@ -1,0 +1,11 @@
+.ng5-slider .ng5-slider-pointer.ng5-slider-active:after {
+  background-color: #fff !important;
+}
+
+.ng5-slider .ng5-slider-selection {
+  background: $global--secondary-color !important;
+}
+
+.ng5-slider .ng5-slider-pointer {
+  background-color: $global--secondary-color !important;
+}

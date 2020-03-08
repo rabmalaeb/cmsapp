@@ -1,0 +1,28 @@
+.filters {}
+
+.filters__container {}
+
+.filters__form {}
+
+.filters__item-container {
+  display: flex;
+}
+
+.filters__item {
+  width: 200px;
+  margin-right: 20px;
+  &:last-child {
+    margin-right: 0;
+  }
+}
+
+.filters__button-container {
+  display: flex;
+}
+
+.filters__button {
+  margin-right: 10px;
+  &:last-child {
+    margin-right: 0;
+  }
+}

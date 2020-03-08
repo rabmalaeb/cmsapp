@@ -42,7 +42,7 @@ export function adminReducer(state = initialState, action: Actions): State {
       return {
         ...state,
         isLoadingItem: false,
-        actionError: action.payload.error
+        actionError: action.payload.error.message
       };
     }
     case ActionTypes.ADD_ADMIN_REQUEST: {
@@ -63,7 +63,7 @@ export function adminReducer(state = initialState, action: Actions): State {
       return {
         ...state,
         isLoadingAction: false,
-        actionError: action.payload.error
+        actionError: action.payload.error.message
       };
     }
     case ActionTypes.UPDATE_ADMIN_REQUEST: {
@@ -84,7 +84,7 @@ export function adminReducer(state = initialState, action: Actions): State {
       return {
         ...state,
         isLoadingAction: false,
-        actionError: action.payload.error
+        actionError: action.payload.error.message
       };
     }
     case ActionTypes.DELETE_ADMIN_REQUEST: {
@@ -105,7 +105,7 @@ export function adminReducer(state = initialState, action: Actions): State {
       return {
         ...state,
         isLoadingAction: false,
-        actionError: action.payload.error
+        actionError: action.payload.error.message
       };
     }
     default: {

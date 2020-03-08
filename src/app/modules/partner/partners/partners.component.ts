@@ -2,18 +2,17 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
-import { AlertService } from 'src/app/services/alert.service';
-import { Partner } from '../partner';
-import { ModuleName } from 'src/app/models/general';
-import { AuthorizationService } from 'src/app/services/authorization.service';
+import { AlertService } from 'src/app/core/services/alert.service';
+import { Partner, PartnerRequest } from '../partner';
+import { ModuleName } from 'src/app/shared/models/general';
+import { AuthorizationService } from 'src/app/core/services/authorization.service';
 import { Observable } from 'rxjs';
 import { PartnerStoreSelectors, PartnerStoreActions } from '../store';
 import { Store, ActionsSubject } from '@ngrx/store';
 import { RootStoreState } from 'src/app/root-store';
-import { NotificationService } from 'src/app/services/notification.service';
+import { NotificationService } from 'src/app/core/services/notification.service';
 import { ActionTypes } from '../store/actions';
 import { filter } from 'rxjs/operators';
-import { ErrorHandlerService } from 'src/app/services/error-handler.service';
 
 @Component({
   selector: 'app-partners',
@@ -34,7 +33,6 @@ export class PartnersComponent implements OnInit {
     private alertService: AlertService,
     private router: Router,
     private authorizationService: AuthorizationService,
-    private errorHandler: ErrorHandlerService,
     private store$: Store<RootStoreState.State>,
     private notificationService: NotificationService,
     private actionsSubject$: ActionsSubject
@@ -74,21 +72,19 @@ export class PartnersComponent implements OnInit {
           (action: any) => action.type === ActionTypes.DELETE_PARTNER_FAILURE
         )
       )
-      .subscribe(() => {
-        this.notificationService.showError(
-          'Could not delete Partner. Please try again'
-        );
+      .subscribe(errorResponse => {
+        this.notificationService.showError(errorResponse.payload.error.message);
       });
 
     this.actionsSubject$
       .pipe(filter((action: any) => action.type === ActionTypes.LOAD_FAILURE))
-       .subscribe(response => {
-        this.errorHandler.handleErrorResponse(response.payload.error);
+      .subscribe(errorResponse => {
+        this.notificationService.showError(errorResponse.payload.error.message);
       });
   }
 
-  getPartners() {
-    this.store$.dispatch(new PartnerStoreActions.LoadRequestAction());
+  getPartners(partnerRequest: PartnerRequest = null) {
+    this.store$.dispatch(new PartnerStoreActions.LoadRequestAction(partnerRequest));
   }
 
   setDataSource() {

@@ -15,6 +15,7 @@
     <div class="page__form-container">
       <app-role-form
         [role]="role$ | async"
+        [partners]="partners$ | async"
         [permissions]="permissions$ | async"
         [isLoading]="isLoading$ | async"
         [canEditRole]="canEditRole$ | async"

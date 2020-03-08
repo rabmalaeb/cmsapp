@@ -1,5 +1,6 @@
 import { Action } from '@ngrx/store';
 import { User } from 'src/app/modules/user/user';
+import { ErrorResponse } from 'src/app/shared/models/general';
 
 export enum ActionTypes {
   LOAD_REQUEST = '[User] Load Request',
@@ -21,11 +22,12 @@ export enum ActionTypes {
 
 export class LoadRequestAction implements Action {
   readonly type = ActionTypes.LOAD_REQUEST;
+  constructor(public userRequest: User) {}
 }
 
 export class LoadFailureAction implements Action {
   readonly type = ActionTypes.LOAD_FAILURE;
-  constructor(public payload: { error: string }) {}
+  constructor(public payload: { error: ErrorResponse }) {}
 }
 
 export class LoadSuccessAction implements Action {
@@ -45,7 +47,7 @@ export class GetUserSuccessAction implements Action {
 
 export class GetUserFailureAction implements Action {
   readonly type = ActionTypes.GET_USER_FAILURE;
-  constructor(public payload: { error: string }) {}
+  constructor(public payload: { error: ErrorResponse }) {}
 }
 export class AddUserRequestAction implements Action {
   readonly type = ActionTypes.ADD_USER_REQUEST;
@@ -59,7 +61,7 @@ export class AddUserSuccessAction implements Action {
 
 export class AddUserFailureAction implements Action {
   readonly type = ActionTypes.ADD_USER_FAILURE;
-  constructor(public payload: { error: string }) {}
+  constructor(public payload: { error: ErrorResponse }) {}
 }
 
 export class UpdateUserRequestAction implements Action {
@@ -69,12 +71,12 @@ export class UpdateUserRequestAction implements Action {
 
 export class UpdateUserSuccessAction implements Action {
   readonly type = ActionTypes.UPDATE_USER_SUCCESS;
-  constructor(public payload: { id: number, item: User }) {}
+  constructor(public payload: { id: number; item: User }) {}
 }
 
 export class UpdateUserFailureAction implements Action {
   readonly type = ActionTypes.UPDATE_USER_FAILURE;
-  constructor(public payload: { error: string }) {}
+  constructor(public payload: { error: ErrorResponse }) {}
 }
 
 export class DeleteUserRequestAction implements Action {
@@ -84,12 +86,12 @@ export class DeleteUserRequestAction implements Action {
 
 export class DeleteUserSuccessAction implements Action {
   readonly type = ActionTypes.DELETE_USER_SUCCESS;
-  constructor(public payload: { id: number, items: User[] }) {}
+  constructor(public payload: { id: number; items: User[] }) {}
 }
 
 export class DeleteUserFailureAction implements Action {
   readonly type = ActionTypes.DELETE_USER_FAILURE;
-  constructor(public payload: { error: string }) {}
+  constructor(public payload: { error: ErrorResponse }) {}
 }
 
 export type Actions =

@@ -42,7 +42,7 @@ export function partnerReducer(state = initialState, action: Actions): State {
       return {
         ...state,
         isLoadingItem: false,
-        actionError: action.payload.error
+        actionError: action.payload.error.message
       };
     }
     case ActionTypes.ADD_PARTNER_REQUEST: {
@@ -63,7 +63,7 @@ export function partnerReducer(state = initialState, action: Actions): State {
       return {
         ...state,
         isLoadingAction: false,
-        actionError: action.payload.error
+        actionError: action.payload.error.message
       };
     }
     case ActionTypes.UPDATE_PARTNER_REQUEST: {
@@ -87,7 +87,7 @@ export function partnerReducer(state = initialState, action: Actions): State {
       return {
         ...state,
         isLoadingAction: false,
-        actionError: action.payload.error
+        actionError: action.payload.error.message
       };
     }
     case ActionTypes.DELETE_PARTNER_REQUEST: {
@@ -108,7 +108,7 @@ export function partnerReducer(state = initialState, action: Actions): State {
       return {
         ...state,
         isLoadingAction: false,
-        actionError: action.payload.error
+        actionError: action.payload.error.message
       };
     }
     default: {
