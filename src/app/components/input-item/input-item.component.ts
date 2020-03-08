@@ -5,7 +5,7 @@ import { ValidationMessagesService } from 'src/app/core/services/validation-mess
 @Component({
   selector: 'app-input-item',
   templateUrl: './input-item.component.html',
-  styleUrls: ['./input-item.component.sass']
+  styleUrls: ['./input-item.component.scss']
 })
 export class InputItemComponent implements OnInit {
 

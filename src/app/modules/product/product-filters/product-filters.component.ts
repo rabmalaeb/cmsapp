@@ -12,7 +12,6 @@ import { ProductRequest } from '../product';
 import { Options, LabelType } from 'ng5-slider';
 import { NumberRange } from 'src/app/shared/models/general';
 import { isRangeValid } from 'src/app/shared/utils/general';
-import { from } from 'rxjs';
 
 @Component({
   selector: 'app-product-filters',
@@ -36,6 +35,7 @@ export class ProductFiltersComponent
   originalPriceSliderOptions: Options;
   retailPriceSliderOptions: Options;
   filterForm: FormGroup;
+  showCategories = true;
 
   constructor(private form: FormBuilder) {}
 
@@ -113,5 +113,9 @@ export class ProductFiltersComponent
 
   get isFormEmpty() {
     return !this.name.value;
+  }
+
+  showCategoriesModal() {
+    this.showCategories = true;
   }
 }

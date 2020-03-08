@@ -1,0 +1,72 @@
+.x-modal {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  z-index: 100;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.x-modal__overlay {
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.85);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.x-modal__container {
+  width: 400px;
+  box-shadow: 1px -2px 15px 7px #00000063;
+  animation: slide-up 30000ms linear;
+}
+
+@keyframes slide-up {
+  0% {
+    transform: translateY(10%);
+  }
+
+  100% {
+    transform: translateY(0);
+  }
+}
+
+.x-modal__title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 50px;
+  background: #fff;
+  padding: 0 20px;
+  border-bottom: 1px solid #cacad1;
+}
+
+.x-modal__title-item {
+  &_is-title {
+    position: relative;
+    text-transform: uppercase;
+    font-size: 14px;
+  }
+
+  &_is-close {
+    cursor: pointer;
+    height: 40px;
+    width: 40px;
+
+    &:after {
+      width: 40px;
+      height: 40px;
+      background: url('/assets/icons/exit.png') center no-repeat;
+      background-size: 20px;
+      content: '';
+      position: absolute;
+    }
+  }
+}
+
+.x-modal__content-container {
+  background-color: #fff;
+}
