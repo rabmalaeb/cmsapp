@@ -1,5 +1,5 @@
 import { Action } from '@ngrx/store';
-import { Role, RoleRequest } from 'src/app/modules/role/role';
+import { Role, RoleRequest, RoleActionRequest } from 'src/app/modules/role/role';
 import { ErrorResponse } from 'src/app/shared/models/general';
 
 export enum ActionTypes {
@@ -69,7 +69,7 @@ export class GetRoleFailureAction implements Action {
 }
 export class AddRoleRequestAction implements Action {
   readonly type = ActionTypes.ADD_ROLE_REQUEST;
-  constructor(public role: RoleRequest) {}
+  constructor(public role: RoleActionRequest) {}
 }
 
 export class AddRoleSuccessAction implements Action {
@@ -84,7 +84,7 @@ export class AddRoleFailureAction implements Action {
 
 export class UpdateRoleRequestAction implements Action {
   readonly type = ActionTypes.UPDATE_ROLE_REQUEST;
-  constructor(public id: number, public role: RoleRequest) {}
+  constructor(public id: number, public role: RoleActionRequest) {}
 }
 
 export class UpdateRoleSuccessAction implements Action {

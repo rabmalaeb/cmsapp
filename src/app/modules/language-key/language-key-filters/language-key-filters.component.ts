@@ -30,23 +30,23 @@ export class LanguageKeyFiltersComponent implements OnInit, FilterComponent {
 
   buildRequest(): LanguageKeyRequest {
     return {
-      name: this.name.value ? this.name.value : '',
+      searchQuery: this.searchQuery.value ? this.searchQuery.value : '',
     };
   }
 
   buildForm(): void {
     this.filterForm = this.form.group({
-      name: ['']
+      searchQuery: ['']
     });
   }
 
-  get name() {
-    return this.filterForm.get('name');
+  get searchQuery() {
+    return this.filterForm.get('searchQuery');
   }
 
   get isFormEmpty() {
     return (
-      !this.name.value
+      !this.searchQuery.value
     );
   }
 

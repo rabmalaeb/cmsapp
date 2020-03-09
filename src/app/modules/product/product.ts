@@ -17,7 +17,6 @@ export class Product {
 }
 
 export class ProductRequest extends Request {
-  name?: string;
   minimumRetailPrice?: number;
   maximumRetailPrice?: number;
   minimumOriginalPrice?: number;

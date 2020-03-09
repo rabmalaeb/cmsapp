@@ -10,6 +10,4 @@ export class Category {
   mediaId: number;
   media: Media;
 }
-export class CategoryRequest extends Request {
-  name?: string;
-}
+export class CategoryRequest extends Request {}

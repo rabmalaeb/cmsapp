@@ -20,7 +20,7 @@ import {
   NavItem,
   PermissionType
 } from '../../../shared/models/general';
-import { Permission, PermissionRequest } from '../permission';
+import { Permission, PermissionActionRequest } from '../permission';
 import { capitalize } from '../../../shared/utils/general';
 import { AppService } from '../../../core/services/app.service';
 
@@ -42,7 +42,7 @@ export class PermissionFormComponent implements OnInit, OnChanges {
   @Input() isLoadingAction: boolean;
   @Input() canEditPermission = false;
   @Input() isLoading: boolean;
-  @Output() submitForm = new EventEmitter<PermissionRequest>();
+  @Output() submitForm = new EventEmitter<PermissionActionRequest>();
   formGroupDirective: FormGroupDirective;
   permissionForm: FormGroup;
   appModules: NavItem[];
@@ -98,7 +98,7 @@ export class PermissionFormComponent implements OnInit, OnChanges {
     this.appModules = this.appService.activeNavBarItems;
   }
 
-  buildPermissionParams(): PermissionRequest {
+  buildPermissionParams(): PermissionActionRequest {
     return {
       id: this.permissionForm.get('id')
         ? this.permissionForm.get('id').value

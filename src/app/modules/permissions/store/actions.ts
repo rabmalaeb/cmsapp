@@ -1,5 +1,5 @@
 import { Action } from '@ngrx/store';
-import { Permission, PermissionRequest } from '../permission';
+import { Permission, PermissionRequest, PermissionActionRequest } from '../permission';
 import { ErrorResponse } from 'src/app/shared/models/general';
 
 export enum ActionTypes {
@@ -69,7 +69,7 @@ export class GetPermissionFailureAction implements Action {
 }
 export class AddPermissionRequestAction implements Action {
   readonly type = ActionTypes.ADD_PERMISSION_REQUEST;
-  constructor(public permission: PermissionRequest) {}
+  constructor(public permission: PermissionActionRequest) {}
 }
 
 export class AddPermissionSuccessAction implements Action {
@@ -84,7 +84,7 @@ export class AddPermissionFailureAction implements Action {
 
 export class UpdatePermissionRequestAction implements Action {
   readonly type = ActionTypes.UPDATE_PERMISSION_REQUEST;
-  constructor(public id: number, public permission: PermissionRequest) {}
+  constructor(public id: number, public permission: PermissionActionRequest) {}
 }
 
 export class UpdatePermissionSuccessAction implements Action {

@@ -6,6 +6,4 @@ export class LanguageKey {
   description: string;
 }
 
-export class LanguageKeyRequest extends Request {
-  name: string;
-}
+export class LanguageKeyRequest extends Request {}

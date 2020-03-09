@@ -1,1 +1,3 @@
-export default class Request {}
+export default class Request {
+  public searchQuery: string = null;
+}

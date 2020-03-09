@@ -72,7 +72,7 @@ export class ProductFiltersComponent
 
   buildRequest(): ProductRequest {
     return {
-      name: this.name.value ? this.name.value : '',
+      searchQuery: this.searchQuery.value ? this.searchQuery.value : '',
       minimumRetailPrice: this.selectedRetailPriceRange.minimum,
       maximumRetailPrice: this.selectedRetailPriceRange.maximum,
       minimumOriginalPrice: this.selectedOriginalPriceRange.minimum,
@@ -93,7 +93,7 @@ export class ProductFiltersComponent
 
   buildForm(): void {
     this.filterForm = this.form.group({
-      name: ['']
+      searchQuery: ['']
     });
   }
 
@@ -127,12 +127,12 @@ export class ProductFiltersComponent
     this.selectedRetailPriceRange = this.retailPriceRange;
   }
 
-  get name() {
-    return this.filterForm.get('name');
+  get searchQuery() {
+    return this.filterForm.get('searchQuery');
   }
 
   get isFormEmpty() {
-    return !this.name.value;
+    return !this.searchQuery.value;
   }
 
   showCategoriesModal() {

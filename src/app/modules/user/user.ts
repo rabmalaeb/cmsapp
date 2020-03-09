@@ -1,3 +1,5 @@
+import Request from 'src/app/shared/request';
+
 export interface User {
   id ?: number;
   firstName: string;
@@ -5,3 +7,5 @@ export interface User {
   email: string;
   mobile: string;
 }
+
+export interface UserRequest extends Request {}

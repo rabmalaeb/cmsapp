@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ValidationMessagesService } from 'src/app/core/services/validation-messages.service';
 import { NotificationService } from 'src/app/core/services/notification.service';
 import { ActivatedRoute } from '@angular/router';
-import { Permission, PermissionRequest } from '../permission';
+import { Permission, PermissionRequest, PermissionActionRequest } from '../permission';
 import { AuthorizationService } from 'src/app/core/services/authorization.service';
 import { AppService } from 'src/app/core/services/app.service';
 import {
@@ -109,7 +109,7 @@ export class PermissionAddComponent implements OnInit {
     );
   }
 
-  performAction(permissionRequest: PermissionRequest) {
+  performAction(permissionRequest: PermissionActionRequest) {
     if (this.actionType === ActionType.EDIT) {
       this.updatePermission(permissionRequest);
     } else {
@@ -117,13 +117,13 @@ export class PermissionAddComponent implements OnInit {
     }
   }
 
-  addPermission(permission: PermissionRequest) {
+  addPermission(permission: PermissionActionRequest) {
     this.store$.dispatch(
       new PermissionStoreActions.AddPermissionRequestAction(permission)
     );
   }
 
-  updatePermission(permission: PermissionRequest) {
+  updatePermission(permission: PermissionActionRequest) {
     const id = permission.id;
     this.store$.dispatch(
       new PermissionStoreActions.UpdatePermissionRequestAction(id, permission)

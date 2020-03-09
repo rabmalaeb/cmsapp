@@ -10,9 +10,11 @@ export interface Role {
   permissions: Permission[];
 }
 
-export interface RoleRequest extends Request {
+export interface RoleActionRequest {
   id?: number;
   name?: string;
   partnerId?: number;
   permissions?: number[];
 }
+
+export interface RoleRequest extends Request {}

@@ -21,17 +21,12 @@ export class AdminFiltersComponent implements OnInit, FilterComponent {
 
   buildForm() {
     this.filterForm = this.form.group({
-      name: [''],
-      email: ['']
+      searchQuery: ['']
     });
   }
 
-  get name() {
-    return this.filterForm.get('name');
-  }
-
-  get email() {
-    return this.filterForm.get('email');
+  get searchQuery() {
+    return this.filterForm.get('searchQuery');
   }
 
   submitFilters() {
@@ -44,13 +39,12 @@ export class AdminFiltersComponent implements OnInit, FilterComponent {
   }
 
   get isFormEmpty(): boolean {
-    return !this.email.value && !this.name.value;
+    return !this.searchQuery.value;
   }
 
   buildRequest(): AdminRequest {
     return {
-      name: this.name.value ? this.name.value : '',
-      email: this.email.value ? this.email.value : ''
+      searchQuery: this.searchQuery.value ? this.searchQuery.value : '',
     };
   }
 }
