@@ -9,6 +9,7 @@ import { XModalComponent } from './x-modal/x-modal.component';
 import { SelectOptionsComponent } from './select-options/select-options.component';
 import { PipesModule } from '../pipes/pipes.module';
 import { DirectivesModule } from '../directives/directives.module';
+import { NavItemComponent } from './nav-item/nav-item.component';
 
 @NgModule({
   declarations: [
@@ -18,6 +19,7 @@ import { DirectivesModule } from '../directives/directives.module';
     InputItemComponent,
     XModalComponent,
     SelectOptionsComponent,
+    NavItemComponent
   ],
   imports: [
     CommonModule,
@@ -32,6 +34,7 @@ import { DirectivesModule } from '../directives/directives.module';
     InputItemComponent,
     XModalComponent,
     SelectOptionsComponent,
+    NavItemComponent
   ]
 })
 export class ComponentsModule { }
