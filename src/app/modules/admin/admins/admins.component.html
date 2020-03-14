@@ -1,27 +1,27 @@
 <div class="page">
-  <div class="page__container">
-    <div class="page__section">
-      <div class="page__title-container">
-        <div class="page__title">
-          Admins
+  <div class="page__section">
+    <app-page-header
+      label="Admins"
+      buttonLabel="Add Admin"
+      [condition]="canAddAdmin | async"
+      (action)="addAdmin()"
+    >
+      <div class="page__filters-container">
+        <div class="page__filter-item page__filter-item_is-search">
+          <app-search-input
+            placeholder="Search"
+            (filter)="getAdmins($event)"
+          ></app-search-input>
         </div>
       </div>
-      <div class="page__actions">
-        <button
-          mat-button
-          class="button button_is-primary"
-          (click)="addAdmin()"
-          *ngIf="canAddAdmin | async"
-        >
-          Add Admin
-        </button>
-      </div>
-    </div>
-    <div class="page__section">
+    </app-page-header>
+  </div>
+  <div class="page__container">
+    <!-- <div class="page__section">
       <div class="page__filters">
         <app-admin-filters (filter)="getAdmins($event)"></app-admin-filters>
       </div>
-    </div>
+    </div> -->
     <mat-table
       mat-table
       [dataSource]="admins$ | async"

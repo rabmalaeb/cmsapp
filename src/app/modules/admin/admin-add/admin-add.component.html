@@ -1,27 +1,19 @@
 <div class="page">
+  <div class="page__section">
+    <app-page-header
+      [label]="title"
+      buttonLabel="Back to Admins"
+      link="/admins"
+    >
+    </app-page-header>
+  </div>
   <div class="page__container">
-    <div class="page__section">
-      <div class="page__title-container">
-        <div class="page__title">
-          {{ title }}
-        </div>
-      </div>
-      <div class="page__actions">
-        <button
-          mat-button
-          class="button button_is-primary"
-          routerLink="/admins"
-        >
-          Back To Admins
-        </button>
-      </div>
-    </div>
     <div class="page__form-container">
       <app-admin-form
         [admin]="admin$ | async"
         [roles]="roles$ | async"
         [partners]="partners$ | async"
-        [isLoading] = "isLoading$ | async"
+        [isLoading]="isLoading$ | async"
         [actionType]="actionType"
         [isLoadingAction]="isLoadingAction$ | async"
         [canEditAdmin]="canEditAdmin$ | async"

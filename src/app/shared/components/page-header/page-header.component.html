@@ -1,0 +1,33 @@
+<div class="page-header">
+  <div class="page-header__container">
+    <div class="page-header__item-container">
+      <div class="page-header__item">
+        <div class="page-header__title">
+          {{ label }}
+        </div>
+      </div>
+      <div class="page-header__item">
+        <ng-content></ng-content>
+      </div>
+      <div class="page-header__item" *ngIf="condition">
+        <button
+          *ngIf="link; else buttonWithAction"
+          mat-button
+          [routerLink]="link"
+          class="button button_is-primary"
+        >
+          {{ buttonLabel }}
+        </button>
+        <ng-template #buttonWithAction>
+          <button
+            mat-button
+            (click)="sendAction()"
+            class="button button_is-primary"
+          >
+            {{ buttonLabel }}
+          </button>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+</div>

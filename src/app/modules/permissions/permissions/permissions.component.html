@@ -1,29 +1,22 @@
 <div class="page">
-  <div class="page__container">
-    <div class="page__section">
-      <div class="page__title-container">
-        <div class="page__title">
-          Permissions
+  <div class="page__section">
+    <app-page-header
+      label="Permissions"
+      buttonLabel="Add Permission"
+      [condition]="canAddPermission | async"
+      (action)="addPermission()"
+    >
+      <div class="page__filters-container">
+        <div class="page__filter-item page__filter-item_is-search">
+          <app-search-input
+            placeholder="Search"
+            (filter)="getPermissions($event)"
+          ></app-search-input>
         </div>
       </div>
-      <div class="page__actions">
-        <button
-          mat-button
-          class="button button_is-primary"
-          (click)="addPermission()"
-          *ngIf="canAddPermission | async"
-        >
-          Add Permission
-        </button>
-      </div>
-    </div>
-    <div class="page__section">
-      <div class="page__filters">
-        <app-permission-filters
-          (filter)="getPermissions($event)"
-        ></app-permission-filters>
-      </div>
-    </div>
+    </app-page-header>
+  </div>
+  <div class="page__container">
     <mat-table
       mat-table
       [dataSource]="permissions$ | async"

@@ -10,6 +10,10 @@ import { SelectOptionsComponent } from './select-options/select-options.componen
 import { PipesModule } from '../pipes/pipes.module';
 import { DirectivesModule } from '../directives/directives.module';
 import { NavItemComponent } from './nav-item/nav-item.component';
+import { PageHeaderComponent } from './page-header/page-header.component';
+import { RouterModule } from '@angular/router';
+import { FilterControlComponent } from './filter-control/filter-control.component';
+import { SearchInputComponent } from './search-input/search-input.component';
 
 @NgModule({
   declarations: [
@@ -19,12 +23,16 @@ import { NavItemComponent } from './nav-item/nav-item.component';
     InputItemComponent,
     XModalComponent,
     SelectOptionsComponent,
-    NavItemComponent
+    NavItemComponent,
+    PageHeaderComponent,
+    FilterControlComponent,
+    SearchInputComponent
   ],
   imports: [
     CommonModule,
     SharedModule,
     PipesModule,
+    RouterModule,
     DirectivesModule
   ],
   exports: [
@@ -34,7 +42,10 @@ import { NavItemComponent } from './nav-item/nav-item.component';
     InputItemComponent,
     XModalComponent,
     SelectOptionsComponent,
-    NavItemComponent
+    NavItemComponent,
+    PageHeaderComponent,
+    FilterControlComponent,
+    SearchInputComponent
   ]
 })
-export class ComponentsModule { }
+export class ComponentsModule {}

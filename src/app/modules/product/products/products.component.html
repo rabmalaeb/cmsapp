@@ -1,22 +1,27 @@
 <div class="page">
-  <div class="page__container">
-    <div class="page__section">
-      <div class="page__title-container">
-        <div class="page__title">
-          Products
+  <div class="page__section">
+    <app-page-header
+      label="Admins"
+      buttonLabel="Add Product"
+      [condition]="canAddProduct | async"
+      (action)="addProduct()"
+    >
+      <div class="page__filters-container">
+        <div class="page__filter-item page__filter-item_is-search">
+          <app-search-input
+            placeholder="Search"
+            (filter)="getProducts($event)"
+          ></app-search-input>
+        </div>
+        <div class="page__filter-item">
+          <app-filter-control
+            (filter)="getProducts($event)"
+          ></app-filter-control>
         </div>
       </div>
-      <div class="page__actions">
-        <button
-          mat-button
-          class="button button_is-primary"
-          (click)="addProduct()"
-          *ngIf="canAddProduct | async"
-        >
-          Add Product
-        </button>
-      </div>
-    </div>
+    </app-page-header>
+  </div>
+  <div class="page__container">
     <div class="page__section">
       <div class="page__filters">
         <app-product-filters

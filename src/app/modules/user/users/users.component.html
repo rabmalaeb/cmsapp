@@ -1,28 +1,23 @@
 <div class="page">
   <mat-progress-bar *ngIf="isLoading$ | async"></mat-progress-bar>
-  <div class="page__container">
-    <div class="page__section">
-      <div class="page__title-container">
-        <div class="page__title">
-          Users
+  <div class="page__section">
+    <app-page-header
+      label="Users"
+      buttonLabel="Add User"
+      [condition]="canAddUser | async"
+      (action)="addUser()"
+    >
+      <div class="page__filters-container">
+        <div class="page__filter-item page__filter-item_is-search">
+          <app-search-input
+            placeholder="Search"
+            (filter)="getUsers($event)"
+          ></app-search-input>
         </div>
       </div>
-      <div class="page__actions">
-        <button
-          mat-button
-          class="button button_is-primary"
-          (click)="addUser()"
-          *ngIf="canAddUser | async"
-        >
-          Add User
-        </button>
-      </div>
-    </div>
-    <div class="page__section">
-      <div class="page__filters">
-        <app-user-filters (filter)="getUsers($event)"></app-user-filters>
-      </div>
-    </div>
+    </app-page-header>
+  </div>
+  <div class="page__container">
     <mat-table mat-table [dataSource]="users$ | async" class="mat-elevation-z8">
       <ng-container matColumnDef="id">
         <mat-header-cell *matHeaderCellDef>Id</mat-header-cell>

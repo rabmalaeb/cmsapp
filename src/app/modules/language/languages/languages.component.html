@@ -1,29 +1,22 @@
 <div class="page">
-  <div class="page__container">
-    <div class="page__section">
-      <div class="page__title-container">
-        <div class="page__title">
-          Languages
+  <div class="page__section">
+    <app-page-header
+      label="Languages"
+      buttonLabel="Add Language"
+      [condition]="canAddLanguage | async"
+      (action)="addLanguage()"
+    >
+      <div class="page__filters-container">
+        <div class="page__filter-item page__filter-item_is-search">
+          <app-search-input
+            placeholder="Search"
+            (filter)="getLanguages($event)"
+          ></app-search-input>
         </div>
       </div>
-      <div class="page__actions">
-        <button
-          mat-button
-          class="button button_is-primary"
-          (click)="addLanguage()"
-          *ngIf="canAddLanguage | async"
-        >
-          Add Language
-        </button>
-      </div>
-    </div>
-    <div class="page__section">
-      <div class="page__filters">
-        <app-language-filters
-          (filter)="getLanguages($event)"
-        ></app-language-filters>
-      </div>
-    </div>
+    </app-page-header>
+  </div>
+  <div class="page__container">
     <mat-table
       mat-table
       [dataSource]="languages$ | async"

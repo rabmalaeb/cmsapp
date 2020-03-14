@@ -14,6 +14,10 @@ import { SharedModule } from 'src/app/shared/shared.module';
     HeaderComponent
   ],
   imports: [CommonModule, BrowserModule, RouterModule, SharedModule],
-  exports: [NavBarComponent, FooterComponent, HeaderComponent]
+  exports: [
+    NavBarComponent,
+    FooterComponent,
+    HeaderComponent
+  ]
 })
 export class PartialsModule {}
