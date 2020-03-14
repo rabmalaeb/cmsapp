@@ -38,7 +38,6 @@ export class ProductFiltersComponent
   originalPriceSliderOptions: Options;
   retailPriceSliderOptions: Options;
   filterForm: FormGroup;
-  showCategories = false;
   categoryOptionItems: OptionItem[];
 
   constructor(private form: FormBuilder) {}
@@ -60,7 +59,6 @@ export class ProductFiltersComponent
   }
 
   submitFilters(): void {
-    this.showCategories = false;
     this.isInputChangeComingFromParentComponent = false;
     this.filter.emit(this.buildRequest());
   }
@@ -133,10 +131,6 @@ export class ProductFiltersComponent
 
   get isFormEmpty() {
     return !this.searchQuery.value;
-  }
-
-  showCategoriesModal() {
-    this.showCategories = true;
   }
 
   buildCategoryOptionItems(): void {

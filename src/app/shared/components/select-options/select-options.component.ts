@@ -10,7 +10,6 @@ export class SelectOptionsComponent implements OnInit {
   constructor() {}
 
   @Input() options: OptionItem[];
-  @Input() title: string;
   @Output() selected = new EventEmitter<any>();
 
   ngOnInit() {}
@@ -30,9 +29,6 @@ export class SelectOptionsComponent implements OnInit {
 
   toggle(option: OptionItem) {
     option.selected = !option.selected;
-  }
-
-  submitFilters() {
     this.selected.emit();
   }
 
@@ -47,8 +43,6 @@ export class SelectOptionsComponent implements OnInit {
     let isChecked = false;
     this.options.forEach(option => {
       if (option.selected) {
-        console.log('option ', option);
-
         isChecked = true;
       }
     });

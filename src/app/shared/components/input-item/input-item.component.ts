@@ -15,7 +15,7 @@ export class InputItemComponent implements OnInit {
 
   @Input() id: string;
   @Input() name: string;
-  @Input() title: string;
+  @Input() label: string;
   @Input() type = 'text';
   @Input() formControlItem: FormControl;
 

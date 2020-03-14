@@ -8,7 +8,13 @@ import Request from '../../request';
 })
 export class FilterControlComponent implements OnInit {
   @Output() filter = new EventEmitter<Request>();
+  showModal = false;
   constructor() {}
 
   ngOnInit() {}
+
+  submitFilters() {
+    this.showModal = false;
+    this.filter.emit();
+  }
 }

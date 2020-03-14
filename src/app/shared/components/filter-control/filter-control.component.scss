@@ -1,7 +1,12 @@
-.filter-control__input-container {
-  width: 500px
+@import '../../../../assets/styles/global';
+
+.filter-control__filter-container {
+  padding: 20px;
+  border-bottom: 1px solid $global--border-color;
 }
 
-.filter-control__input {
-  width: 100%;
+.filter-control__buttons-container {
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
 }

@@ -2,11 +2,42 @@
   <div class="filter-control__container">
     <div class="filter-control__item">
       <div class="filter-control__button">
-        <button mat-icon-button aria-label="Example icon-button with a menu">
+        <button
+          (click)="showModal = true"
+          mat-icon-button
+          aria-label="Example icon-button with a menu"
+        >
           <mat-icon>filter_list</mat-icon>
         </button>
       </div>
-      <ng-content></ng-content>
     </div>
   </div>
 </div>
+
+<app-x-modal *ngIf="showModal" (closeModal)="showModal = false">
+  <div class="filter-control__filter-container">
+    <ng-content></ng-content>
+  </div>
+  <div class="filter-control__buttons-container">
+    <div class="filter-control__button">
+      <button
+        type="reset"
+        mat-button
+        class="button button_is-secondary"
+      >
+        Clear Filters
+      </button>
+    </div>
+
+    <div class="filter-control__button">
+      <button
+        type="submit"
+        mat-button
+        class="button button_is-primary"
+        (click)="submitFilters()"
+      >
+        Apply Filters
+      </button>
+    </div>
+  </div>
+</app-x-modal>

@@ -6,72 +6,48 @@
     (ngSubmit)="submitFilters()"
   >
     <div class="filters__item-container">
-      <div class="filters__item">
-        <app-input-item
-          id="searchQuery"
-          name="searchQuery"
-          title="Search By Name"
-          [formControlItem]="searchQuery"
-        >
-        </app-input-item>
+      <div class="filters__item-section">
+        <div class="filters__item">
+          <div class="filters__item-label">
+            Filter By Retail Price
+          </div>
+          <div class="filters__item-input">
+            <ng5-slider
+              [options]="retailPriceSliderOptions"
+              [(value)]="selectedRetailPriceRange.minimum"
+              [(highValue)]="selectedRetailPriceRange.maximum"
+              (userChangeEnd)="submitFilters()"
+            ></ng5-slider>
+          </div>
+        </div>
+        <div class="filters__item">
+          <div class="filters__item-label">
+            Filter By Original Price
+          </div>
+          <div class="filters__item-input">
+            <ng5-slider
+              [options]="originalPriceSliderOptions"
+              [(value)]="selectedOriginalPriceRange.minimum"
+              [(highValue)]="selectedOriginalPriceRange.maximum"
+              (userChangeEnd)="submitFilters()"
+            ></ng5-slider>
+          </div>
+        </div>
       </div>
-      <div class="filters__item">
-        <ng5-slider
-          [options]="retailPriceSliderOptions"
-          [(value)]="selectedRetailPriceRange.minimum"
-          [(highValue)]="selectedRetailPriceRange.maximum"
-          (userChangeEnd)="submitFilters()"
-        ></ng5-slider>
-      </div>
-      <div class="filters__item">
-        <ng5-slider
-          [options]="originalPriceSliderOptions"
-          [(value)]="selectedOriginalPriceRange.minimum"
-          [(highValue)]="selectedOriginalPriceRange.maximum"
-          (userChangeEnd)="submitFilters()"
-        ></ng5-slider>
-      </div>
-      <div class="filters__item">
-        <button
-          mat-button
-          type="button"
-          class="button button_is-primary"
-          (click)="showCategoriesModal()"
-        >
-          Filter by Categories
-        </button>
-      </div>
-    </div>
-    <div class="filters__button-container">
-      <div class="filters__button">
-        <button
-          [disabled]="isFormEmpty"
-          type="reset"
-          mat-button
-          class="button button_is-secondary"
-          (click)="resetFilters()"
-        >
-          Clear Filters
-        </button>
-      </div>
-
-      <div class="filters__button">
-        <button
-          [disabled]="isFormEmpty"
-          type="submit"
-          mat-button
-          class="button button_is-primary"
-        >
-          Apply Filters
-        </button>
+      <div class="filters__item-section">
+        <div class="filters__item">
+          <div class="filters__item-label">
+            Filter By Categories
+          </div>
+          <div class="filters__item-input">
+            <app-select-options
+              [options]="categoryOptionItems"
+              (selected)="submitFilters()"
+            >
+            </app-select-options>
+          </div>
+        </div>
       </div>
     </div>
   </form>
 </div>
-<app-x-modal *ngIf="showCategories" (closeModal)="showCategories = false">
-  <app-select-options
-    title="Filter By Categories"
-    [options]="categoryOptionItems"
-    (selected)="submitFilters()"
-  ></app-select-options>
-</app-x-modal>

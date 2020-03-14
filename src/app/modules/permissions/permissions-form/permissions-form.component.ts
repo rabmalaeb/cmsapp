@@ -55,9 +55,12 @@ export class PermissionFormComponent implements OnInit, OnChanges {
 
   ngOnInit() {
     this.getAppModules();
+
+
   }
 
   ngOnChanges() {
+    console.log('permission ', this.permission);
     if (this.isLoadingAction) {
       return false;
     }
@@ -81,7 +84,7 @@ export class PermissionFormComponent implements OnInit, OnChanges {
   buildExistingPermissionForm() {
     this.permissionForm = this.form.group({
       id: [this.permission.id],
-      modules: [this.permission.group.toLowerCase(), [Validators.required]],
+      modules: [this.permission.group, [Validators.required]],
       permissionType: [this.permission.type, [Validators.required]]
     });
   }
