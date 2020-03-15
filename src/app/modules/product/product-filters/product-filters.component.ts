@@ -94,17 +94,26 @@ export class ProductFiltersComponent
     }
   }
 
-  submitFilters(): void {
-    this.isInputChangeComingFromParentComponent = false;
-    this.filter.next(this.buildRequest());
-  }
-
+  /**
+   * reset all the filters and then submit with the request
+   */
   resetFilters(): void {
     this.resetCategories();
     this.resetSliderRanges();
     this.submitFilters();
   }
 
+  /**
+   * send the request to the filter control
+   */
+  submitFilters(): void {
+    this.isInputChangeComingFromParentComponent = false;
+    this.filter.next(this.buildRequest());
+  }
+
+  /**
+   * build the product request which is sent to the filter control through the filter subject
+   */
   buildRequest(): ProductRequest {
     return {
       searchQuery: this.searchQuery.value ? this.searchQuery.value : '',
@@ -116,6 +125,9 @@ export class ProductFiltersComponent
     };
   }
 
+  /**
+   * get all categories that have selected = true
+   */
   getSelectedCategories(): number[] {
     const selectedCategories = [];
     this.categoryOptionItems.forEach(option => {
@@ -136,6 +148,9 @@ export class ProductFiltersComponent
     });
   }
 
+  /**
+   * set the slider limits which is used to set the slider options
+   */
   setSliderLimits() {
     this.defaultOriginalPriceRange.minimum = isRangeValid(
       this.originalPriceRange
@@ -155,6 +170,9 @@ export class ProductFiltersComponent
       : 100000;
   }
 
+  /**
+   * set the slider options
+   */
   setSliderOptions() {
     const retailPrice = this.defaultRetailPriceRange;
     const originalPrice = this.defaultRetailPriceRange;
@@ -174,11 +192,17 @@ export class ProductFiltersComponent
     };
   }
 
+  /**
+   * set the slider ranges to their original values
+   */
   setSelectedRanges() {
     this.selectedOriginalPriceRange = this.originalPriceRange;
     this.selectedRetailPriceRange = this.retailPriceRange;
   }
 
+  /**
+   * reset slider ranges to there original values
+   */
   resetSliderRanges() {
     const retailPrice = this.defaultRetailPriceRange;
     const originalPrice = this.defaultOriginalPriceRange;
@@ -188,14 +212,9 @@ export class ProductFiltersComponent
     this.selectedRetailPriceRange.maximum = retailPrice.maximum;
   }
 
-  get searchQuery() {
-    return this.filterForm.get('searchQuery');
-  }
-
-  get isFormEmpty() {
-    return !this.searchQuery.value;
-  }
-
+  /**
+   * build option items array from the categories array
+   */
   buildCategoryOptionItems(): void {
     this.categoryOptionItems = [];
     this.categories.forEach(category => {
@@ -203,5 +222,13 @@ export class ProductFiltersComponent
         new OptionItem(category.name, category.id, true)
       );
     });
+  }
+
+  get searchQuery() {
+    return this.filterForm.get('searchQuery');
+  }
+
+  get isFormEmpty() {
+    return !this.searchQuery.value;
   }
 }

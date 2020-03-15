@@ -19,6 +19,7 @@ export class FilterControlComponent implements OnInit, OnChanges, OnDestroy {
   @Output() filter = new EventEmitter<Request>();
   @Input() filterSubject: Subject<Request>;
   @Input() resetSubject: Subject<boolean>;
+  @Input() label: string;
   request: Request;
   showModal = false;
   constructor() {}

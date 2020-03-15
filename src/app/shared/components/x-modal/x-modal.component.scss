@@ -7,6 +7,12 @@
   left: 0;
   right: 0;
   bottom: 0;
+
+  &_is-filter {
+    .x-modal__container {
+      width: 600px;
+    }
+  }
 }
 
 .x-modal__overlay {

@@ -32,7 +32,11 @@ export class XModalComponent implements OnInit {
   }
 
   get showHeader() {
-      return this.options ? this.options.showHeader : false;
+    return this.options ? this.options.showHeader : false;
+  }
+
+  get isFilterControl() {
+    return this.type === 'filter-control';
   }
 
   /**

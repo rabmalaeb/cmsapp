@@ -14,7 +14,14 @@
   </div>
 </div>
 
-<app-x-modal *ngIf="showModal" (closeModal)="showModal = false">
+<app-x-modal
+  *ngIf="showModal"
+  type="filter-control"
+  (closeModal)="showModal = false"
+>
+  <div class="filter-control__title-container" *ngIf="label">
+    <div class="filter-control__title">{{ label }}</div>
+  </div>
   <div class="filter-control__filter-container">
     <ng-content></ng-content>
   </div>

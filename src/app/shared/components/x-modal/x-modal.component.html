@@ -1,4 +1,9 @@
-<div class="x-modal" appCloseComponent (escapeClicked)="close()">
+<div
+  class="x-modal"
+  appCloseComponent
+  (escapeClicked)="close()"
+  [ngClass]="{ 'x-modal_is-filter': isFilterControl }"
+>
   <div class="x-modal__overlay">
     <div class="x-modal__container">
       <div class="x-modal__title" *ngIf="showHeader">

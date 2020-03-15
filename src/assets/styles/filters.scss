@@ -12,22 +12,14 @@
 }
 
 .filters__item-section {
-  margin-right: 20px;
-  padding-right: 20px;
+  width: 100%;
   border-right: 1px solid $global--border-color;
   &:last-child {
-    margin-right: 0;
-    padding-right: 0;
     border-right: 0;
   }
 }
 
 .filters__item {
-  width: 200px;
-  margin-bottom: 20px;
-  &:last-child {
-    margin-bottom: 0;
-  }
 }
 
 .filters__item-label {
@@ -35,7 +27,11 @@
   font-weight: bold;
   border-bottom: 1px solid $global--border-color;
   margin-bottom: 10px;
-  padding-bottom: 10px;
+  padding: 10px 20px;
+}
+
+.filters__item-input {
+  padding: 20px;
 }
 
 .filters__button-container {
