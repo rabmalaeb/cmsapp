@@ -9,7 +9,7 @@ import { ModuleName, NumberRange } from 'src/app/shared/models/general';
 import { filter } from 'rxjs/operators';
 import { ProductStoreActions, ProductStoreSelectors } from '../store';
 import { ActionTypes } from '../store/actions';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { Store, ActionsSubject } from '@ngrx/store';
 import { RootStoreState } from 'src/app/root-store';
 import { NotificationService } from 'src/app/core/services/notification.service';
@@ -39,6 +39,8 @@ export class ProductsComponent implements OnInit {
   retailPriceRange$: Observable<NumberRange>;
   originalPriceRange$: Observable<NumberRange>;
   isLoading$: Observable<boolean>;
+  filterSubject = new Subject<ProductRequest>();
+  resetSubject = new Subject();
   constructor(
     private alertService: AlertService,
     private authorizationService: AuthorizationService,

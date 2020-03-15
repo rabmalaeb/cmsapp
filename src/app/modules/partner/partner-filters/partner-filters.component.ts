@@ -1,7 +1,8 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import FilterComponent from 'src/app/shared/filter';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { PartnerRequest } from '../partner';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-partner-filters',
@@ -9,7 +10,7 @@ import { PartnerRequest } from '../partner';
   styleUrls: ['./partner-filters.component.sass']
 })
 export class PartnerFiltersComponent implements OnInit, FilterComponent {
-  @Output() filter = new EventEmitter<PartnerRequest>();
+  @Input() filter: Subject<PartnerRequest>;
   filterForm: FormGroup;
 
   constructor(private form: FormBuilder) {}
@@ -19,7 +20,7 @@ export class PartnerFiltersComponent implements OnInit, FilterComponent {
   }
 
   submitFilters(): void {
-    this.filter.emit(this.buildRequest());
+    this.filter.next(this.buildRequest());
   }
 
   resetFilters(): void {

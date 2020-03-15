@@ -37,6 +37,7 @@ export class SelectOptionsComponent implements OnInit {
     this.options.forEach(option => {
       option.selected = selected;
     });
+    this.selected.emit();
   }
 
   get atLeaseOneOptionChecked() {

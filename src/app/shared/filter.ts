@@ -1,9 +1,9 @@
 import Request from './request';
-import { EventEmitter } from '@angular/core';
 import { FormGroup } from '@angular/forms';
+import { Subject } from 'rxjs';
 
 export default interface FilterComponent {
-  filter: EventEmitter<Request>;
+  filter: Subject<Request>;
   filterForm: FormGroup;
   isFormEmpty: boolean;
   submitFilters(): void;

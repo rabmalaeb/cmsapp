@@ -1,7 +1,7 @@
 <div class="page">
   <div class="page__section">
     <app-page-header
-      label="Admins"
+      label="Products"
       buttonLabel="Add Product"
       [condition]="canAddProduct | async"
       (action)="addProduct()"
@@ -14,12 +14,17 @@
           ></app-search-input>
         </div>
         <div class="page__filter-item">
-          <app-filter-control (filter)="getProducts($event)">
+          <app-filter-control
+            [filterSubject]="filterSubject"
+            [resetSubject]="resetSubject"
+            (filter)="getProducts($event)"
+          >
             <app-product-filters
               [retailPriceRange]="retailPriceRange$ | async"
               [originalPriceRange]="originalPriceRange$ | async"
               [categories]="categories$ | async"
-              (filter)="getProducts($event)"
+              [filter]="filterSubject"
+              [resetSubject]="resetSubject"
             ></app-product-filters>
           </app-filter-control>
         </div>

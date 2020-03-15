@@ -23,7 +23,7 @@ export class SearchInputComponent implements OnInit, OnDestroy {
     this.searchSubscription = this.searchItem.valueChanges
       .pipe(debounceTime(200))
       .subscribe(() => {
-        this.filter.emit(this.buildRequest());
+        this.filter.next(this.buildRequest());
       });
   }
 

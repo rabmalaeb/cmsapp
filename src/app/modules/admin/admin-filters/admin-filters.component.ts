@@ -1,7 +1,8 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { AdminRequest } from '../admin';
 import FilterComponent from 'src/app/shared/filter';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-admin-filters',
@@ -11,7 +12,7 @@ import FilterComponent from 'src/app/shared/filter';
 export class AdminFiltersComponent implements OnInit, FilterComponent {
   constructor(private form: FormBuilder) {}
 
-  @Output() filter = new EventEmitter<AdminRequest>();
+  @Input() filter: Subject<AdminRequest>;
 
   filterForm: FormGroup;
 
@@ -30,7 +31,7 @@ export class AdminFiltersComponent implements OnInit, FilterComponent {
   }
 
   submitFilters() {
-    this.filter.emit(this.buildRequest());
+    this.filter.next(this.buildRequest());
   }
 
   resetFilters() {

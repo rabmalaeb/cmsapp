@@ -1,7 +1,8 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import FilterComponent from 'src/app/shared/filter';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { LanguageRequest } from '../language';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-language-filters',
@@ -10,7 +11,7 @@ import { LanguageRequest } from '../language';
 })
 export class LanguageFiltersComponent implements OnInit, FilterComponent {
 
-  @Output() filter = new EventEmitter<LanguageRequest>();
+  @Input() filter: Subject<LanguageRequest>;
   filterForm: FormGroup;
 
   constructor(private form: FormBuilder) { }
@@ -20,7 +21,7 @@ export class LanguageFiltersComponent implements OnInit, FilterComponent {
   }
 
   submitFilters(): void {
-    this.filter.emit(this.buildRequest());
+    this.filter.next(this.buildRequest());
   }
 
   resetFilters(): void {

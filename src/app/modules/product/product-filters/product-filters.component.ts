@@ -1,8 +1,6 @@
 import {
   Component,
   OnInit,
-  Output,
-  EventEmitter,
   Input,
   OnChanges,
   SimpleChanges
@@ -14,6 +12,7 @@ import { Options, LabelType } from 'ng5-slider';
 import { NumberRange, OptionItem } from 'src/app/shared/models/general';
 import { isRangeValid } from 'src/app/shared/utils/general';
 import { Category } from '../../category/category';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-product-filters',
@@ -22,14 +21,46 @@ import { Category } from '../../category/category';
 })
 export class ProductFiltersComponent
   implements OnInit, OnChanges, FilterComponent {
-  @Output() filter = new EventEmitter<ProductRequest>();
+  @Input() filter: Subject<ProductRequest>;
+  @Input() resetSubject: Subject<boolean>;
+  /**
+   * original price input from parent component
+   */
   @Input() originalPriceRange: NumberRange;
-  @Input() categories: Category[];
+
+  /**
+   * retail price input from parent component
+   */
   @Input() retailPriceRange: NumberRange;
+  @Input() categories: Category[];
+
+  /**
+   * store the default original price
+   */
+  defaultOriginalPriceRange: NumberRange = {
+    minimum: 0,
+    maximum: 10000
+  };
+
+  /**
+   * store the default retail price
+   */
+  defaultRetailPriceRange: NumberRange = {
+    minimum: 0,
+    maximum: 10000
+  };
+
+  /**
+   * store the original price selected by the user
+   */
   selectedOriginalPriceRange: NumberRange = {
     minimum: 0,
     maximum: 10000
   };
+
+  /**
+   * store the retail price selected by the user
+   */
   selectedRetailPriceRange: NumberRange = {
     minimum: 0,
     maximum: 10000
@@ -44,27 +75,33 @@ export class ProductFiltersComponent
 
   ngOnInit() {
     this.buildForm();
+    this.setSliderLimits();
     this.setSliderOptions();
     this.buildCategoryOptionItems();
   }
 
   ngOnChanges(changes: SimpleChanges) {
     if (this.isInputChangeComingFromParentComponent) {
+      this.setSliderLimits();
       this.setSliderOptions();
       this.setSelectedRanges();
     }
     if (changes.categories) {
       this.buildCategoryOptionItems();
     }
+    if (changes.resetSubject) {
+      this.resetSubject.subscribe(() => this.resetFilters());
+    }
   }
 
   submitFilters(): void {
     this.isInputChangeComingFromParentComponent = false;
-    this.filter.emit(this.buildRequest());
+    this.filter.next(this.buildRequest());
   }
 
   resetFilters(): void {
-    this.filterForm.reset();
+    this.resetCategories();
+    this.resetSliderRanges();
     this.submitFilters();
   }
 
@@ -89,31 +126,48 @@ export class ProductFiltersComponent
     return selectedCategories;
   }
 
+  resetCategories() {
+    this.categoryOptionItems.map(categories => (categories.selected = true));
+  }
+
   buildForm(): void {
     this.filterForm = this.form.group({
       searchQuery: ['']
     });
   }
 
+  setSliderLimits() {
+    this.defaultOriginalPriceRange.minimum = isRangeValid(
+      this.originalPriceRange
+    )
+      ? this.originalPriceRange.minimum
+      : 0;
+    this.defaultOriginalPriceRange.maximum = isRangeValid(
+      this.originalPriceRange
+    )
+      ? this.originalPriceRange.maximum
+      : 100000;
+    this.defaultRetailPriceRange.minimum = isRangeValid(this.retailPriceRange)
+      ? this.retailPriceRange.minimum
+      : 0;
+    this.defaultRetailPriceRange.maximum = isRangeValid(this.retailPriceRange)
+      ? this.retailPriceRange.maximum
+      : 100000;
+  }
+
   setSliderOptions() {
+    const retailPrice = this.defaultRetailPriceRange;
+    const originalPrice = this.defaultRetailPriceRange;
     this.originalPriceSliderOptions = {
-      floor: isRangeValid(this.originalPriceRange)
-        ? this.originalPriceRange.minimum
-        : 0,
-      ceil: isRangeValid(this.originalPriceRange)
-        ? this.originalPriceRange.maximum
-        : 100000,
+      floor: originalPrice.minimum,
+      ceil: originalPrice.maximum,
       translate: (value: number, label: LabelType): string => {
         return '$' + value;
       }
     };
     this.retailPriceSliderOptions = {
-      floor: isRangeValid(this.retailPriceRange)
-        ? this.retailPriceRange.minimum
-        : 0,
-      ceil: isRangeValid(this.retailPriceRange)
-        ? this.retailPriceRange.maximum
-        : 100000,
+      floor: retailPrice.minimum,
+      ceil: retailPrice.maximum,
       translate: (value: number, label: LabelType): string => {
         return '$' + value;
       }
@@ -123,6 +177,15 @@ export class ProductFiltersComponent
   setSelectedRanges() {
     this.selectedOriginalPriceRange = this.originalPriceRange;
     this.selectedRetailPriceRange = this.retailPriceRange;
+  }
+
+  resetSliderRanges() {
+    const retailPrice = this.defaultRetailPriceRange;
+    const originalPrice = this.defaultOriginalPriceRange;
+    this.selectedOriginalPriceRange.minimum = originalPrice.minimum;
+    this.selectedOriginalPriceRange.maximum = originalPrice.maximum;
+    this.selectedRetailPriceRange.minimum = retailPrice.minimum;
+    this.selectedRetailPriceRange.maximum = retailPrice.maximum;
   }
 
   get searchQuery() {

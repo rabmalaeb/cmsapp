@@ -1,7 +1,8 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import FilterComponent from 'src/app/shared/filter';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { RoleRequest } from '../role';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-role-filters',
@@ -10,7 +11,7 @@ import { RoleRequest } from '../role';
 })
 export class RoleFiltersComponent implements OnInit, FilterComponent {
 
-  @Output() filter = new EventEmitter<RoleRequest>();
+  @Input() filter: Subject<RoleRequest>;
   filterForm: FormGroup;
 
   constructor(private form: FormBuilder) { }
@@ -20,7 +21,7 @@ export class RoleFiltersComponent implements OnInit, FilterComponent {
   }
 
   submitFilters(): void {
-    this.filter.emit(this.buildRequest());
+    this.filter.next(this.buildRequest());
   }
 
   resetFilters(): void {
