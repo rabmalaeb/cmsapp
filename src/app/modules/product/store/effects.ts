@@ -21,9 +21,10 @@ export class ProductStoreEffects {
     switchMap(action =>
       this.productService.getProducts(action.productRequest).pipe(
         map(
-          items =>
+          ({items, paginator}) =>
             new productActions.LoadSuccessAction({
-              items
+              items,
+              paginator
             })
         ),
         catchError(error =>
@@ -110,6 +111,27 @@ export class ProductStoreEffects {
         ),
         catchError(error =>
           observableOf(new productActions.DeleteProductFailureAction({ error }))
+        )
+      )
+    )
+  );
+
+
+  @Effect()
+  getProductFilterLimitsEffect$: Observable<Action> = this.actions$.pipe(
+    ofType<productActions.GetProductFilterLimitsRequestAction>(
+      productActions.ActionTypes.GET_PRODUCT_FILTER_LIMITS_REQUEST
+    ),
+    switchMap(action =>
+      this.productService.getProductFilterLimits().pipe(
+        map(
+          filterLimits =>
+            new productActions.GetProductFilterLimitsSuccessAction({
+              filterLimits
+            })
+        ),
+        catchError(error =>
+          observableOf(new productActions.GetProductFailureAction({ error }))
         )
       )
     )

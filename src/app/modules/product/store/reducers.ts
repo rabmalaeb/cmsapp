@@ -14,6 +14,7 @@ export function productReducer(state = initialState, action: Actions): State {
       return productAdapter.addAll(action.payload.items, {
         ...state,
         isLoading: false,
+        total: action.payload.paginator.total,
         loadingError: null
       });
     }
@@ -74,11 +75,14 @@ export function productReducer(state = initialState, action: Actions): State {
       };
     }
     case ActionTypes.UPDATE_PRODUCT_SUCCESS: {
-      return productAdapter.updateOne({id: action.payload.id, changes: action.payload.item}, {
-        ...state,
-        isLoadingAction: false,
-        actionError: null
-      });
+      return productAdapter.updateOne(
+        { id: action.payload.id, changes: action.payload.item },
+        {
+          ...state,
+          isLoadingAction: false,
+          actionError: null
+        }
+      );
     }
     case ActionTypes.UPDATE_PRODUCT_FAILURE: {
       return {
@@ -105,6 +109,28 @@ export function productReducer(state = initialState, action: Actions): State {
       return {
         ...state,
         isLoadingAction: false,
+        actionError: action.payload.error.message
+      };
+    }
+    case ActionTypes.GET_PRODUCT_FILTER_LIMITS_REQUEST: {
+      return {
+        ...state,
+        isLoadingItem: true,
+        actionError: null
+      };
+    }
+    case ActionTypes.GET_PRODUCT_FILTER_LIMITS_SUCCESS: {
+      return {
+        ...state,
+        isLoadingItem: false,
+        actionError: null,
+        filterLimits: action.payload.filterLimits
+      };
+    }
+    case ActionTypes.GET_PRODUCT_FILTER_LIMITS_FAILURE: {
+      return {
+        ...state,
+        isLoadingItem: false,
         actionError: action.payload.error.message
       };
     }

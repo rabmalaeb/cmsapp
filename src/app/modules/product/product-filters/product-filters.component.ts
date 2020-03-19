@@ -7,10 +7,9 @@ import {
 } from '@angular/core';
 import FilterComponent from 'src/app/shared/filter';
 import { FormGroup, FormBuilder } from '@angular/forms';
-import { ProductRequest } from '../product';
+import { ProductRequest, ProductFilterLimits } from '../product';
 import { Options, LabelType } from 'ng5-slider';
 import { NumberRange, OptionItem } from 'src/app/shared/models/general';
-import { isRangeValid } from 'src/app/shared/utils/general';
 import { Category } from '../../category/category';
 import { Subject } from 'rxjs';
 
@@ -23,32 +22,8 @@ export class ProductFiltersComponent
   implements OnInit, OnChanges, FilterComponent {
   @Input() filter: Subject<ProductRequest>;
   @Input() resetSubject: Subject<boolean>;
-  /**
-   * original price input from parent component
-   */
-  @Input() originalPriceRange: NumberRange;
-
-  /**
-   * retail price input from parent component
-   */
-  @Input() retailPriceRange: NumberRange;
+  @Input() productFilterLimits: ProductFilterLimits;
   @Input() categories: Category[];
-
-  /**
-   * store the default original price
-   */
-  defaultOriginalPriceRange: NumberRange = {
-    minimum: 0,
-    maximum: 10000
-  };
-
-  /**
-   * store the default retail price
-   */
-  defaultRetailPriceRange: NumberRange = {
-    minimum: 0,
-    maximum: 10000
-  };
 
   /**
    * store the original price selected by the user
@@ -74,15 +49,20 @@ export class ProductFiltersComponent
   constructor(private form: FormBuilder) {}
 
   ngOnInit() {
+    this.sendInitialRequest();
     this.buildForm();
-    this.setSliderLimits();
-    this.setSliderOptions();
     this.buildCategoryOptionItems();
   }
 
+  sendInitialRequest() {
+    const request: ProductRequest = {
+      currentPage: 1
+    };
+    this.filter.next(request);
+  }
+
   ngOnChanges(changes: SimpleChanges) {
-    if (this.isInputChangeComingFromParentComponent) {
-      this.setSliderLimits();
+    if (changes.productFilterLimits &&  this.productFilterLimits) {
       this.setSliderOptions();
       this.setSelectedRanges();
     }
@@ -113,16 +93,19 @@ export class ProductFiltersComponent
 
   /**
    * build the product request which is sent to the filter control through the filter subject
+   * the currentPage is always 1 since we always return the first page of the filtered list
    */
   buildRequest(): ProductRequest {
-    return {
+    const productRequest = {
       searchQuery: this.searchQuery.value ? this.searchQuery.value : '',
       minimumRetailPrice: this.selectedRetailPriceRange.minimum,
       maximumRetailPrice: this.selectedRetailPriceRange.maximum,
       minimumOriginalPrice: this.selectedOriginalPriceRange.minimum,
       maximumOriginalPrice: this.selectedOriginalPriceRange.maximum,
+      currentPage: 1,
       'categories[]': this.getSelectedCategories()
     };
+    return productRequest;
   }
 
   /**
@@ -149,43 +132,19 @@ export class ProductFiltersComponent
   }
 
   /**
-   * set the slider limits which is used to set the slider options
-   */
-  setSliderLimits() {
-    this.defaultOriginalPriceRange.minimum = isRangeValid(
-      this.originalPriceRange
-    )
-      ? this.originalPriceRange.minimum
-      : 0;
-    this.defaultOriginalPriceRange.maximum = isRangeValid(
-      this.originalPriceRange
-    )
-      ? this.originalPriceRange.maximum
-      : 100000;
-    this.defaultRetailPriceRange.minimum = isRangeValid(this.retailPriceRange)
-      ? this.retailPriceRange.minimum
-      : 0;
-    this.defaultRetailPriceRange.maximum = isRangeValid(this.retailPriceRange)
-      ? this.retailPriceRange.maximum
-      : 100000;
-  }
-
-  /**
    * set the slider options
    */
   setSliderOptions() {
-    const retailPrice = this.defaultRetailPriceRange;
-    const originalPrice = this.defaultRetailPriceRange;
     this.originalPriceSliderOptions = {
-      floor: originalPrice.minimum,
-      ceil: originalPrice.maximum,
+      floor: this.productFilterLimits.minimumOriginalPrice,
+      ceil: this.productFilterLimits.maximumOriginalPrice,
       translate: (value: number, label: LabelType): string => {
         return '$' + value;
       }
     };
     this.retailPriceSliderOptions = {
-      floor: retailPrice.minimum,
-      ceil: retailPrice.maximum,
+      floor: this.productFilterLimits.minimumRetailPrice,
+      ceil: this.productFilterLimits.maximumRetailPrice,
       translate: (value: number, label: LabelType): string => {
         return '$' + value;
       }
@@ -196,20 +155,24 @@ export class ProductFiltersComponent
    * set the slider ranges to their original values
    */
   setSelectedRanges() {
-    this.selectedOriginalPriceRange = this.originalPriceRange;
-    this.selectedRetailPriceRange = this.retailPriceRange;
+    this.selectedOriginalPriceRange = {
+      minimum: this.productFilterLimits.minimumOriginalPrice,
+      maximum: this.productFilterLimits.maximumOriginalPrice
+    };
+    this.selectedRetailPriceRange = {
+      minimum: this.productFilterLimits.minimumRetailPrice,
+      maximum: this.productFilterLimits.maximumRetailPrice
+    };
   }
 
   /**
    * reset slider ranges to there original values
    */
   resetSliderRanges() {
-    const retailPrice = this.defaultRetailPriceRange;
-    const originalPrice = this.defaultOriginalPriceRange;
-    this.selectedOriginalPriceRange.minimum = originalPrice.minimum;
-    this.selectedOriginalPriceRange.maximum = originalPrice.maximum;
-    this.selectedRetailPriceRange.minimum = retailPrice.minimum;
-    this.selectedRetailPriceRange.maximum = retailPrice.maximum;
+    this.selectedOriginalPriceRange.minimum = this.productFilterLimits.minimumOriginalPrice;
+    this.selectedOriginalPriceRange.maximum = this.productFilterLimits.maximumOriginalPrice;
+    this.selectedRetailPriceRange.minimum = this.productFilterLimits.minimumRetailPrice;
+    this.selectedRetailPriceRange.maximum = this.productFilterLimits.maximumRetailPrice;
   }
 
   /**

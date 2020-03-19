@@ -1,11 +1,11 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { MatPaginator } from '@angular/material/paginator';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { AlertService } from 'src/app/core/services/alert.service';
-import { Product, ProductRequest } from '../product';
+import { Product, ProductRequest, ProductFilterLimits } from '../product';
 import { AuthorizationService } from 'src/app/core/services/authorization.service';
-import { ModuleName, NumberRange } from 'src/app/shared/models/general';
+import { ModuleName } from 'src/app/shared/models/general';
 import { filter } from 'rxjs/operators';
 import { ProductStoreActions, ProductStoreSelectors } from '../store';
 import { ActionTypes } from '../store/actions';
@@ -15,6 +15,7 @@ import { RootStoreState } from 'src/app/root-store';
 import { NotificationService } from 'src/app/core/services/notification.service';
 import { Category } from '../../category/category';
 import { CategoryStoreActions, CategoryStoreSelectors } from '../../category/store';
+import { PaginationControl } from 'src/app/shared/paginator';
 
 @Component({
   selector: 'app-products',
@@ -36,11 +37,16 @@ export class ProductsComponent implements OnInit {
   products$: Observable<Product[]>;
   categories$: Observable<Category[]>;
   error$: Observable<string>;
-  retailPriceRange$: Observable<NumberRange>;
-  originalPriceRange$: Observable<NumberRange>;
+  totalNumberOfProducts$: Observable<number>;
+  productFilterLimits$: Observable<ProductFilterLimits>;
   isLoading$: Observable<boolean>;
   filterSubject = new Subject<ProductRequest>();
   resetSubject = new Subject();
+  paginatorControl: PaginationControl = {
+    currentPage: 1,
+    perPage: 20
+  };
+  productRequest: ProductRequest;
   constructor(
     private alertService: AlertService,
     private authorizationService: AuthorizationService,
@@ -51,9 +57,18 @@ export class ProductsComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.getProducts();
+    this.setInitialRequest();
+    this.getProducts(this.productRequest);
+    this.getProductFilterLimits();
     this.getCategories();
     this.initializeStoreVariables();
+  }
+
+  setInitialRequest() {
+    this.productRequest = {
+      perPage: this.paginatorControl.perPage,
+      currentPage: this.paginatorControl.currentPage
+    };
   }
 
   initializeStoreVariables() {
@@ -65,12 +80,8 @@ export class ProductsComponent implements OnInit {
       CategoryStoreSelectors.selectAllCategoryItems
     );
 
-    this.originalPriceRange$ = this.store$.select(
-      ProductStoreSelectors.selectOriginalPriceRange()
-    );
-
-    this.retailPriceRange$ = this.store$.select(
-      ProductStoreSelectors.selectRetailPriceRange()
+    this.productFilterLimits$ = this.store$.select(
+      ProductStoreSelectors.selectProductFilterLimits
     );
 
     this.error$ = this.store$.select(
@@ -79,6 +90,10 @@ export class ProductsComponent implements OnInit {
 
     this.isLoading$ = this.store$.select(
       ProductStoreSelectors.selectProductIsLoading
+    );
+
+    this.totalNumberOfProducts$ = this.store$.select(
+      ProductStoreSelectors.selectTotalNumberOfProducts
     );
 
     this.actionsSubject$
@@ -108,10 +123,27 @@ export class ProductsComponent implements OnInit {
       });
   }
 
+  filterProducts(productRequest: ProductRequest) {
+    this.productRequest = productRequest;
+    this.productRequest.perPage = this.paginatorControl.perPage;
+    this.resetPaginator();
+    this.getProducts(productRequest);
+  }
+
   getProducts(productRequest: ProductRequest = null) {
     this.store$.dispatch(
       new ProductStoreActions.LoadRequestAction(productRequest)
     );
+  }
+
+  getProductFilterLimits() {
+    this.store$.dispatch(
+      new ProductStoreActions.GetProductFilterLimitsRequestAction()
+    );
+  }
+
+  resetPaginator() {
+    this.paginator.pageIndex = 0;
   }
 
   getCategories() {
@@ -143,6 +175,14 @@ export class ProductsComponent implements OnInit {
         );
       }
     );
+  }
+
+  setPage($event: PageEvent) {
+    this.productRequest.perPage = $event.pageSize;
+    this.productRequest.currentPage = $event.pageIndex + 1;
+    this.paginatorControl.currentPage = $event.pageIndex + 1;
+    this.paginatorControl.perPage = $event.pageSize;
+    this.getProducts(this.productRequest);
   }
 
   get canAddProduct() {

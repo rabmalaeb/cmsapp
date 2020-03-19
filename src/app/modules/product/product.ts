@@ -23,3 +23,10 @@ export class ProductRequest extends Request {
   maximumOriginalPrice?: number;
   'categories[]'?: number[];
 }
+
+export interface ProductFilterLimits {
+  minimumRetailPrice: number;
+  maximumRetailPrice: number;
+  minimumOriginalPrice: number;
+  maximumOriginalPrice: number;
+}

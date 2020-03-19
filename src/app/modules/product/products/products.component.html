@@ -10,7 +10,7 @@
         <div class="page__filter-item page__filter-item_is-search">
           <app-search-input
             placeholder="Search"
-            (filter)="getProducts($event)"
+            (filter)="filterProducts($event)"
           ></app-search-input>
         </div>
         <div class="page__filter-item">
@@ -18,11 +18,10 @@
             label="Filter Products"
             [filterSubject]="filterSubject"
             [resetSubject]="resetSubject"
-            (filter)="getProducts($event)"
+            (filter)="filterProducts($event)"
           >
             <app-product-filters
-              [retailPriceRange]="retailPriceRange$ | async"
-              [originalPriceRange]="originalPriceRange$ | async"
+              [productFilterLimits]="productFilterLimits$ | async"
               [categories]="categories$ | async"
               [filter]="filterSubject"
               [resetSubject]="resetSubject"
@@ -58,7 +57,7 @@
       <ng-container matColumnDef="image">
         <mat-header-cell *matHeaderCellDef>Image</mat-header-cell>
         <mat-cell *matCellDef="let product">
-          <div class="table__image-container">
+          <div class="table__image-container" *ngIf="product.media">
             <img class="table__image" [src]="product.media.imageUrl" alt="" />
           </div>
         </mat-cell>
@@ -94,6 +93,9 @@
 
     <mat-paginator
       [pageSizeOptions]="[20, 50, 100]"
+      [length]="totalNumberOfProducts$ | async"
+      [pageSize]="paginatorControl.perPage"
+      (page)="setPage($event)"
       showFirstLastButtons
     ></mat-paginator>
   </div>
