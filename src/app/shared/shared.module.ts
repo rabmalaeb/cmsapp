@@ -23,6 +23,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { AlertComponent } from 'src/app/shared/components/alert/alert.component';
 import { Ng5SliderModule } from 'ng5-slider';
+import { MatSortModule } from '@angular/material/sort';
 
 @NgModule({
   imports: [
@@ -72,6 +73,7 @@ import { Ng5SliderModule } from 'ng5-slider';
     MatProgressSpinnerModule,
     MatDialogModule,
     MatTableModule,
+    MatSortModule,
     Ng5SliderModule
   ],
   providers: [],

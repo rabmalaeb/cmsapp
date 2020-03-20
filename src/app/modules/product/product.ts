@@ -21,6 +21,8 @@ export class ProductRequest extends Request {
   maximumRetailPrice?: number;
   minimumOriginalPrice?: number;
   maximumOriginalPrice?: number;
+  sortBy?: string;
+  sortDirection?: string;
   'categories[]'?: number[];
 }
 

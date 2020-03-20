@@ -16,6 +16,7 @@ import { NotificationService } from 'src/app/core/services/notification.service'
 import { Category } from '../../category/category';
 import { CategoryStoreActions, CategoryStoreSelectors } from '../../category/store';
 import { PaginationControl } from 'src/app/shared/paginator';
+import { Sort } from '@angular/material/sort';
 
 @Component({
   selector: 'app-products',
@@ -182,6 +183,13 @@ export class ProductsComponent implements OnInit {
     this.productRequest.currentPage = $event.pageIndex + 1;
     this.paginatorControl.currentPage = $event.pageIndex + 1;
     this.paginatorControl.perPage = $event.pageSize;
+    this.getProducts(this.productRequest);
+  }
+
+  // TO DO when filtering the sorting is not working yets
+  sortProducts(event: Sort) {
+    this.productRequest.sortBy = event.active;
+    this.productRequest.sortDirection = event.direction;
     this.getProducts(this.productRequest);
   }
 

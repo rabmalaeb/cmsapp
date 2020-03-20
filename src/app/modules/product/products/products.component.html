@@ -34,21 +34,23 @@
   <div class="page__container">
     <mat-table
       mat-table
+      matSort
+      (matSortChange)="sortProducts($event)"
       [dataSource]="products$ | async"
       class="mat-elevation-z8"
     >
       <ng-container matColumnDef="id">
-        <mat-header-cell *matHeaderCellDef>Id</mat-header-cell>
+        <mat-header-cell mat-sort-header *matHeaderCellDef>Id</mat-header-cell>
         <mat-cell *matCellDef="let product">{{ product.id }}</mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="name">
-        <mat-header-cell *matHeaderCellDef>Name</mat-header-cell>
+        <mat-header-cell mat-sort-header *matHeaderCellDef>Name</mat-header-cell>
         <mat-cell *matCellDef="let product">{{ product.name }}</mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="description">
-        <mat-header-cell *matHeaderCellDef>Description</mat-header-cell>
+        <mat-header-cell mat-sort-header *matHeaderCellDef>Description</mat-header-cell>
         <mat-cell *matCellDef="let product">
           {{ product.description }}
         </mat-cell>
