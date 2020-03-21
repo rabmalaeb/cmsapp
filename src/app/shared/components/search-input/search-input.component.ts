@@ -1,8 +1,15 @@
-import { Component, OnInit, Output, EventEmitter, OnDestroy, Input } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Output,
+  EventEmitter,
+  OnDestroy,
+  Input
+} from '@angular/core';
 import { debounceTime } from 'rxjs/operators';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { Subscription } from 'rxjs';
-import Request from '../../request';
+import { FilterHandler } from '../../filters/filter';
 
 @Component({
   selector: 'app-search-input',
@@ -10,20 +17,20 @@ import Request from '../../request';
   styleUrls: ['./search-input.component.scss']
 })
 export class SearchInputComponent implements OnInit, OnDestroy {
-  @Output() filter = new EventEmitter<Request>();
+  @Output() filter = new EventEmitter<boolean>();
+  @Input() filterHandler: FilterHandler;
   @Input() placeholder: string;
   searchForm: FormGroup;
   searchSubscription: Subscription;
-  constructor(
-    private form: FormBuilder
-  ) {}
+  constructor(private form: FormBuilder) {}
 
   ngOnInit() {
     this.buildForm();
     this.searchSubscription = this.searchItem.valueChanges
       .pipe(debounceTime(200))
       .subscribe(() => {
-        this.filter.next(this.buildRequest());
+        this.filterHandler.setSearchQuery(this.searchItem.value);
+        this.filter.emit();
       });
   }
 
@@ -35,12 +42,6 @@ export class SearchInputComponent implements OnInit, OnDestroy {
 
   get searchItem() {
     return this.searchForm.get('searchItem');
-  }
-
-  buildRequest(): Request {
-    return {
-      searchQuery: this.searchItem.value
-    };
   }
 
   ngOnDestroy() {

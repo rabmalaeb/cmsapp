@@ -9,14 +9,17 @@ import { ModuleName } from 'src/app/shared/models/general';
 import { filter } from 'rxjs/operators';
 import { ProductStoreActions, ProductStoreSelectors } from '../store';
 import { ActionTypes } from '../store/actions';
-import { Observable, Subject } from 'rxjs';
+import { Observable } from 'rxjs';
 import { Store, ActionsSubject } from '@ngrx/store';
 import { RootStoreState } from 'src/app/root-store';
 import { NotificationService } from 'src/app/core/services/notification.service';
 import { Category } from '../../category/category';
-import { CategoryStoreActions, CategoryStoreSelectors } from '../../category/store';
-import { PaginationControl } from 'src/app/shared/paginator';
+import {
+  CategoryStoreActions,
+  CategoryStoreSelectors
+} from '../../category/store';
 import { Sort } from '@angular/material/sort';
+import { FilterHandler } from 'src/app/shared/filters/filter';
 
 @Component({
   selector: 'app-products',
@@ -24,7 +27,6 @@ import { Sort } from '@angular/material/sort';
   styleUrls: ['./products.component.scss']
 })
 export class ProductsComponent implements OnInit {
-  isLoading = false;
   displayedColumns: string[] = [
     'id',
     'name',
@@ -41,13 +43,7 @@ export class ProductsComponent implements OnInit {
   totalNumberOfProducts$: Observable<number>;
   productFilterLimits$: Observable<ProductFilterLimits>;
   isLoading$: Observable<boolean>;
-  filterSubject = new Subject<ProductRequest>();
-  resetSubject = new Subject();
-  paginatorControl: PaginationControl = {
-    currentPage: 1,
-    perPage: 20
-  };
-  productRequest: ProductRequest;
+  filterHandler = new FilterHandler();
   constructor(
     private alertService: AlertService,
     private authorizationService: AuthorizationService,
@@ -58,18 +54,10 @@ export class ProductsComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.setInitialRequest();
-    this.getProducts(this.productRequest);
+    this.getProducts();
     this.getProductFilterLimits();
     this.getCategories();
     this.initializeStoreVariables();
-  }
-
-  setInitialRequest() {
-    this.productRequest = {
-      perPage: this.paginatorControl.perPage,
-      currentPage: this.paginatorControl.currentPage
-    };
   }
 
   initializeStoreVariables() {
@@ -124,17 +112,14 @@ export class ProductsComponent implements OnInit {
       });
   }
 
-  filterProducts(productRequest: ProductRequest) {
-    this.productRequest = productRequest;
-    this.productRequest.perPage = this.paginatorControl.perPage;
+  filterProducts() {
     this.resetPaginator();
-    this.getProducts(productRequest);
+    this.getProducts();
   }
 
-  getProducts(productRequest: ProductRequest = null) {
-    this.store$.dispatch(
-      new ProductStoreActions.LoadRequestAction(productRequest)
-    );
+  getProducts() {
+    const request = this.filterHandler.getRequest();
+    this.store$.dispatch(new ProductStoreActions.LoadRequestAction(request));
   }
 
   getProductFilterLimits() {
@@ -148,9 +133,7 @@ export class ProductsComponent implements OnInit {
   }
 
   getCategories() {
-    this.store$.dispatch(
-      new CategoryStoreActions.LoadRequestAction()
-    );
+    this.store$.dispatch(new CategoryStoreActions.LoadRequestAction());
   }
 
   addProduct() {
@@ -179,18 +162,14 @@ export class ProductsComponent implements OnInit {
   }
 
   setPage($event: PageEvent) {
-    this.productRequest.perPage = $event.pageSize;
-    this.productRequest.currentPage = $event.pageIndex + 1;
-    this.paginatorControl.currentPage = $event.pageIndex + 1;
-    this.paginatorControl.perPage = $event.pageSize;
-    this.getProducts(this.productRequest);
+    this.filterHandler.setPaginator($event.pageIndex + 1, $event.pageSize);
+    this.getProducts();
   }
 
   // TO DO when filtering the sorting is not working yets
-  sortProducts(event: Sort) {
-    this.productRequest.sortBy = event.active;
-    this.productRequest.sortDirection = event.direction;
-    this.getProducts(this.productRequest);
+  sortProducts(sort: Sort) {
+    this.filterHandler.setSort(sort);
+    this.getProducts();
   }
 
   get canAddProduct() {
@@ -199,5 +178,9 @@ export class ProductsComponent implements OnInit {
 
   get canDeleteProduct() {
     return this.authorizationService.canDelete(ModuleName.PRODUCTS);
+  }
+
+  get perPage() {
+    return this.filterHandler.getPaginator().perPage;
   }
 }

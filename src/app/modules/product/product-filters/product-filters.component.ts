@@ -5,13 +5,13 @@ import {
   OnChanges,
   SimpleChanges
 } from '@angular/core';
-import FilterComponent from 'src/app/shared/filter';
+
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { ProductRequest, ProductFilterLimits } from '../product';
 import { Options, LabelType } from 'ng5-slider';
 import { NumberRange, OptionItem } from 'src/app/shared/models/general';
 import { Category } from '../../category/category';
-import { Subject } from 'rxjs';
+import { FilterHandler, FilterComponent } from 'src/app/shared/filters/filter';
 
 @Component({
   selector: 'app-product-filters',
@@ -20,8 +20,7 @@ import { Subject } from 'rxjs';
 })
 export class ProductFiltersComponent
   implements OnInit, OnChanges, FilterComponent {
-  @Input() filter: Subject<ProductRequest>;
-  @Input() resetSubject: Subject<boolean>;
+  @Input() filterHandler: FilterHandler;
   @Input() productFilterLimits: ProductFilterLimits;
   @Input() categories: Category[];
 
@@ -58,19 +57,19 @@ export class ProductFiltersComponent
     const request: ProductRequest = {
       currentPage: 1
     };
-    this.filter.next(request);
+    this.filterHandler.setRequest(request);
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes.productFilterLimits &&  this.productFilterLimits) {
+    if (changes.productFilterLimits && this.productFilterLimits) {
       this.setSliderOptions();
       this.setSelectedRanges();
     }
     if (changes.categories) {
       this.buildCategoryOptionItems();
     }
-    if (changes.resetSubject) {
-      this.resetSubject.subscribe(() => this.resetFilters());
+    if (changes.filterHandler) {
+      this.filterHandler.resetSubject.subscribe(() => this.resetFilters());
     }
   }
 
@@ -88,7 +87,7 @@ export class ProductFiltersComponent
    */
   submitFilters(): void {
     this.isInputChangeComingFromParentComponent = false;
-    this.filter.next(this.buildRequest());
+    this.filterHandler.setRequest(this.buildRequest());
   }
 
   /**
