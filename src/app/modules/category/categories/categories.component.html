@@ -10,7 +10,8 @@
         <div class="page__filter-item page__filter-item_is-search">
           <app-search-input
             placeholder="Search"
-            (filter)="getCategories($event)"
+            [filterHandler]="filterHandler"
+            (filter)="getCategories()"
           ></app-search-input>
         </div>
       </div>

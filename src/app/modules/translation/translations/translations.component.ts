@@ -14,6 +14,7 @@ import { ActionsSubject, Store } from '@ngrx/store';
 import { NotificationService } from 'src/app/core/services/notification.service';
 import { RootStoreState } from 'src/app/root-store';
 import { Observable } from 'rxjs';
+import { FilterHandler } from 'src/app/shared/filters/filter';
 
 @Component({
   selector: 'app-translations',
@@ -21,8 +22,6 @@ import { Observable } from 'rxjs';
   styleUrls: ['./translations.component.scss']
 })
 export class TranslationsComponent implements OnInit {
-  isLoading = false;
-  translations: Translation[] = [];
   displayedColumns: string[] = [
     'id',
     'language',
@@ -35,10 +34,10 @@ export class TranslationsComponent implements OnInit {
   error$: Observable<string>;
   isLoading$: Observable<boolean>;
   dataSource: MatTableDataSource<any>;
+  filterHandler = new FilterHandler();
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 
   constructor(
-    private translationService: TranslationService,
     private alertService: AlertService,
     private authorizationService: AuthorizationService,
     private router: Router,
@@ -96,15 +95,11 @@ export class TranslationsComponent implements OnInit {
       });
   }
 
-  getTranslations(translationRequest: TranslationRequest = null) {
+  getTranslations() {
+    const request = this.filterHandler.getRequest();
     this.store$.dispatch(
-      new TranslationStoreActions.LoadRequestAction(translationRequest)
+      new TranslationStoreActions.LoadRequestAction(request)
     );
-  }
-
-  setDataSource() {
-    this.dataSource = new MatTableDataSource<Translation>(this.translations);
-    this.dataSource.paginator = this.paginator;
   }
 
   addTranslation() {

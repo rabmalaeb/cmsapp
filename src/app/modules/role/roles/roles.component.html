@@ -10,7 +10,8 @@
         <div class="page__filter-item page__filter-item_is-search">
           <app-search-input
             placeholder="Search"
-            (filter)="getRoles($event)"
+            [filterHandler]="filterHandler"
+            (filter)="getRoles()"
           ></app-search-input>
         </div>
       </div>

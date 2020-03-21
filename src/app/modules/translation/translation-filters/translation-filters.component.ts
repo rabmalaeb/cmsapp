@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import FilterComponent from 'src/app/shared/filter';
+import { FilterComponent, FilterHandler } from 'src/app/shared/filters/filter';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { TranslationRequest } from '../translation';
 import { Subject } from 'rxjs';
@@ -12,6 +12,7 @@ import { Subject } from 'rxjs';
 export class TranslationFiltersComponent implements OnInit, FilterComponent {
 
   @Input() filter: Subject<TranslationRequest>;
+  @Input() filterHandler: FilterHandler;
   filterForm: FormGroup;
 
   constructor(private form: FormBuilder) { }

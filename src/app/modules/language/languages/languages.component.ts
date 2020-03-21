@@ -13,6 +13,7 @@ import { filter } from 'rxjs/operators';
 import { NotificationService } from 'src/app/core/services/notification.service';
 import { ActionsSubject, Store } from '@ngrx/store';
 import { RootStoreState } from 'src/app/root-store';
+import { FilterHandler } from 'src/app/shared/filters/filter';
 
 @Component({
   selector: 'app-languages',
@@ -20,12 +21,11 @@ import { RootStoreState } from 'src/app/root-store';
   styleUrls: ['./languages.component.scss']
 })
 export class LanguagesComponent implements OnInit {
-  isLoading = false;
-  languages: Language[] = [];
   displayedColumns: string[] = ['id', 'name', 'code', 'action'];
   languages$: Observable<Language[]>;
   error$: Observable<string>;
   isLoading$: Observable<boolean>;
+  filterHandler = new FilterHandler();
   dataSource: MatTableDataSource<any>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 
@@ -83,16 +83,13 @@ export class LanguagesComponent implements OnInit {
       });
   }
 
-  getLanguages(languageRequest: LanguageRequest = null) {
+  getLanguages() {
+    const request = this.filterHandler.getRequest();
     this.store$.dispatch(
-      new LanguageStoreActions.LoadRequestAction(languageRequest)
+      new LanguageStoreActions.LoadRequestAction(request)
     );
   }
 
-  setDataSource() {
-    this.dataSource = new MatTableDataSource<Language>(this.languages);
-    this.dataSource.paginator = this.paginator;
-  }
   addLanguage() {
     this.router.navigate(['languages/add']);
   }

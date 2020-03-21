@@ -11,7 +11,8 @@
         <div class="page__filter-item page__filter-item_is-search">
           <app-search-input
             placeholder="Search"
-            (filter)="getUsers($event)"
+            [filterHandler]="filterHandler"
+            (filter)="getUsers()"
           ></app-search-input>
         </div>
       </div>

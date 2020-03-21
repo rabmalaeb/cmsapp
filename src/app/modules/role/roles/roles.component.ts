@@ -17,6 +17,7 @@ import {
 import { ActionTypes } from '../store/actions';
 import { NotificationService } from 'src/app/core/services/notification.service';
 import { filter } from 'rxjs/operators';
+import { FilterHandler } from 'src/app/shared/filters/filter';
 
 @Component({
   selector: 'app-roles',
@@ -24,13 +25,10 @@ import { filter } from 'rxjs/operators';
   styleUrls: ['./roles.component.scss']
 })
 export class RolesComponent implements OnInit {
-  isLoading = false;
-  roles: Role[] = [];
-
   roles$: Observable<Role[]>;
   error$: Observable<string>;
   isLoading$: Observable<boolean>;
-
+  filterHandler = new FilterHandler();
   displayedColumns: string[] = ['id', 'name', 'partner', 'action'];
   dataSource: MatTableDataSource<any>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
@@ -81,13 +79,9 @@ export class RolesComponent implements OnInit {
       });
   }
 
-  getRoles(roleRequest: RoleRequest = null) {
-    this.store$.dispatch(new RoleStoreActions.LoadRequestAction(roleRequest));
-  }
-
-  setDataSource() {
-    this.dataSource = new MatTableDataSource<Role>(this.roles);
-    this.dataSource.paginator = this.paginator;
+  getRoles() {
+    const request = this.filterHandler.getRequest();
+    this.store$.dispatch(new RoleStoreActions.LoadRequestAction(request));
   }
 
   addRole() {

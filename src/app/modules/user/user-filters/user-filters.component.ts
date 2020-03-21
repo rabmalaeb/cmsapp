@@ -1,9 +1,9 @@
 import { Component, OnInit, Input } from '@angular/core';
-import FilterComponent from 'src/app/shared/filter';
+import { FilterComponent, FilterHandler } from 'src/app/shared/filters/filter';
 import Request from 'src/app/shared/request';
 import { FormGroup, FormBuilder } from '@angular/forms';
-import { UserRequest } from '../user';
 import { Subject } from 'rxjs';
+import { User, UserRequest } from '../user';
 
 @Component({
   selector: 'app-user-filters',
@@ -12,6 +12,7 @@ import { Subject } from 'rxjs';
 })
 export class UserFiltersComponent implements OnInit, FilterComponent {
   @Input() filter: Subject<Request>;
+  @Input() filterHandler: FilterHandler;
   filterForm: FormGroup;
 
   constructor(private form: FormBuilder) {}

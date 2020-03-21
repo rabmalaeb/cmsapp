@@ -7,6 +7,7 @@ import { FormGroup } from '@angular/forms';
 export class FilterHandler {
   private request: Request;
   private sort: Sort;
+  private searchQuery;
   private paginator: PaginationControl = {
     currentPage: 1,
     perPage: 20
@@ -19,6 +20,10 @@ export class FilterHandler {
     this.request = request;
   }
 
+  /**
+   * before getting the request we should set the default filters
+   * sort by and paginator control
+   */
   getRequest() {
     this.addDefaultFilters();
     return this.request;
@@ -37,6 +42,10 @@ export class FilterHandler {
     this.sort = sort;
   }
 
+  setSearchQuery(query: string) {
+    this.searchQuery = query;
+  }
+
   addDefaultFilters() {
     this.setRequest({
       ...this.request,
@@ -44,11 +53,8 @@ export class FilterHandler {
       currentPage: this.paginator.currentPage,
       sortBy: this.sort ? this.sort.active : '',
       sortDirection: this.sort ? this.sort.direction : '',
+      searchQuery: this.searchQuery ? this.searchQuery : ''
     });
-  }
-
-  setSearchQuery(query: string) {
-    this.request.searchQuery = query;
   }
 }
 

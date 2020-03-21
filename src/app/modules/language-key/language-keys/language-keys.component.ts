@@ -13,6 +13,7 @@ import { ActionTypes } from '../store/actions';
 import { Observable } from 'rxjs';
 import { NotificationService } from 'src/app/core/services/notification.service';
 import { filter } from 'rxjs/operators';
+import { FilterHandler } from 'src/app/shared/filters/filter';
 
 @Component({
   selector: 'app-languagekeys',
@@ -20,13 +21,12 @@ import { filter } from 'rxjs/operators';
   styleUrls: ['./language-keys.component.scss']
 })
 export class LanguageKeysComponent implements OnInit {
-  isLoading = false;
-  languageKeys: LanguageKey[] = [];
   displayedColumns: string[] = ['id', 'name', 'description', 'action'];
   languageKeys$: Observable<LanguageKey[]>;
   error$: Observable<string>;
   isLoading$: Observable<boolean>;
   dataSource: MatTableDataSource<any>;
+  filterHandler = new FilterHandler();
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 
   constructor(
@@ -87,16 +87,13 @@ export class LanguageKeysComponent implements OnInit {
       });
   }
 
-  getLanguageKeys(languageKeyRequest: LanguageKeyRequest = null) {
+  getLanguageKeys() {
+    const request = this.filterHandler.getRequest();
     this.store$.dispatch(
-      new LanguagekeyStoreActions.LoadRequestAction(languageKeyRequest)
+      new LanguagekeyStoreActions.LoadRequestAction(request)
     );
   }
 
-  setDataSource() {
-    this.dataSource = new MatTableDataSource<LanguageKey>(this.languageKeys);
-    this.dataSource.paginator = this.paginator;
-  }
   addLanguageKey() {
     this.router.navigate(['keys/add']);
   }

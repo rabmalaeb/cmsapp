@@ -13,6 +13,7 @@ import { NotificationService } from 'src/app/core/services/notification.service'
 import { CategoryStoreSelectors, CategoryStoreActions } from '../store';
 import { ActionTypes } from '../store/actions';
 import { filter } from 'rxjs/operators';
+import { FilterHandler } from 'src/app/shared/filters/filter';
 
 @Component({
   selector: 'app-categories',
@@ -20,8 +21,6 @@ import { filter } from 'rxjs/operators';
   styleUrls: ['./categories.component.scss']
 })
 export class CategoriesComponent implements OnInit {
-  isLoading = false;
-  categories: Category[] = [];
   displayedColumns: string[] = [
     'id',
     'name',
@@ -34,6 +33,7 @@ export class CategoriesComponent implements OnInit {
   categories$: Observable<Category[]>;
   error$: Observable<string>;
   isLoading$: Observable<boolean>;
+  filterHandler = new FilterHandler();
   constructor(
     private alertService: AlertService,
     private authorizationService: AuthorizationService,
@@ -88,16 +88,13 @@ export class CategoriesComponent implements OnInit {
       });
   }
 
-  getCategories(categories: CategoryRequest = null) {
+  getCategories() {
+    const request = this.filterHandler.getRequest();
     this.store$.dispatch(
-      new CategoryStoreActions.LoadRequestAction(categories)
+      new CategoryStoreActions.LoadRequestAction(request)
     );
   }
 
-  setDataSource() {
-    this.dataSource = new MatTableDataSource<Category>(this.categories);
-    this.dataSource.paginator = this.paginator;
-  }
   addCategory() {
     this.router.navigate(['categories/add']);
   }

@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import FilterComponent from 'src/app/shared/filter';
+import { FilterComponent, FilterHandler } from 'src/app/shared/filters/filter';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { RoleRequest } from '../role';
 import { Subject } from 'rxjs';
@@ -12,6 +12,7 @@ import { Subject } from 'rxjs';
 export class RoleFiltersComponent implements OnInit, FilterComponent {
 
   @Input() filter: Subject<RoleRequest>;
+  @Input() filterHandler: FilterHandler;
   filterForm: FormGroup;
 
   constructor(private form: FormBuilder) { }

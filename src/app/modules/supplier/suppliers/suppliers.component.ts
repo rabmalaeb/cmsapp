@@ -13,6 +13,7 @@ import { RootStoreState } from 'src/app/root-store';
 import { NotificationService } from 'src/app/core/services/notification.service';
 import { ActionTypes } from '../store/actions';
 import { filter } from 'rxjs/operators';
+import { FilterHandler } from 'src/app/shared/filters/filter';
 
 @Component({
   selector: 'app-suppliers',
@@ -20,13 +21,12 @@ import { filter } from 'rxjs/operators';
   styleUrls: ['./suppliers.component.scss']
 })
 export class SuppliersComponent implements OnInit {
-  isLoading = false;
-  suppliers: Supplier[] = [];
   displayedColumns: string[] = ['id', 'name', 'code', 'action'];
   dataSource: MatTableDataSource<any>;
   suppliers$: Observable<Supplier[]>;
   error$: Observable<string>;
   isLoading$: Observable<boolean>;
+  filterHandler = new FilterHandler();
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 
   constructor(
@@ -83,16 +83,14 @@ export class SuppliersComponent implements OnInit {
       });
   }
 
-  getSuppliers(supplierRequest: SupplierRequest = null) {
+  getSuppliers() {
+    const request = this.filterHandler.getRequest();
     this.store$.dispatch(
-      new SupplierStoreActions.LoadRequestAction(supplierRequest)
+      new SupplierStoreActions.LoadRequestAction(request)
     );
   }
 
-  setDataSource() {
-    this.dataSource = new MatTableDataSource<Supplier>(this.suppliers);
-    this.dataSource.paginator = this.paginator;
-  }
+
   addSupplier() {
     this.router.navigate(['suppliers/add']);
   }

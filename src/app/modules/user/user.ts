@@ -8,4 +8,9 @@ export interface User {
   mobile: string;
 }
 
-export interface UserRequest extends Request {}
+export interface UserRequest extends Request {
+  firstName?: string;
+  lastName?: string;
+  email?: string;
+  mobile?: string;
+}

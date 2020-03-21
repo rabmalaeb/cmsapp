@@ -17,6 +17,7 @@ import {
 import { ActionTypes } from '../store/actions';
 import { NotificationService } from 'src/app/core/services/notification.service';
 import { filter } from 'rxjs/operators';
+import { FilterHandler } from 'src/app/shared/filters/filter';
 
 @Component({
   selector: 'app-users',
@@ -24,12 +25,10 @@ import { filter } from 'rxjs/operators';
   styleUrls: ['./users.component.scss']
 })
 export class UsersComponent implements OnInit {
-  isLoading = false;
-  users: User[] = [];
-
   users$: Observable<User[]>;
   error$: Observable<string>;
   isLoading$: Observable<boolean>;
+  filterHandler = new FilterHandler();
 
   displayedColumns: string[] = [
     'id',
@@ -89,13 +88,9 @@ export class UsersComponent implements OnInit {
       });
   }
 
-  getUsers(userRequest: User = null) {
-    this.store$.dispatch(new UserStoreActions.LoadRequestAction(userRequest));
-  }
-
-  setDataSource() {
-    this.dataSource = new MatTableDataSource<User>(this.users);
-    this.dataSource.paginator = this.paginator;
+  getUsers() {
+    const request = this.filterHandler.getRequest();
+    this.store$.dispatch(new UserStoreActions.LoadRequestAction(request));
   }
 
   addUser() {

@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { AlertService } from 'src/app/core/services/alert.service';
-import { Product, ProductRequest, ProductFilterLimits } from '../product';
+import { Product, ProductFilterLimits } from '../product';
 import { AuthorizationService } from 'src/app/core/services/authorization.service';
 import { ModuleName } from 'src/app/shared/models/general';
 import { filter } from 'rxjs/operators';
@@ -35,7 +35,6 @@ export class ProductsComponent implements OnInit {
     'image',
     'action'
   ];
-  dataSource: MatTableDataSource<any>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   products$: Observable<Product[]>;
   categories$: Observable<Category[]>;
@@ -44,6 +43,7 @@ export class ProductsComponent implements OnInit {
   productFilterLimits$: Observable<ProductFilterLimits>;
   isLoading$: Observable<boolean>;
   filterHandler = new FilterHandler();
+  dataSource: MatTableDataSource<any>;
   constructor(
     private alertService: AlertService,
     private authorizationService: AuthorizationService,
@@ -117,6 +117,10 @@ export class ProductsComponent implements OnInit {
     this.getProducts();
   }
 
+  resetPaginator() {
+    this.paginator.pageIndex = 0;
+  }
+
   getProducts() {
     const request = this.filterHandler.getRequest();
     this.store$.dispatch(new ProductStoreActions.LoadRequestAction(request));
@@ -126,10 +130,6 @@ export class ProductsComponent implements OnInit {
     this.store$.dispatch(
       new ProductStoreActions.GetProductFilterLimitsRequestAction()
     );
-  }
-
-  resetPaginator() {
-    this.paginator.pageIndex = 0;
   }
 
   getCategories() {

@@ -13,6 +13,7 @@ import { RootStoreState } from 'src/app/root-store';
 import { NotificationService } from 'src/app/core/services/notification.service';
 import { ActionTypes } from '../store/actions';
 import { filter } from 'rxjs/operators';
+import { FilterHandler } from 'src/app/shared/filters/filter';
 
 @Component({
   selector: 'app-partners',
@@ -20,13 +21,12 @@ import { filter } from 'rxjs/operators';
   styleUrls: ['./partners.component.scss']
 })
 export class PartnersComponent implements OnInit {
-  isLoading = false;
-  partners: Partner[] = [];
   displayedColumns: string[] = ['id', 'name', 'code', 'action'];
   dataSource: MatTableDataSource<any>;
   partners$: Observable<Partner[]>;
   error$: Observable<string>;
   isLoading$: Observable<boolean>;
+  filterHandler = new FilterHandler();
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 
   constructor(
@@ -84,13 +84,10 @@ export class PartnersComponent implements OnInit {
   }
 
   getPartners(partnerRequest: PartnerRequest = null) {
-    this.store$.dispatch(new PartnerStoreActions.LoadRequestAction(partnerRequest));
+    const request = this.filterHandler.getRequest();
+    this.store$.dispatch(new PartnerStoreActions.LoadRequestAction(request));
   }
 
-  setDataSource() {
-    this.dataSource = new MatTableDataSource<Partner>(this.partners);
-    this.dataSource.paginator = this.paginator;
-  }
   addPartner() {
     this.router.navigate(['partners/add']);
   }

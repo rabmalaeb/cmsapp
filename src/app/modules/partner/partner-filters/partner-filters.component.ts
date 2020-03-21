@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import FilterComponent from 'src/app/shared/filter';
+import { FilterComponent, FilterHandler } from 'src/app/shared/filters/filter';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { PartnerRequest } from '../partner';
 import { Subject } from 'rxjs';
@@ -11,6 +11,7 @@ import { Subject } from 'rxjs';
 })
 export class PartnerFiltersComponent implements OnInit, FilterComponent {
   @Input() filter: Subject<PartnerRequest>;
+  @Input() filterHandler: FilterHandler;
   filterForm: FormGroup;
 
   constructor(private form: FormBuilder) {}

@@ -13,6 +13,7 @@ import { NotificationService } from 'src/app/core/services/notification.service'
 import { PermissionStoreSelectors, PermissionStoreActions } from '../store';
 import { ActionTypes } from '../store/actions';
 import { filter } from 'rxjs/operators';
+import { FilterHandler } from 'src/app/shared/filters/filter';
 
 @Component({
   selector: 'app-permissions',
@@ -20,11 +21,10 @@ import { filter } from 'rxjs/operators';
   styleUrls: ['./permissions.component.scss']
 })
 export class PermissionsComponent implements OnInit {
-  isLoading = false;
-  permissions: Permission[] = [];
   permissions$: Observable<Permission[]>;
   error$: Observable<string>;
   isLoading$: Observable<boolean>;
+  filterHandler = new FilterHandler();
   displayedColumns: string[] = ['id', 'name', 'type', 'group', 'action'];
   dataSource: MatTableDataSource<any>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
@@ -83,16 +83,13 @@ export class PermissionsComponent implements OnInit {
       });
   }
 
-  getPermissions(permissionRequest: PermissionRequest = null) {
+  getPermissions() {
+    const request = this.filterHandler.getRequest();
     this.store$.dispatch(
-      new PermissionStoreActions.LoadRequestAction(permissionRequest)
+      new PermissionStoreActions.LoadRequestAction(request)
     );
   }
 
-  setDataSource() {
-    this.dataSource = new MatTableDataSource<Permission>(this.permissions);
-    this.dataSource.paginator = this.paginator;
-  }
   addPermission() {
     this.router.navigate(['permissions/add']);
   }
