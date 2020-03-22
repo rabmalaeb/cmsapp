@@ -1,9 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { MatPaginator } from '@angular/material/paginator';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { AlertService } from 'src/app/core/services/alert.service';
-import { Supplier, SupplierRequest } from '../supplier';
+import { Supplier } from '../supplier';
 import { ModuleName } from 'src/app/shared/models/general';
 import { AuthorizationService } from 'src/app/core/services/authorization.service';
 import { Observable } from 'rxjs';
@@ -24,6 +24,7 @@ export class SuppliersComponent implements OnInit {
   displayedColumns: string[] = ['id', 'name', 'code', 'action'];
   dataSource: MatTableDataSource<any>;
   suppliers$: Observable<Supplier[]>;
+  totalNumberOfItems$: Observable<number>;
   error$: Observable<string>;
   isLoading$: Observable<boolean>;
   filterHandler = new FilterHandler();
@@ -54,6 +55,10 @@ export class SuppliersComponent implements OnInit {
 
     this.isLoading$ = this.store$.select(
       SupplierStoreSelectors.selectSupplierIsLoading
+    );
+
+    this.totalNumberOfItems$ = this.store$.select(
+      SupplierStoreSelectors.selectTotalNumberOfItems
     );
 
     this.actionsSubject$
@@ -122,5 +127,14 @@ export class SuppliersComponent implements OnInit {
 
   get canDeleteSupplier() {
     return this.authorizationService.canDelete(ModuleName.SUPPLIERS);
+  }
+
+  get perPage() {
+    return this.filterHandler.getPaginator().perPage;
+  }
+
+  setPage($event: PageEvent) {
+    this.filterHandler.setPaginator($event.pageIndex + 1, $event.pageSize);
+    this.getSuppliers();
   }
 }

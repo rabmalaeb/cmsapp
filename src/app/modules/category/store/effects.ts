@@ -21,9 +21,10 @@ export class CategoryStoreEffects {
     switchMap(action =>
       this.categoryService.getCategories(action.categoryRequest).pipe(
         map(
-          items =>
+          ({ items, paginator }) =>
             new categoryActions.LoadSuccessAction({
-              items
+              items,
+              paginator
             })
         ),
         catchError(error =>

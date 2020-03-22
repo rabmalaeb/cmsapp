@@ -18,9 +18,10 @@ export class AdminStoreEffects {
     switchMap(action =>
       this.adminService.getAdmins(action.adminRequest).pipe(
         map(
-          items =>
+          ({ items, paginator }) =>
             new adminActions.LoadSuccessAction({
-              items
+              items,
+              paginator
             })
         ),
         catchError(error =>

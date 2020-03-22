@@ -1,6 +1,7 @@
 import { Action } from '@ngrx/store';
 import { Permission, PermissionRequest, PermissionActionRequest } from '../permission';
 import { ErrorResponse } from 'src/app/shared/models/general';
+import { PaginationControl } from 'src/app/shared/paginator';
 
 export enum ActionTypes {
   LOAD_REQUEST = '[Permission] Load Request',
@@ -35,7 +36,7 @@ export class LoadFailureAction implements Action {
 
 export class LoadSuccessAction implements Action {
   readonly type = ActionTypes.LOAD_SUCCESS;
-  constructor(public payload: { items: Permission[] }) {}
+  constructor(public payload: { items: Permission[], paginator: PaginationControl }) {}
 }
 
 export class LoadPermissionsByRoleAction implements Action {

@@ -1,6 +1,7 @@
 import { Action } from '@ngrx/store';
 import { Admin, AdminRequest } from 'src/app/modules/admin/admin';
 import { ErrorResponse } from 'src/app/shared/models/general';
+import { PaginationControl } from 'src/app/shared/paginator';
 
 export enum ActionTypes {
   LOAD_REQUEST = '[Admin] Load Request',
@@ -32,7 +33,7 @@ export class LoadFailureAction implements Action {
 
 export class LoadSuccessAction implements Action {
   readonly type = ActionTypes.LOAD_SUCCESS;
-  constructor(public payload: { items: Admin[] }) {}
+  constructor(public payload: { items: Admin[], paginator: PaginationControl }) {}
 }
 
 export class GetAdminRequestAction implements Action {

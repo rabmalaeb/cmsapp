@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { MatPaginator } from '@angular/material/paginator';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { AlertService } from 'src/app/core/services/alert.service';
 import { Category, CategoryRequest } from '../category';
@@ -33,6 +33,7 @@ export class CategoriesComponent implements OnInit {
   categories$: Observable<Category[]>;
   error$: Observable<string>;
   isLoading$: Observable<boolean>;
+  totalNumberOfItems$: Observable<number>;
   filterHandler = new FilterHandler();
   constructor(
     private alertService: AlertService,
@@ -55,6 +56,10 @@ export class CategoriesComponent implements OnInit {
 
     this.error$ = this.store$.select(
       CategoryStoreSelectors.selectCategoryLoadingError
+    );
+
+    this.totalNumberOfItems$ = this.store$.select(
+      CategoryStoreSelectors.selectTotalNumberOfItems
     );
 
     this.isLoading$ = this.store$.select(
@@ -126,5 +131,14 @@ export class CategoriesComponent implements OnInit {
 
   get canDeleteCategory() {
     return this.authorizationService.canDelete(ModuleName.CATEGORIES);
+  }
+
+  get perPage() {
+    return this.filterHandler.getPaginator().perPage;
+  }
+
+  setPage($event: PageEvent) {
+    this.filterHandler.setPaginator($event.pageIndex + 1, $event.pageSize);
+    this.getCategories();
   }
 }

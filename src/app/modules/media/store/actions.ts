@@ -1,6 +1,7 @@
 import { Action } from '@ngrx/store';
 import { Media } from 'src/app/modules/media/media';
 import { ErrorResponse } from 'src/app/shared/models/general';
+import { PaginationControl } from 'src/app/shared/paginator';
 
 export enum ActionTypes {
   LOAD_REQUEST = '[Media] Load Request',
@@ -31,7 +32,7 @@ export class LoadFailureAction implements Action {
 
 export class LoadSuccessAction implements Action {
   readonly type = ActionTypes.LOAD_SUCCESS;
-  constructor(public payload: { items: Media[] }) {}
+  constructor(public payload: { items: Media[], paginator: PaginationControl }) {}
 }
 
 export class GetMediaRequestAction implements Action {

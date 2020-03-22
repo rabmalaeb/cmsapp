@@ -1,6 +1,7 @@
 import { Action } from '@ngrx/store';
 import { Supplier, SupplierRequest } from 'src/app/modules/supplier/supplier';
 import { ErrorResponse } from 'src/app/shared/models/general';
+import { PaginationControl } from 'src/app/shared/paginator';
 
 export enum ActionTypes {
   LOAD_REQUEST = '[Supplier] Load Request',
@@ -32,7 +33,7 @@ export class LoadFailureAction implements Action {
 
 export class LoadSuccessAction implements Action {
   readonly type = ActionTypes.LOAD_SUCCESS;
-  constructor(public payload: { items: Supplier[] }) {}
+  constructor(public payload: { items: Supplier[], paginator: PaginationControl }) {}
 }
 
 export class GetSupplierRequestAction implements Action {

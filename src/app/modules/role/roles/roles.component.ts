@@ -1,10 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { MatPaginator } from '@angular/material/paginator';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { AlertService } from 'src/app/core/services/alert.service';
-import { Role, RoleRequest } from '../role';
-import { RoleService } from '../role.service';
+import { Role } from '../role';
 import { AuthorizationService } from 'src/app/core/services/authorization.service';
 import { ModuleName } from 'src/app/shared/models/general';
 import { Observable } from 'rxjs';
@@ -27,6 +26,7 @@ import { FilterHandler } from 'src/app/shared/filters/filter';
 export class RolesComponent implements OnInit {
   roles$: Observable<Role[]>;
   error$: Observable<string>;
+  totalNumberOfItems$: Observable<number>;
   isLoading$: Observable<boolean>;
   filterHandler = new FilterHandler();
   displayedColumns: string[] = ['id', 'name', 'partner', 'action'];
@@ -54,6 +54,10 @@ export class RolesComponent implements OnInit {
 
     this.isLoading$ = this.store$.select(
       RoleStoreSelectors.selectRoleIsLoading
+    );
+
+    this.totalNumberOfItems$ = this.store$.select(
+      RoleStoreSelectors.selectTotalNumberOfItems
     );
 
     this.actionsSubject$
@@ -113,5 +117,14 @@ export class RolesComponent implements OnInit {
         this.store$.dispatch(new RoleStoreActions.DeleteRoleRequestAction(id));
       }
     );
+  }
+
+  get perPage() {
+    return this.filterHandler.getPaginator().perPage;
+  }
+
+  setPage($event: PageEvent) {
+    this.filterHandler.setPaginator($event.pageIndex + 1, $event.pageSize);
+    this.getRoles();
   }
 }

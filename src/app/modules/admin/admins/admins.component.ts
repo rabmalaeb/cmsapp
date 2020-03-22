@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { MatPaginator } from '@angular/material/paginator';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { Admin } from '../admin';
 import { AuthorizationService } from 'src/app/core/services/authorization.service';
@@ -34,6 +34,7 @@ export class AdminsComponent implements OnInit {
   admins$: Observable<Admin[]>;
   error$: Observable<string>;
   isLoading$: Observable<boolean>;
+  totalNumberOfItems$: Observable<number>;
   filterHandler = new FilterHandler();
   constructor(
     private alertService: AlertService,
@@ -54,6 +55,10 @@ export class AdminsComponent implements OnInit {
 
     this.error$ = this.store$.select(
       AdminStoreSelectors.selectAdminLoadingError
+    );
+
+    this.totalNumberOfItems$ = this.store$.select(
+      AdminStoreSelectors.selectTotalNumberOfItems
     );
 
     this.isLoading$ = this.store$.select(
@@ -123,5 +128,14 @@ export class AdminsComponent implements OnInit {
 
   get canDeleteAdmin(): Observable<boolean> {
     return this.authorizationService.canDelete(ModuleName.ADMINS);
+  }
+
+  get perPage() {
+    return this.filterHandler.getPaginator().perPage;
+  }
+
+  setPage($event: PageEvent) {
+    this.filterHandler.setPaginator($event.pageIndex + 1, $event.pageSize);
+    this.getAdmins();
   }
 }

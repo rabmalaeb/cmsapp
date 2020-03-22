@@ -14,6 +14,7 @@ export function roleReducer(state = initialState, action: Actions): State {
       return roleAdapter.addAll(action.payload.items, {
         ...state,
         isLoading: false,
+        total: action.payload.paginator.total,
         loadingError: null
       });
     }

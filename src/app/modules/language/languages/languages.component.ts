@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { MatPaginator } from '@angular/material/paginator';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { AlertService } from 'src/app/core/services/alert.service';
 import { Language, LanguageRequest } from '../language';
@@ -25,6 +25,7 @@ export class LanguagesComponent implements OnInit {
   languages$: Observable<Language[]>;
   error$: Observable<string>;
   isLoading$: Observable<boolean>;
+  totalNumberOfItems$: Observable<number>;
   filterHandler = new FilterHandler();
   dataSource: MatTableDataSource<any>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
@@ -50,6 +51,10 @@ export class LanguagesComponent implements OnInit {
 
     this.error$ = this.store$.select(
       LanguageStoreSelectors.selectLanguageLoadingError
+    );
+
+    this.totalNumberOfItems$ = this.store$.select(
+      LanguageStoreSelectors.selectTotalNumberOfItems
     );
 
     this.isLoading$ = this.store$.select(
@@ -121,5 +126,14 @@ export class LanguagesComponent implements OnInit {
 
   get canDeleteLanguage() {
     return this.authorizationService.canDelete(ModuleName.LANGUAGES);
+  }
+
+  get perPage() {
+    return this.filterHandler.getPaginator().perPage;
+  }
+
+  setPage($event: PageEvent) {
+    this.filterHandler.setPaginator($event.pageIndex + 1, $event.pageSize);
+    this.getLanguages();
   }
 }

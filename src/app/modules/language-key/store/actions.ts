@@ -1,6 +1,7 @@
 import { Action } from '@ngrx/store';
 import { LanguageKey, LanguageKeyRequest } from '../language-key';
 import { ErrorResponse } from 'src/app/shared/models/general';
+import { PaginationControl } from 'src/app/shared/paginator';
 
 export enum ActionTypes {
   LOAD_REQUEST = '[LanguageKey] Load Request',
@@ -32,7 +33,7 @@ export class LoadFailureAction implements Action {
 
 export class LoadSuccessAction implements Action {
   readonly type = ActionTypes.LOAD_SUCCESS;
-  constructor(public payload: { items: LanguageKey[] }) {}
+  constructor(public payload: { items: LanguageKey[], paginator: PaginationControl }) {}
 }
 
 export class GetLanguageKeyRequestAction implements Action {

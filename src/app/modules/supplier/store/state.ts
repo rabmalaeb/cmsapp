@@ -14,6 +14,7 @@ export interface State extends EntityState<Supplier> {
   isLoadingItem?: boolean;
   loadingError?: any;
   actionError?: any;
+  total?: number;
 }
 
 export const initialState: State = supplierAdapter.getInitialState({

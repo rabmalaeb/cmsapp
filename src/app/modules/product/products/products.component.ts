@@ -39,7 +39,7 @@ export class ProductsComponent implements OnInit {
   products$: Observable<Product[]>;
   categories$: Observable<Category[]>;
   error$: Observable<string>;
-  totalNumberOfProducts$: Observable<number>;
+  totalNumberOfItems$: Observable<number>;
   productFilterLimits$: Observable<ProductFilterLimits>;
   isLoading$: Observable<boolean>;
   filterHandler = new FilterHandler();
@@ -81,8 +81,8 @@ export class ProductsComponent implements OnInit {
       ProductStoreSelectors.selectProductIsLoading
     );
 
-    this.totalNumberOfProducts$ = this.store$.select(
-      ProductStoreSelectors.selectTotalNumberOfProducts
+    this.totalNumberOfItems$ = this.store$.select(
+      ProductStoreSelectors.selectTotalNumberOfItems
     );
 
     this.actionsSubject$

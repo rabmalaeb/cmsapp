@@ -15,8 +15,15 @@ export class SupplierService {
 
   getSuppliers(supplierRequest: SupplierRequest) {
     return this.httpService.request('suppliers', supplierRequest).pipe(
-      map(response => {
-        return response.map(data => this.supplierSerializer.getSupplier(data));
+      map(({ data }) => {
+        if (data) {
+          return {
+            items: data.items.map(item =>
+              this.supplierSerializer.getSupplier(item)
+            ),
+            paginator: data.paginator
+          };
+        }
       })
     );
   }

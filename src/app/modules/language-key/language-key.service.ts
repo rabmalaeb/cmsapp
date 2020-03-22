@@ -15,10 +15,13 @@ export class LanguageKeyService {
 
   getLanguageKeys(languageKeyRequest: LanguageKeyRequest) {
     return this.httpService.request('language-keys', languageKeyRequest).pipe(
-      map(response => {
-        return response.map(data =>
-          this.languageKeySerializer.getLanguageKey(data)
-        );
+      map(({ data: { items, paginator } }) => {
+        return {
+          items: items.map(item =>
+            this.languageKeySerializer.getLanguageKey(item)
+          ),
+          paginator
+        };
       })
     );
   }

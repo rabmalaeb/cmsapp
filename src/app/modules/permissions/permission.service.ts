@@ -15,10 +15,11 @@ export class PermissionService {
 
   getPermissions(permissionRequest: PermissionRequest) {
     return this.httpService.request('permissions', permissionRequest).pipe(
-      map(response => {
-        return response.map(data =>
-          this.permissionSerializer.getPermission(data)
-        );
+      map(({ data: { items, paginator } }) => {
+        return {
+          items: items.map(item => this.permissionSerializer.getPermission(item)),
+          paginator
+        };
       })
     );
   }

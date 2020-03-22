@@ -13,6 +13,7 @@ export interface State extends EntityState<Translation> {
   isLoadingItem?: boolean;
   loadingError?: any;
   actionError?: any;
+  total?: number;
 }
 
 export const initialState: State = translationAdapter.getInitialState({

@@ -1,6 +1,7 @@
 import { Action } from '@ngrx/store';
 import { User, UserRequest } from 'src/app/modules/user/user';
 import { ErrorResponse } from 'src/app/shared/models/general';
+import { PaginationControl } from 'src/app/shared/paginator';
 
 export enum ActionTypes {
   LOAD_REQUEST = '[User] Load Request',
@@ -32,7 +33,7 @@ export class LoadFailureAction implements Action {
 
 export class LoadSuccessAction implements Action {
   readonly type = ActionTypes.LOAD_SUCCESS;
-  constructor(public payload: { items: User[] }) {}
+  constructor(public payload: { items: User[], paginator: PaginationControl }) {}
 }
 
 export class GetUserRequestAction implements Action {

@@ -6,7 +6,6 @@ import {
 
 import { productAdapter, State } from './state';
 import { Product, ProductFilterLimits } from '../product';
-import { NumberRange } from 'src/app/shared/models/general';
 
 export const getLoadingError = (state: State): any => state.loadingError;
 
@@ -16,7 +15,7 @@ export const getIsLoading = (state: State): boolean => state.isLoading;
 
 export const getIsLoadingItem = (state: State): boolean => state.isLoadingItem;
 
-export const getTotalProducts = (state: State): number => state.total;
+export const getTotalItems = (state: State): number => state.total;
 
 export const getProductFilterLimits = (state: State): ProductFilterLimits => state.filterLimits;
 
@@ -84,12 +83,12 @@ export const selectIsLoadingItem: MemoizedSelector<
   getIsLoadingItem
   );
 
-export const selectTotalNumberOfProducts: MemoizedSelector<
+export const selectTotalNumberOfItems: MemoizedSelector<
   object,
   number
 > = createSelector(
   selectProductState,
-  getTotalProducts
+  getTotalItems
   );
 
 export const selectProductFilterLimits: MemoizedSelector<

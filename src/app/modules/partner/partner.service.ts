@@ -15,8 +15,11 @@ export class PartnerService {
 
   getPartners(partnerRequest: PartnerRequest) {
     return this.httpService.request('partners', partnerRequest).pipe(
-      map(response => {
-        return response.map(data => this.partnerSerializer.getPartner(data));
+      map(({ data: { items, paginator } }) => {
+        return {
+          items: items.map(item => this.partnerSerializer.getPartner(item)),
+          paginator
+        };
       })
     );
   }

@@ -15,8 +15,11 @@ export class UserService {
 
   getUsers(userRequest: UserRequest) {
     return this.httpService.request('users', userRequest).pipe(
-      map(response => {
-        return response.map(data => this.userSerializer.getUser(data));
+      map(({ data: { items, paginator } }) => {
+        return {
+          items: items.map(item => this.userSerializer.getUser(item)),
+          paginator
+        };
       })
     );
   }

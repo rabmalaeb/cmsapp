@@ -21,9 +21,10 @@ export class LanguageStoreEffects {
     switchMap(action =>
       this.languageService.getLanguages(action.languageRequest).pipe(
         map(
-          items =>
+          ({ items, paginator }) =>
             new languageActions.LoadSuccessAction({
-              items
+              items,
+              paginator
             })
         ),
         catchError(error =>

@@ -1,6 +1,7 @@
 import { Action } from '@ngrx/store';
 import { Role, RoleRequest, RoleActionRequest } from 'src/app/modules/role/role';
 import { ErrorResponse } from 'src/app/shared/models/general';
+import { PaginationControl } from 'src/app/shared/paginator';
 
 export enum ActionTypes {
   LOAD_REQUEST = '[Role] Load Request',
@@ -30,7 +31,7 @@ export class LoadRequestAction implements Action {
 
 export class LoadSuccessAction implements Action {
   readonly type = ActionTypes.LOAD_SUCCESS;
-  constructor(public payload: { items: Role[] }) {}
+  constructor(public payload: { items: Role[], paginator: PaginationControl }) {}
 }
 
 export class LoadFailureAction implements Action {

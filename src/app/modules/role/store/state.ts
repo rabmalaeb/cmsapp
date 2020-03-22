@@ -12,6 +12,7 @@ export interface State extends EntityState<Role> {
   isLoadingItem?: boolean;
   loadingError?: any;
   actionError?: any;
+  total?: number;
 }
 
 export const initialState: State = roleAdapter.getInitialState({

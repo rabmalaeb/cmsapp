@@ -16,9 +16,10 @@ export class RoleStoreEffects {
     switchMap(action =>
       this.roleService.getRoles(action.roleRequest).pipe(
         map(
-          items =>
+          ({ items, paginator }) =>
             new roleActions.LoadSuccessAction({
-              items
+              items,
+              paginator
             })
         ),
         catchError(error =>
