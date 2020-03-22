@@ -8,16 +8,8 @@ import { last, startWith, distinctUntilChanged } from 'rxjs/operators';
 export class NotificationService {
   private errorMessage: Subject<string> = new Subject();
   private successMessage: Subject<string> = new Subject();
-  private isProgressBarLoading: Subject<any>;
 
-  constructor() {
-    this.isProgressBarLoading = new Subject<boolean>();
-    this.isProgressBarLoading.pipe(
-      startWith(false),
-      distinctUntilChanged(),
-      last()
-    );
-  }
+  constructor() {}
 
   showError(message: string) {
     return this.errorMessage.next(message);
@@ -33,17 +25,5 @@ export class NotificationService {
 
   getSuccessMessage() {
     return this.successMessage;
-  }
-
-  showProgressBar() {
-    this.isProgressBarLoading.next(true);
-  }
-
-  hideProgressBar() {
-    this.isProgressBarLoading.next(false);
-  }
-
-  get isLoading() {
-    return this.isProgressBarLoading;
   }
 }

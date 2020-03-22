@@ -1,4 +1,11 @@
 <div class="page">
+  <mat-progress-bar
+    *ngIf="isLoading$ | async"
+    class="page__progress-bar"
+    mode="indeterminate"
+    color="primary"
+  >
+  </mat-progress-bar>
   <div class="page__section">
     <app-page-header
       label="Suppliers"
