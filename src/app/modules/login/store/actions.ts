@@ -22,7 +22,7 @@ export class LoadFailureAction implements Action {
 
 export class LoadSuccessAction implements Action {
   readonly type = ActionTypes.LOAD_SUCCESS;
-  constructor(public payload: { item: Admin, paginator: PaginationControl }) {}
+  constructor(public payload: { item: Admin }) {}
 }
 export type Actions =
   | LoadRequestAction
