@@ -16,9 +16,10 @@ export class UserStoreEffects {
     switchMap(action =>
       this.userService.getUsers(action.userRequest).pipe(
         map(
-          items =>
+          ({ items, paginator }) =>
             new userActions.LoadSuccessAction({
-              items
+              items,
+              paginator
             })
         ),
         catchError(error =>

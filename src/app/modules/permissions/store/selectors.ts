@@ -18,6 +18,8 @@ export const getIsLoading = (state: State): boolean => state.isLoading;
 
 export const getIsLoadingItem = (state: State): boolean => state.isLoadingItem;
 
+export const getTotalItems = (state: State): number => state.total;
+
 export const getIsLoadingPermissionsForRole = (state: State): boolean =>
   state.isLoadingPermissionsForRole;
 
@@ -111,4 +113,12 @@ export const selectIsLoadingItem: MemoizedSelector<
 > = createSelector(
   selectPermissionState,
   getIsLoadingItem
+  );
+
+export const selectTotalNumberOfItems: MemoizedSelector<
+  object,
+  number
+> = createSelector(
+  selectPermissionState,
+  getTotalItems
 );

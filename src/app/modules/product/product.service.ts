@@ -15,8 +15,11 @@ export class ProductService {
 
   getProducts(productRequest: ProductRequest) {
     return this.httpService.request('products', productRequest).pipe(
-      map(response => {
-        return response.map(data => this.productSerializer.getProduct(data));
+      map(({ data: { items, paginator } }) => {
+        return {
+          items: items.map(item => this.productSerializer.getProduct(item)),
+          paginator
+        };
       })
     );
   }
@@ -49,6 +52,14 @@ export class ProductService {
     return this.httpService.delete(`products/${id}`).pipe(
       map(response => {
         return response.map(data => this.productSerializer.getProduct(data));
+      })
+    );
+  }
+
+  getProductFilterLimits() {
+    return this.httpService.request('product-filter-limits', {}).pipe(
+      map(({ data: { attributes } }) => {
+        return this.productSerializer.getProductFilterLimits(attributes);
       })
     );
   }

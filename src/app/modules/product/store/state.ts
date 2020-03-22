@@ -1,5 +1,5 @@
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
-import { Product } from '../product';
+import { Product, ProductFilterLimits } from '../product';
 
 export const productAdapter: EntityAdapter<Product> = createEntityAdapter<
   Product
@@ -14,6 +14,8 @@ export interface State extends EntityState<Product> {
   isLoadingItem?: boolean;
   loadingError?: any;
   actionError?: any;
+  filterLimits?: ProductFilterLimits;
+  total?: number;
 }
 
 export const initialState: State = productAdapter.getInitialState({

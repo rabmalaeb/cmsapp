@@ -4,6 +4,7 @@ import {
   TranslationRequest
 } from 'src/app/modules/translation/translation';
 import { ErrorResponse } from 'src/app/shared/models/general';
+import { PaginationControl } from 'src/app/shared/paginator';
 
 export enum ActionTypes {
   LOAD_REQUEST = '[Translation] Load Request',
@@ -35,7 +36,7 @@ export class LoadFailureAction implements Action {
 
 export class LoadSuccessAction implements Action {
   readonly type = ActionTypes.LOAD_SUCCESS;
-  constructor(public payload: { items: Translation[] }) {}
+  constructor(public payload: { items: Translation[], paginator: PaginationControl}) {}
 }
 
 export class GetTranslationRequestAction implements Action {

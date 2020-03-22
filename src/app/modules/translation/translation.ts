@@ -14,6 +14,4 @@ export class Translation {
   value: string;
 }
 
-export class TranslationRequest extends Request {
-  value?: string;
-}
+export class TranslationRequest extends Request {}

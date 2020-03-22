@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { MatPaginator } from '@angular/material/paginator';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { AlertService } from 'src/app/core/services/alert.service';
 import { LanguageKey, LanguageKeyRequest } from '../language-key';
@@ -13,6 +13,8 @@ import { ActionTypes } from '../store/actions';
 import { Observable } from 'rxjs';
 import { NotificationService } from 'src/app/core/services/notification.service';
 import { filter } from 'rxjs/operators';
+import { FilterHandler } from 'src/app/shared/filters/filter';
+import { Sort } from '@angular/material/sort';
 
 @Component({
   selector: 'app-languagekeys',
@@ -20,13 +22,13 @@ import { filter } from 'rxjs/operators';
   styleUrls: ['./language-keys.component.scss']
 })
 export class LanguageKeysComponent implements OnInit {
-  isLoading = false;
-  languageKeys: LanguageKey[] = [];
   displayedColumns: string[] = ['id', 'name', 'description', 'action'];
   languageKeys$: Observable<LanguageKey[]>;
   error$: Observable<string>;
   isLoading$: Observable<boolean>;
+  totalNumberOfItems$: Observable<number>;
   dataSource: MatTableDataSource<any>;
+  filterHandler = new FilterHandler();
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 
   constructor(
@@ -50,6 +52,10 @@ export class LanguageKeysComponent implements OnInit {
 
     this.error$ = this.store$.select(
       LanguagekeyStoreSelectors.selectLanguagekeyLoadingError
+    );
+
+    this.totalNumberOfItems$ = this.store$.select(
+      LanguagekeyStoreSelectors.selectTotalNumberOfItems
     );
 
     this.isLoading$ = this.store$.select(
@@ -87,16 +93,13 @@ export class LanguageKeysComponent implements OnInit {
       });
   }
 
-  getLanguageKeys(languageKeyRequest: LanguageKeyRequest = null) {
+  getLanguageKeys() {
+    const request = this.filterHandler.getRequest();
     this.store$.dispatch(
-      new LanguagekeyStoreActions.LoadRequestAction(languageKeyRequest)
+      new LanguagekeyStoreActions.LoadRequestAction(request)
     );
   }
 
-  setDataSource() {
-    this.dataSource = new MatTableDataSource<LanguageKey>(this.languageKeys);
-    this.dataSource.paginator = this.paginator;
-  }
   addLanguageKey() {
     this.router.navigate(['keys/add']);
   }
@@ -128,5 +131,19 @@ export class LanguageKeysComponent implements OnInit {
 
   get canDeleteKey() {
     return this.authorizationService.canDelete(ModuleName.LANGUAGE_KEYS);
+  }
+
+  get perPage() {
+    return this.filterHandler.getPaginator().perPage;
+  }
+
+  setPage($event: PageEvent) {
+    this.filterHandler.setPaginator($event.pageIndex + 1, $event.pageSize);
+    this.getLanguageKeys();
+  }
+
+  sortItems(sort: Sort) {
+    this.filterHandler.setSort(sort);
+    this.getLanguageKeys();
   }
 }

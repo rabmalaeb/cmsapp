@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpService } from 'src/app/core/services/http.service';
 import { PermissionSerializerService } from './permission-serializer.service';
 import { map } from 'rxjs/operators';
-import { PermissionRequest } from './permission';
+import { PermissionRequest, PermissionActionRequest } from './permission';
 
 @Injectable({
   providedIn: 'root'
@@ -15,10 +15,11 @@ export class PermissionService {
 
   getPermissions(permissionRequest: PermissionRequest) {
     return this.httpService.request('permissions', permissionRequest).pipe(
-      map(response => {
-        return response.map(data =>
-          this.permissionSerializer.getPermission(data)
-        );
+      map(({ data: { items, paginator } }) => {
+        return {
+          items: items.map(item => this.permissionSerializer.getPermission(item)),
+          paginator
+        };
       })
     );
   }
@@ -39,7 +40,7 @@ export class PermissionService {
     );
   }
 
-  addPermission(params: PermissionRequest) {
+  addPermission(params: PermissionActionRequest) {
     return this.httpService.post('permissions', { ...params }).pipe(
       map(({ data }) => {
         return this.permissionSerializer.getPermission(data);
@@ -47,7 +48,7 @@ export class PermissionService {
     );
   }
 
-  updatePermission(id: number, params: PermissionRequest) {
+  updatePermission(id: number, params: PermissionActionRequest) {
     return this.httpService.put(`permissions/${id}`, { ...params }).pipe(
       map(({ data }) => {
         return this.permissionSerializer.getPermission(data);

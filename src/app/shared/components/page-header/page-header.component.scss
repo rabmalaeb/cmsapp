@@ -1,0 +1,31 @@
+@import '../../../../assets/styles/global';
+@import '../../../../assets/styles/mixins';
+
+:host {
+  width: 100%;
+}
+
+.page-header {
+}
+
+.page-header__container {
+  padding: 20px;
+  background-color: #fff;
+  color: $global--primary-color;
+  box-shadow: 1px 1px 6px 0px #00000047;
+}
+
+.page-header__item-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.page-header__item {
+  font-size: 16px;
+}
+
+.page-header__title {
+  font-size: 31px;
+  font-weight: bold;
+}

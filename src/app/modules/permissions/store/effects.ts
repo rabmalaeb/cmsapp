@@ -21,9 +21,10 @@ export class PermissionStoreEffects {
     switchMap(action =>
       this.permissionService.getPermissions(action.permissionRequest).pipe(
         map(
-          items =>
+          ({ items, paginator }) =>
             new permissionActions.LoadSuccessAction({
-              items
+              items,
+              paginator
             })
         ),
         catchError(error =>

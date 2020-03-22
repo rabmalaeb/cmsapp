@@ -21,9 +21,10 @@ export class LanguageKeyStoreEffects {
     switchMap(action =>
       this.languageKeyService.getLanguageKeys(action.languageKeyRequest).pipe(
         map(
-          items =>
+          ({ items, paginator }) =>
             new languageKeyActions.LoadSuccessAction({
-              items
+              items,
+              paginator
             })
         ),
         catchError(error =>

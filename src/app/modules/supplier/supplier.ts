@@ -7,6 +7,4 @@ export class Supplier {
   code: string;
 }
 
-export class SupplierRequest extends Request {
-  name?: string;
-}
+export class SupplierRequest extends Request {}

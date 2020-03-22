@@ -1,36 +1,39 @@
 <div class="page">
-  <div class="page__container">
-    <div class="page__section">
-      <div class="page__title-container">
-        <div class="page__title">
-          Translations
+  <mat-progress-bar
+    *ngIf="isLoading$ | async"
+    class="page__progress-bar"
+    mode="indeterminate"
+    color="primary"
+  >
+  </mat-progress-bar>
+  <div class="page__section">
+    <app-page-header
+      label="Translations"
+      buttonLabel="Add Translation"
+      [condition]="canAddTranslation | async"
+      (action)="addTranslation()"
+    >
+      <div class="page__filters-container">
+        <div class="page__filter-item page__filter-item_is-search">
+          <app-search-input
+            placeholder="Search"
+            [filterHandler]="filterHandler"
+            (filter)="getTranslations()"
+          ></app-search-input>
         </div>
       </div>
-      <div class="page__actions">
-        <button
-          mat-button
-          class="button button_is-primary"
-          (click)="addTranslation()"
-          *ngIf="canAddTranslation | async"
-        >
-          Add Translation
-        </button>
-      </div>
-    </div>
-    <div class="page__section">
-      <div class="page__filters">
-        <app-translation-filters
-          (filter)="getTranslations($event)"
-        ></app-translation-filters>
-      </div>
-    </div>
+    </app-page-header>
+  </div>
+  <div class="page__container">
     <mat-table
       mat-table
+      matSort
+      (matSortChange)="sortItems($event)"
       [dataSource]="translations$ | async"
       class="mat-elevation-z8"
     >
       <ng-container matColumnDef="id">
-        <mat-header-cell *matHeaderCellDef>Id</mat-header-cell>
+        <mat-header-cell mat-sort-header *matHeaderCellDef>Id</mat-header-cell>
         <mat-cell *matCellDef="let translation">{{ translation.id }}</mat-cell>
       </ng-container>
 
@@ -60,7 +63,7 @@
       </ng-container>
 
       <ng-container matColumnDef="value">
-        <mat-header-cell *matHeaderCellDef>Value</mat-header-cell>
+        <mat-header-cell mat-sort-header *matHeaderCellDef>Value</mat-header-cell>
         <mat-cell *matCellDef="let translation">
           {{ translation.value }}
         </mat-cell>
@@ -88,6 +91,9 @@
 
     <mat-paginator
       [pageSizeOptions]="[20, 50, 100]"
+      [length]="totalNumberOfItems$ | async"
+      [pageSize]="perPage"
+      (page)="setPage($event)"
       showFirstLastButtons
     ></mat-paginator>
   </div>

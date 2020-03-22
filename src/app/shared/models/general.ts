@@ -61,3 +61,7 @@ export interface NumberRange {
   minimum: number;
   maximum: number;
 }
+
+export class OptionItem {
+  constructor(public label: string, public value: any, public selected = false) { }
+}

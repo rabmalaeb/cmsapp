@@ -14,6 +14,7 @@ export function languageReducer(state = initialState, action: Actions): State {
       return languageAdapter.addAll(action.payload.items, {
         ...state,
         isLoading: false,
+        total: action.payload.paginator.total,
         loadingError: null
       });
     }

@@ -1,46 +1,49 @@
 <div class="page">
-  <div class="page__container">
-    <div class="page__section">
-      <div class="page__title-container">
-        <div class="page__title">
-          Suppliers
+  <mat-progress-bar
+    *ngIf="isLoading$ | async"
+    class="page__progress-bar"
+    mode="indeterminate"
+    color="primary"
+  >
+  </mat-progress-bar>
+  <div class="page__section">
+    <app-page-header
+      label="Suppliers"
+      buttonLabel="Add Supplier"
+      [condition]="canAddSupplier | async"
+      (action)="addSupplier()"
+    >
+      <div class="page__filters-container">
+        <div class="page__filter-item page__filter-item_is-search">
+          <app-search-input
+            placeholder="Search"
+            [filterHandler]="filterHandler"
+            (filter)="getSuppliers()"
+          ></app-search-input>
         </div>
       </div>
-      <div class="page__actions">
-        <button
-          mat-button
-          class="button button_is-primary"
-          (click)="addSupplier()"
-          *ngIf="canAddSupplier | async"
-        >
-          Add Supplier
-        </button>
-      </div>
-    </div>
-    <div class="page__section">
-      <div class="page__filters">
-        <app-supplier-filters
-          (filter)="getSuppliers($event)"
-        ></app-supplier-filters>
-      </div>
-    </div>
+    </app-page-header>
+  </div>
+  <div class="page__container">
     <mat-table
       mat-table
+      matSort
+      (matSortChange)="sortItems($event)"
       [dataSource]="suppliers$ | async"
       class="mat-elevation-z8"
     >
       <ng-container matColumnDef="id">
-        <mat-header-cell *matHeaderCellDef>Id</mat-header-cell>
+        <mat-header-cell mat-sort-header *matHeaderCellDef>Id</mat-header-cell>
         <mat-cell *matCellDef="let supplier">{{ supplier.id }}</mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="name">
-        <mat-header-cell *matHeaderCellDef>Name</mat-header-cell>
+        <mat-header-cell mat-sort-header *matHeaderCellDef>Name</mat-header-cell>
         <mat-cell *matCellDef="let supplier">{{ supplier.name }}</mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="code">
-        <mat-header-cell *matHeaderCellDef>Code</mat-header-cell>
+        <mat-header-cell mat-sort-header *matHeaderCellDef>Code</mat-header-cell>
         <mat-cell *matCellDef="let supplier">
           {{ supplier.code }}
         </mat-cell>
@@ -67,6 +70,9 @@
 
     <mat-paginator
       [pageSizeOptions]="[20, 50, 100]"
+      [length]="totalNumberOfItems$ | async"
+      [pageSize]="perPage"
+      (page)="setPage($event)"
       showFirstLastButtons
     ></mat-paginator>
   </div>

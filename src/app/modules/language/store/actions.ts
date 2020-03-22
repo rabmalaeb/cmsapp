@@ -1,6 +1,7 @@
 import { Action } from '@ngrx/store';
 import { Language, LanguageRequest } from 'src/app/modules/language/language';
 import { ErrorResponse } from 'src/app/shared/models/general';
+import { PaginationControl } from 'src/app/shared/paginator';
 
 export enum ActionTypes {
   LOAD_REQUEST = '[Language] Load Request',
@@ -32,7 +33,7 @@ export class LoadFailureAction implements Action {
 
 export class LoadSuccessAction implements Action {
   readonly type = ActionTypes.LOAD_SUCCESS;
-  constructor(public payload: { items: Language[] }) {}
+  constructor(public payload: { items: Language[], paginator: PaginationControl }) {}
 }
 
 export class GetLanguageRequestAction implements Action {

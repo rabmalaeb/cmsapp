@@ -1,48 +1,51 @@
 <div class="page">
-  <div class="page__container">
-    <div class="page__section">
-      <div class="page__title-container">
-        <div class="page__title">
-          Language Keys
+  <mat-progress-bar
+    *ngIf="isLoading$ | async"
+    class="page__progress-bar"
+    mode="indeterminate"
+    color="primary"
+  >
+  </mat-progress-bar>
+  <div class="page__section">
+    <app-page-header
+      label="Language Keys"
+      buttonLabel="Add language Key"
+      [condition]="canAddKey | async"
+      (action)="addLanguageKey()"
+    >
+      <div class="page__filters-container">
+        <div class="page__filter-item page__filter-item_is-search">
+          <app-search-input
+            placeholder="Search"
+            [filterHandler]="filterHandler"
+            (filter)="getLanguageKeys()"
+          ></app-search-input>
         </div>
       </div>
-      <div class="page__actions">
-        <button
-          mat-button
-          class="button button_is-primary"
-          (click)="addLanguageKey()"
-          *ngIf="canAddKey | async"
-        >
-          Add Language Key
-        </button>
-      </div>
-    </div>
-    <div class="page__section">
-      <div class="page__filters">
-        <app-language-key-filters
-          (filter)="getLanguageKeys($event)"
-        ></app-language-key-filters>
-      </div>
-    </div>
+    </app-page-header>
+  </div>
+  <div class="page__container">
     <mat-table
       mat-table
+      matSort
+      (matSortChange)="sortItems($event)"
       [dataSource]="languageKeys$ | async"
       class="mat-elevation-z8"
     >
       <ng-container matColumnDef="id">
-        <mat-header-cell *matHeaderCellDef>Id</mat-header-cell>
+        <mat-header-cell mat-sort-header *matHeaderCellDef>Id</mat-header-cell>
         <mat-cell *matCellDef="let languageKey">{{ languageKey.id }}</mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="name">
-        <mat-header-cell *matHeaderCellDef>Name</mat-header-cell>
+        <mat-header-cell mat-sort-header *matHeaderCellDef>Name</mat-header-cell>
         <mat-cell *matCellDef="let languageKey">{{
           languageKey.name
         }}</mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="description">
-        <mat-header-cell *matHeaderCellDef>Description</mat-header-cell>
+        <mat-header-cell mat-sort-header *matHeaderCellDef>Description</mat-header-cell>
         <mat-cell *matCellDef="let languageKey">
           {{ languageKey.description }}
         </mat-cell>
@@ -69,6 +72,9 @@
 
     <mat-paginator
       [pageSizeOptions]="[20, 50, 100]"
+      [length]="totalNumberOfItems$ | async"
+      [pageSize]="perPage"
+      (page)="setPage($event)"
       showFirstLastButtons
     ></mat-paginator>
   </div>

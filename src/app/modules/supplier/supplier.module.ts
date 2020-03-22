@@ -4,7 +4,7 @@ import { SuppliersComponent } from './suppliers/suppliers.component';
 import { SupplierRoutingModule } from './supplier-routing.module';
 import { SupplierAddComponent } from './supplier-add/supplier-add.component';
 import { SharedModule } from 'src/app/shared/shared.module';
-import { ComponentsModule } from 'src/app/components/components.module';
+import { ComponentsModule } from 'src/app/shared/components/components.module';
 import { SupplierFormComponent } from './supplier-form/supplier-form.component';
 import { SupplierFiltersComponent } from './supplier-filters/supplier-filters.component';
 

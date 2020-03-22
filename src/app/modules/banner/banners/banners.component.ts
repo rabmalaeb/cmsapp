@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { MatPaginator } from '@angular/material/paginator';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { AlertService } from 'src/app/core/services/alert.service';
 import { Banner, BannerRequest } from '../banner';
@@ -13,6 +13,8 @@ import { Observable } from 'rxjs';
 import { Store, ActionsSubject } from '@ngrx/store';
 import { RootStoreState } from 'src/app/root-store';
 import { NotificationService } from 'src/app/core/services/notification.service';
+import { FilterHandler } from 'src/app/shared/filters/filter';
+import { Sort } from '@angular/material/sort';
 
 @Component({
   selector: 'app-banners',
@@ -20,14 +22,14 @@ import { NotificationService } from 'src/app/core/services/notification.service'
   styleUrls: ['./banners.component.scss']
 })
 export class BannersComponent implements OnInit {
-  isLoading = false;
-  banners: Banner[] = [];
   displayedColumns: string[] = ['id', 'name', 'description', 'image', 'action'];
   dataSource: MatTableDataSource<any>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   banners$: Observable<Banner[]>;
+  totalNumberOfItems$: Observable<number>;
   error$: Observable<string>;
   isLoading$: Observable<boolean>;
+  filterHandler = new FilterHandler();
   constructor(
     private alertService: AlertService,
     private authorizationService: AuthorizationService,
@@ -49,6 +51,10 @@ export class BannersComponent implements OnInit {
 
     this.error$ = this.store$.select(
       BannerStoreSelectors.selectBannerLoadingError
+    );
+
+    this.totalNumberOfItems$ = this.store$.select(
+      BannerStoreSelectors.selectTotalNumberOfItems
     );
 
     this.isLoading$ = this.store$.select(
@@ -82,14 +88,11 @@ export class BannersComponent implements OnInit {
       });
   }
 
-  getBanners(bannerRequest: BannerRequest = null) {
-    this.store$.dispatch(new BannerStoreActions.LoadRequestAction(bannerRequest));
+  getBanners() {
+    const request = this.filterHandler.getRequest();
+    this.store$.dispatch(new BannerStoreActions.LoadRequestAction(request));
   }
 
-  setDataSource() {
-    this.dataSource = new MatTableDataSource<Banner>(this.banners);
-    this.dataSource.paginator = this.paginator;
-  }
   addBanner() {
     this.router.navigate(['banners/add']);
   }
@@ -121,5 +124,19 @@ export class BannersComponent implements OnInit {
 
   get canDeleteBanner() {
     return this.authorizationService.canDelete(ModuleName.PRODUCTS);
+  }
+
+  get perPage() {
+    return this.filterHandler.getPaginator().perPage;
+  }
+
+  setPage($event: PageEvent) {
+    this.filterHandler.setPaginator($event.pageIndex + 1, $event.pageSize);
+    this.getBanners();
+  }
+
+  sortItems(sort: Sort) {
+    this.filterHandler.setSort(sort);
+    this.getBanners();
   }
 }

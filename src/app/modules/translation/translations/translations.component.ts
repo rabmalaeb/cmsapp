@@ -1,10 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { MatPaginator } from '@angular/material/paginator';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { AlertService } from 'src/app/core/services/alert.service';
-import { Translation, TranslationRequest } from '../translation';
-import { TranslationService } from '../translation.service';
+import { Translation } from '../translation';
 import { AuthorizationService } from 'src/app/core/services/authorization.service';
 import { ModuleName } from 'src/app/shared/models/general';
 import { ActionTypes } from '../store/actions';
@@ -14,6 +13,8 @@ import { ActionsSubject, Store } from '@ngrx/store';
 import { NotificationService } from 'src/app/core/services/notification.service';
 import { RootStoreState } from 'src/app/root-store';
 import { Observable } from 'rxjs';
+import { FilterHandler } from 'src/app/shared/filters/filter';
+import { Sort } from '@angular/material/sort';
 
 @Component({
   selector: 'app-translations',
@@ -21,8 +22,6 @@ import { Observable } from 'rxjs';
   styleUrls: ['./translations.component.scss']
 })
 export class TranslationsComponent implements OnInit {
-  isLoading = false;
-  translations: Translation[] = [];
   displayedColumns: string[] = [
     'id',
     'language',
@@ -34,11 +33,12 @@ export class TranslationsComponent implements OnInit {
   translations$: Observable<Translation[]>;
   error$: Observable<string>;
   isLoading$: Observable<boolean>;
+  totalNumberOfItems$: Observable<number>;
   dataSource: MatTableDataSource<any>;
+  filterHandler = new FilterHandler();
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 
   constructor(
-    private translationService: TranslationService,
     private alertService: AlertService,
     private authorizationService: AuthorizationService,
     private router: Router,
@@ -59,6 +59,10 @@ export class TranslationsComponent implements OnInit {
 
     this.error$ = this.store$.select(
       TranslationStoreSelectors.selectTranslationLoadingError
+    );
+
+    this.totalNumberOfItems$ = this.store$.select(
+      TranslationStoreSelectors.selectTotalNumberOfItems
     );
 
     this.isLoading$ = this.store$.select(
@@ -96,15 +100,11 @@ export class TranslationsComponent implements OnInit {
       });
   }
 
-  getTranslations(translationRequest: TranslationRequest = null) {
+  getTranslations() {
+    const request = this.filterHandler.getRequest();
     this.store$.dispatch(
-      new TranslationStoreActions.LoadRequestAction(translationRequest)
+      new TranslationStoreActions.LoadRequestAction(request)
     );
-  }
-
-  setDataSource() {
-    this.dataSource = new MatTableDataSource<Translation>(this.translations);
-    this.dataSource.paginator = this.paginator;
   }
 
   addTranslation() {
@@ -138,5 +138,19 @@ export class TranslationsComponent implements OnInit {
 
   get canDeleteTranslation() {
     return this.authorizationService.canDelete(ModuleName.TRANSLATIONS);
+  }
+
+  get perPage() {
+    return this.filterHandler.getPaginator().perPage;
+  }
+
+  setPage($event: PageEvent) {
+    this.filterHandler.setPaginator($event.pageIndex + 1, $event.pageSize);
+    this.getTranslations();
+  }
+
+  sortItems(sort: Sort) {
+    this.filterHandler.setSort(sort);
+    this.getTranslations();
   }
 }

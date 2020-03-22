@@ -15,8 +15,11 @@ export class AdminService {
 
   getAdmins(adminRequest: AdminRequest) {
     return this.httpService.request('admins', adminRequest).pipe(
-      map(response => {
-        return response.map(data => this.adminSerializer.getAdmin(data));
+      map(({ data: { items, paginator } }) => {
+        return {
+          items: items.map(item => this.adminSerializer.getAdmin(item)),
+          paginator
+        };
       })
     );
   }

@@ -1,6 +1,7 @@
 import { Action } from '@ngrx/store';
 import { Category, CategoryRequest } from 'src/app/modules/category/category';
 import { ErrorResponse } from 'src/app/shared/models/general';
+import { PaginationControl } from 'src/app/shared/paginator';
 
 export enum ActionTypes {
   LOAD_REQUEST = '[Category] Load Request',
@@ -32,7 +33,7 @@ export class LoadFailureAction implements Action {
 
 export class LoadSuccessAction implements Action {
   readonly type = ActionTypes.LOAD_SUCCESS;
-  constructor(public payload: { items: Category[] }) {}
+  constructor(public payload: { items: Category[], paginator: PaginationControl }) {}
 }
 
 export class GetCategoryRequestAction implements Action {

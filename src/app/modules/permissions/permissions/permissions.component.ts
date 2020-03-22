@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { MatPaginator } from '@angular/material/paginator';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { AlertService } from 'src/app/core/services/alert.service';
 import { Permission, PermissionRequest } from '../permission';
@@ -13,6 +13,8 @@ import { NotificationService } from 'src/app/core/services/notification.service'
 import { PermissionStoreSelectors, PermissionStoreActions } from '../store';
 import { ActionTypes } from '../store/actions';
 import { filter } from 'rxjs/operators';
+import { FilterHandler } from 'src/app/shared/filters/filter';
+import { Sort } from '@angular/material/sort';
 
 @Component({
   selector: 'app-permissions',
@@ -20,11 +22,11 @@ import { filter } from 'rxjs/operators';
   styleUrls: ['./permissions.component.scss']
 })
 export class PermissionsComponent implements OnInit {
-  isLoading = false;
-  permissions: Permission[] = [];
   permissions$: Observable<Permission[]>;
   error$: Observable<string>;
   isLoading$: Observable<boolean>;
+  totalNumberOfItems$: Observable<number>;
+  filterHandler = new FilterHandler();
   displayedColumns: string[] = ['id', 'name', 'type', 'group', 'action'];
   dataSource: MatTableDataSource<any>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
@@ -50,6 +52,10 @@ export class PermissionsComponent implements OnInit {
 
     this.error$ = this.store$.select(
       PermissionStoreSelectors.selectPermissionLoadingError
+    );
+
+    this.totalNumberOfItems$ = this.store$.select(
+      PermissionStoreSelectors.selectTotalNumberOfItems
     );
 
     this.isLoading$ = this.store$.select(
@@ -83,16 +89,13 @@ export class PermissionsComponent implements OnInit {
       });
   }
 
-  getPermissions(permissionRequest: PermissionRequest = null) {
+  getPermissions() {
+    const request = this.filterHandler.getRequest();
     this.store$.dispatch(
-      new PermissionStoreActions.LoadRequestAction(permissionRequest)
+      new PermissionStoreActions.LoadRequestAction(request)
     );
   }
 
-  setDataSource() {
-    this.dataSource = new MatTableDataSource<Permission>(this.permissions);
-    this.dataSource.paginator = this.paginator;
-  }
   addPermission() {
     this.router.navigate(['permissions/add']);
   }
@@ -124,5 +127,19 @@ export class PermissionsComponent implements OnInit {
 
   get canDeletePermission() {
     return this.authorizationService.canDelete(ModuleName.PERMISSIONS);
+  }
+
+  get perPage() {
+    return this.filterHandler.getPaginator().perPage;
+  }
+
+  setPage($event: PageEvent) {
+    this.filterHandler.setPaginator($event.pageIndex + 1, $event.pageSize);
+    this.getPermissions();
+  }
+
+  sortItems(sort: Sort) {
+    this.filterHandler.setSort(sort);
+    this.getPermissions();
   }
 }

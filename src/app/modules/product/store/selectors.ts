@@ -5,8 +5,7 @@ import {
 } from '@ngrx/store';
 
 import { productAdapter, State } from './state';
-import { Product } from '../product';
-import { NumberRange } from 'src/app/shared/models/general';
+import { Product, ProductFilterLimits } from '../product';
 
 export const getLoadingError = (state: State): any => state.loadingError;
 
@@ -15,6 +14,10 @@ export const getActionError = (state: State): any => state.actionError;
 export const getIsLoading = (state: State): boolean => state.isLoading;
 
 export const getIsLoadingItem = (state: State): boolean => state.isLoadingItem;
+
+export const getTotalItems = (state: State): number => state.total;
+
+export const getProductFilterLimits = (state: State): ProductFilterLimits => state.filterLimits;
 
 export const getIsLoadingAction = (state: State): boolean =>
   state.isLoadingAction;
@@ -36,53 +39,6 @@ export const selectProductById = (id: number) =>
         return allProducts.find(product => product.id === id);
       } else {
         return null;
-      }
-    }
-  );
-
-export const selectRetailPriceRange = (): MemoizedSelector<object, NumberRange> =>
-  createSelector(
-    selectAllProductItems,
-    (allProducts: Product[]) => {
-      let minimum = 1000000;
-      let maximum = 0;
-      if (allProducts) {
-        allProducts.forEach(product => {
-          if (product.retailPrice < minimum) {
-            minimum = product.retailPrice;
-          }
-          if (maximum < product.retailPrice) {
-            maximum = product.retailPrice;
-          }
-        });
-        return {
-          minimum,
-          maximum
-        };
-      }
-    }
-  );
-
-
-export const selectOriginalPriceRange = (): MemoizedSelector<object, NumberRange> =>
-  createSelector(
-    selectAllProductItems,
-    (allProducts: Product[]) => {
-      let minimum = 1000000;
-      let maximum = 0;
-      if (allProducts) {
-        allProducts.forEach(product => {
-          if (product.originalPrice < minimum) {
-            minimum = product.originalPrice;
-          }
-          if (maximum < product.originalPrice) {
-            maximum = product.originalPrice;
-          }
-        });
-        return {
-          minimum,
-          maximum
-        };
       }
     }
   );
@@ -125,4 +81,20 @@ export const selectIsLoadingItem: MemoizedSelector<
 > = createSelector(
   selectProductState,
   getIsLoadingItem
+  );
+
+export const selectTotalNumberOfItems: MemoizedSelector<
+  object,
+  number
+> = createSelector(
+  selectProductState,
+  getTotalItems
+  );
+
+export const selectProductFilterLimits: MemoizedSelector<
+  object,
+  ProductFilterLimits
+> = createSelector(
+  selectProductState,
+  getProductFilterLimits
 );

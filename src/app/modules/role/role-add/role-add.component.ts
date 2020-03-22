@@ -3,7 +3,7 @@ import { ValidationMessagesService } from 'src/app/core/services/validation-mess
 import { NotificationService } from 'src/app/core/services/notification.service';
 import { ActionType, ModuleName } from 'src/app/shared/models/general';
 import { ActivatedRoute } from '@angular/router';
-import { Role, RoleRequest } from '../role';
+import { Role, RoleRequest, RoleActionRequest } from '../role';
 import { PermissionGroup, Permission } from '../../permissions/permission';
 import { AuthorizationService } from 'src/app/core/services/authorization.service';
 import { Observable, of } from 'rxjs';
@@ -121,7 +121,7 @@ export class RoleAddComponent implements OnInit {
     );
   }
 
-  performAction(role: RoleRequest) {
+  performAction(role: RoleActionRequest) {
     if (this.actionType === ActionType.EDIT) {
       this.updateRole(role);
     } else {
@@ -129,11 +129,11 @@ export class RoleAddComponent implements OnInit {
     }
   }
 
-  addRole(role: RoleRequest) {
+  addRole(role: RoleActionRequest) {
     this.store$.dispatch(new RoleStoreActions.AddRoleRequestAction(role));
   }
 
-  updateRole(role: RoleRequest) {
+  updateRole(role: RoleActionRequest) {
     const id = role.id;
     this.store$.dispatch(
       new RoleStoreActions.UpdateRoleRequestAction(id, role)

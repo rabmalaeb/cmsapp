@@ -16,7 +16,4 @@ export interface Admin {
   apiKey?: string;
 }
 
-export interface AdminRequest extends Request {
-  name?: string;
-  email?: string;
-}
+export interface AdminRequest extends Request {}

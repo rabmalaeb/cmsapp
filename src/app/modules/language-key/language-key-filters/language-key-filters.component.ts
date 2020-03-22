@@ -1,7 +1,8 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
-import FilterComponent from 'src/app/shared/filter';
+import { Component, OnInit, Input } from '@angular/core';
+import { FilterComponent, FilterHandler } from 'src/app/shared/filters/filter';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { LanguageKeyRequest } from '../language-key';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-language-key-filters',
@@ -10,7 +11,8 @@ import { LanguageKeyRequest } from '../language-key';
 })
 export class LanguageKeyFiltersComponent implements OnInit, FilterComponent {
 
-  @Output() filter = new EventEmitter<LanguageKeyRequest>();
+  @Input() filter: Subject<LanguageKeyRequest>;
+  @Input() filterHandler: FilterHandler;
   filterForm: FormGroup;
 
   constructor(private form: FormBuilder) { }
@@ -20,7 +22,7 @@ export class LanguageKeyFiltersComponent implements OnInit, FilterComponent {
   }
 
   submitFilters(): void {
-    this.filter.emit(this.buildRequest());
+    this.filter.next(this.buildRequest());
   }
 
   resetFilters(): void {
@@ -30,23 +32,23 @@ export class LanguageKeyFiltersComponent implements OnInit, FilterComponent {
 
   buildRequest(): LanguageKeyRequest {
     return {
-      name: this.name.value ? this.name.value : '',
+      searchQuery: this.searchQuery.value ? this.searchQuery.value : '',
     };
   }
 
   buildForm(): void {
     this.filterForm = this.form.group({
-      name: ['']
+      searchQuery: ['']
     });
   }
 
-  get name() {
-    return this.filterForm.get('name');
+  get searchQuery() {
+    return this.filterForm.get('searchQuery');
   }
 
   get isFormEmpty() {
     return (
-      !this.name.value
+      !this.searchQuery.value
     );
   }
 

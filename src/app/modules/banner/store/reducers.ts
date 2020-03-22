@@ -14,6 +14,7 @@ export function bannerReducer(state = initialState, action: Actions): State {
       return bannerAdapter.addAll(action.payload.items, {
         ...state,
         isLoading: false,
+        total: action.payload.paginator.total,
         loadingError: null
       });
     }

@@ -1,6 +1,7 @@
 import { Action } from '@ngrx/store';
-import { Product, ProductRequest } from 'src/app/modules/product/product';
+import { Product, ProductRequest, ProductFilterLimits } from 'src/app/modules/product/product';
 import { ErrorResponse } from 'src/app/shared/models/general';
+import { PaginationControl } from 'src/app/shared/paginator';
 
 export enum ActionTypes {
   LOAD_REQUEST = '[Product] Load Request',
@@ -9,6 +10,9 @@ export enum ActionTypes {
   GET_PRODUCT_REQUEST = '[Product] Get Product Request',
   GET_PRODUCT_SUCCESS = '[Product] Get Product Success',
   GET_PRODUCT_FAILURE = '[Product] Get Product Failure',
+  GET_PRODUCT_FILTER_LIMITS_REQUEST = '[Product] Get Product Filter Limits Request',
+  GET_PRODUCT_FILTER_LIMITS_SUCCESS = '[Product] Get Product Filter Limits Success',
+  GET_PRODUCT_FILTER_LIMITS_FAILURE = '[Product] Get Product Filter Limits Failure',
   ADD_PRODUCT_REQUEST = '[Product] Add Product Request',
   ADD_PRODUCT_SUCCESS = '[Product] Add Product Success',
   ADD_PRODUCT_FAILURE = '[Product] Add Product Failure',
@@ -32,21 +36,35 @@ export class LoadFailureAction implements Action {
 
 export class LoadSuccessAction implements Action {
   readonly type = ActionTypes.LOAD_SUCCESS;
-  constructor(public payload: { items: Product[] }) {}
+  constructor(public payload: { items: Product[], paginator: PaginationControl }) {}
 }
 
 export class GetProductRequestAction implements Action {
   readonly type = ActionTypes.GET_PRODUCT_REQUEST;
-  constructor(public id: number) {}
+  constructor(public id: number) { }
 }
 
 export class GetProductSuccessAction implements Action {
   readonly type = ActionTypes.GET_PRODUCT_SUCCESS;
-  constructor(public payload: { item: Product }) {}
+  constructor(public payload: { item: Product }) { }
 }
 
 export class GetProductFailureAction implements Action {
   readonly type = ActionTypes.GET_PRODUCT_FAILURE;
+  constructor(public payload: { error: ErrorResponse }) { }
+}
+
+export class GetProductFilterLimitsRequestAction implements Action {
+  readonly type = ActionTypes.GET_PRODUCT_FILTER_LIMITS_REQUEST;
+}
+
+export class GetProductFilterLimitsSuccessAction implements Action {
+  readonly type = ActionTypes.GET_PRODUCT_FILTER_LIMITS_SUCCESS;
+  constructor(public payload: { filterLimits: ProductFilterLimits }) { }
+}
+
+export class GetProductFilterLimitsFailureAction implements Action {
+  readonly type = ActionTypes.GET_PRODUCT_FILTER_LIMITS_FAILURE;
   constructor(public payload: { error: ErrorResponse }) { }
 }
 export class AddProductRequestAction implements Action {
@@ -109,4 +127,7 @@ export type Actions =
   | AddProductFailureAction
   | UpdateProductRequestAction
   | UpdateProductSuccessAction
-  | UpdateProductFailureAction;
+  | UpdateProductFailureAction
+  | GetProductFilterLimitsRequestAction
+  | GetProductFilterLimitsSuccessAction
+  | GetProductFilterLimitsFailureAction;

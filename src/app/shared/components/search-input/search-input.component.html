@@ -1,0 +1,14 @@
+<div class="search-input">
+  <form #ngForm="ngForm" [formGroup]="searchForm" class="search-input__form">
+    <div class="form-item">
+      <div class="form-item__value form-item__value_is-textfield">
+        <input
+          class="form-item__input"
+          [formControl]="searchItem"
+          [placeholder]="placeholder"
+          type="text"
+        />
+      </div>
+    </div>
+  </form>
+</div>

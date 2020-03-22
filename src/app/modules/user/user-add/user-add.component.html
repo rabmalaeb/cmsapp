@@ -1,26 +1,18 @@
 <div class="page">
+  <div class="page__section">
+    <app-page-header [label]="title" buttonLabel="Back to Users" link="/users">
+    </app-page-header>
+  </div>
   <div class="page__container">
-    <div class="page__section">
-      <div class="page__title-container">
-        <div class="page__title">
-          {{ title }}
-        </div>
-      </div>
-      <div class="page__actions">
-        <button mat-button class="button button_is-primary" routerLink="/users">
-          Back To Users
-        </button>
-      </div>
-    </div>
     <div class="page__form-container">
-     <app-user-form
-      [user]="user$ | async"
-      [isLoading]="isLoading$ | async"
-      [canEditUser]="canEditUser$ | async"
-      [isLoadingAction]="isLoadingAction$ | async"
-      (submitForm)="performAction($event)"
-     >
-     </app-user-form>
+      <app-user-form
+        [user]="user$ | async"
+        [isLoading]="isLoading$ | async"
+        [canEditUser]="canEditUser$ | async"
+        [isLoadingAction]="isLoadingAction$ | async"
+        (submitForm)="performAction($event)"
+      >
+      </app-user-form>
     </div>
   </div>
 </div>

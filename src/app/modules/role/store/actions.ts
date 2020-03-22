@@ -1,6 +1,7 @@
 import { Action } from '@ngrx/store';
-import { Role, RoleRequest } from 'src/app/modules/role/role';
+import { Role, RoleRequest, RoleActionRequest } from 'src/app/modules/role/role';
 import { ErrorResponse } from 'src/app/shared/models/general';
+import { PaginationControl } from 'src/app/shared/paginator';
 
 export enum ActionTypes {
   LOAD_REQUEST = '[Role] Load Request',
@@ -30,7 +31,7 @@ export class LoadRequestAction implements Action {
 
 export class LoadSuccessAction implements Action {
   readonly type = ActionTypes.LOAD_SUCCESS;
-  constructor(public payload: { items: Role[] }) {}
+  constructor(public payload: { items: Role[], paginator: PaginationControl }) {}
 }
 
 export class LoadFailureAction implements Action {
@@ -69,7 +70,7 @@ export class GetRoleFailureAction implements Action {
 }
 export class AddRoleRequestAction implements Action {
   readonly type = ActionTypes.ADD_ROLE_REQUEST;
-  constructor(public role: RoleRequest) {}
+  constructor(public role: RoleActionRequest) {}
 }
 
 export class AddRoleSuccessAction implements Action {
@@ -84,7 +85,7 @@ export class AddRoleFailureAction implements Action {
 
 export class UpdateRoleRequestAction implements Action {
   readonly type = ActionTypes.UPDATE_ROLE_REQUEST;
-  constructor(public id: number, public role: RoleRequest) {}
+  constructor(public id: number, public role: RoleActionRequest) {}
 }
 
 export class UpdateRoleSuccessAction implements Action {

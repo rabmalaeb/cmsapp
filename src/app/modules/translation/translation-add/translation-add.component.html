@@ -1,21 +1,13 @@
 <div class="page">
+  <div class="page__section">
+    <app-page-header
+      [label]="title"
+      buttonLabel="Back to Translations"
+      link="/translations"
+    >
+    </app-page-header>
+  </div>
   <div class="page__container">
-    <div class="page__section">
-      <div class="page__title-container">
-        <div class="page__title">
-          {{ title }}
-        </div>
-      </div>
-      <div class="page__actions">
-        <button
-          mat-button
-          class="button button_is-primary"
-          routerLink="/translations"
-        >
-          Back To Translations
-        </button>
-      </div>
-    </div>
     <div class="page__form-container">
       <app-translation-form
         [translation]="translation$ | async"

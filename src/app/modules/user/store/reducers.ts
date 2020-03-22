@@ -14,6 +14,7 @@ export function userReducer(state = initialState, action: Actions): State {
       return userAdapter.addAll(action.payload.items, {
         ...state,
         isLoading: false,
+        total: action.payload.paginator.total,
         loadingError: null
       });
     }

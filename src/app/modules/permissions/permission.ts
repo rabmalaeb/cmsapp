@@ -10,12 +10,14 @@ export interface Permission {
   isRolePermission ?: boolean;
 }
 
-export interface PermissionRequest extends Request {
+export interface PermissionActionRequest {
   id?: number;
   name?: string;
   type?: string;
   group?: string;
 }
+
+export interface PermissionRequest extends Request {}
 
 
 export class PermissionGroup {

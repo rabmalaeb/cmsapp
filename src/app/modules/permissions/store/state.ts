@@ -17,6 +17,7 @@ export interface State extends EntityState<Permission> {
   isLoadingPermissionsForRole?: boolean;
   isLoadedPermissionsForRole?: boolean;
   PermissionsForRole?: Permission[];
+  total?: number;
 }
 
 export const initialState: State = permissionAdapter.getInitialState({

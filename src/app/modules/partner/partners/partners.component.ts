@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { MatPaginator } from '@angular/material/paginator';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { AlertService } from 'src/app/core/services/alert.service';
 import { Partner, PartnerRequest } from '../partner';
@@ -13,6 +13,8 @@ import { RootStoreState } from 'src/app/root-store';
 import { NotificationService } from 'src/app/core/services/notification.service';
 import { ActionTypes } from '../store/actions';
 import { filter } from 'rxjs/operators';
+import { FilterHandler } from 'src/app/shared/filters/filter';
+import { Sort } from '@angular/material/sort';
 
 @Component({
   selector: 'app-partners',
@@ -20,13 +22,13 @@ import { filter } from 'rxjs/operators';
   styleUrls: ['./partners.component.scss']
 })
 export class PartnersComponent implements OnInit {
-  isLoading = false;
-  partners: Partner[] = [];
   displayedColumns: string[] = ['id', 'name', 'code', 'action'];
   dataSource: MatTableDataSource<any>;
   partners$: Observable<Partner[]>;
   error$: Observable<string>;
   isLoading$: Observable<boolean>;
+  totalNumberOfItems$: Observable<number>;
+  filterHandler = new FilterHandler();
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 
   constructor(
@@ -50,6 +52,10 @@ export class PartnersComponent implements OnInit {
 
     this.error$ = this.store$.select(
       PartnerStoreSelectors.selectPartnerLoadingError
+    );
+
+    this.totalNumberOfItems$ = this.store$.select(
+      PartnerStoreSelectors.selectTotalNumberOfItems
     );
 
     this.isLoading$ = this.store$.select(
@@ -84,13 +90,10 @@ export class PartnersComponent implements OnInit {
   }
 
   getPartners(partnerRequest: PartnerRequest = null) {
-    this.store$.dispatch(new PartnerStoreActions.LoadRequestAction(partnerRequest));
+    const request = this.filterHandler.getRequest();
+    this.store$.dispatch(new PartnerStoreActions.LoadRequestAction(request));
   }
 
-  setDataSource() {
-    this.dataSource = new MatTableDataSource<Partner>(this.partners);
-    this.dataSource.paginator = this.paginator;
-  }
   addPartner() {
     this.router.navigate(['partners/add']);
   }
@@ -122,5 +125,19 @@ export class PartnersComponent implements OnInit {
 
   get canDeletePartner() {
     return this.authorizationService.canDelete(ModuleName.PARTNERS);
+  }
+
+  get perPage() {
+    return this.filterHandler.getPaginator().perPage;
+  }
+
+  setPage($event: PageEvent) {
+    this.filterHandler.setPaginator($event.pageIndex + 1, $event.pageSize);
+    this.getPartners();
+  }
+
+  sortItems(sort: Sort) {
+    this.filterHandler.setSort(sort);
+    this.getPartners();
   }
 }

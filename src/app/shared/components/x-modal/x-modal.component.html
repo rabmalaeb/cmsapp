@@ -1,0 +1,25 @@
+<div
+  class="x-modal"
+  appCloseComponent
+  (escapeClicked)="close()"
+  [ngClass]="{ 'x-modal_is-filter': isFilterControl }"
+>
+  <div class="x-modal__overlay">
+    <div class="x-modal__container">
+      <div class="x-modal__title" *ngIf="showHeader">
+        <div class="x-modal__title-item x-modal__title-item_is-title">
+          {{ title }}
+        </div>
+        <div
+          class="x-modal__title-item x-modal__title-item_is-close"
+          (click)="close()"
+        ></div>
+      </div>
+      <div class="x-modal__content-container">
+        <div class="x-modal__content">
+          <ng-content></ng-content>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

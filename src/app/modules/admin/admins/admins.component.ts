@@ -1,9 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { MatPaginator } from '@angular/material/paginator';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
-import { Admin, AdminRequest } from '../admin';
-import { AdminService } from '../admin.service';
+import { Admin } from '../admin';
 import { AuthorizationService } from 'src/app/core/services/authorization.service';
 import { ModuleName } from 'src/app/shared/models/general';
 import { AlertService } from 'src/app/core/services/alert.service';
@@ -14,6 +13,8 @@ import { AdminStoreSelectors, AdminStoreActions } from '../store';
 import { ActionTypes } from '../store/actions';
 import { NotificationService } from 'src/app/core/services/notification.service';
 import { filter } from 'rxjs/operators';
+import { FilterHandler } from 'src/app/shared/filters/filter';
+import { Sort } from '@angular/material/sort';
 
 @Component({
   selector: 'app-admins',
@@ -21,8 +22,6 @@ import { filter } from 'rxjs/operators';
   styleUrls: ['./admins.component.scss']
 })
 export class AdminsComponent implements OnInit {
-  isLoading = false;
-  admins: Admin[] = [];
   displayedColumns: string[] = [
     'id',
     'name',
@@ -36,6 +35,8 @@ export class AdminsComponent implements OnInit {
   admins$: Observable<Admin[]>;
   error$: Observable<string>;
   isLoading$: Observable<boolean>;
+  totalNumberOfItems$: Observable<number>;
+  filterHandler = new FilterHandler();
   constructor(
     private alertService: AlertService,
     private router: Router,
@@ -55,6 +56,10 @@ export class AdminsComponent implements OnInit {
 
     this.error$ = this.store$.select(
       AdminStoreSelectors.selectAdminLoadingError
+    );
+
+    this.totalNumberOfItems$ = this.store$.select(
+      AdminStoreSelectors.selectTotalNumberOfItems
     );
 
     this.isLoading$ = this.store$.select(
@@ -88,13 +93,9 @@ export class AdminsComponent implements OnInit {
       });
   }
 
-  getAdmins(adminRequest: AdminRequest = null) {
-    this.store$.dispatch(new AdminStoreActions.LoadRequestAction(adminRequest));
-  }
-
-  setDataSource() {
-    this.dataSource = new MatTableDataSource<Admin>(this.admins);
-    this.dataSource.paginator = this.paginator;
+  getAdmins() {
+    const request = this.filterHandler.getRequest();
+    this.store$.dispatch(new AdminStoreActions.LoadRequestAction(request));
   }
 
   addAdmin() {
@@ -128,5 +129,19 @@ export class AdminsComponent implements OnInit {
 
   get canDeleteAdmin(): Observable<boolean> {
     return this.authorizationService.canDelete(ModuleName.ADMINS);
+  }
+
+  get perPage() {
+    return this.filterHandler.getPaginator().perPage;
+  }
+
+  setPage($event: PageEvent) {
+    this.filterHandler.setPaginator($event.pageIndex + 1, $event.pageSize);
+    this.getAdmins();
+  }
+
+  sortItems(sort: Sort) {
+    this.filterHandler.setSort(sort);
+    this.getAdmins();
   }
 }

@@ -15,8 +15,11 @@ export class CategoryService {
 
   getCategories(categoryRequest: CategoryRequest) {
     return this.httpService.request('categories', categoryRequest).pipe(
-      map(response => {
-        return response.map(data => this.categorySerializer.getCategory(data));
+      map(({ data: { items, paginator } }) => {
+        return {
+          items: items.map(item => this.categorySerializer.getCategory(item)),
+          paginator
+        };
       })
     );
   }

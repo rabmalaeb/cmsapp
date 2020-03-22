@@ -1,8 +1,8 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { AdminRequest } from '../admin';
-import FilterComponent from 'src/app/shared/filter';
-
+import { FilterComponent, FilterHandler } from 'src/app/shared/filters/filter';
+import { Subject } from 'rxjs';
 @Component({
   selector: 'app-admin-filters',
   templateUrl: './admin-filters.component.html',
@@ -11,7 +11,8 @@ import FilterComponent from 'src/app/shared/filter';
 export class AdminFiltersComponent implements OnInit, FilterComponent {
   constructor(private form: FormBuilder) {}
 
-  @Output() filter = new EventEmitter<AdminRequest>();
+  @Input() filter: Subject<AdminRequest>;
+  @Input() filterHandler: FilterHandler;
 
   filterForm: FormGroup;
 
@@ -21,21 +22,16 @@ export class AdminFiltersComponent implements OnInit, FilterComponent {
 
   buildForm() {
     this.filterForm = this.form.group({
-      name: [''],
-      email: ['']
+      searchQuery: ['']
     });
   }
 
-  get name() {
-    return this.filterForm.get('name');
-  }
-
-  get email() {
-    return this.filterForm.get('email');
+  get searchQuery() {
+    return this.filterForm.get('searchQuery');
   }
 
   submitFilters() {
-    this.filter.emit(this.buildRequest());
+    this.filter.next(this.buildRequest());
   }
 
   resetFilters() {
@@ -44,13 +40,12 @@ export class AdminFiltersComponent implements OnInit, FilterComponent {
   }
 
   get isFormEmpty(): boolean {
-    return !this.email.value && !this.name.value;
+    return !this.searchQuery.value;
   }
 
   buildRequest(): AdminRequest {
     return {
-      name: this.name.value ? this.name.value : '',
-      email: this.email.value ? this.email.value : ''
+      searchQuery: this.searchQuery.value ? this.searchQuery.value : '',
     };
   }
 }

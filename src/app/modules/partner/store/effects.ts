@@ -21,9 +21,10 @@ export class PartnerStoreEffects {
     switchMap(action =>
       this.partnerService.getPartners(action.partnerRequest).pipe(
         map(
-          items =>
+          ({ items, paginator }) =>
             new partnerActions.LoadSuccessAction({
-              items
+              items,
+              paginator
             })
         ),
         catchError(error =>

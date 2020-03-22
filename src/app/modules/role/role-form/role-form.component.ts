@@ -15,7 +15,7 @@ import {
 import { ValidationMessagesService } from 'src/app/core/services/validation-messages.service';
 import { NotificationService } from 'src/app/core/services/notification.service';
 import { ActionType, ALERT_MESSAGES } from 'src/app/shared/models/general';
-import { Role, RoleRequest } from '../role';
+import { Role, RoleActionRequest } from '../role';
 import { PermissionGroup, Permission } from '../../permissions/permission';
 import { PermissionSerializerService } from '../../permissions/permission-serializer.service';
 import { AuthenticationService } from 'src/app/core/services/authentication.service';
@@ -45,7 +45,7 @@ export class RoleFormComponent implements OnInit, OnChanges {
   @Input() isLoadingAction: boolean;
   @Input() isLoading: boolean;
   @Input() canEditRole = false;
-  @Output() submitForm = new EventEmitter<RoleRequest>();
+  @Output() submitForm = new EventEmitter<RoleActionRequest>();
 
   ngOnInit() {}
 
@@ -111,7 +111,7 @@ export class RoleFormComponent implements OnInit, OnChanges {
     return this.roleForm.get('partnerId');
   }
 
-  buildRoleParams(): RoleRequest {
+  buildRoleParams(): RoleActionRequest {
     return {
       id: this.roleForm.get('id') ? this.roleForm.get('id').value : '',
       name: this.name.value,

@@ -1,19 +1,37 @@
-.filters {}
+.filters {
+}
 
-.filters__container {}
+.filters__container {
+}
 
-.filters__form {}
+.filters__form {
+}
 
 .filters__item-container {
   display: flex;
 }
 
-.filters__item {
-  width: 200px;
-  margin-right: 20px;
+.filters__item-section {
+  width: 100%;
+  border-right: 1px solid $global--border-color;
   &:last-child {
-    margin-right: 0;
+    border-right: 0;
   }
+}
+
+.filters__item {
+}
+
+.filters__item-label {
+  font-size: 16px;
+  font-weight: bold;
+  border-bottom: 1px solid $global--border-color;
+  margin-bottom: 10px;
+  padding: 10px 20px;
+}
+
+.filters__item-input {
+  padding: 20px;
 }
 
 .filters__button-container {

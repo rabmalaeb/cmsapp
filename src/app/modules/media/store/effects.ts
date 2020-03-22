@@ -21,9 +21,10 @@ export class MediaStoreEffects {
     switchMap(action =>
       this.mediaService.getMedias().pipe(
         map(
-          items =>
+          ({ items, paginator }) =>
             new mediaActions.LoadSuccessAction({
-              items
+              items,
+              paginator
             })
         ),
         catchError(error =>

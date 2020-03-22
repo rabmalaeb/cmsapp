@@ -21,9 +21,10 @@ export class SupplierStoreEffects {
     switchMap(action =>
       this.supplierService.getSuppliers(action.supplierRequest).pipe(
         map(
-          items =>
+          ({ items, paginator }) =>
             new supplierActions.LoadSuccessAction({
-              items
+              items,
+              paginator
             })
         ),
         catchError(error =>

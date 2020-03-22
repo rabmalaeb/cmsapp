@@ -1,10 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { MatPaginator } from '@angular/material/paginator';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { AlertService } from 'src/app/core/services/alert.service';
-import { Role, RoleRequest } from '../role';
-import { RoleService } from '../role.service';
+import { Role } from '../role';
 import { AuthorizationService } from 'src/app/core/services/authorization.service';
 import { ModuleName } from 'src/app/shared/models/general';
 import { Observable } from 'rxjs';
@@ -17,6 +16,8 @@ import {
 import { ActionTypes } from '../store/actions';
 import { NotificationService } from 'src/app/core/services/notification.service';
 import { filter } from 'rxjs/operators';
+import { FilterHandler } from 'src/app/shared/filters/filter';
+import { Sort } from '@angular/material/sort';
 
 @Component({
   selector: 'app-roles',
@@ -24,13 +25,11 @@ import { filter } from 'rxjs/operators';
   styleUrls: ['./roles.component.scss']
 })
 export class RolesComponent implements OnInit {
-  isLoading = false;
-  roles: Role[] = [];
-
   roles$: Observable<Role[]>;
   error$: Observable<string>;
+  totalNumberOfItems$: Observable<number>;
   isLoading$: Observable<boolean>;
-
+  filterHandler = new FilterHandler();
   displayedColumns: string[] = ['id', 'name', 'partner', 'action'];
   dataSource: MatTableDataSource<any>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
@@ -58,6 +57,10 @@ export class RolesComponent implements OnInit {
       RoleStoreSelectors.selectRoleIsLoading
     );
 
+    this.totalNumberOfItems$ = this.store$.select(
+      RoleStoreSelectors.selectTotalNumberOfItems
+    );
+
     this.actionsSubject$
       .pipe(
         filter((action: any) => action.type === ActionTypes.DELETE_ROLE_SUCCESS)
@@ -81,13 +84,9 @@ export class RolesComponent implements OnInit {
       });
   }
 
-  getRoles(roleRequest: RoleRequest = null) {
-    this.store$.dispatch(new RoleStoreActions.LoadRequestAction(roleRequest));
-  }
-
-  setDataSource() {
-    this.dataSource = new MatTableDataSource<Role>(this.roles);
-    this.dataSource.paginator = this.paginator;
+  getRoles() {
+    const request = this.filterHandler.getRequest();
+    this.store$.dispatch(new RoleStoreActions.LoadRequestAction(request));
   }
 
   addRole() {
@@ -119,5 +118,19 @@ export class RolesComponent implements OnInit {
         this.store$.dispatch(new RoleStoreActions.DeleteRoleRequestAction(id));
       }
     );
+  }
+
+  get perPage() {
+    return this.filterHandler.getPaginator().perPage;
+  }
+
+  setPage($event: PageEvent) {
+    this.filterHandler.setPaginator($event.pageIndex + 1, $event.pageSize);
+    this.getRoles();
+  }
+
+  sortItems(sort: Sort) {
+    this.filterHandler.setSort(sort);
+    this.getRoles();
   }
 }

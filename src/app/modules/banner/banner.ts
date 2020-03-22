@@ -1,5 +1,6 @@
 import { Media } from '../media/media';
 import { Language } from '../language/language';
+import Request from 'src/app/shared/request';
 
 export class Banner {
   id: number;
@@ -12,6 +13,4 @@ export class Banner {
   languageId: number;
   language: Language;
 }
-export class BannerRequest {
-  name?: string;
-}
+export class BannerRequest extends Request {}

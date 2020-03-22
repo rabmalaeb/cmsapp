@@ -9,3 +9,17 @@
 .ng5-slider .ng5-slider-pointer {
   background-color: $global--secondary-color !important;
 }
+
+.ng5-slider .ng5-slider-pointer {
+    width: 15px !important;
+    height: 15px !important;
+    top: -6px !important;
+}
+
+.ng5-slider .ng5-slider-pointer:after {
+  content: none !important;
+}
+
+.ng5-slider .ng5-slider-bubble {
+  font-size: 12px !important;
+}

@@ -8,10 +8,15 @@
 }
 
 .table__image-container {
-  width: 100px;
+  width: 60px;
+  height: 60px;
   padding: 10px;
 }
 
 .table__image {
   width: 100%;
+}
+
+.mat-sort-header-arrow {
+  color: #fff;
 }

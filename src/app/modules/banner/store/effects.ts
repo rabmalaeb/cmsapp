@@ -21,9 +21,10 @@ export class BannerStoreEffects {
     switchMap(action =>
       this.bannerService.getBanners(action.bannerRequest).pipe(
         map(
-          items =>
+          ({ items, paginator }) =>
             new bannerActions.LoadSuccessAction({
-              items
+              items,
+              paginator
             })
         ),
         catchError(error =>

@@ -1,48 +1,66 @@
 <div class="page">
-  <div class="page__container">
-    <div class="page__section">
-      <div class="page__title-container">
-        <div class="page__title">
-          Products
+  <mat-progress-bar
+    *ngIf="isLoading$ | async"
+    class="page__progress-bar"
+    mode="indeterminate"
+    color="primary"
+  >
+  </mat-progress-bar>
+  <div class="page__section">
+    <app-page-header
+      label="Products"
+      buttonLabel="Add Product"
+      [condition]="canAddProduct | async"
+      (action)="addProduct()"
+    >
+      <div class="page__filters-container">
+        <div class="page__filter-item page__filter-item_is-search">
+          <app-search-input
+            placeholder="Search"
+            [filterHandler]="filterHandler"
+            (filter)="filterProducts()"
+          ></app-search-input>
+        </div>
+        <div class="page__filter-item">
+          <app-filter-control
+            label="Filter Products"
+            [filterHandler]="filterHandler"
+            (filter)="filterProducts()"
+          >
+            <app-product-filters
+              [productFilterLimits]="productFilterLimits$ | async"
+              [filterHandler]="filterHandler"
+              [categories]="categories$ | async"
+            ></app-product-filters>
+          </app-filter-control>
         </div>
       </div>
-      <div class="page__actions">
-        <button
-          mat-button
-          class="button button_is-primary"
-          (click)="addProduct()"
-          *ngIf="canAddProduct | async"
-        >
-          Add Product
-        </button>
-      </div>
-    </div>
-    <div class="page__section">
-      <div class="page__filters">
-        <app-product-filters
-          [retailPriceRange]="retailPriceRange$ | async"
-          [originalPriceRange]="originalPriceRange$ | async"
-          (filter)="getProducts($event)"
-        ></app-product-filters>
-      </div>
-    </div>
+    </app-page-header>
+  </div>
+  <div class="page__container">
     <mat-table
       mat-table
+      matSort
+      (matSortChange)="sortProducts($event)"
       [dataSource]="products$ | async"
       class="mat-elevation-z8"
     >
       <ng-container matColumnDef="id">
-        <mat-header-cell *matHeaderCellDef>Id</mat-header-cell>
+        <mat-header-cell mat-sort-header *matHeaderCellDef>Id</mat-header-cell>
         <mat-cell *matCellDef="let product">{{ product.id }}</mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="name">
-        <mat-header-cell *matHeaderCellDef>Name</mat-header-cell>
+        <mat-header-cell mat-sort-header *matHeaderCellDef
+          >Name</mat-header-cell
+        >
         <mat-cell *matCellDef="let product">{{ product.name }}</mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="description">
-        <mat-header-cell *matHeaderCellDef>Description</mat-header-cell>
+        <mat-header-cell mat-sort-header *matHeaderCellDef
+          >Description</mat-header-cell
+        >
         <mat-cell *matCellDef="let product">
           {{ product.description }}
         </mat-cell>
@@ -51,7 +69,7 @@
       <ng-container matColumnDef="image">
         <mat-header-cell *matHeaderCellDef>Image</mat-header-cell>
         <mat-cell *matCellDef="let product">
-          <div class="table__image-container">
+          <div class="table__image-container" *ngIf="product.media">
             <img class="table__image" [src]="product.media.imageUrl" alt="" />
           </div>
         </mat-cell>
@@ -87,6 +105,9 @@
 
     <mat-paginator
       [pageSizeOptions]="[20, 50, 100]"
+      [length]="totalNumberOfItems$ | async"
+      [pageSize]="perPage"
+      (page)="setPage($event)"
       showFirstLastButtons
     ></mat-paginator>
   </div>

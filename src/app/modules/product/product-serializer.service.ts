@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Product } from './product';
+import { Product, ProductFilterLimits } from './product';
 import { CategorySerializerService } from '../category/category-serializer.service';
 import { MediaSerializerService } from '../media/media.serializer.service';
 
@@ -35,5 +35,14 @@ export class ProductSerializerService {
       productResponse.relationships.media
     );
     return product;
+  }
+
+  getProductFilterLimits(response: any): ProductFilterLimits {
+    return {
+      maximumOriginalPrice: response.maximumOriginalPrice,
+      minimumOriginalPrice: response.minimumOriginalPrice,
+      maximumRetailPrice: response.maximumRetailPrice,
+      minimumRetailPrice: response.minimumRetailPrice,
+    };
   }
 }

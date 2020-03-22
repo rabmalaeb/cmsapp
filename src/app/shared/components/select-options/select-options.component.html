@@ -1,0 +1,20 @@
+<div class="select-options">
+  <div class="select-options__container">
+    <div class="select-options__item">
+      <mat-checkbox [checked]="selectAllChecked" (change)="toggleOptions()">
+        Select All
+      </mat-checkbox>
+    </div>
+    <div class="select-options__list">
+      <div class="select-options__item" *ngFor="let option of options">
+        <mat-checkbox
+          [value]="option.value"
+          [checked]="option.selected"
+          (change)="toggle(option)"
+        >
+          {{ option.label }}
+        </mat-checkbox>
+      </div>
+    </div>
+  </div>
+</div>

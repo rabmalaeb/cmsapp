@@ -17,9 +17,18 @@ export class Product {
 }
 
 export class ProductRequest extends Request {
-  name?: string;
   minimumRetailPrice?: number;
   maximumRetailPrice?: number;
   minimumOriginalPrice?: number;
   maximumOriginalPrice?: number;
+  sortBy?: string;
+  sortDirection?: string;
+  'categories[]'?: number[];
+}
+
+export interface ProductFilterLimits {
+  minimumRetailPrice: number;
+  maximumRetailPrice: number;
+  minimumOriginalPrice: number;
+  maximumOriginalPrice: number;
 }

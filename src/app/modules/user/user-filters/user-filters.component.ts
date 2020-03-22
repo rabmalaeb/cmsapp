@@ -1,8 +1,9 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
-import FilterComponent from 'src/app/shared/filter';
+import { Component, OnInit, Input } from '@angular/core';
+import { FilterComponent, FilterHandler } from 'src/app/shared/filters/filter';
 import Request from 'src/app/shared/request';
 import { FormGroup, FormBuilder } from '@angular/forms';
-import { User } from '../user';
+import { Subject } from 'rxjs';
+import { User, UserRequest } from '../user';
 
 @Component({
   selector: 'app-user-filters',
@@ -10,7 +11,8 @@ import { User } from '../user';
   styleUrls: ['./user-filters.component.sass']
 })
 export class UserFiltersComponent implements OnInit, FilterComponent {
-  @Output() filter = new EventEmitter<Request>();
+  @Input() filter: Subject<Request>;
+  @Input() filterHandler: FilterHandler;
   filterForm: FormGroup;
 
   constructor(private form: FormBuilder) {}
@@ -20,7 +22,7 @@ export class UserFiltersComponent implements OnInit, FilterComponent {
   }
 
   submitFilters(): void {
-    this.filter.emit(this.buildRequest());
+    this.filter.next(this.buildRequest());
   }
 
   resetFilters(): void {
@@ -28,46 +30,25 @@ export class UserFiltersComponent implements OnInit, FilterComponent {
     this.submitFilters();
   }
 
-  buildRequest(): User {
+  buildRequest(): UserRequest {
     return {
-      firstName: this.firstName.value ? this.firstName.value : '',
-      lastName: this.lastName.value ? this.lastName.value : '',
-      email: this.email.value ? this.email.value : '',
-      mobile: this.mobile.value ? this.mobile.value : ''
+      searchQuery: this.searchQuery.value ? this.searchQuery.value : '',
     };
   }
 
   buildForm(): void {
     this.filterForm = this.form.group({
-      firstName: [''],
-      lastName: [''],
-      email: [''],
-      mobile: ['']
+      searchQuery: [''],
     });
   }
 
-  get firstName() {
-    return this.filterForm.get('firstName');
-  }
-
-  get lastName() {
-    return this.filterForm.get('lastName');
-  }
-
-  get email() {
-    return this.filterForm.get('email');
-  }
-
-  get mobile() {
-    return this.filterForm.get('mobile');
+  get searchQuery() {
+    return this.filterForm.get('searchQuery');
   }
 
   get isFormEmpty() {
     return (
-      !this.firstName.value &&
-      !this.lastName.value &&
-      !this.email.value &&
-      !this.mobile.value
+      !this.searchQuery.value
     );
   }
 }

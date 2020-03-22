@@ -21,9 +21,10 @@ export class TranslationStoreEffects {
     switchMap(action =>
       this.translationService.getTranslations(action.translationRequest).pipe(
         map(
-          items =>
+          ({ items, paginator }) =>
             new translationActions.LoadSuccessAction({
-              items
+              items,
+              paginator
             })
         ),
         catchError(error =>

@@ -14,6 +14,7 @@ export function categoryReducer(state = initialState, action: Actions): State {
       return categoryAdapter.addAll(action.payload.items, {
         ...state,
         isLoading: false,
+        total: action.payload.paginator.total,
         loadingError: null
       });
     }

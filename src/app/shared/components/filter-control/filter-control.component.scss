@@ -1,0 +1,21 @@
+@import '../../../../assets/styles/global';
+
+.filter-control__title-container {
+  padding: 20px;
+  border-bottom: 1px solid $global--border-color;
+}
+
+.filter-control__title {
+  font-weight: bold;
+  font-size: 21px;
+}
+
+.filter-control__filter-container {
+  border-bottom: 1px solid $global--border-color;
+}
+
+.filter-control__buttons-container {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px;
+}

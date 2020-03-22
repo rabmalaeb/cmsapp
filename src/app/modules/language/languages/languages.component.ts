@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { MatPaginator } from '@angular/material/paginator';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { AlertService } from 'src/app/core/services/alert.service';
 import { Language, LanguageRequest } from '../language';
@@ -13,6 +13,8 @@ import { filter } from 'rxjs/operators';
 import { NotificationService } from 'src/app/core/services/notification.service';
 import { ActionsSubject, Store } from '@ngrx/store';
 import { RootStoreState } from 'src/app/root-store';
+import { FilterHandler } from 'src/app/shared/filters/filter';
+import { Sort } from '@angular/material/sort';
 
 @Component({
   selector: 'app-languages',
@@ -20,12 +22,12 @@ import { RootStoreState } from 'src/app/root-store';
   styleUrls: ['./languages.component.scss']
 })
 export class LanguagesComponent implements OnInit {
-  isLoading = false;
-  languages: Language[] = [];
   displayedColumns: string[] = ['id', 'name', 'code', 'action'];
   languages$: Observable<Language[]>;
   error$: Observable<string>;
   isLoading$: Observable<boolean>;
+  totalNumberOfItems$: Observable<number>;
+  filterHandler = new FilterHandler();
   dataSource: MatTableDataSource<any>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 
@@ -50,6 +52,10 @@ export class LanguagesComponent implements OnInit {
 
     this.error$ = this.store$.select(
       LanguageStoreSelectors.selectLanguageLoadingError
+    );
+
+    this.totalNumberOfItems$ = this.store$.select(
+      LanguageStoreSelectors.selectTotalNumberOfItems
     );
 
     this.isLoading$ = this.store$.select(
@@ -83,16 +89,13 @@ export class LanguagesComponent implements OnInit {
       });
   }
 
-  getLanguages(languageRequest: LanguageRequest = null) {
+  getLanguages() {
+    const request = this.filterHandler.getRequest();
     this.store$.dispatch(
-      new LanguageStoreActions.LoadRequestAction(languageRequest)
+      new LanguageStoreActions.LoadRequestAction(request)
     );
   }
 
-  setDataSource() {
-    this.dataSource = new MatTableDataSource<Language>(this.languages);
-    this.dataSource.paginator = this.paginator;
-  }
   addLanguage() {
     this.router.navigate(['languages/add']);
   }
@@ -124,5 +127,19 @@ export class LanguagesComponent implements OnInit {
 
   get canDeleteLanguage() {
     return this.authorizationService.canDelete(ModuleName.LANGUAGES);
+  }
+
+  get perPage() {
+    return this.filterHandler.getPaginator().perPage;
+  }
+
+  setPage($event: PageEvent) {
+    this.filterHandler.setPaginator($event.pageIndex + 1, $event.pageSize);
+    this.getLanguages();
+  }
+
+  sortItems(sort: Sort) {
+    this.filterHandler.setSort(sort);
+    this.getLanguages();
   }
 }

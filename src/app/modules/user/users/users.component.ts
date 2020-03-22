@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { MatPaginator } from '@angular/material/paginator';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { AlertService } from 'src/app/core/services/alert.service';
 import { User } from '../user';
@@ -17,6 +17,8 @@ import {
 import { ActionTypes } from '../store/actions';
 import { NotificationService } from 'src/app/core/services/notification.service';
 import { filter } from 'rxjs/operators';
+import { FilterHandler } from 'src/app/shared/filters/filter';
+import { Sort } from '@angular/material/sort';
 
 @Component({
   selector: 'app-users',
@@ -24,12 +26,11 @@ import { filter } from 'rxjs/operators';
   styleUrls: ['./users.component.scss']
 })
 export class UsersComponent implements OnInit {
-  isLoading = false;
-  users: User[] = [];
-
   users$: Observable<User[]>;
   error$: Observable<string>;
   isLoading$: Observable<boolean>;
+  totalNumberOfItems$: Observable<number>;
+  filterHandler = new FilterHandler();
 
   displayedColumns: string[] = [
     'id',
@@ -66,6 +67,10 @@ export class UsersComponent implements OnInit {
       UserStoreSelectors.selectUserIsLoading
     );
 
+    this.totalNumberOfItems$ = this.store$.select(
+      UserStoreSelectors.selectTotalNumberOfItems
+    );
+
     this.actionsSubject$
       .pipe(
         filter((action: any) => action.type === ActionTypes.DELETE_USER_SUCCESS)
@@ -89,13 +94,9 @@ export class UsersComponent implements OnInit {
       });
   }
 
-  getUsers(userRequest: User = null) {
-    this.store$.dispatch(new UserStoreActions.LoadRequestAction(userRequest));
-  }
-
-  setDataSource() {
-    this.dataSource = new MatTableDataSource<User>(this.users);
-    this.dataSource.paginator = this.paginator;
+  getUsers() {
+    const request = this.filterHandler.getRequest();
+    this.store$.dispatch(new UserStoreActions.LoadRequestAction(request));
   }
 
   addUser() {
@@ -127,5 +128,19 @@ export class UsersComponent implements OnInit {
         this.store$.dispatch(new UserStoreActions.DeleteUserRequestAction(id));
       }
     );
+  }
+
+  get perPage() {
+    return this.filterHandler.getPaginator().perPage;
+  }
+
+  setPage($event: PageEvent) {
+    this.filterHandler.setPaginator($event.pageIndex + 1, $event.pageSize);
+    this.getUsers();
+  }
+
+  sortItems(sort: Sort) {
+    this.filterHandler.setSort(sort);
+    this.getUsers();
   }
 }

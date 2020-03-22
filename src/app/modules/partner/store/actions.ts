@@ -1,6 +1,7 @@
 import { Action } from '@ngrx/store';
 import { Partner, PartnerRequest } from 'src/app/modules/partner/partner';
 import { ErrorResponse } from 'src/app/shared/models/general';
+import { PaginationControl } from 'src/app/shared/paginator';
 
 export enum ActionTypes {
   LOAD_REQUEST = '[Partner] Load Request',
@@ -32,7 +33,7 @@ export class LoadFailureAction implements Action {
 
 export class LoadSuccessAction implements Action {
   readonly type = ActionTypes.LOAD_SUCCESS;
-  constructor(public payload: { items: Partner[] }) {}
+  constructor(public payload: { items: Partner[], paginator: PaginationControl }) {}
 }
 
 export class GetPartnerRequestAction implements Action {
