@@ -14,6 +14,7 @@ import { NotificationService } from 'src/app/core/services/notification.service'
 import { ActionsSubject, Store } from '@ngrx/store';
 import { RootStoreState } from 'src/app/root-store';
 import { FilterHandler } from 'src/app/shared/filters/filter';
+import { Sort } from '@angular/material/sort';
 
 @Component({
   selector: 'app-languages',
@@ -134,6 +135,11 @@ export class LanguagesComponent implements OnInit {
 
   setPage($event: PageEvent) {
     this.filterHandler.setPaginator($event.pageIndex + 1, $event.pageSize);
+    this.getLanguages();
+  }
+
+  sortItems(sort: Sort) {
+    this.filterHandler.setSort(sort);
     this.getLanguages();
   }
 }

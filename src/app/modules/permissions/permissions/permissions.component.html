@@ -27,16 +27,18 @@
   <div class="page__container">
     <mat-table
       mat-table
+      matSort
+      (matSortChange)="sortItems($event)"
       [dataSource]="permissions$ | async"
       class="mat-elevation-z8"
     >
       <ng-container matColumnDef="id">
-        <mat-header-cell *matHeaderCellDef>Id</mat-header-cell>
+        <mat-header-cell mat-sort-header *matHeaderCellDef>Id</mat-header-cell>
         <mat-cell *matCellDef="let permission">{{ permission.id }}</mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="name">
-        <mat-header-cell *matHeaderCellDef>Name</mat-header-cell>
+        <mat-header-cell mat-sort-header *matHeaderCellDef>Name</mat-header-cell>
         <mat-cell *matCellDef="let permission">{{ permission.name }}</mat-cell>
       </ng-container>
 

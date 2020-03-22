@@ -14,6 +14,7 @@ import { NotificationService } from 'src/app/core/services/notification.service'
 import { ActionTypes } from '../store/actions';
 import { filter } from 'rxjs/operators';
 import { FilterHandler } from 'src/app/shared/filters/filter';
+import { Sort } from '@angular/material/sort';
 
 @Component({
   selector: 'app-partners',
@@ -132,6 +133,11 @@ export class PartnersComponent implements OnInit {
 
   setPage($event: PageEvent) {
     this.filterHandler.setPaginator($event.pageIndex + 1, $event.pageSize);
+    this.getPartners();
+  }
+
+  sortItems(sort: Sort) {
+    this.filterHandler.setSort(sort);
     this.getPartners();
   }
 }

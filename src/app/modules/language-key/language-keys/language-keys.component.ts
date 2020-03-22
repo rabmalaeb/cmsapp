@@ -14,6 +14,7 @@ import { Observable } from 'rxjs';
 import { NotificationService } from 'src/app/core/services/notification.service';
 import { filter } from 'rxjs/operators';
 import { FilterHandler } from 'src/app/shared/filters/filter';
+import { Sort } from '@angular/material/sort';
 
 @Component({
   selector: 'app-languagekeys',
@@ -138,6 +139,11 @@ export class LanguageKeysComponent implements OnInit {
 
   setPage($event: PageEvent) {
     this.filterHandler.setPaginator($event.pageIndex + 1, $event.pageSize);
+    this.getLanguageKeys();
+  }
+
+  sortItems(sort: Sort) {
+    this.filterHandler.setSort(sort);
     this.getLanguageKeys();
   }
 }

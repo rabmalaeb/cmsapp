@@ -166,7 +166,6 @@ export class ProductsComponent implements OnInit {
     this.getProducts();
   }
 
-  // TO DO when filtering the sorting is not working yets
   sortProducts(sort: Sort) {
     this.filterHandler.setSort(sort);
     this.getProducts();
@@ -182,5 +181,10 @@ export class ProductsComponent implements OnInit {
 
   get perPage() {
     return this.filterHandler.getPaginator().perPage;
+  }
+
+  sortItems(sort: Sort) {
+    this.filterHandler.setSort(sort);
+    this.getProducts();
   }
 }

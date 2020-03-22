@@ -27,35 +27,37 @@
   <div class="page__container">
     <mat-table
       mat-table
+      matSort
+      (matSortChange)="sortItems($event)"
       [dataSource]="admins$ | async"
       class="mat-elevation-z8"
     >
       <ng-container matColumnDef="id">
-        <mat-header-cell *matHeaderCellDef>Id</mat-header-cell>
+        <mat-header-cell mat-sort-header *matHeaderCellDef>Id</mat-header-cell>
         <mat-cell *matCellDef="let admin">{{ admin.id }}</mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="name">
-        <mat-header-cell *matHeaderCellDef>Name</mat-header-cell>
+        <mat-header-cell mat-sort-header *matHeaderCellDef>Name</mat-header-cell>
         <mat-cell *matCellDef="let admin">{{ admin.name }}</mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="description">
-        <mat-header-cell *matHeaderCellDef>Description</mat-header-cell>
+        <mat-header-cell mat-sort-header *matHeaderCellDef>Description</mat-header-cell>
         <mat-cell *matCellDef="let admin">
           {{ admin.description }}
         </mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="email">
-        <mat-header-cell *matHeaderCellDef>email</mat-header-cell>
+        <mat-header-cell mat-sort-header *matHeaderCellDef>email</mat-header-cell>
         <mat-cell *matCellDef="let admin">
           {{ admin.email }}
         </mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="active">
-        <mat-header-cell *matHeaderCellDef>active</mat-header-cell>
+        <mat-header-cell mat-sort-header *matHeaderCellDef>active</mat-header-cell>
         <mat-cell *matCellDef="let admin">
           {{ admin.active }}
         </mat-cell>
