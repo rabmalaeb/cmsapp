@@ -14,7 +14,7 @@ export class LanguageKeyService {
   ) {}
 
   getLanguageKeys(languageKeyRequest: LanguageKeyRequest) {
-    return this.httpService.request('language-keys', languageKeyRequest).pipe(
+    return this.httpService.get('language-keys', languageKeyRequest).pipe(
       map(({ data: { items, paginator } }) => {
         return {
           items: items.map(item =>
@@ -27,7 +27,7 @@ export class LanguageKeyService {
   }
 
   getLanguageKey(id: number) {
-    return this.httpService.request(`language-keys/${id}`, {}).pipe(
+    return this.httpService.get(`language-keys/${id}`, {}).pipe(
       map(({ data }) => {
         return this.languageKeySerializer.getLanguageKey(data);
       })

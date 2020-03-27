@@ -14,7 +14,7 @@ export class BannerService {
   ) {}
 
   getBanners(bannerRequest: BannerRequest) {
-    return this.httpService.request('banners', bannerRequest).pipe(
+    return this.httpService.get('banners', bannerRequest).pipe(
       map(({ data: { items, paginator } }) => {
         return {
           items: items.map(item => this.bannerSerializer.getBanner(item)),
@@ -25,7 +25,7 @@ export class BannerService {
   }
 
   getBanner(id: number) {
-    return this.httpService.request(`banners/${id}`, {}).pipe(
+    return this.httpService.get(`banners/${id}`, {}).pipe(
       map(({ data }) => {
         return this.bannerSerializer.getBanner(data);
       })

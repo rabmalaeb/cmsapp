@@ -11,3 +11,13 @@ export function capitalize(word: string) {
 export function isRangeValid(range: NumberRange) {
   return range && range.minimum <= range.maximum;
 }
+
+export function createFormDataFromObject(object: {}) {
+  const formData = new FormData();
+  Object.entries(object).forEach(([key, value]: [string, string | Blob]) => {
+    value instanceof File
+      ? formData.append(key, value, value.name)
+      : formData.append(key, value);
+  });
+  return formData;
+}

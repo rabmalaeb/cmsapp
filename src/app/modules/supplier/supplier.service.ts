@@ -14,7 +14,7 @@ export class SupplierService {
   ) {}
 
   getSuppliers(supplierRequest: SupplierRequest) {
-    return this.httpService.request('suppliers', supplierRequest).pipe(
+    return this.httpService.get('suppliers', supplierRequest).pipe(
       map(({ data }) => {
         if (data) {
           return {
@@ -29,7 +29,7 @@ export class SupplierService {
   }
 
   getSupplier(id: number) {
-    return this.httpService.request(`suppliers/${id}`, {}).pipe(
+    return this.httpService.get(`suppliers/${id}`, {}).pipe(
       map(({ data }) => {
         return this.supplierSerializer.getSupplier(data);
       })

@@ -14,7 +14,7 @@ export class LanguageService {
   ) {}
 
   getLanguages(languageRequest: LanguageRequest) {
-    return this.httpService.request('languages', languageRequest).pipe(
+    return this.httpService.get('languages', languageRequest).pipe(
       map(({ data: { items, paginator } }) => {
         return {
           items: items.map(item => this.languageSerializer.getLanguage(item)),
@@ -25,7 +25,7 @@ export class LanguageService {
   }
 
   getLanguage(id: number) {
-    return this.httpService.request(`languages/${id}`, {}).pipe(
+    return this.httpService.get(`languages/${id}`, {}).pipe(
       map(({ data }) => {
         return this.languageSerializer.getLanguage(data);
       })

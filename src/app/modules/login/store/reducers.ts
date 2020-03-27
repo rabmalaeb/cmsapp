@@ -1,4 +1,4 @@
-import { LoginAdapter, initialState, State } from './state';
+import { initialState, State } from './state';
 import { Actions, ActionTypes } from './actions';
 
 export function LoginReducer(state = initialState, action: Actions): State {

@@ -2,7 +2,6 @@ import { Action } from '@ngrx/store';
 import { LoginRequest } from '../login';
 import { Admin } from '../../admin/admin';
 import { ErrorResponse } from 'src/app/shared/models/general';
-import { PaginationControl } from 'src/app/shared/paginator';
 
 export enum ActionTypes {
   LOAD_REQUEST = '[Login] Load Request',

@@ -17,7 +17,7 @@ export class HttpService {
   url: string = environment.apiUrl;
   data: any;
 
-  request(endpoint: string, params: any) {
+  get(endpoint: string, params: any) {
     const url = `${this.url}${endpoint}`;
     return this.http.get<any>(url, { params, withCredentials: false }).pipe(
       map(response => {
