@@ -35,7 +35,6 @@ export class BannerFormComponent implements OnInit, OnChanges {
 
   bannerForm: FormGroup;
   bannerImage: File;
-  bannerMedia: Media;
   imageUrl: any;
   @Input() banner: Banner;
   @Input() languages: Language[];
@@ -112,7 +111,7 @@ export class BannerFormComponent implements OnInit, OnChanges {
     banner.description = this.description.value;
     banner.link = this.link.value;
     banner.languageId = this.languageId.value;
-    banner.mediaId = this.bannerMedia.id;
+    banner.image = this.bannerImage;
     return banner;
   }
 
@@ -132,14 +131,7 @@ export class BannerFormComponent implements OnInit, OnChanges {
       this.notificationService.showError(ALERT_MESSAGES.FORM_NOT_VALID);
       return;
     }
-    if (this.bannerImage) {
-      const data = new FormData();
-      data.append('image', this.bannerImage, this.bannerImage.name);
-      this.mediaService.addMedia(data).subscribe(response => {
-        this.bannerMedia = response;
-        this.submitForm.emit(this.buildBannerParams());
-      });
-    }
+    this.submitForm.emit(this.buildBannerParams());
   }
 
   uploadImage(image: File) {

@@ -41,7 +41,6 @@ export class CategoryFormComponent implements OnInit, OnChanges {
   @Output() submitForm = new EventEmitter<Category>();
   formGroupDirective: FormGroupDirective;
   categoryForm: FormGroup;
-  bannerMedia: Media;
   bannerImage: File;
   imageUrl: any;
 
@@ -86,7 +85,7 @@ export class CategoryFormComponent implements OnInit, OnChanges {
     category.name = this.name.value;
     category.description = this.description.value;
     category.parentId = this.parentId.value;
-    category.mediaId = this.bannerMedia.id;
+    category.image = this.bannerImage;
     return category;
   }
 
@@ -106,14 +105,7 @@ export class CategoryFormComponent implements OnInit, OnChanges {
       this.notificationService.showError(ALERT_MESSAGES.FORM_NOT_VALID);
       return;
     }
-    if (this.bannerImage) {
-      const data = new FormData();
-      data.append('image', this.bannerImage, this.bannerImage.name);
-      this.mediaService.addMedia(data).subscribe(response => {
-        this.bannerMedia = response;
-        this.submitForm.emit(this.buildCategoryParams());
-      });
-    }
+    this.submitForm.emit(this.buildCategoryParams());
   }
 
   uploadImage(image: File) {

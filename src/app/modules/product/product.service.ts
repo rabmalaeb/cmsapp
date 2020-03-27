@@ -3,7 +3,7 @@ import { HttpService } from 'src/app/core/services/http.service';
 import { ProductSerializerService } from './product-serializer.service';
 import { map } from 'rxjs/operators';
 import { ProductRequest, Product } from './product';
-import { createFormDataFromObject } from 'src/app/shared/utils/general';
+import { createFormDataFromObject, addPutMethodToFormData } from 'src/app/shared/utils/general';
 
 @Injectable({
   providedIn: 'root'
@@ -42,9 +42,14 @@ export class ProductService {
     );
   }
 
+  /**
+   * post method is used here because LARAVEL doesn't
+   *  read PUT requests when sending formdata
+   */
   updateProduct(id: number, params: Product) {
     const formData = createFormDataFromObject(params);
-    return this.httpService.put(`products/${id}`, formData).pipe(
+    addPutMethodToFormData(formData);
+    return this.httpService.post(`products/${id}`, formData).pipe(
       map(({ data }) => {
         return this.productSerializer.getProduct(data);
       })

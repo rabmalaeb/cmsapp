@@ -15,7 +15,7 @@ export class TranslationService {
 
   getTranslations(request: TranslationRequest) {
     return this.httpService
-      .request('language-partner-translations', request)
+      .get('language-partner-translations', request)
       .pipe(
         map(({ data: { items, paginator } }) => {
           return {
@@ -30,7 +30,7 @@ export class TranslationService {
 
   getTranslation(id: number) {
     return this.httpService
-      .request(`language-partner-translations/${id}`, {})
+      .get(`language-partner-translations/${id}`, {})
       .pipe(
         map(({ data }) => {
           return this.translationSerializer.getTranslation(data);
