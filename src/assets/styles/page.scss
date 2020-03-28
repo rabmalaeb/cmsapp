@@ -3,6 +3,7 @@
 
 .page__container {
   @include container;
+  background-color: #fff;
 }
 
 .page__section {
