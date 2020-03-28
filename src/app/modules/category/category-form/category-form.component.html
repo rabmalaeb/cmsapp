@@ -35,7 +35,7 @@
   </div>
   <div class="form-item">
     <div class="form-item__value form-item__value_is-textfield">
-      <app-image-preview (image)="uploadImage($event)" [imageUrl]="imageUrl">
+      <app-image-preview (imageSelected)="uploadImage($event)" [resetImage]="resetImage">
       </app-image-preview>
     </div>
   </div>

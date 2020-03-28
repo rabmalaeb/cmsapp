@@ -4,7 +4,8 @@ import {
   Input,
   Output,
   EventEmitter,
-  OnChanges
+  OnChanges,
+  SimpleChanges
 } from '@angular/core';
 import {
   Validators,
@@ -41,7 +42,7 @@ export class ProductFormComponent implements OnInit, OnChanges {
   formGroupDirective: FormGroupDirective;
   productForm: FormGroup;
   productImage: File;
-  imageUrl: any;
+  resetImage = false;
 
   ngOnInit() {}
 
@@ -55,6 +56,7 @@ export class ProductFormComponent implements OnInit, OnChanges {
       this.buildNewProductForm();
       if (this.formGroupDirective) {
         this.formGroupDirective.resetForm();
+        this.resetImage = true;
       }
     }
   }

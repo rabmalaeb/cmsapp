@@ -17,7 +17,6 @@ import { NotificationService } from 'src/app/core/services/notification.service'
 import { ActionType } from 'src/app/shared/models/general';
 import { ALERT_MESSAGES } from 'src/app/shared/models/alert';
 import { Category } from '../category';
-import { MediaService } from '../../media/media.service';
 
 @Component({
   selector: 'app-category-form',
@@ -28,8 +27,7 @@ export class CategoryFormComponent implements OnInit, OnChanges {
   constructor(
     private form: FormBuilder,
     private notificationService: NotificationService,
-    private validationMessagesService: ValidationMessagesService,
-    private mediaService: MediaService
+    private validationMessagesService: ValidationMessagesService
   ) {}
 
   @Input() category: Category;
@@ -42,7 +40,7 @@ export class CategoryFormComponent implements OnInit, OnChanges {
   formGroupDirective: FormGroupDirective;
   categoryForm: FormGroup;
   bannerImage: File;
-  imageUrl: any;
+  resetImage = false;
 
   ngOnInit() {}
 
@@ -56,6 +54,7 @@ export class CategoryFormComponent implements OnInit, OnChanges {
       this.buildNewCategoryForm();
       if (this.formGroupDirective) {
         this.formGroupDirective.resetForm();
+        this.resetImage = true;
       }
     }
   }

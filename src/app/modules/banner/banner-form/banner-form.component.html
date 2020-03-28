@@ -5,12 +5,7 @@
   class="page__form"
   *ngIf="!isLoadingForm; else loadingMask"
 >
-  <app-input-item
-    id="name"
-    name="name"
-    label="Name"
-    [formControlItem]="name"
-  >
+  <app-input-item id="name" name="name" label="Name" [formControlItem]="name">
   </app-input-item>
 
   <app-input-item
@@ -21,12 +16,7 @@
   >
   </app-input-item>
 
-  <app-input-item
-    id="link"
-    name="link"
-    label="Link"
-    [formControlItem]="link"
-  >
+  <app-input-item id="link" name="link" label="Link" [formControlItem]="link">
   </app-input-item>
 
   <div class="form-item">
@@ -43,7 +33,10 @@
   </div>
   <div class="form-item">
     <div class="form-item__value form-item__value_is-textfield">
-      <app-image-preview (image)="uploadImage($event)" [imageUrl]="imageUrl">
+      <app-image-preview
+        (imageSelected)="uploadImage($event)"
+        [resetImage]="resetImage"
+      >
       </app-image-preview>
     </div>
   </div>

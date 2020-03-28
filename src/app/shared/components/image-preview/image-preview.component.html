@@ -15,8 +15,8 @@
     {{ message }}
   </div>
 </div>
-<div class="page__upload-image-container" *ngIf="imageUrl">
-  <img (click)="fileInput.click()" [src]="imageUrl" class="page__upload-image" />
+<div class="page__upload-image-container" *ngIf="imageSource">
+  <img (click)="fileInput.click()" [src]="imageSource" class="page__upload-image" />
 </div>
 <div class="page__upload-name">
   {{ imageName }}

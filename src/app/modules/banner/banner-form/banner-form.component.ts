@@ -17,7 +17,6 @@ import { NotificationService } from 'src/app/core/services/notification.service'
 import { ActionType } from 'src/app/shared/models/general';
 import { ALERT_MESSAGES } from 'src/app/shared/models/alert';
 import { Banner } from '../banner';
-import { MediaService } from '../../media/media.service';
 import { Language } from '../../language/language';
 
 @Component({
@@ -29,13 +28,9 @@ export class BannerFormComponent implements OnInit, OnChanges {
   constructor(
     private form: FormBuilder,
     private notificationService: NotificationService,
-    private mediaService: MediaService,
     private validationMessagesService: ValidationMessagesService
   ) {}
 
-  bannerForm: FormGroup;
-  bannerImage: File;
-  imageUrl: any;
   @Input() banner: Banner;
   @Input() languages: Language[];
   @Input() actionType: ActionType;
@@ -44,6 +39,9 @@ export class BannerFormComponent implements OnInit, OnChanges {
   @Input() isLoading: boolean;
   @Output() submitForm = new EventEmitter<Banner>();
   formGroupDirective: FormGroupDirective;
+  bannerForm: FormGroup;
+  bannerImage: File;
+  resetImage = false;
 
   ngOnInit() {}
 
@@ -57,6 +55,7 @@ export class BannerFormComponent implements OnInit, OnChanges {
       this.buildNewBannerForm();
       if (this.formGroupDirective) {
         this.formGroupDirective.resetForm();
+        this.resetImage = true;
       }
     }
   }
