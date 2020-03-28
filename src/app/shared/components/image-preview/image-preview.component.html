@@ -7,9 +7,9 @@
 />
 <div class="page__upload-container">
   <div class="page__upload-button">
-    <div class="button button_is-primary" (click)="fileInput.click()">
+    <button type="button" mat-button class="button button_is-primary" (click)="fileInput.click()">
       Select image
-    </div>
+    </button>
   </div>
   <div class="page__upload-error" *ngIf="message">
     {{ message }}
