@@ -1,16 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import {
-  Validators,
   FormGroup,
-  FormBuilder,
-  FormGroupDirective
+  FormBuilder
 } from '@angular/forms';
 import { ValidationMessagesService } from 'src/app/core/services/validation-messages.service';
 import { NotificationService } from 'src/app/core/services/notification.service';
-import { ActionType, ALERT_MESSAGES, ModuleName } from 'src/app/shared/models/general';
+import { ActionType } from 'src/app/shared/models/general';
 import { ActivatedRoute } from '@angular/router';
 import { LanguageKey } from '../language-key';
-import { LanguageKeyService } from '../language-key.service';
 import { Category } from '../../category/category';
 import { AuthorizationService } from 'src/app/core/services/authorization.service';
 import { LanguagekeyStoreSelectors, LanguagekeyStoreActions } from '../store';
@@ -19,6 +16,7 @@ import { RootStoreState } from 'src/app/root-store';
 import { Observable, of } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 import { ActionTypes } from '../store/actions';
+import { ModuleName } from 'src/app/shared/models/nav';
 
 @Component({
   selector: 'app-language-key-add',

@@ -6,7 +6,7 @@ import { AlertService } from 'src/app/core/services/alert.service';
 import { User } from '../user';
 import { UserService } from '../user.service';
 import { AuthorizationService } from 'src/app/core/services/authorization.service';
-import { ModuleName } from 'src/app/shared/models/general';
+import { ModuleName } from 'src/app/shared/models/nav';
 import { Observable } from 'rxjs';
 import { Store, ActionsSubject } from '@ngrx/store';
 import {

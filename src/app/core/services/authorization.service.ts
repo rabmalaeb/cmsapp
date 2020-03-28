@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { ModuleName, PermissionType } from 'src/app/shared/models/general';
+import { PermissionType } from 'src/app/shared/models/general';
 import { AuthenticationService } from './authentication.service';
 import { Permission } from '../../modules/permissions/permission';
 import { RootStoreState } from '../../root-store';
@@ -11,6 +11,7 @@ import {
 } from '../../modules/permissions/store';
 import { Observable } from 'rxjs';
 import { map, take, filter, switchMap } from 'rxjs/operators';
+import { ModuleName } from 'src/app/shared/models/nav';
 
 @Injectable({
   providedIn: 'root'

@@ -5,7 +5,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { AlertService } from 'src/app/core/services/alert.service';
 import { LanguageKey, LanguageKeyRequest } from '../language-key';
 import { AuthorizationService } from 'src/app/core/services/authorization.service';
-import { ModuleName } from 'src/app/shared/models/general';
+import { ModuleName } from 'src/app/shared/models/nav';
 import { Store, ActionsSubject } from '@ngrx/store';
 import { RootStoreState } from 'src/app/root-store';
 import { LanguagekeyStoreSelectors, LanguagekeyStoreActions } from '../store';

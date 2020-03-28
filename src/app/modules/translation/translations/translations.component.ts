@@ -5,7 +5,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { AlertService } from 'src/app/core/services/alert.service';
 import { Translation } from '../translation';
 import { AuthorizationService } from 'src/app/core/services/authorization.service';
-import { ModuleName } from 'src/app/shared/models/general';
+import { ModuleName } from 'src/app/shared/models/nav';
 import { ActionTypes } from '../store/actions';
 import { filter } from 'rxjs/operators';
 import { TranslationStoreSelectors, TranslationStoreActions } from '../store';

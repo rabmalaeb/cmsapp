@@ -1,7 +1,7 @@
 import { Category } from '../category/category';
 import { Media } from '../media/media';
 import Request from 'src/app/shared/request';
-import { ImageModel } from 'src/app/shared/models';
+import { ImageModel } from 'src/app/shared/models/image';
 
 export class Product extends ImageModel {
   id: number;

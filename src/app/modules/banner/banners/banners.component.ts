@@ -5,7 +5,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { AlertService } from 'src/app/core/services/alert.service';
 import { Banner, BannerRequest } from '../banner';
 import { AuthorizationService } from 'src/app/core/services/authorization.service';
-import { ModuleName } from 'src/app/shared/models/general';
+import { ModuleName } from 'src/app/shared/models/nav';
 import { filter } from 'rxjs/operators';
 import { BannerStoreActions, BannerStoreSelectors } from '../store';
 import { ActionTypes } from '../store/actions';

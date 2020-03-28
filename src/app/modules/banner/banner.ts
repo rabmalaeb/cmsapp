@@ -1,7 +1,7 @@
 import { Media } from '../media/media';
 import { Language } from '../language/language';
 import Request from 'src/app/shared/request';
-import { ImageModel } from 'src/app/shared/models';
+import { ImageModel } from 'src/app/shared/models/image';
 
 export class Banner extends ImageModel {
   id: number;

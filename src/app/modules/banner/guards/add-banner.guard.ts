@@ -6,7 +6,7 @@ import {
   RouterStateSnapshot,
 } from '@angular/router';
 import { AuthorizationService } from 'src/app/core/services/authorization.service';
-import { ModuleName } from 'src/app/shared/models/general';
+import { ModuleName } from 'src/app/shared/models/nav';
 
 @Injectable({ providedIn: 'root' })
 export class AddBannerGuard implements CanActivate {

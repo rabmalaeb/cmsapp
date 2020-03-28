@@ -14,8 +14,9 @@ import {
 } from '@angular/forms';
 import { ValidationMessagesService } from 'src/app/core/services/validation-messages.service';
 import { NotificationService } from 'src/app/core/services/notification.service';
-import { ActionType, ALERT_MESSAGES } from 'src/app/shared/models/general';
+import { ActionType } from 'src/app/shared/models/general';
 import { User } from '../user';
+import { ALERT_MESSAGES } from 'src/app/shared/models/alert';
 
 @Component({
   selector: 'app-user-form',

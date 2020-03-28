@@ -4,7 +4,7 @@ import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { AlertService } from 'src/app/core/services/alert.service';
 import { Category, CategoryRequest } from '../category';
-import { ModuleName } from 'src/app/shared/models/general';
+import { ModuleName } from 'src/app/shared/models/nav';
 import { AuthorizationService } from 'src/app/core/services/authorization.service';
 import { Observable } from 'rxjs';
 import { RootStoreState } from 'src/app/root-store';

@@ -1,5 +1,6 @@
-import { ModuleName, PermissionType } from 'src/app/shared/models/general';
+import { PermissionType } from 'src/app/shared/models/general';
 import Request from 'src/app/shared/request';
+import { ModuleName } from 'src/app/shared/models/nav';
 
 export interface Permission {
   id: number;

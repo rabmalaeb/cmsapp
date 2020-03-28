@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NavItem } from '../../shared/models/general';
+import { NavItem } from '../../shared/models/nav';
 import { AppService } from '../../core/services/app.service';
 
 @Component({

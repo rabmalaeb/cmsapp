@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NotificationService } from 'src/app/core/services/notification.service';
-import { ActionType, ModuleName } from 'src/app/shared/models/general';
+import { ActionType } from 'src/app/shared/models/general';
+import { ModuleName } from 'src/app/shared/models/nav';
 import { ActivatedRoute } from '@angular/router';
 import { Product } from '../product';
 import { Category } from '../../category/category';

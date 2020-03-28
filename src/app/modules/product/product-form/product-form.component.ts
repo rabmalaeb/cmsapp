@@ -14,9 +14,9 @@ import {
 } from '@angular/forms';
 import { ValidationMessagesService } from 'src/app/core/services/validation-messages.service';
 import { NotificationService } from 'src/app/core/services/notification.service';
-import { ActionType, ALERT_MESSAGES } from 'src/app/shared/models/general';
+import { ActionType } from 'src/app/shared/models/general';
+import { ALERT_MESSAGES } from 'src/app/shared/models/alert';
 import { Product } from '../product';
-import { MediaService } from '../../media/media.service';
 import { Category } from '../../category/category';
 
 @Component({
@@ -28,7 +28,6 @@ export class ProductFormComponent implements OnInit, OnChanges {
   constructor(
     private form: FormBuilder,
     private notificationService: NotificationService,
-    private mediaService: MediaService,
     private validationMessagesService: ValidationMessagesService
   ) {}
 
