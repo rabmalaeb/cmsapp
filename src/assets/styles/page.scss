@@ -1,6 +1,3 @@
-.page {
-}
-
 .page__container {
   @include container;
   background-color: #fff;
@@ -24,8 +21,23 @@
   @include title;
 }
 
+.page__form-content {
+  padding: 0 20px;
+}
+
+.page__form-input {
+  margin-bottom: 5px;
+}
+
+.page__form-container {
+  padding-top: 20px;
+  box-shadow: 1px 1px 6px 0px #00000047;
+}
+
 .page__form-button-container {
   display: flex;
+  padding: 20px;
+  background-color: $global--background-color;
 }
 
 .page__form__button {

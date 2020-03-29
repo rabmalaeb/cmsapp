@@ -5,109 +5,119 @@
   class="page__form"
   *ngIf="!isLoadingForm; else loadingMask"
 >
-  <app-input-item
-    id="name"
-    name="name"
-    label="Name"
-    [formControlItem]="name"
+  <div class="page__form-content">
+    <div class="page__form-input">
+      <app-input-item
+        id="name"
+        name="name"
+        label="Name"
+        [formControlItem]="name"
+      >
+      </app-input-item>
+    </div>
+    <div class="page__form-input">
+      <app-input-item
+        id="description"
+        name="description"
+        label="Description"
+        [formControlItem]="description"
+      >
+      </app-input-item>
+    </div>
 
-  >
-  </app-input-item>
-  <app-input-item
-    id="description"
-    name="description"
-    label="Description"
-    [formControlItem]="description"
+    <div class="page__form-input">
+      <app-input-item
+        id="descriptiemailon"
+        name="email"
+        label="Email"
+        [formControlItem]="email"
+      >
+      </app-input-item>
+    </div>
 
-  >
-  </app-input-item>
+    <div class="page__form-input">
+      <app-input-item
+        id="country"
+        name="country"
+        label="Country"
+        [formControlItem]="country"
+      >
+      </app-input-item>
+    </div>
+    <div class="page__form-input">
+      <div class="form-item">
+        <div class="form-item__value form-item__value_is-textfield">
+          <mat-form-field appearance="outline">
+            <mat-label>Partner</mat-label>
+            <mat-select
+              placeholder="Partner"
+              (selectionChange)="getRoles()"
+              formControlName="partnerId"
+            >
+              <mat-option *ngFor="let partner of partners" [value]="partner.id">
+                {{ partner.name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+    <div class="page__form-input">
+      <div class="form-item">
+        <div class="form-item__value form-item__value_is-textfield">
+          <mat-form-field appearance="outline">
+            <mat-label>Role</mat-label>
+            <mat-select placeholder="Role" formControlName="roleId">
+              <mat-option *ngFor="let role of roles" [value]="role.id">
+                {{ role.name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="form-item" *ngIf="showTogglePassword">
+        <div class="form-item__value form-item__value_is-checkbox">
+          <mat-checkbox [checked]="willSetPassword" (change)="togglePassword()">
+            Change Password
+          </mat-checkbox>
+        </div>
+      </div>
+    </div>
 
-  <app-input-item
-    id="descriptiemailon"
-    name="email"
-    label="Email"
-    [formControlItem]="email"
-
-  >
-  </app-input-item>
-
-  <app-input-item
-    id="country"
-    name="country"
-    label="Country"
-    [formControlItem]="country"
-
-  >
-  </app-input-item>
-
-  <div class="form-item">
-    <div class="form-item__value form-item__value_is-textfield">
-      <mat-form-field appearance="outline">
-        <mat-label>Partner</mat-label>
-        <mat-select
-          placeholder="Partner"
-          (selectionChange)="getRoles()"
-          formControlName="partnerId"
+    <div class="form-item__container" *ngIf="willSetPassword">
+      <div class="page__form-input">
+        <app-input-item
+          id="password"
+          name="password"
+          type="password"
+          label="Password"
+          [formControlItem]="password"
         >
-          <mat-option *ngFor="let partner of partners" [value]="partner.id">
-            {{ partner.name }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
+        </app-input-item>
+      </div>
+
+      <div class="page__form-input">
+        <app-input-item
+          id="confirmPassword"
+          name="confirmPassword"
+          type="password"
+          label="Confirm Password"
+          [formControlItem]="confirmPassword"
+        >
+        </app-input-item>
+      </div>
+    </div>
+
+    <div class="page__form-input">
+      <app-input-item
+        id="active"
+        name="active"
+        label="Active"
+        [formControlItem]="active"
+      >
+      </app-input-item>
     </div>
   </div>
-
-  <div class="form-item">
-    <div class="form-item__value form-item__value_is-textfield">
-      <mat-form-field appearance="outline">
-        <mat-label>Role</mat-label>
-        <mat-select placeholder="Role" formControlName="roleId">
-          <mat-option *ngFor="let role of roles" [value]="role.id">
-            {{ role.name }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-    </div>
-  </div>
-  <div class="form-item" *ngIf="showTogglePassword">
-    <div class="form-item__value form-item__value_is-checkbox">
-      <mat-checkbox [checked]="willSetPassword" (change)="togglePassword()">
-        Change Password
-      </mat-checkbox>
-    </div>
-  </div>
-
-  <div class="form-item__container" *ngIf="willSetPassword">
-    <app-input-item
-      id="password"
-      name="password"
-      type="password"
-      label="Password"
-      [formControlItem]="password"
-
-    >
-    </app-input-item>
-
-    <app-input-item
-      id="confirmPassword"
-      name="confirmPassword"
-      type="password"
-      label="Confirm Password"
-      [formControlItem]="confirmPassword"
-
-    >
-    </app-input-item>
-  </div>
-
-  <app-input-item
-    id="active"
-    name="active"
-    label="Active"
-    [formControlItem]="active"
-
-  >
-  </app-input-item>
-
   <div class="page__form-button-container" *ngIf="canEditAdmin">
     <div class="page__form__button">
       <button mat-button type="reset" class="button button_is-secondary">

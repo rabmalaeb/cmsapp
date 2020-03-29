@@ -5,38 +5,56 @@
   class="page__form"
   *ngIf="!isLoadingForm; else loadingMask"
 >
-  <app-input-item
-    id="name"
-    name="name"
-    label="Name"
-    [formControlItem]="name"
-  >
-  </app-input-item>
-
-  <app-input-item
-    id="description"
-    name="description"
-    label="Description"
-    [formControlItem]="description"
-  >
-  </app-input-item>
-
-  <div class="form-item">
-    <div class="form-item__value form-item__value_is-textfield">
-      <mat-form-field appearance="outline">
-        <mat-label>Parent Category</mat-label>
-        <mat-select placeholder="Parent Category" formControlName="parentId">
-          <mat-option *ngFor="let category of categories" [value]="category.id">
-            {{ category.name }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
+  <div class="page__form-content">
+    <div class="page__form-input">
+      <app-input-item
+        id="name"
+        name="name"
+        label="Name"
+        [formControlItem]="name"
+      >
+      </app-input-item>
     </div>
-  </div>
-  <div class="form-item">
-    <div class="form-item__value form-item__value_is-textfield">
-      <app-image-preview (imageSelected)="uploadImage($event)" [resetImage]="resetImage">
-      </app-image-preview>
+
+    <div class="page__form-input">
+      <app-input-item
+        id="description"
+        name="description"
+        label="Description"
+        [formControlItem]="description"
+      >
+      </app-input-item>
+    </div>
+    <div class="page__form-input">
+      <div class="form-item">
+        <div class="form-item__value form-item__value_is-textfield">
+          <mat-form-field appearance="outline">
+            <mat-label>Parent Category</mat-label>
+            <mat-select
+              placeholder="Parent Category"
+              formControlName="parentId"
+            >
+              <mat-option
+                *ngFor="let category of categories"
+                [value]="category.id"
+              >
+                {{ category.name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+    <div class="page__form-input">
+      <div class="form-item">
+        <div class="form-item__value form-item__value_is-textfield">
+          <app-image-preview
+            (imageSelected)="uploadImage($event)"
+            [resetImage]="resetImage"
+          >
+          </app-image-preview>
+        </div>
+      </div>
     </div>
   </div>
   <div class="page__form-button-container" *ngIf="canEditCategory">

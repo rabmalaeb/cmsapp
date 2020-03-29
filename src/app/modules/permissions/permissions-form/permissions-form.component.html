@@ -5,34 +5,43 @@
   class="page__form"
   *ngIf="!isLoadingForm; else loadingMask"
 >
-  <div class="form-item">
-    <div class="form-item__value form-item__value_is-textfield">
-      <mat-form-field appearance="outline">
-        <mat-label>modules</mat-label>
-        <mat-select placeholder="modules" formControlName="modules">
-          <mat-option *ngFor="let module of appModules" [value]="module.name">
-            {{ module.name | titlecase }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
+  <div class="page__form-content">
+    <div class="page__form-input">
+      <div class="form-item">
+        <div class="form-item__value form-item__value_is-textfield">
+          <mat-form-field appearance="outline">
+            <mat-label>modules</mat-label>
+            <mat-select placeholder="modules" formControlName="modules">
+              <mat-option
+                *ngFor="let module of appModules"
+                [value]="module.name"
+              >
+                {{ module.name | titlecase }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
     </div>
-  </div>
-  <div class="form-item">
-    <div class="form-item__value form-item__value_is-textfield">
-      <mat-form-field appearance="outline">
-        <mat-label>Permission Type</mat-label>
-        <mat-select
-          placeholder="Permission Type"
-          formControlName="permissionType"
-        >
-          <mat-option
-            *ngFor="let permissionType of permissionTypes"
-            [value]="permissionType"
-          >
-            {{ permissionType | titlecase }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
+    <div class="page__form-input">
+      <div class="form-item">
+        <div class="form-item__value form-item__value_is-textfield">
+          <mat-form-field appearance="outline">
+            <mat-label>Permission Type</mat-label>
+            <mat-select
+              placeholder="Permission Type"
+              formControlName="permissionType"
+            >
+              <mat-option
+                *ngFor="let permissionType of permissionTypes"
+                [value]="permissionType"
+              >
+                {{ permissionType | titlecase }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
     </div>
   </div>
   <div class="page__form-button-container" *ngIf="canEditPermission">
