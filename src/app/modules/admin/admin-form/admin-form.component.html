@@ -75,15 +75,19 @@
           </mat-form-field>
         </div>
       </div>
-      <div class="form-item" *ngIf="showTogglePassword">
-        <div class="form-item__value form-item__value_is-checkbox">
-          <mat-checkbox [checked]="willSetPassword" (change)="togglePassword()">
-            Change Password
-          </mat-checkbox>
+      <div class="page__form-input">
+        <div class="form-item" *ngIf="showTogglePassword">
+          <div class="form-item__value form-item__value_is-checkbox">
+            <mat-checkbox
+              [checked]="willSetPassword"
+              (change)="togglePassword()"
+            >
+              Change Password
+            </mat-checkbox>
+          </div>
         </div>
       </div>
     </div>
-
     <div class="form-item__container" *ngIf="willSetPassword">
       <div class="page__form-input">
         <app-input-item

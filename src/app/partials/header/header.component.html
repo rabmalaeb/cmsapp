@@ -2,10 +2,9 @@
   <div class="header__container">
     <div class="header__item-container">
       <div class="header__item">
-        <button mat-button [matMenuTriggerFor]="menu" >
-          Welcome
+        <button mat-button [matMenuTriggerFor]="menu">
           <span *ngIf="!isLoading">
-            {{user.name}} ({{role.name}})
+            Welcome {{ user.name }} ({{ role.name }})
           </span>
         </button>
         <mat-menu #menu="matMenu">

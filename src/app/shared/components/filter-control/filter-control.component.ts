@@ -3,9 +3,7 @@ import {
   OnInit,
   Output,
   EventEmitter,
-  Input,
-  OnChanges,
-  OnDestroy
+  Input
 } from '@angular/core';
 import Request from '../../request';
 import { FilterHandler } from '../../filters/filter';
@@ -31,5 +29,9 @@ export class FilterControlComponent implements OnInit {
 
   resetFilters() {
     this.filterHandler.resetSubject.next(true);
+  }
+
+  closeModal() {
+    this.showModal = false;
   }
 }

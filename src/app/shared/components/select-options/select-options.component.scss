@@ -10,8 +10,7 @@
 
 .select-options__item {
   font-size: 12px;
-  margin-bottom: 5px;
-  &:last-child {
-    margin-bottom: 0;
+  &:not(:last-child) {
+    margin-bottom: 5px;
   }
 }

@@ -9,10 +9,8 @@
 }
 
 .page-header__container {
-  background-color: #fff;
-  height: 70px;
+  background-color: $global--background-color;
   color: $global--primary-color;
-  box-shadow: 1px 1px 6px 0px #00000047;
 }
 
 .page-header__item-container {
@@ -21,6 +19,9 @@
   align-items: center;
   justify-content: space-between;
   padding: 0 20px;
+  &:not(:last-child) {
+    margin-bottom: 10px;
+  }
 }
 
 .page-header__item {
@@ -29,5 +30,4 @@
 
 .page-header__title {
   font-size: 21px;
-  font-weight: bold;
 }

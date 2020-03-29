@@ -6,9 +6,6 @@
           {{ label }}
         </div>
       </div>
-      <div class="page-header__item">
-        <ng-content></ng-content>
-      </div>
       <div class="page-header__item" *ngIf="condition">
         <button
           *ngIf="link; else buttonWithAction"
@@ -28,6 +25,9 @@
           </button>
         </ng-template>
       </div>
+    </div>
+    <div class="page-header__item-container">
+      <ng-content></ng-content>
     </div>
   </div>
 </div>
