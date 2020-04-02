@@ -25,7 +25,6 @@ export class CategoriesComponent implements OnInit {
   displayedColumns: string[] = [
     'id',
     'name',
-    'description',
     'parent',
     'action'
   ];

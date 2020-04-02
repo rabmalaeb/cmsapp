@@ -25,7 +25,6 @@ export class AdminsComponent implements OnInit {
   displayedColumns: string[] = [
     'id',
     'name',
-    'description',
     'email',
     'active',
     'action'

@@ -22,7 +22,7 @@ import { Sort } from '@angular/material/sort';
   styleUrls: ['./banners.component.scss']
 })
 export class BannersComponent implements OnInit {
-  displayedColumns: string[] = ['id', 'name', 'description', 'image', 'action'];
+  displayedColumns: string[] = ['id', 'name', 'image', 'action'];
   dataSource: MatTableDataSource<any>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   banners$: Observable<Banner[]>;

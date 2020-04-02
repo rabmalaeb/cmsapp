@@ -42,13 +42,6 @@
         <mat-cell *matCellDef="let category">{{ category.name }}</mat-cell>
       </ng-container>
 
-      <ng-container matColumnDef="description">
-        <mat-header-cell mat-sort-header *matHeaderCellDef>Description</mat-header-cell>
-        <mat-cell *matCellDef="let category">
-          {{ category.description }}
-        </mat-cell>
-      </ng-container>
-
       <ng-container matColumnDef="parent">
         <mat-header-cell *matHeaderCellDef>Parent Category</mat-header-cell>
         <mat-cell *matCellDef="let category">
