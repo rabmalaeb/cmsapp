@@ -120,16 +120,11 @@ export class TranslationsComponent implements OnInit {
   }
 
   deleteTranslation(id: number) {
-    this.alertService.confirm(
-      'Are you sure you want to delete? ',
-      'Yes',
-      'No',
-      () => {
-        this.store$.dispatch(
-          new TranslationStoreActions.DeleteTranslationRequestAction(id)
-        );
-      }
-    );
+    this.alertService.confirmDelete('Are you sure you want to delete? ', () => {
+      this.store$.dispatch(
+        new TranslationStoreActions.DeleteTranslationRequestAction(id)
+      );
+    });
   }
 
   get canAddTranslation() {

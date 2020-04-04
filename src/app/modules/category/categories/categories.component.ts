@@ -22,12 +22,7 @@ import { Sort } from '@angular/material/sort';
   styleUrls: ['./categories.component.scss']
 })
 export class CategoriesComponent implements OnInit {
-  displayedColumns: string[] = [
-    'id',
-    'name',
-    'parent',
-    'action'
-  ];
+  displayedColumns: string[] = ['id', 'name', 'parent', 'action'];
   dataSource: MatTableDataSource<any>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   categories$: Observable<Category[]>;
@@ -95,9 +90,7 @@ export class CategoriesComponent implements OnInit {
 
   getCategories() {
     const request = this.filterHandler.getRequest();
-    this.store$.dispatch(
-      new CategoryStoreActions.LoadRequestAction(request)
-    );
+    this.store$.dispatch(new CategoryStoreActions.LoadRequestAction(request));
   }
 
   addCategory() {
@@ -113,16 +106,11 @@ export class CategoriesComponent implements OnInit {
   }
 
   deleteCategory(id: number) {
-    this.alertService.confirm(
-      'Are you sure you want to delete? ',
-      'Yes',
-      'No',
-      () => {
-        this.store$.dispatch(
-          new CategoryStoreActions.DeleteCategoryRequestAction(id)
-        );
-      }
-    );
+    this.alertService.confirmDelete('Are you sure you want to delete? ', () => {
+      this.store$.dispatch(
+        new CategoryStoreActions.DeleteCategoryRequestAction(id)
+      );
+    });
   }
 
   get canAddCategory() {

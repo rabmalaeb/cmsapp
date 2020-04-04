@@ -1,9 +1,40 @@
+.alert__container {
+  display: flex;
+  flex-direction: column;
+  width: 400px;
+}
+
+.alert__title-container {
+  display: flex;
+  margin-bottom: 20px;
+}
+
+.alert__icon {
+  margin-right: 10px;
+  color: rgb(255, 139, 37);
+  &_is-danger {
+    color: red;
+  }
+}
+
+.alert__title {
+  font-weight: bold;
+  font-size: 18px;
+}
+
 .alert__item {
+  font-size: 14px;
   margin-bottom: 20px;
 }
 
 .alert__actions {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   width: 100%;
+}
+
+.alert__action {
+  &:not(:last-child) {
+    margin-right: 10px;
+  }
 }

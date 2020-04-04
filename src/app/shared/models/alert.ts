@@ -12,5 +12,14 @@ export enum ALERT_MESSAGES {
 
 export enum AlertType {
   ALERT,
-  CONFIRM
+  ALERT_SUCCESS,
+  ALERT_FAILURE,
+  CONFIRM,
+  CONFIRM_DELETE,
+  CONFIRM_UPDATE
+}
+
+export interface AlertOptions {
+  label: string;
+  icon: string;
 }

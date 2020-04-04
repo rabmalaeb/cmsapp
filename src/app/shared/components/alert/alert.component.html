@@ -1,7 +1,15 @@
 <div class="alert">
   <div class="alert__container">
-    <div class="alert__item" *ngIf="title">
-      {{ title }}
+    <div class="alert__title-container" *ngIf="alertOptions">
+      <div
+        class="alert__icon"
+        [ngClass]="{ 'alert__icon_is-danger': isDanger }"
+      >
+        <mat-icon>{{ alertOptions.icon }}</mat-icon>
+      </div>
+      <div class="alert__title">
+        {{ alertOptions.label }}
+      </div>
     </div>
     <div class="alert__item" *ngIf="text">
       {{ text }}

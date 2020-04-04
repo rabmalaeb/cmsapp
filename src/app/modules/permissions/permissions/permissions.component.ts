@@ -91,9 +91,7 @@ export class PermissionsComponent implements OnInit {
 
   getPermissions() {
     const request = this.filterHandler.getRequest();
-    this.store$.dispatch(
-      new PermissionStoreActions.LoadRequestAction(request)
-    );
+    this.store$.dispatch(new PermissionStoreActions.LoadRequestAction(request));
   }
 
   addPermission() {
@@ -109,16 +107,11 @@ export class PermissionsComponent implements OnInit {
   }
 
   deletePermission(id: number) {
-    this.alertService.confirm(
-      'Are you sure you want to delete? ',
-      'Yes',
-      'No',
-      () => {
-        this.store$.dispatch(
-          new PermissionStoreActions.DeletePermissionRequestAction(id)
-        );
-      }
-    );
+    this.alertService.confirmDelete('Are you sure you want to delete? ', () => {
+      this.store$.dispatch(
+        new PermissionStoreActions.DeletePermissionRequestAction(id)
+      );
+    });
   }
 
   get canAddPermission() {

@@ -107,16 +107,11 @@ export class PartnersComponent implements OnInit {
   }
 
   deletePartner(id: number) {
-    this.alertService.confirm(
-      'Are you sure you want to delete? ',
-      'Yes',
-      'No',
-      () => {
-        this.store$.dispatch(
-          new PartnerStoreActions.DeletePartnerRequestAction(id)
-        );
-      }
-    );
+    this.alertService.confirmDelete('Are you sure you want to delete? ', () => {
+      this.store$.dispatch(
+        new PartnerStoreActions.DeletePartnerRequestAction(id)
+      );
+    });
   }
 
   get canAddPartner() {

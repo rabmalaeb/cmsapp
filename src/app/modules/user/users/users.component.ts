@@ -120,14 +120,9 @@ export class UsersComponent implements OnInit {
   }
 
   deleteUser(id: number) {
-    this.alertService.confirm(
-      'Are you sure you want to delete? ',
-      'Yes',
-      'No',
-      () => {
-        this.store$.dispatch(new UserStoreActions.DeleteUserRequestAction(id));
-      }
-    );
+    this.alertService.confirmDelete('Are you sure you want to delete? ', () => {
+      this.store$.dispatch(new UserStoreActions.DeleteUserRequestAction(id));
+    });
   }
 
   get perPage() {

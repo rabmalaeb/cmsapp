@@ -113,16 +113,11 @@ export class LanguageKeysComponent implements OnInit {
   }
 
   deleteLanguageKey(id: number) {
-    this.alertService.confirm(
-      'Are you sure you want to delete? ',
-      'Yes',
-      'No',
-      () => {
-        this.store$.dispatch(
-          new LanguagekeyStoreActions.DeleteLanguageKeyRequestAction(id)
-        );
-      }
-    );
+    this.alertService.confirmDelete('Are you sure you want to delete? ', () => {
+      this.store$.dispatch(
+        new LanguagekeyStoreActions.DeleteLanguageKeyRequestAction(id)
+      );
+    });
   }
 
   get canAddKey() {

@@ -106,16 +106,11 @@ export class BannersComponent implements OnInit {
   }
 
   deleteBanner(id: number) {
-    this.alertService.confirm(
-      'Are you sure you want to delete? ',
-      'Yes',
-      'No',
-      () => {
-        this.store$.dispatch(
-          new BannerStoreActions.DeleteBannerRequestAction(id)
-        );
-      }
-    );
+    this.alertService.confirmDelete('Are you sure you want to delete? ', () => {
+      this.store$.dispatch(
+        new BannerStoreActions.DeleteBannerRequestAction(id)
+      );
+    });
   }
 
   get canAddBanner() {

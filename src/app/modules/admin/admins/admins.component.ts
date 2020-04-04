@@ -22,13 +22,7 @@ import { Sort } from '@angular/material/sort';
   styleUrls: ['./admins.component.scss']
 })
 export class AdminsComponent implements OnInit {
-  displayedColumns: string[] = [
-    'id',
-    'name',
-    'email',
-    'active',
-    'action'
-  ];
+  displayedColumns: string[] = ['id', 'name', 'email', 'active', 'action'];
   dataSource: MatTableDataSource<any>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   admins$: Observable<Admin[]>;
@@ -110,16 +104,9 @@ export class AdminsComponent implements OnInit {
   }
 
   deleteAdmin(id: number) {
-    this.alertService.confirm(
-      'Are you sure you want to delete? ',
-      'Yes',
-      'No',
-      () => {
-        this.store$.dispatch(
-          new AdminStoreActions.DeleteAdminRequestAction(id)
-        );
-      }
-    );
+    this.alertService.confirmDelete('Are you sure you want to delete? ', () => {
+      this.store$.dispatch(new AdminStoreActions.DeleteAdminRequestAction(id));
+    });
   }
 
   get canAddAdmin(): Observable<boolean> {
