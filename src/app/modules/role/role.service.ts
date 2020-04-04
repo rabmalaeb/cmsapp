@@ -14,7 +14,7 @@ export class RoleService {
   ) {}
 
   getRoles(roleRequest: RoleRequest) {
-    return this.httpService.request('roles', roleRequest).pipe(
+    return this.httpService.get('roles', roleRequest).pipe(
       map(({ data: { items, paginator } }) => {
         return {
           items: items.map(item => this.roleSerializer.getRole(item)),
@@ -25,7 +25,7 @@ export class RoleService {
   }
 
   getRole(id: number) {
-    return this.httpService.request(`roles/${id}`, {}).pipe(
+    return this.httpService.get(`roles/${id}`, {}).pipe(
       map(({ data }) => {
         return this.roleSerializer.getRole(data);
       })
@@ -57,7 +57,7 @@ export class RoleService {
   }
 
   getRoleByPartner(partnerId: number) {
-    return this.httpService.request(`role-by-partner/${partnerId}`, {}).pipe(
+    return this.httpService.get(`role-by-partner/${partnerId}`, {}).pipe(
       map(response => {
         console.log('response da d a is ', response);
 

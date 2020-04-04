@@ -13,25 +13,20 @@
 
 .filters__item-section {
   width: 100%;
-  border-right: 1px solid $global--border-color;
-  &:last-child {
-    border-right: 0;
+  &:not(:last-child) {
+    border-right: 1px solid $global--border-color;
   }
 }
 
-.filters__item {
-}
-
 .filters__item-label {
-  font-size: 16px;
-  font-weight: bold;
+  font-size: 14px;
   border-bottom: 1px solid $global--border-color;
   margin-bottom: 10px;
   padding: 10px 20px;
 }
 
 .filters__item-input {
-  padding: 20px;
+  padding: 10px 20px;
 }
 
 .filters__button-container {
@@ -39,8 +34,7 @@
 }
 
 .filters__button {
-  margin-right: 10px;
-  &:last-child {
-    margin-right: 0;
+  &:not(:last-child) {
+    margin-right: 10px;
   }
 }

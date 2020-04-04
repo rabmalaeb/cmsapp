@@ -3,6 +3,7 @@ import { HttpService } from 'src/app/core/services/http.service';
 import { BannerSerializerService } from './banner-serializer.service';
 import { map } from 'rxjs/operators';
 import { Banner, BannerRequest } from './banner';
+import { createFormDataFromObject, addPutMethodToFormData } from 'src/app/shared/utils/general';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +15,7 @@ export class BannerService {
   ) {}
 
   getBanners(bannerRequest: BannerRequest) {
-    return this.httpService.request('banners', bannerRequest).pipe(
+    return this.httpService.get('banners', bannerRequest).pipe(
       map(({ data: { items, paginator } }) => {
         return {
           items: items.map(item => this.bannerSerializer.getBanner(item)),
@@ -25,7 +26,7 @@ export class BannerService {
   }
 
   getBanner(id: number) {
-    return this.httpService.request(`banners/${id}`, {}).pipe(
+    return this.httpService.get(`banners/${id}`, {}).pipe(
       map(({ data }) => {
         return this.bannerSerializer.getBanner(data);
       })
@@ -33,7 +34,8 @@ export class BannerService {
   }
 
   addBanner(params: Banner) {
-    return this.httpService.post('banners', { ...params }).pipe(
+    const formData = createFormDataFromObject(params);
+    return this.httpService.post('banners', formData).pipe(
       map(({ data }) => {
         return this.bannerSerializer.getBanner(data);
       })
@@ -41,7 +43,9 @@ export class BannerService {
   }
 
   updateBanner(id: number, params: Banner) {
-    return this.httpService.put(`banners/${id}`, { ...params }).pipe(
+    const formData = createFormDataFromObject(params);
+    addPutMethodToFormData(formData);
+    return this.httpService.post(`banners/${id}`, formData).pipe(
       map(({ data }) => {
         return this.bannerSerializer.getBanner(data);
       })

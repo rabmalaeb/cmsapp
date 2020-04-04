@@ -4,7 +4,7 @@ import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { AlertService } from 'src/app/core/services/alert.service';
 import { Supplier } from '../supplier';
-import { ModuleName } from 'src/app/shared/models/general';
+import { ModuleName } from 'src/app/shared/models/nav';
 import { AuthorizationService } from 'src/app/core/services/authorization.service';
 import { Observable } from 'rxjs';
 import { SupplierStoreSelectors, SupplierStoreActions } from '../store';
@@ -91,11 +91,8 @@ export class SuppliersComponent implements OnInit {
 
   getSuppliers() {
     const request = this.filterHandler.getRequest();
-    this.store$.dispatch(
-      new SupplierStoreActions.LoadRequestAction(request)
-    );
+    this.store$.dispatch(new SupplierStoreActions.LoadRequestAction(request));
   }
-
 
   addSupplier() {
     this.router.navigate(['suppliers/add']);
@@ -110,16 +107,11 @@ export class SuppliersComponent implements OnInit {
   }
 
   deleteSupplier(id: number) {
-    this.alertService.confirm(
-      'Are you sure you want to delete? ',
-      'Yes',
-      'No',
-      () => {
-        this.store$.dispatch(
-          new SupplierStoreActions.DeleteSupplierRequestAction(id)
-        );
-      }
-    );
+    this.alertService.confirmDelete('Are you sure you want to delete? ', () => {
+      this.store$.dispatch(
+        new SupplierStoreActions.DeleteSupplierRequestAction(id)
+      );
+    });
   }
 
   get canAddSupplier() {

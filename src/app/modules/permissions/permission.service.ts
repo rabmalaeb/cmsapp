@@ -14,7 +14,7 @@ export class PermissionService {
   ) {}
 
   getPermissions(permissionRequest: PermissionRequest) {
-    return this.httpService.request('permissions', permissionRequest).pipe(
+    return this.httpService.get('permissions', permissionRequest).pipe(
       map(({ data: { items, paginator } }) => {
         return {
           items: items.map(item => this.permissionSerializer.getPermission(item)),
@@ -25,7 +25,7 @@ export class PermissionService {
   }
 
   getGroupedPermissions() {
-    return this.httpService.request('permissions', {}).pipe(
+    return this.httpService.get('permissions', {}).pipe(
       map(response => {
         return this.permissionSerializer.getGroupedPermissions(response);
       })
@@ -33,7 +33,7 @@ export class PermissionService {
   }
 
   getPermission(id: number) {
-    return this.httpService.request(`permissions/${id}`, {}).pipe(
+    return this.httpService.get(`permissions/${id}`, {}).pipe(
       map(({ data }) => {
         return this.permissionSerializer.getPermission(data);
       })
@@ -67,7 +67,7 @@ export class PermissionService {
   }
 
   getPermissionByRoleId(id: number) {
-    return this.httpService.request('permissions-by-role', { id }).pipe(
+    return this.httpService.get('permissions-by-role', { id }).pipe(
       map(response => {
         return response.map(data =>
           this.permissionSerializer.getPermission(data, true)

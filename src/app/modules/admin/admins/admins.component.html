@@ -42,13 +42,6 @@
         <mat-cell *matCellDef="let admin">{{ admin.name }}</mat-cell>
       </ng-container>
 
-      <ng-container matColumnDef="description">
-        <mat-header-cell mat-sort-header *matHeaderCellDef>Description</mat-header-cell>
-        <mat-cell *matCellDef="let admin">
-          {{ admin.description }}
-        </mat-cell>
-      </ng-container>
-
       <ng-container matColumnDef="email">
         <mat-header-cell mat-sort-header *matHeaderCellDef>email</mat-header-cell>
         <mat-cell *matCellDef="let admin">

@@ -6,7 +6,7 @@ import { AlertService } from 'src/app/core/services/alert.service';
 import { User } from '../user';
 import { UserService } from '../user.service';
 import { AuthorizationService } from 'src/app/core/services/authorization.service';
-import { ModuleName } from 'src/app/shared/models/general';
+import { ModuleName } from 'src/app/shared/models/nav';
 import { Observable } from 'rxjs';
 import { Store, ActionsSubject } from '@ngrx/store';
 import {
@@ -120,14 +120,9 @@ export class UsersComponent implements OnInit {
   }
 
   deleteUser(id: number) {
-    this.alertService.confirm(
-      'Are you sure you want to delete? ',
-      'Yes',
-      'No',
-      () => {
-        this.store$.dispatch(new UserStoreActions.DeleteUserRequestAction(id));
-      }
-    );
+    this.alertService.confirmDelete('Are you sure you want to delete? ', () => {
+      this.store$.dispatch(new UserStoreActions.DeleteUserRequestAction(id));
+    });
   }
 
   get perPage() {

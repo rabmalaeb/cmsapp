@@ -17,10 +17,13 @@
 <app-x-modal
   *ngIf="showModal"
   type="filter-control"
-  (closeModal)="showModal = false"
+  (closeModal)="closeModal()"
 >
   <div class="filter-control__title-container" *ngIf="label">
     <div class="filter-control__title">{{ label }}</div>
+    <div class="filter-control__close" (click)="closeModal()">
+      <mat-icon>close</mat-icon>
+    </div>
   </div>
   <div class="filter-control__filter-container">
     <ng-content></ng-content>

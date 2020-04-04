@@ -1,77 +1,171 @@
-a,abbr,acronym,address,applet,article,aside,audio,b,big,blockquote,body,
-button,canvas,caption,center,cite,code,dd,del,details,dfn,div,dl,dt,em,
-embed,fieldset,figcaption,figure,footer,form,h1,h2,h3,h4,h5,h6,header,
-hgroup,html,i,iframe,img,ins,kbd,label,legend,li,mark,menu,nav,object,ol,
-output,p,pre,q,ruby,s,samp,section,small,span,strike,strong,sub,summary,
-sup,table,tbody,td,tfoot,th,thead,time,tr,tt,u,ul,var,video {
-    border:0;
-    font:inherit;
-    font-size:100%;
-    margin:0;
-    padding:0;
-    vertical-align:baseline;
+a,
+abbr,
+acronym,
+address,
+applet,
+article,
+aside,
+audio,
+b,
+big,
+blockquote,
+body,
+button,
+canvas,
+caption,
+center,
+cite,
+code,
+dd,
+del,
+details,
+dfn,
+div,
+dl,
+dt,
+em,
+embed,
+fieldset,
+figcaption,
+figure,
+footer,
+form,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+header,
+hgroup,
+html,
+i,
+iframe,
+img,
+ins,
+kbd,
+label,
+legend,
+li,
+mark,
+menu,
+nav,
+object,
+ol,
+output,
+p,
+pre,
+q,
+ruby,
+s,
+samp,
+section,
+small,
+span,
+strike,
+strong,
+sub,
+summary,
+sup,
+table,
+tbody,
+td,
+tfoot,
+th,
+thead,
+time,
+tr,
+tt,
+u,
+ul,
+var,
+video {
+  border: 0;
+  font-size: 100%;
+  margin: 0;
+  padding: 0;
+  vertical-align: baseline;
 }
 
-article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section {
-    display: block
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
+  display: block;
 }
 
 body {
-    line-height: 1.5;
-    font-size: 12px;
-    color: #686868;
+  line-height: 1.5;
+  font-size: 12px;
+  color: $global--primary-color;
+  font-family: $global--font-family;
 }
 
-a, a:hover, a:visited, a:focus, a:active {
-    text-decoration: none;
-    text-decoration-line: none;
-    text-decoration-style: initial;
-    text-decoration-color: initial;
-    color: inherit;
+a,
+a:hover,
+a:visited,
+a:focus,
+a:active {
+  text-decoration: none;
+  text-decoration-line: none;
+  text-decoration-style: initial;
+  text-decoration-color: initial;
+  color: inherit;
 }
 
-ol,ul {
-    list-style: none
+ol,
+ul {
+  list-style: none;
 }
 
-blockquote,q {
-    quotes: none
+blockquote,
+q {
+  quotes: none;
 }
 
-blockquote:after,blockquote:before,q:after,q:before {
-  content: none
+blockquote:after,
+blockquote:before,
+q:after,
+q:before {
+  content: none;
 }
 
 table {
-    border-collapse: collapse;
-    border-spacing: 0;
-    width: 100%;;
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
 }
 
 button {
-    background: transparent
+  background: transparent;
 }
 
 html {
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-    overflow-x: hidden;
-  }
-*, *:before, *:after {
-    -webkit-box-sizing: inherit;
-    -moz-box-sizing: inherit;
-    box-sizing: inherit;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  overflow-x: hidden;
+  font-family: $global--font-family;
+}
+*,
+*:before,
+*:after {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  font-family: $global--font-family;
 }
 
 :focus {
-  outline: 0
+  outline: 0;
 }
-
-html {
-    overflow-x: hidden;
-}
-
 
 .hidden-input {
   position: absolute;

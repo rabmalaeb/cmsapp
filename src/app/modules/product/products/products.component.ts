@@ -5,7 +5,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { AlertService } from 'src/app/core/services/alert.service';
 import { Product, ProductFilterLimits } from '../product';
 import { AuthorizationService } from 'src/app/core/services/authorization.service';
-import { ModuleName } from 'src/app/shared/models/general';
+import { ModuleName } from 'src/app/shared/models/nav';
 import { filter } from 'rxjs/operators';
 import { ProductStoreActions, ProductStoreSelectors } from '../store';
 import { ActionTypes } from '../store/actions';
@@ -27,14 +27,7 @@ import { FilterHandler } from 'src/app/shared/filters/filter';
   styleUrls: ['./products.component.scss']
 })
 export class ProductsComponent implements OnInit {
-  displayedColumns: string[] = [
-    'id',
-    'name',
-    'description',
-    'category',
-    'image',
-    'action'
-  ];
+  displayedColumns: string[] = ['id', 'name', 'category', 'image', 'action'];
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   products$: Observable<Product[]>;
   categories$: Observable<Category[]>;
@@ -149,16 +142,11 @@ export class ProductsComponent implements OnInit {
   }
 
   deleteProduct(id: number) {
-    this.alertService.confirm(
-      'Are you sure you want to delete? ',
-      'Yes',
-      'No',
-      () => {
-        this.store$.dispatch(
-          new ProductStoreActions.DeleteProductRequestAction(id)
-        );
-      }
-    );
+    this.alertService.confirmDelete('Are you sure you want to delete? ', () => {
+      this.store$.dispatch(
+        new ProductStoreActions.DeleteProductRequestAction(id)
+      );
+    });
   }
 
   setPage($event: PageEvent) {

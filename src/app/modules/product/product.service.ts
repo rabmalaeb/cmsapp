@@ -3,6 +3,7 @@ import { HttpService } from 'src/app/core/services/http.service';
 import { ProductSerializerService } from './product-serializer.service';
 import { map } from 'rxjs/operators';
 import { ProductRequest, Product } from './product';
+import { createFormDataFromObject, addPutMethodToFormData } from 'src/app/shared/utils/general';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +15,7 @@ export class ProductService {
   ) {}
 
   getProducts(productRequest: ProductRequest) {
-    return this.httpService.request('products', productRequest).pipe(
+    return this.httpService.get('products', productRequest).pipe(
       map(({ data: { items, paginator } }) => {
         return {
           items: items.map(item => this.productSerializer.getProduct(item)),
@@ -25,7 +26,7 @@ export class ProductService {
   }
 
   getProduct(id: number) {
-    return this.httpService.request(`products/${id}`, {}).pipe(
+    return this.httpService.get(`products/${id}`, {}).pipe(
       map(({ data }) => {
         return this.productSerializer.getProduct(data);
       })
@@ -33,15 +34,22 @@ export class ProductService {
   }
 
   addProduct(params: Product) {
-    return this.httpService.post('products', { ...params }).pipe(
+    const formData = createFormDataFromObject(params);
+    return this.httpService.post('products', formData).pipe(
       map(({ data }) => {
         return this.productSerializer.getProduct(data);
       })
     );
   }
 
+  /**
+   * post method is used here because LARAVEL doesn't
+   *  read PUT requests when sending formdata
+   */
   updateProduct(id: number, params: Product) {
-    return this.httpService.put(`products/${id}`, { ...params }).pipe(
+    const formData = createFormDataFromObject(params);
+    addPutMethodToFormData(formData);
+    return this.httpService.post(`products/${id}`, formData).pipe(
       map(({ data }) => {
         return this.productSerializer.getProduct(data);
       })
@@ -57,7 +65,7 @@ export class ProductService {
   }
 
   getProductFilterLimits() {
-    return this.httpService.request('product-filter-limits', {}).pipe(
+    return this.httpService.get('product-filter-limits', {}).pipe(
       map(({ data: { attributes } }) => {
         return this.productSerializer.getProductFilterLimits(attributes);
       })

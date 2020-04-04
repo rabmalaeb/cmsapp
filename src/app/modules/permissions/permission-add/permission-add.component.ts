@@ -1,14 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { ValidationMessagesService } from 'src/app/core/services/validation-messages.service';
 import { NotificationService } from 'src/app/core/services/notification.service';
 import { ActivatedRoute } from '@angular/router';
-import { Permission, PermissionRequest, PermissionActionRequest } from '../permission';
+import { Permission, PermissionActionRequest } from '../permission';
 import { AuthorizationService } from 'src/app/core/services/authorization.service';
-import { AppService } from 'src/app/core/services/app.service';
 import {
-  PermissionType,
-  NavItem,
-  ModuleName,
   ActionType
 } from 'src/app/shared/models/general';
 import { ActionsSubject, Store } from '@ngrx/store';
@@ -17,6 +12,7 @@ import { Observable, of } from 'rxjs';
 import { PermissionStoreSelectors, PermissionStoreActions } from '../store';
 import { ActionTypes } from '../store/actions';
 import { filter } from 'rxjs/operators';
+import { NavItem, ModuleName } from 'src/app/shared/models/nav';
 
 @Component({
   selector: 'app-permission-add',

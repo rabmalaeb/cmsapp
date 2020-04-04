@@ -14,7 +14,7 @@ export class PartnerService {
   ) {}
 
   getPartners(partnerRequest: PartnerRequest) {
-    return this.httpService.request('partners', partnerRequest).pipe(
+    return this.httpService.get('partners', partnerRequest).pipe(
       map(({ data: { items, paginator } }) => {
         return {
           items: items.map(item => this.partnerSerializer.getPartner(item)),
@@ -25,7 +25,7 @@ export class PartnerService {
   }
 
   getPartner(id: number) {
-    return this.httpService.request(`partners/${id}`, {}).pipe(
+    return this.httpService.get(`partners/${id}`, {}).pipe(
       map(({ data }) => {
         return this.partnerSerializer.getPartner(data);
       })

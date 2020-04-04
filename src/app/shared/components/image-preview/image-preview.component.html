@@ -7,16 +7,25 @@
 />
 <div class="page__upload-container">
   <div class="page__upload-button">
-    <div class="button button_is-primary" (click)="fileInput.click()">
+    <button
+      type="button"
+      mat-button
+      class="button button_is-secondary"
+      (click)="fileInput.click()"
+    >
       Select image
-    </div>
+    </button>
   </div>
   <div class="page__upload-error" *ngIf="message">
     {{ message }}
   </div>
 </div>
-<div class="page__upload-image-container" *ngIf="imageUrl">
-  <img (click)="fileInput.click()" [src]="imageUrl" class="page__upload-image" />
+<div class="page__upload-image-container" *ngIf="imageSource">
+  <img
+    (click)="fileInput.click()"
+    [src]="imageSource"
+    class="page__upload-image"
+  />
 </div>
 <div class="page__upload-name">
   {{ imageName }}

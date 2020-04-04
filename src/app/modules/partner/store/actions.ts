@@ -1,6 +1,6 @@
 import { Action } from '@ngrx/store';
 import { Partner, PartnerRequest } from 'src/app/modules/partner/partner';
-import { ErrorResponse } from 'src/app/shared/models/general';
+import { ErrorResponse } from 'src/app/shared/models/error';
 import { PaginationControl } from 'src/app/shared/paginator';
 
 export enum ActionTypes {

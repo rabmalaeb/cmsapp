@@ -1,16 +1,35 @@
 <div class="alert">
   <div class="alert__container">
-    <div class="alert__item">
-       {{title}}
+    <div class="alert__title-container" *ngIf="alertOptions">
+      <div
+        class="alert__icon"
+        [ngClass]="{ 'alert__icon_is-danger': isDanger }"
+      >
+        <mat-icon>{{ alertOptions.icon }}</mat-icon>
+      </div>
+      <div class="alert__title">
+        {{ alertOptions.label }}
+      </div>
     </div>
-    <div class="alert__item">
-      {{text}}
+    <div class="alert__item" *ngIf="text">
+      {{ text }}
     </div>
     <div class="alert__actions">
-      <mat-dialog-actions align="end">
-        <button mat-button mat-dialog-close>{{cancelButtonText}}</button>
-        <button *ngIf = "!isAlert" mat-button [mat-dialog-close]="true">{{okButtonText}}</button>
-      </mat-dialog-actions>
+      <div class="alert__action">
+        <button mat-button class="button button_is-secondary" mat-dialog-close>
+          {{ cancelButtonText }}
+        </button>
+      </div>
+      <div class="alert__action">
+        <button
+          *ngIf="!isAlert"
+          class="button button_is-primary"
+          mat-button
+          [mat-dialog-close]="true"
+        >
+          {{ okButtonText }}
+        </button>
+      </div>
     </div>
   </div>
 </div>

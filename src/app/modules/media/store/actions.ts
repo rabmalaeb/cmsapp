@@ -1,6 +1,6 @@
 import { Action } from '@ngrx/store';
 import { Media } from 'src/app/modules/media/media';
-import { ErrorResponse } from 'src/app/shared/models/general';
+import { ErrorResponse } from 'src/app/shared/models/error';
 import { PaginationControl } from 'src/app/shared/paginator';
 
 export enum ActionTypes {

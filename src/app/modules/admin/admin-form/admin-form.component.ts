@@ -5,7 +5,6 @@ import {
   Output,
   EventEmitter,
   OnChanges,
-  SimpleChange,
   SimpleChanges
 } from '@angular/core';
 import { Admin } from '../admin';
@@ -20,7 +19,8 @@ import { CustomValidations } from 'src/app/shared/validators/custom-validations'
 import { ValidationMessagesService } from 'src/app/core/services/validation-messages.service';
 import { Role } from '../../role/role';
 import { NotificationService } from 'src/app/core/services/notification.service';
-import { ALERT_MESSAGES, ActionType } from 'src/app/shared/models/general';
+import { ActionType } from 'src/app/shared/models/general';
+import { ALERT_MESSAGES } from 'src/app/shared/models/alert';
 import { Partner } from '../../partner/partner';
 import { AuthenticationService } from 'src/app/core/services/authentication.service';
 

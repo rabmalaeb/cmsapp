@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { NavItem, ModuleName } from 'src/app/shared/models/general';
+import { NavItem, ModuleName } from 'src/app/shared/models/nav';
 import { AuthorizationService } from './authorization.service';
 
 @Injectable({

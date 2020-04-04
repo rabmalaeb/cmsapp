@@ -4,7 +4,7 @@ import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { Admin } from '../admin';
 import { AuthorizationService } from 'src/app/core/services/authorization.service';
-import { ModuleName } from 'src/app/shared/models/general';
+import { ModuleName } from 'src/app/shared/models/nav';
 import { AlertService } from 'src/app/core/services/alert.service';
 import { Observable } from 'rxjs';
 import { Store, ActionsSubject } from '@ngrx/store';
@@ -22,14 +22,7 @@ import { Sort } from '@angular/material/sort';
   styleUrls: ['./admins.component.scss']
 })
 export class AdminsComponent implements OnInit {
-  displayedColumns: string[] = [
-    'id',
-    'name',
-    'description',
-    'email',
-    'active',
-    'action'
-  ];
+  displayedColumns: string[] = ['id', 'name', 'email', 'active', 'action'];
   dataSource: MatTableDataSource<any>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   admins$: Observable<Admin[]>;
@@ -111,16 +104,9 @@ export class AdminsComponent implements OnInit {
   }
 
   deleteAdmin(id: number) {
-    this.alertService.confirm(
-      'Are you sure you want to delete? ',
-      'Yes',
-      'No',
-      () => {
-        this.store$.dispatch(
-          new AdminStoreActions.DeleteAdminRequestAction(id)
-        );
-      }
-    );
+    this.alertService.confirmDelete('Are you sure you want to delete? ', () => {
+      this.store$.dispatch(new AdminStoreActions.DeleteAdminRequestAction(id));
+    });
   }
 
   get canAddAdmin(): Observable<boolean> {

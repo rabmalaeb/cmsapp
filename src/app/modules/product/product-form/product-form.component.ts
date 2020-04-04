@@ -4,7 +4,8 @@ import {
   Input,
   Output,
   EventEmitter,
-  OnChanges
+  OnChanges,
+  SimpleChanges
 } from '@angular/core';
 import {
   Validators,
@@ -14,10 +15,9 @@ import {
 } from '@angular/forms';
 import { ValidationMessagesService } from 'src/app/core/services/validation-messages.service';
 import { NotificationService } from 'src/app/core/services/notification.service';
-import { ActionType, ALERT_MESSAGES } from 'src/app/shared/models/general';
+import { ActionType } from 'src/app/shared/models/general';
+import { ALERT_MESSAGES } from 'src/app/shared/models/alert';
 import { Product } from '../product';
-import { Media } from '../../media/media';
-import { MediaService } from '../../media/media.service';
 import { Category } from '../../category/category';
 
 @Component({
@@ -29,14 +29,9 @@ export class ProductFormComponent implements OnInit, OnChanges {
   constructor(
     private form: FormBuilder,
     private notificationService: NotificationService,
-    private mediaService: MediaService,
     private validationMessagesService: ValidationMessagesService
   ) {}
 
-  productForm: FormGroup;
-  productImage: File;
-  productMedia: Media;
-  imageUrl: any;
   @Input() product: Product;
   @Input() categories: Category[];
   @Input() actionType: ActionType;
@@ -45,6 +40,9 @@ export class ProductFormComponent implements OnInit, OnChanges {
   @Input() isLoading: boolean;
   @Output() submitForm = new EventEmitter<Product>();
   formGroupDirective: FormGroupDirective;
+  productForm: FormGroup;
+  productImage: File;
+  resetImage = false;
 
   ngOnInit() {}
 
@@ -58,6 +56,7 @@ export class ProductFormComponent implements OnInit, OnChanges {
       this.buildNewProductForm();
       if (this.formGroupDirective) {
         this.formGroupDirective.resetForm();
+        this.resetImage = true;
       }
     }
   }
@@ -67,10 +66,10 @@ export class ProductFormComponent implements OnInit, OnChanges {
       name: ['', [Validators.required]],
       description: ['', [Validators.required]],
       categoryId: ['', [Validators.required]],
-      retailPrice: [0, [Validators.required]],
-      originalPrice: [0, [Validators.required]],
-      quantity: [0, [Validators.required]],
-      unitOfCount: [0, [Validators.required]]
+      retailPrice: ['', [Validators.required]],
+      originalPrice: ['', [Validators.required]],
+      quantity: ['', [Validators.required]],
+      unitOfCount: ['', [Validators.required]]
     });
   }
 
@@ -115,22 +114,6 @@ export class ProductFormComponent implements OnInit, OnChanges {
     return this.productForm.get('categoryId');
   }
 
-  buildProductParams(): Product {
-    const product = new Product();
-    product.id = this.productForm.get('id')
-      ? this.productForm.get('id').value
-      : '';
-    product.name = this.name.value;
-    product.description = this.description.value;
-    product.categoryId = this.categoryId.value;
-    product.mediaId = this.productMedia.id;
-    product.retailPrice = this.retailPrice.value;
-    product.originalPrice = this.originalPrice.value;
-    product.quantity = this.quantity.value;
-    product.unitOfCount = this.unitOfCount.value;
-    return product;
-  }
-
   get buttonLabel() {
     if (this.isLoadingAction) {
       return 'Loading';
@@ -147,14 +130,25 @@ export class ProductFormComponent implements OnInit, OnChanges {
       this.notificationService.showError(ALERT_MESSAGES.FORM_NOT_VALID);
       return;
     }
-    if (this.productImage) {
-      const data = new FormData();
-      data.append('image', this.productImage, this.productImage.name);
-      this.mediaService.addMedia(data).subscribe(response => {
-        this.productMedia = response;
-        this.submitForm.emit(this.buildProductParams());
-      });
+    this.submitForm.emit(this.buildProductParams());
+  }
+
+  buildProductParams(): Product {
+    const product = new Product();
+    if (this.productForm.get('id')) {
+      product.id = this.productForm.get('id').value;
     }
+    product.name = this.name.value;
+    product.description = this.description.value;
+    product.categoryId = this.categoryId.value;
+    product.retailPrice = this.retailPrice.value;
+    product.originalPrice = this.originalPrice.value;
+    product.quantity = this.quantity.value;
+    product.unitOfCount = this.unitOfCount.value;
+    if (this.productImage) {
+      product.image = this.productImage;
+    }
+    return product;
   }
 
   uploadImage(image: File) {

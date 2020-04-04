@@ -4,7 +4,7 @@ import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { AlertService } from 'src/app/core/services/alert.service';
 import { Partner, PartnerRequest } from '../partner';
-import { ModuleName } from 'src/app/shared/models/general';
+import { ModuleName } from 'src/app/shared/models/nav';
 import { AuthorizationService } from 'src/app/core/services/authorization.service';
 import { Observable } from 'rxjs';
 import { PartnerStoreSelectors, PartnerStoreActions } from '../store';
@@ -107,16 +107,11 @@ export class PartnersComponent implements OnInit {
   }
 
   deletePartner(id: number) {
-    this.alertService.confirm(
-      'Are you sure you want to delete? ',
-      'Yes',
-      'No',
-      () => {
-        this.store$.dispatch(
-          new PartnerStoreActions.DeletePartnerRequestAction(id)
-        );
-      }
-    );
+    this.alertService.confirmDelete('Are you sure you want to delete? ', () => {
+      this.store$.dispatch(
+        new PartnerStoreActions.DeletePartnerRequestAction(id)
+      );
+    });
   }
 
   get canAddPartner() {

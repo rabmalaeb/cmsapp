@@ -5,7 +5,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { AlertService } from 'src/app/core/services/alert.service';
 import { Banner, BannerRequest } from '../banner';
 import { AuthorizationService } from 'src/app/core/services/authorization.service';
-import { ModuleName } from 'src/app/shared/models/general';
+import { ModuleName } from 'src/app/shared/models/nav';
 import { filter } from 'rxjs/operators';
 import { BannerStoreActions, BannerStoreSelectors } from '../store';
 import { ActionTypes } from '../store/actions';
@@ -22,7 +22,7 @@ import { Sort } from '@angular/material/sort';
   styleUrls: ['./banners.component.scss']
 })
 export class BannersComponent implements OnInit {
-  displayedColumns: string[] = ['id', 'name', 'description', 'image', 'action'];
+  displayedColumns: string[] = ['id', 'name', 'image', 'action'];
   dataSource: MatTableDataSource<any>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   banners$: Observable<Banner[]>;
@@ -106,16 +106,11 @@ export class BannersComponent implements OnInit {
   }
 
   deleteBanner(id: number) {
-    this.alertService.confirm(
-      'Are you sure you want to delete? ',
-      'Yes',
-      'No',
-      () => {
-        this.store$.dispatch(
-          new BannerStoreActions.DeleteBannerRequestAction(id)
-        );
-      }
-    );
+    this.alertService.confirmDelete('Are you sure you want to delete? ', () => {
+      this.store$.dispatch(
+        new BannerStoreActions.DeleteBannerRequestAction(id)
+      );
+    });
   }
 
   get canAddBanner() {

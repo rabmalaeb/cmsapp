@@ -1,3 +1,5 @@
+@import '../assets/styles/global';
+
 .app {
   display: flex;
   height: 100%;
@@ -10,6 +12,7 @@
 .app__body {
   display: flex;
   flex: 1;
+  background-color: $global--background-color;
 }
 
 .app__login {
@@ -39,8 +42,13 @@
   flex: 1;
 }
 
+.app__body-header {
+  margin-bottom: 20px;
+}
+
 .app__body-section {
   flex: 1;
+  background-color: $global--background-color;
 }
 
 .app__footer {

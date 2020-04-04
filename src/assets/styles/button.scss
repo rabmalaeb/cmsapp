@@ -13,10 +13,10 @@
   }
 
   &_is-secondary {
-    background-color: #808080;
+    background-color: $global--button-secondary-color;
     color: #fff;
     &:hover {
-    background-color: #9e9e9e;
+    background-color: $global--button-secondary-color-hover;
     }
   }
 

@@ -9,8 +9,8 @@
 }
 
 .select-options__item {
-  margin-bottom: 10px;
-  &:last-child {
-    margin-bottom: 0;
+  font-size: 12px;
+  &:not(:last-child) {
+    margin-bottom: 5px;
   }
 }

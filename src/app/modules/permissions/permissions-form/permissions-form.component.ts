@@ -16,13 +16,13 @@ import { ValidationMessagesService } from '../../../core/services/validation-mes
 import { NotificationService } from '../../../core/services/notification.service';
 import {
   ActionType,
-  ALERT_MESSAGES,
-  NavItem,
   PermissionType
 } from '../../../shared/models/general';
 import { Permission, PermissionActionRequest } from '../permission';
 import { capitalize } from '../../../shared/utils/general';
 import { AppService } from '../../../core/services/app.service';
+import { ALERT_MESSAGES } from 'src/app/shared/models/alert';
+import { NavItem } from 'src/app/shared/models/nav';
 
 @Component({
   selector: 'app-permissions-form',

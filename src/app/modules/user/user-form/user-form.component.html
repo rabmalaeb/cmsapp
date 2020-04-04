@@ -5,37 +5,47 @@
   *ngIf="!isLoadingForm; else loadingMask"
   class="page__form"
 >
-  <app-input-item
-    id="firstName"
-    name="firstName"
-    label="First Name"
-    [formControlItem]="firstName"
-  >
-  </app-input-item>
+  <div class="page__form-content">
+    <div class="page__form-input">
+      <app-input-item
+        id="firstName"
+        name="firstName"
+        label="First Name"
+        [formControlItem]="firstName"
+      >
+      </app-input-item>
+    </div>
 
-  <app-input-item
-    id="lastName"
-    name="lastName"
-    label="Last Name"
-    [formControlItem]="lastName"
-  >
-  </app-input-item>
+    <div class="page__form-input">
+      <app-input-item
+        id="lastName"
+        name="lastName"
+        label="Last Name"
+        [formControlItem]="lastName"
+      >
+      </app-input-item>
+    </div>
 
-  <app-input-item
-    id="email"
-    name="email"
-    label="Email"
-    [formControlItem]="email"
-  >
-  </app-input-item>
+    <div class="page__form-input">
+      <app-input-item
+        id="email"
+        name="email"
+        label="Email"
+        [formControlItem]="email"
+      >
+      </app-input-item>
+    </div>
 
-  <app-input-item
-    id="mobile"
-    name="mobile"
-    label="Mobile"
-    [formControlItem]="mobile"
-  >
-  </app-input-item>
+    <div class="page__form-input">
+      <app-input-item
+        id="mobile"
+        name="mobile"
+        label="Mobile"
+        [formControlItem]="mobile"
+      >
+      </app-input-item>
+    </div>
+  </div>
 
   <div class="page__form-button-container" *ngIf="canEditUser">
     <div class="page__form__button">

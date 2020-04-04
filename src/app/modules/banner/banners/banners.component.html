@@ -42,13 +42,6 @@
         <mat-cell *matCellDef="let banner">{{ banner.name }}</mat-cell>
       </ng-container>
 
-      <ng-container matColumnDef="description">
-        <mat-header-cell mat-sort-header *matHeaderCellDef>Description</mat-header-cell>
-        <mat-cell *matCellDef="let banner">
-          {{ banner.description }}
-        </mat-cell>
-      </ng-container>
-
       <ng-container matColumnDef="image">
         <mat-header-cell *matHeaderCellDef>Image</mat-header-cell>
         <mat-cell *matCellDef="let banner">

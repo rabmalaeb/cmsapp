@@ -1,6 +1,6 @@
 import { Action } from '@ngrx/store';
 import { Banner, BannerRequest } from 'src/app/modules/banner/banner';
-import { ErrorResponse } from 'src/app/shared/models/general';
+import { ErrorResponse } from 'src/app/shared/models/error';
 import { PaginationControl } from 'src/app/shared/paginator';
 
 export enum ActionTypes {

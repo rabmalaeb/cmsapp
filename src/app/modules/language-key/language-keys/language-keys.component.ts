@@ -5,7 +5,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { AlertService } from 'src/app/core/services/alert.service';
 import { LanguageKey, LanguageKeyRequest } from '../language-key';
 import { AuthorizationService } from 'src/app/core/services/authorization.service';
-import { ModuleName } from 'src/app/shared/models/general';
+import { ModuleName } from 'src/app/shared/models/nav';
 import { Store, ActionsSubject } from '@ngrx/store';
 import { RootStoreState } from 'src/app/root-store';
 import { LanguagekeyStoreSelectors, LanguagekeyStoreActions } from '../store';
@@ -113,16 +113,11 @@ export class LanguageKeysComponent implements OnInit {
   }
 
   deleteLanguageKey(id: number) {
-    this.alertService.confirm(
-      'Are you sure you want to delete? ',
-      'Yes',
-      'No',
-      () => {
-        this.store$.dispatch(
-          new LanguagekeyStoreActions.DeleteLanguageKeyRequestAction(id)
-        );
-      }
-    );
+    this.alertService.confirmDelete('Are you sure you want to delete? ', () => {
+      this.store$.dispatch(
+        new LanguagekeyStoreActions.DeleteLanguageKeyRequestAction(id)
+      );
+    });
   }
 
   get canAddKey() {

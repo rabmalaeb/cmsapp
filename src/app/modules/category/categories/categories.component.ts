@@ -4,7 +4,7 @@ import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { AlertService } from 'src/app/core/services/alert.service';
 import { Category, CategoryRequest } from '../category';
-import { ModuleName } from 'src/app/shared/models/general';
+import { ModuleName } from 'src/app/shared/models/nav';
 import { AuthorizationService } from 'src/app/core/services/authorization.service';
 import { Observable } from 'rxjs';
 import { RootStoreState } from 'src/app/root-store';
@@ -22,13 +22,7 @@ import { Sort } from '@angular/material/sort';
   styleUrls: ['./categories.component.scss']
 })
 export class CategoriesComponent implements OnInit {
-  displayedColumns: string[] = [
-    'id',
-    'name',
-    'description',
-    'parent',
-    'action'
-  ];
+  displayedColumns: string[] = ['id', 'name', 'parent', 'action'];
   dataSource: MatTableDataSource<any>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   categories$: Observable<Category[]>;
@@ -96,9 +90,7 @@ export class CategoriesComponent implements OnInit {
 
   getCategories() {
     const request = this.filterHandler.getRequest();
-    this.store$.dispatch(
-      new CategoryStoreActions.LoadRequestAction(request)
-    );
+    this.store$.dispatch(new CategoryStoreActions.LoadRequestAction(request));
   }
 
   addCategory() {
@@ -114,16 +106,11 @@ export class CategoriesComponent implements OnInit {
   }
 
   deleteCategory(id: number) {
-    this.alertService.confirm(
-      'Are you sure you want to delete? ',
-      'Yes',
-      'No',
-      () => {
-        this.store$.dispatch(
-          new CategoryStoreActions.DeleteCategoryRequestAction(id)
-        );
-      }
-    );
+    this.alertService.confirmDelete('Are you sure you want to delete? ', () => {
+      this.store$.dispatch(
+        new CategoryStoreActions.DeleteCategoryRequestAction(id)
+      );
+    });
   }
 
   get canAddCategory() {

@@ -3,6 +3,7 @@ import { HttpService } from 'src/app/core/services/http.service';
 import { CategorySerializerService } from './category-serializer.service';
 import { map } from 'rxjs/operators';
 import { CategoryRequest, Category } from './category';
+import { createFormDataFromObject, addPutMethodToFormData } from 'src/app/shared/utils/general';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +15,7 @@ export class CategoryService {
   ) {}
 
   getCategories(categoryRequest: CategoryRequest) {
-    return this.httpService.request('categories', categoryRequest).pipe(
+    return this.httpService.get('categories', categoryRequest).pipe(
       map(({ data: { items, paginator } }) => {
         return {
           items: items.map(item => this.categorySerializer.getCategory(item)),
@@ -25,7 +26,7 @@ export class CategoryService {
   }
 
   getCategory(id: number) {
-    return this.httpService.request(`categories/${id}`, {}).pipe(
+    return this.httpService.get(`categories/${id}`, {}).pipe(
       map(({ data }) => {
         return this.categorySerializer.getCategory(data);
       })
@@ -33,15 +34,22 @@ export class CategoryService {
   }
 
   addCategory(params: Category) {
-    return this.httpService.post('categories', { ...params }).pipe(
+    const formData = createFormDataFromObject(params);
+    return this.httpService.post('categories', formData).pipe(
       map(({ data }) => {
         return this.categorySerializer.getCategory(data);
       })
     );
   }
 
+  /**
+   * post method is used here because LARAVEL doesn't
+   *  read PUT requests when sending formdata
+   */
   updateCategory(id: number, params: Category) {
-    return this.httpService.put(`categories/${id}`, { ...params }).pipe(
+    const formData = createFormDataFromObject(params);
+    addPutMethodToFormData(formData);
+    return this.httpService.post(`categories/${id}`, formData).pipe(
       map(({ data }) => {
         return this.categorySerializer.getCategory(data);
       })

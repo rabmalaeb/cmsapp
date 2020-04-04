@@ -9,23 +9,25 @@
 }
 
 .page-header__container {
-  padding: 20px;
-  background-color: #fff;
+  background-color: $global--background-color;
   color: $global--primary-color;
-  box-shadow: 1px 1px 6px 0px #00000047;
 }
 
 .page-header__item-container {
+  height: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  padding: 0 20px;
+  &:not(:last-child) {
+    margin-bottom: 10px;
+  }
 }
 
 .page-header__item {
-  font-size: 16px;
+  font-size: 14px;
 }
 
 .page-header__title {
-  font-size: 31px;
-  font-weight: bold;
+  font-size: 21px;
 }

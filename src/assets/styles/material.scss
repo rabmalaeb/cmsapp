@@ -1,7 +1,18 @@
 .mat-header-row {
-  background-color: $global--secondary-color;
+  background-color: $global--background-color;
 }
 
 .mat-header-cell  {
-  color: #fff;
+  color: $global--primary-color;
+  font-size: 13px;
+}
+
+
+.mat-cell  {
+  color: $global--primary-color;
+}
+
+
+.mat-sort-header-arrow {
+  color: $global--primary-color;
 }

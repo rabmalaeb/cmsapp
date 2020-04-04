@@ -5,7 +5,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { AlertService } from 'src/app/core/services/alert.service';
 import { Permission, PermissionRequest } from '../permission';
 import { AuthorizationService } from 'src/app/core/services/authorization.service';
-import { ModuleName } from 'src/app/shared/models/general';
+import { ModuleName } from 'src/app/shared/models/nav';
 import { Observable } from 'rxjs';
 import { Store, ActionsSubject } from '@ngrx/store';
 import { RootStoreState } from 'src/app/root-store';
@@ -91,9 +91,7 @@ export class PermissionsComponent implements OnInit {
 
   getPermissions() {
     const request = this.filterHandler.getRequest();
-    this.store$.dispatch(
-      new PermissionStoreActions.LoadRequestAction(request)
-    );
+    this.store$.dispatch(new PermissionStoreActions.LoadRequestAction(request));
   }
 
   addPermission() {
@@ -109,16 +107,11 @@ export class PermissionsComponent implements OnInit {
   }
 
   deletePermission(id: number) {
-    this.alertService.confirm(
-      'Are you sure you want to delete? ',
-      'Yes',
-      'No',
-      () => {
-        this.store$.dispatch(
-          new PermissionStoreActions.DeletePermissionRequestAction(id)
-        );
-      }
-    );
+    this.alertService.confirmDelete('Are you sure you want to delete? ', () => {
+      this.store$.dispatch(
+        new PermissionStoreActions.DeletePermissionRequestAction(id)
+      );
+    });
   }
 
   get canAddPermission() {

@@ -14,7 +14,7 @@ export class AdminService {
   ) {}
 
   getAdmins(adminRequest: AdminRequest) {
-    return this.httpService.request('admins', adminRequest).pipe(
+    return this.httpService.get('admins', adminRequest).pipe(
       map(({ data: { items, paginator } }) => {
         return {
           items: items.map(item => this.adminSerializer.getAdmin(item)),
@@ -25,7 +25,7 @@ export class AdminService {
   }
 
   getAdmin(id: number) {
-    return this.httpService.request(`admins/${id}`, {}).pipe(
+    return this.httpService.get(`admins/${id}`, {}).pipe(
       map(({ data }) => {
         return this.adminSerializer.getAdmin(data);
       })

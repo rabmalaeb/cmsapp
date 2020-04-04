@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NotificationService } from 'src/app/core/services/notification.service';
-import { ActionType, ModuleName } from 'src/app/shared/models/general';
+import { ActionType } from 'src/app/shared/models/general';
 import { ActivatedRoute } from '@angular/router';
 import { User } from '../user';
 import { Store, ActionsSubject } from '@ngrx/store';
@@ -13,6 +13,7 @@ import { Observable, of } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { ActionTypes } from '../store/actions';
 import { AuthorizationService } from 'src/app/core/services/authorization.service';
+import { ModuleName } from 'src/app/shared/models/nav';
 
 @Component({
   selector: 'app-user-add',

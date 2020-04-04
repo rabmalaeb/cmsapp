@@ -5,7 +5,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { AlertService } from 'src/app/core/services/alert.service';
 import { Translation } from '../translation';
 import { AuthorizationService } from 'src/app/core/services/authorization.service';
-import { ModuleName } from 'src/app/shared/models/general';
+import { ModuleName } from 'src/app/shared/models/nav';
 import { ActionTypes } from '../store/actions';
 import { filter } from 'rxjs/operators';
 import { TranslationStoreSelectors, TranslationStoreActions } from '../store';
@@ -120,16 +120,11 @@ export class TranslationsComponent implements OnInit {
   }
 
   deleteTranslation(id: number) {
-    this.alertService.confirm(
-      'Are you sure you want to delete? ',
-      'Yes',
-      'No',
-      () => {
-        this.store$.dispatch(
-          new TranslationStoreActions.DeleteTranslationRequestAction(id)
-        );
-      }
-    );
+    this.alertService.confirmDelete('Are you sure you want to delete? ', () => {
+      this.store$.dispatch(
+        new TranslationStoreActions.DeleteTranslationRequestAction(id)
+      );
+    });
   }
 
   get canAddTranslation() {

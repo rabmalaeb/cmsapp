@@ -20,6 +20,7 @@ export class BannerSerializerService {
     banner.id = parseInt(bannerResponse.id, 0);
     banner.name = bannerResponse.attributes.name;
     banner.description = bannerResponse.attributes.description;
+    banner.link = bannerResponse.attributes.link;
     banner.mediaId = bannerResponse.attributes.mediaId;
     banner.media = this.mediaSerializer.getMedia(
       bannerResponse.relationships.media
@@ -27,7 +28,7 @@ export class BannerSerializerService {
     banner.language = this.languageSerializer.getLanguage(
       bannerResponse.relationships.language
     );
-    banner.languageId = bannerResponse.relationships.mediaId;
+    banner.languageId = bannerResponse.attributes.languageId;
     return banner;
   }
 }

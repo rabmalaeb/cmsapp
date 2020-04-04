@@ -5,7 +5,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { AlertService } from 'src/app/core/services/alert.service';
 import { Language, LanguageRequest } from '../language';
 import { AuthorizationService } from 'src/app/core/services/authorization.service';
-import { ModuleName } from 'src/app/shared/models/general';
+import { ModuleName } from 'src/app/shared/models/nav';
 import { Observable } from 'rxjs';
 import { LanguageStoreActions, LanguageStoreSelectors } from '../store';
 import { ActionTypes } from '../store/actions';
@@ -91,9 +91,7 @@ export class LanguagesComponent implements OnInit {
 
   getLanguages() {
     const request = this.filterHandler.getRequest();
-    this.store$.dispatch(
-      new LanguageStoreActions.LoadRequestAction(request)
-    );
+    this.store$.dispatch(new LanguageStoreActions.LoadRequestAction(request));
   }
 
   addLanguage() {
@@ -109,16 +107,11 @@ export class LanguagesComponent implements OnInit {
   }
 
   deleteLanguage(id: number) {
-    this.alertService.confirm(
-      'Are you sure you want to delete? ',
-      'Yes',
-      'No',
-      () => {
-        this.store$.dispatch(
-          new LanguageStoreActions.DeleteLanguageRequestAction(id)
-        );
-      }
-    );
+    this.alertService.confirmDelete('Are you sure you want to delete? ', () => {
+      this.store$.dispatch(
+        new LanguageStoreActions.DeleteLanguageRequestAction(id)
+      );
+    });
   }
 
   get canAddLanguage() {

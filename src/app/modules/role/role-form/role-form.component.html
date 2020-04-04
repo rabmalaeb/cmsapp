@@ -5,33 +5,38 @@
   class="page__form"
   *ngIf="!isLoadingForm; else loadingMask"
 >
-  <app-input-item
-    id="name"
-    name="name"
-    label="Name"
-    [formControlItem]="name"
-  >
-  </app-input-item>
-
-  <div class="form-item">
-    <div class="form-item__value form-item__value_is-textfield">
-      <mat-form-field appearance="outline">
-        <mat-label>Partner</mat-label>
-        <mat-select placeholder="Partner" formControlName="partnerId">
-          <mat-option *ngFor="let partner of partners" [value]="partner.id">
-            {{ partner.name }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
+  <div class="page__form-content">
+    <div class="page__form-input">
+      <app-input-item
+        id="name"
+        name="name"
+        label="Name"
+        [formControlItem]="name"
+      >
+      </app-input-item>
     </div>
-  </div>
 
-  <div class="page__title-container">
-    <div class="page__title">
-      Set Permissions
+    <div class="page__form-input">
+      <div class="form-item">
+        <div class="form-item__value form-item__value_is-textfield">
+          <mat-form-field appearance="outline">
+            <mat-label>Partner</mat-label>
+            <mat-select placeholder="Partner" formControlName="partnerId">
+              <mat-option *ngFor="let partner of partners" [value]="partner.id">
+                {{ partner.name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
     </div>
-  </div>
-  <div class="page__form-container">
+
+    <div class="page__title-container">
+      <div class="page__title">
+        Set Permissions
+      </div>
+    </div>
+
     <div
       class="page__form-item"
       *ngFor="let permissionGroup of permissionGroups"

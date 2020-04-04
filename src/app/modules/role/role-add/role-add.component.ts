@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ValidationMessagesService } from 'src/app/core/services/validation-messages.service';
 import { NotificationService } from 'src/app/core/services/notification.service';
-import { ActionType, ModuleName } from 'src/app/shared/models/general';
+import { ActionType } from 'src/app/shared/models/general';
+import { ModuleName } from 'src/app/shared/models/nav';
 import { ActivatedRoute } from '@angular/router';
 import { Role, RoleRequest, RoleActionRequest } from '../role';
 import { PermissionGroup, Permission } from '../../permissions/permission';

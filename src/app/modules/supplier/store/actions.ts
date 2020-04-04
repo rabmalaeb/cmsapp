@@ -1,6 +1,6 @@
 import { Action } from '@ngrx/store';
 import { Supplier, SupplierRequest } from 'src/app/modules/supplier/supplier';
-import { ErrorResponse } from 'src/app/shared/models/general';
+import { ErrorResponse } from 'src/app/shared/models/error';
 import { PaginationControl } from 'src/app/shared/paginator';
 
 export enum ActionTypes {

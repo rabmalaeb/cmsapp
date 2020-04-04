@@ -15,7 +15,7 @@ export class MediaService {
   ) {}
 
   getMedias() {
-    return this.httpService.request('medias', {}).pipe(
+    return this.httpService.get('medias', {}).pipe(
       map(response => {
         return response.map(data => this.mediaSerializer.getMedia(data));
       })
@@ -23,7 +23,7 @@ export class MediaService {
   }
 
   getMedia(id: number) {
-    return this.httpService.request(`medias/${id}`, {}).pipe(
+    return this.httpService.get(`medias/${id}`, {}).pipe(
       map(({ data }) => {
         return this.mediaSerializer.getMedia(data);
       })
