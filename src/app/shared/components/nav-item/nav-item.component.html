@@ -1,3 +1,15 @@
-<p>
-  nav-item works!
-</p>
+<div class="nav-item">
+  <a
+    class="nav-item__link"
+    [routerLink]="navItem.link"
+    routerLinkActive="nav-item__link_is-active"
+    *ngIf="navItem.isActive | async"
+  >
+    <div class="nav-item__icon">
+      <mat-icon> {{ navItem.iconName }}</mat-icon>
+    </div>
+    <div class="nav-item__label">
+      {{ navItem.name | titlecase }}
+    </div>
+  </a>
+</div>

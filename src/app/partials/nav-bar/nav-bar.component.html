@@ -2,15 +2,7 @@
   <div class="nav-bar__container">
     <div class="nav-bar__item-container">
       <div class="nav-bar__item" *ngFor="let item of navBarItems">
-        <a
-          mat-button
-          class="nav-bar__link"
-          [routerLink]="item.link"
-          routerLinkActive="nav-bar__link_is-active"
-          *ngIf="item.isActive | async"
-        >
-          {{ item.name | titlecase }}
-        </a>
+        <app-nav-item [navItem]="item"></app-nav-item>
       </div>
     </div>
   </div>

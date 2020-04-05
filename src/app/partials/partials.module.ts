@@ -6,18 +6,17 @@ import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
 import { HeaderComponent } from './header/header.component';
 import { SharedModule } from 'src/app/shared/shared.module';
+import { ComponentsModule } from '../shared/components/components.module';
 
 @NgModule({
-  declarations: [
-    NavBarComponent,
-    FooterComponent,
-    HeaderComponent
+  declarations: [NavBarComponent, FooterComponent, HeaderComponent],
+  imports: [
+    CommonModule,
+    BrowserModule,
+    RouterModule,
+    SharedModule,
+    ComponentsModule
   ],
-  imports: [CommonModule, BrowserModule, RouterModule, SharedModule],
-  exports: [
-    NavBarComponent,
-    FooterComponent,
-    HeaderComponent
-  ]
+  exports: [NavBarComponent, FooterComponent, HeaderComponent]
 })
 export class PartialsModule {}
