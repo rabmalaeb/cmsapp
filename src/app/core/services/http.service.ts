@@ -6,6 +6,7 @@ import { environment } from 'src/environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class HttpService {
+
   /**
    *
    * @param http HttpClient instance that handles api calls
@@ -14,8 +15,7 @@ export class HttpService {
     private http: HttpClient,
   ) { }
 
-  url: string = environment.apiUrl;
-  data: any;
+  private url: string = environment.apiUrl;
 
   get(endpoint: string, params: any) {
     const url = `${this.url}${endpoint}`;
@@ -27,7 +27,6 @@ export class HttpService {
   }
 
   post(endpoint: string, data: any) {
-    this.data = data;
     const url = `${this.url}${endpoint}`;
     return this.http.post<any>(url, data, { withCredentials: false }).pipe(
       map(response => {
@@ -37,7 +36,6 @@ export class HttpService {
   }
 
   put(endpoint: string, data: any) {
-    this.data = data;
     const url = `${this.url}${endpoint}`;
     return this.http.put<any>(url, data, { withCredentials: false }).pipe(
       map(response => {

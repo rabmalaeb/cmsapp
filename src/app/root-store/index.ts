@@ -5,6 +5,6 @@ export * from '../modules/user/store';
 export * from '../modules/role/store';
 export * from '../modules/admin/store';
 export * from '../modules/partner/store';
-export * from '../modules/login/store';
+export * from '../modules/authentication/store';
 export * from '../modules/banner/store';
 export { RootStoreState, RootStoreSelectors, RootStoreModule };

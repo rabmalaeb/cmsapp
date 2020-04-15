@@ -1,5 +1,5 @@
 import { Action } from '@ngrx/store';
-import { LoginRequest } from '../login';
+import { LoginRequest } from '../login/login';
 import { Admin } from '../../admin/admin';
 import { ErrorResponse } from 'src/app/shared/models/error';
 

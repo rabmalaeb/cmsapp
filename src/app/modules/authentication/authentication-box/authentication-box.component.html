@@ -1,0 +1,14 @@
+<div class="authentication">
+  <div class="authentication__logo">
+    <img
+      class="authentication__logo-image"
+      src="assets/logos/logo.png"
+      alt="smartways"
+    />
+  </div>
+  <div class="authentication__container">
+    <app-login *ngIf="isLogIn"></app-login>
+    <app-reset-password *ngIf="isResetPassword"></app-reset-password>
+    <app-set-password *ngIf="isSetNewPassword"></app-set-password>
+  </div>
+</div>

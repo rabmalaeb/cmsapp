@@ -9,12 +9,15 @@ import {
 import { NotificationService } from 'src/app/core/services/notification.service';
 import { Store, ActionsSubject } from '@ngrx/store';
 import { RootStoreState } from 'src/app/root-store';
-import { LoginRequest } from '../login';
+import { LoginRequest } from './login';
 import { LoginStoreActions, LoginStoreSelectors } from '../store';
 import { Observable } from 'rxjs';
 import { map, filter } from 'rxjs/operators';
 import { ActionTypes } from '../store/actions';
 import { AuthenticationService } from 'src/app/core/services/authentication.service';
+import { AuthenticationWorkflowService } from '../authenticaion-workflow.service';
+import { AuthenticationSteps } from '../authentication';
+import { ALERT_MESSAGES } from 'src/app/shared/models/alert';
 
 @Component({
   selector: 'app-login',
@@ -26,6 +29,7 @@ export class LoginComponent implements OnInit {
     private validationMessageService: ValidationMessagesService,
     private notificationService: NotificationService,
     private form: FormBuilder,
+    private authenticationWorkflowService: AuthenticationWorkflowService,
     private store$: Store<RootStoreState.State>,
     private actionsSubject$: ActionsSubject,
     private authenticationService: AuthenticationService
@@ -67,11 +71,19 @@ export class LoginComponent implements OnInit {
   }
 
   login(formData: any, formDirective: FormGroupDirective) {
+    if (!this.loginForm.valid) {
+      this.notificationService.showError(ALERT_MESSAGES.FORM_NOT_VALID);
+      return false;
+    }
     const params: LoginRequest = {
       email: this.email.value,
       password: this.password.value
     };
     this.store$.dispatch(new LoginStoreActions.LoadRequestAction(params));
+  }
+
+  goToResetPassword() {
+    this.authenticationWorkflowService.setSelectedStep(AuthenticationSteps.RESET_PASSWORD);
   }
 
   get email() {

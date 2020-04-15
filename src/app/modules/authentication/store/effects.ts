@@ -4,7 +4,7 @@ import { Action } from '@ngrx/store';
 import { Observable, of as observableOf } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
 import * as LoginActions from './actions';
-import { LoginService } from '../login.service';
+import { LoginService } from '../login/login.service';
 
 @Injectable()
 export class LoginStoreEffects {

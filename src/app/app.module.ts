@@ -15,7 +15,7 @@ import { TranslationModule } from './modules/translation/translation.module';
 import { PermissionModule } from './modules/permissions/permission.module';
 import { RoleModule } from './modules/role/role.module';
 import { AppRoutingModule } from './app-routing.module';
-import { LoginModule } from './modules/login/login.module';
+import { AuthenticationModule } from './modules/authentication/authentication.module';
 import { DashboardComponent } from './modules/dashboard/dashboard.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
@@ -59,7 +59,7 @@ import { ApiKeyInterceptor } from './core/interceptors/apiKey.interceptor';
       logOnly: false // Restrict extension to log-only mode
     }),
 
-    LoginModule
+    AuthenticationModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: BearerInterceptor, multi: true },
