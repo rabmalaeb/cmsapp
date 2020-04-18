@@ -5,23 +5,24 @@ import { AdminAddComponent } from './admin-add/admin-add.component';
 import { ViewAdminGuard } from './guards/view-admin.guard';
 import { EditAdminGuard } from './guards/edit-admin.guard';
 import { AddAdminGuard } from './guards/add-admin.guard';
+import { AuthenticationGuard } from 'src/app/core/guards/authentication.guard';
 
 
 const routes: Routes = [
   {
     path: 'admins',
     component: AdminsComponent,
-    canActivate: [ViewAdminGuard]
+    canActivate: [ViewAdminGuard, AuthenticationGuard]
   },
   {
     path: 'admins/:id/view',
     component: AdminAddComponent,
-    canActivate: [EditAdminGuard]
+    canActivate: [EditAdminGuard, AuthenticationGuard]
   },
   {
     path: 'admins/add',
     component: AdminAddComponent,
-    canActivate: [AddAdminGuard]
+    canActivate: [AddAdminGuard, AuthenticationGuard]
   }
 ];
 

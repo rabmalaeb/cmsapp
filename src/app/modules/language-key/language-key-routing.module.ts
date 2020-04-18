@@ -5,22 +5,23 @@ import { LanguageKeysComponent } from './language-keys/language-keys.component';
 import { AddLanguageKeyGuard } from './guards/add-languagekey.guard';
 import { ViewLanguageKeyGuard } from './guards/view-languagekey.guard';
 import { EditLanguageKeyGuard } from './guards/edit-languagekey.guard';
+import { AuthenticationGuard } from 'src/app/core/guards/authentication.guard';
 
 const routes: Routes = [
   {
     path: 'keys',
     component: LanguageKeysComponent,
-    canActivate: [ViewLanguageKeyGuard]
+    canActivate: [ViewLanguageKeyGuard, AuthenticationGuard]
   },
   {
     path: 'keys/:id/view',
     component: LanguageKeyAddComponent,
-    canActivate: [EditLanguageKeyGuard]
+    canActivate: [EditLanguageKeyGuard, AuthenticationGuard]
   },
   {
     path: 'keys/add',
     component: LanguageKeyAddComponent,
-    canActivate: [AddLanguageKeyGuard]
+    canActivate: [AddLanguageKeyGuard, AuthenticationGuard]
   }
 ];
 

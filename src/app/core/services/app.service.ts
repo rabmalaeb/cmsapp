@@ -6,6 +6,9 @@ import { AuthorizationService } from './authorization.service';
   providedIn: 'root'
 })
 export class AppService {
+
+  private returnUrl: string;
+
   constructor(
     private authorizationService: AuthorizationService
   ) {}
@@ -91,5 +94,13 @@ export class AppService {
 
   getNavBarItems() {
     return this.navBarItems;
+  }
+
+  setReturnUrl(url: string) {
+    this.returnUrl = url;
+  }
+
+  getReturnUrl() {
+    return this.returnUrl;
   }
 }

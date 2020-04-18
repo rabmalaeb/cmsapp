@@ -19,7 +19,7 @@ export class AppComponent implements OnInit {
     public errorSnackBar: MatSnackBar,
     public successSnackBar: MatSnackBar,
     public authenticationService: AuthenticationService,
-    private authorizationService: AuthorizationService,
+    private authorizationService: AuthorizationService
   ) {
     const errorClass = ['snack-bar_is-error'];
     const successClass = ['snack-bar_is-success'];

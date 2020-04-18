@@ -5,22 +5,23 @@ import { PermissionAddComponent } from './permission-add/permission-add.componen
 import { ViewPermissionGuard } from './guards/view-permission.guard';
 import { EditPermissionGuard } from './guards/edit-permission.guard';
 import { AddPermissionGuard } from './guards/add-permission.guard';
+import { AuthenticationGuard } from 'src/app/core/guards/authentication.guard';
 
 const routes: Routes = [
   {
     path: 'permissions',
     component: PermissionsComponent,
-    canActivate: [ViewPermissionGuard]
+    canActivate: [ViewPermissionGuard, AuthenticationGuard]
   },
   {
     path: 'permissions/:id/view',
     component: PermissionAddComponent,
-    canActivate: [EditPermissionGuard]
+    canActivate: [EditPermissionGuard, AuthenticationGuard]
   },
   {
     path: 'permissions/add',
     component: PermissionAddComponent,
-    canActivate: [AddPermissionGuard]
+    canActivate: [AddPermissionGuard, AuthenticationGuard]
   }
 ];
 

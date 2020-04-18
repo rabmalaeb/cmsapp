@@ -5,22 +5,23 @@ import { ProductAddComponent } from './product-add/product-add.component';
 import { ViewProductGuard } from './guards/view-product.guard';
 import { EditProductGuard } from './guards/edit-product.guard';
 import { AddProductGuard } from './guards/add-product.guard';
+import { AuthenticationGuard } from 'src/app/core/guards/authentication.guard';
 
 const routes: Routes = [
   {
     path: 'products',
     component: ProductsComponent,
-    canActivate: [ViewProductGuard]
+    canActivate: [ViewProductGuard, AuthenticationGuard]
   },
   {
     path: 'products/:id/view',
     component: ProductAddComponent,
-    canActivate: [EditProductGuard]
+    canActivate: [EditProductGuard, AuthenticationGuard]
   },
   {
     path: 'products/add',
     component: ProductAddComponent,
-    canActivate: [AddProductGuard]
+    canActivate: [AddProductGuard, AuthenticationGuard]
   }
 ];
 

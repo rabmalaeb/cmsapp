@@ -1,27 +1,29 @@
 <div class="app" *ngIf="!(isAppLoading$ | async)">
-  <div class="app__header"></div>
-  <div class="app__body" *ngIf="isLoggedIn; else login">
-    <div class="app__nav-container">
-      <div class="app__nav-bar">
-        <app-nav-bar></app-nav-bar>
+  <div class="app__container" *ngIf="isLoggedIn; else login">
+    <div class="app__body">
+      <div class="app__nav-container">
+        <div class="app__nav-bar">
+          <app-nav-bar></app-nav-bar>
+        </div>
       </div>
-    </div>
-    <div class="app__body-container">
-      <div class="app__body-header">
-        <app-header></app-header>
-      </div>
-      <div class="app__body-section">
-        <router-outlet></router-outlet>
-      </div>
-      <div class="app__footer">
-        <app-footer></app-footer>
+      <div class="app__body-container">
+        <div class="app__body-header">
+          <app-header></app-header>
+        </div>
+        <div class="app__body-section">
+          <router-outlet></router-outlet>
+        </div>
+        <div class="app__footer">
+          <app-footer></app-footer>
+        </div>
       </div>
     </div>
   </div>
+
   <ng-template #login>
-    <div class="app__body">
+    <div class="app__container">
       <div class="app__login">
-        <app-authentication-box></app-authentication-box>
+       <app-authentication-box></app-authentication-box>
       </div>
     </div>
   </ng-template>

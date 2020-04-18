@@ -5,22 +5,23 @@ import { SupplierAddComponent } from './supplier-add/supplier-add.component';
 import { ViewSupplierGuard } from './guards/view-supplier.guard';
 import { EditSupplierGuard } from './guards/edit-supplier.guard';
 import { AddSupplierGuard } from './guards/add-supplier.guard';
+import { AuthenticationGuard } from 'src/app/core/guards/authentication.guard';
 
 const routes: Routes = [
   {
     path: 'suppliers',
     component: SuppliersComponent,
-    canActivate: [ViewSupplierGuard]
+    canActivate: [ViewSupplierGuard, AuthenticationGuard]
   },
   {
     path: 'suppliers/:id/view',
     component: SupplierAddComponent,
-    canActivate: [EditSupplierGuard]
+    canActivate: [EditSupplierGuard, AuthenticationGuard]
   },
   {
     path: 'suppliers/add',
     component: SupplierAddComponent,
-    canActivate: [AddSupplierGuard]
+    canActivate: [AddSupplierGuard, AuthenticationGuard]
   }
 ];
 
