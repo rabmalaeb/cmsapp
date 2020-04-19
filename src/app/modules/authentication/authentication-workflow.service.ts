@@ -7,14 +7,14 @@ import { AuthenticationSteps } from './authentication';
 export class AuthenticationWorkflowService {
   constructor() { }
 
-  private selectedStep: AuthenticationSteps;
+  private step: AuthenticationSteps;
 
-  setSelectedStep(step: AuthenticationSteps) {
-    this.selectedStep = step;
+  setCurrentStep(step: AuthenticationSteps) {
+    this.step = step;
   }
 
-  getSelectedStep() {
-    return this.selectedStep;
+  getCurrentStep() {
+    return this.step;
   }
 
 }

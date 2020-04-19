@@ -1,7 +1,7 @@
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 import { Admin } from '../../admin/admin';
 
-export const LoginAdapter: EntityAdapter<
+export const AuthenticationAdapter: EntityAdapter<
   Admin
 > = createEntityAdapter<Admin>({
   selectId: model => model.id,
@@ -9,12 +9,20 @@ export const LoginAdapter: EntityAdapter<
 
 export interface State extends EntityState<Admin> {
   admin: Admin;
-  isLoading?: boolean;
-  error?: any;
+  isLoginRequestLoading?: boolean;
+  loginError?: any;
+  isResetPasswordRequestLoading: boolean;
+  resetPasswordError: any;
+  isSetPasswordRequestLoading: boolean;
+  setPasswordError: any;
 }
 
-export const initialState: State = LoginAdapter.getInitialState({
+export const initialState: State = AuthenticationAdapter.getInitialState({
   admin: null,
-  isLoading: false,
-  error: null
+  isLoginRequestLoading: false,
+  loginError: null,
+  isResetPasswordRequestLoading: false,
+  resetPasswordError: null,
+  isSetPasswordRequestLoading: false,
+  setPasswordError: null,
 });

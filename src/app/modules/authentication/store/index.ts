@@ -1,7 +1,7 @@
-import * as LoginStoreActions from './actions';
-import * as LoginStoreSelectors from './selectors';
-import * as LoginStoreState from './state';
+import * as AuthenticationStoreActions from './actions';
+import * as AuthenticationStoreSelectors from './selectors';
+import * as AuthenticationStoreState from './state';
 
-export { LoginStoreModule } from './authentication-store.module';
+export { AuthenticationStoreModule } from './authentication-store.module';
 
-export { LoginStoreActions, LoginStoreSelectors, LoginStoreState };
+export { AuthenticationStoreActions, AuthenticationStoreSelectors, AuthenticationStoreState };

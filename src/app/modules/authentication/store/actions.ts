@@ -2,28 +2,71 @@ import { Action } from '@ngrx/store';
 import { LoginRequest } from '../login/login';
 import { Admin } from '../../admin/admin';
 import { ErrorResponse } from 'src/app/shared/models/error';
+import { SetPasswordRequest, ResetPasswordRequest } from '../authentication';
 
 export enum ActionTypes {
-  LOAD_REQUEST = '[Login] Load Request',
-  LOAD_FAILURE = '[Login] Load Failure',
-  LOAD_SUCCESS = '[Login] Load Success',
+  LOGIN_REQUEST = '[Authentication] Login Request',
+  LOGIN_FAILURE = '[Authentication] Login Failure',
+  LOGIN_SUCCESS = '[Authentication] Login Success',
+  RESET_PASSWORD_REQUEST = '[Authentication] Reset Password Request',
+  RESET_PASSWORD_FAILURE = '[Authentication] Reset Password Failure',
+  RESET_PASSWORD_SUCCESS = '[Authentication] Reset Password Success',
+  SET_PASSWORD_REQUEST = '[Authentication] Set Password Request',
+  SET_PASSWORD_FAILURE = '[Authentication] Set Password Failure',
+  SET_PASSWORD_SUCCESS = '[Authentication] Set Password Success',
 }
 
-export class LoadRequestAction implements Action {
-  readonly type = ActionTypes.LOAD_REQUEST;
-  constructor(public loginRequest: LoginRequest) {}
+export class LoginRequestAction implements Action {
+  readonly type = ActionTypes.LOGIN_REQUEST;
+  constructor(public loginRequest: LoginRequest) { }
 }
 
-export class LoadFailureAction implements Action {
-  readonly type = ActionTypes.LOAD_FAILURE;
+export class LoginFailureAction implements Action {
+  readonly type = ActionTypes.LOGIN_FAILURE;
   constructor(public payload: { error: ErrorResponse }) { }
 }
 
-export class LoadSuccessAction implements Action {
-  readonly type = ActionTypes.LOAD_SUCCESS;
-  constructor(public payload: { item: Admin }) {}
+export class LoginSuccessAction implements Action {
+  readonly type = ActionTypes.LOGIN_SUCCESS;
+  constructor(public payload: { item: Admin }) { }
+}
+
+export class ResetPasswordRequestAction implements Action {
+  readonly type = ActionTypes.RESET_PASSWORD_REQUEST;
+  constructor(public resetPasswordRequest: ResetPasswordRequest) { }
+}
+
+export class ResetPasswordFailureAction implements Action {
+  readonly type = ActionTypes.RESET_PASSWORD_FAILURE;
+  constructor(public payload: { error: ErrorResponse }) { }
+}
+
+export class ResetPasswordSuccessAction implements Action {
+  readonly type = ActionTypes.RESET_PASSWORD_SUCCESS;
+  constructor(public payload: { message: string }) { }
+}
+
+export class SetPasswordRequestAction implements Action {
+  readonly type = ActionTypes.SET_PASSWORD_REQUEST;
+  constructor(public setPasswordRequest: SetPasswordRequest) { }
+}
+
+export class SetPasswordFailureAction implements Action {
+  readonly type = ActionTypes.SET_PASSWORD_FAILURE;
+  constructor(public payload: { error: ErrorResponse }) { }
+}
+
+export class SetPasswordSuccessAction implements Action {
+  readonly type = ActionTypes.SET_PASSWORD_SUCCESS;
+  constructor(public payload: { item: Admin }) { }
 }
 export type Actions =
-  | LoadRequestAction
-  | LoadFailureAction
-  | LoadSuccessAction;
+  | LoginRequestAction
+  | LoginFailureAction
+  | LoginSuccessAction
+  | ResetPasswordRequestAction
+  | ResetPasswordFailureAction
+  | ResetPasswordSuccessAction
+  | SetPasswordRequestAction
+  | SetPasswordFailureAction
+  | SetPasswordSuccessAction;

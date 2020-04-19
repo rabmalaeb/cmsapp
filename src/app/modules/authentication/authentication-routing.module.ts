@@ -4,6 +4,7 @@ import { AuthenticationBoxComponent } from './authentication-box/authentication-
 
 const routes: Routes = [
   { path: 'login', component: AuthenticationBoxComponent },
+  { path: 'recover/password/:token', component: AuthenticationBoxComponent },
 ];
 
 @NgModule({
@@ -16,4 +17,4 @@ const routes: Routes = [
   ],
   exports: [RouterModule]
 })
-export class LoginRoutingModule { }
+export class AuthenticationRoutingModule { }

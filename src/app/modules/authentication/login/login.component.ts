@@ -10,15 +10,16 @@ import { NotificationService } from 'src/app/core/services/notification.service'
 import { Store, ActionsSubject } from '@ngrx/store';
 import { RootStoreState } from 'src/app/root-store';
 import { LoginRequest } from './login';
-import { LoginStoreActions, LoginStoreSelectors } from '../store';
+import { AuthenticationStoreActions, AuthenticationStoreSelectors } from '../store';
 import { Observable } from 'rxjs';
 import { map, filter } from 'rxjs/operators';
 import { ActionTypes } from '../store/actions';
 import { AuthenticationService } from 'src/app/core/services/authentication.service';
-import { AuthenticationWorkflowService } from '../authenticaion-workflow.service';
+import { AuthenticationWorkflowService } from '../authentication-workflow.service';
 import { AuthenticationSteps } from '../authentication';
-import { ALERT_MESSAGES } from 'src/app/shared/models/alert';
 import { Router } from '@angular/router';
+import { FormService } from 'src/app/core/services/form.service';
+import { ErrorMessages } from 'src/app/shared/models/error';
 
 @Component({
   selector: 'app-login',
@@ -34,7 +35,8 @@ export class LoginComponent implements OnInit {
     private authenticationWorkflowService: AuthenticationWorkflowService,
     private store$: Store<RootStoreState.State>,
     private actionsSubject$: ActionsSubject,
-    private authenticationService: AuthenticationService
+    private authenticationService: AuthenticationService,
+    private formService: FormService,
   ) {}
 
   loginForm: FormGroup;
@@ -54,40 +56,38 @@ export class LoginComponent implements OnInit {
 
   initializeStoreVariables() {
     this.isLoading$ = this.store$.select(
-      LoginStoreSelectors.selectLoginIsLoading
+      AuthenticationStoreSelectors.selectLoginRequestLoading
     );
 
     this.actionsSubject$
-      .pipe(filter((action: any) => action.type === ActionTypes.LOAD_SUCCESS))
+      .pipe(filter((action: any) => action.type === ActionTypes.LOGIN_SUCCESS))
       .subscribe(response => {
         this.authenticationService.setUserSession(response.payload.item);
         this.router.navigate(['/']).then(() => {
           location.reload();
-        })
+        });
       });
 
     this.actionsSubject$
-      .pipe(filter((action: any) => action.type === ActionTypes.LOAD_FAILURE))
+      .pipe(filter((action: any) => action.type === ActionTypes.LOGIN_FAILURE))
       .subscribe(() => {
-        const message = 'Could not log you in with the provided credentials';
-        this.notificationService.showError(message);
+        this.notificationService.showError(ErrorMessages.COULD_NOT_LOGIN_IN);
       });
   }
 
   login(formData: any, formDirective: FormGroupDirective) {
-    if (!this.loginForm.valid) {
-      this.notificationService.showError(ALERT_MESSAGES.FORM_NOT_VALID);
+    if (!this.formService.isFormValid(this.loginForm)) {
       return false;
     }
     const params: LoginRequest = {
       email: this.email.value,
       password: this.password.value
     };
-    this.store$.dispatch(new LoginStoreActions.LoadRequestAction(params));
+    this.store$.dispatch(new AuthenticationStoreActions.LoginRequestAction(params));
   }
 
   goToResetPassword() {
-    this.authenticationWorkflowService.setSelectedStep(AuthenticationSteps.RESET_PASSWORD);
+    this.authenticationWorkflowService.setCurrentStep(AuthenticationSteps.RESET_PASSWORD);
   }
 
   get email() {

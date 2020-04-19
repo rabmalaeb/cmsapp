@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { ValidationMessagesService } from 'src/app/core/services/validation-messages.service';
 import {
   FormGroup,
@@ -6,16 +6,24 @@ import {
   Validators,
   FormGroupDirective
 } from '@angular/forms';
+import { AuthenticationService as UserAuthenticationService } from 'src/app/core/services/authentication.service';
 import { NotificationService } from 'src/app/core/services/notification.service';
+import {
+  RootStoreState,
+  AuthenticationStoreSelectors,
+  AuthenticationStoreActions
+} from 'src/app/root-store';
 import { Store, ActionsSubject } from '@ngrx/store';
-import { RootStoreState } from 'src/app/root-store';
-import { LoginStoreActions, LoginStoreSelectors } from '../store';
-import { Observable } from 'rxjs';
-import { map, filter } from 'rxjs/operators';
 import { ActionTypes } from '../store/actions';
-import { AuthenticationService } from 'src/app/core/services/authentication.service';
-import { AuthenticationWorkflowService } from '../authenticaion-workflow.service';
-import { AuthenticationSteps } from '../authentication';
+import { map, filter } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { StorageParams } from 'src/app/shared/models/general';
+import { ErrorMessages } from 'src/app/shared/models/error';
+import { Router } from '@angular/router';
+import { CustomValidations } from 'src/app/shared/validators/custom-validations';
+import { AuthenticationService } from '../authentication.service';
+import { FormService } from 'src/app/core/services/form.service';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-set-password',
@@ -25,63 +33,96 @@ import { AuthenticationSteps } from '../authentication';
 export class SetPasswordComponent implements OnInit {
   constructor(
     private validationMessageService: ValidationMessagesService,
+    private cookieService: CookieService,
+    private userAuthenticationService: UserAuthenticationService,
+    private authenticationService: AuthenticationService,
     private notificationService: NotificationService,
-    private form: FormBuilder,
-    private authenticationWorkflowService: AuthenticationWorkflowService,
     private store$: Store<RootStoreState.State>,
     private actionsSubject$: ActionsSubject,
-    private authenticationService: AuthenticationService
-  ) { }
+    private formService: FormService,
+    private router: Router,
+    private form: FormBuilder
+  ) {}
 
-  loginForm: FormGroup;
+  setPasswordForm: FormGroup;
   isLoading$: Observable<boolean>;
+  identifier: string;
 
   ngOnInit() {
+    this.checkAndSetIdentifier();
     this.buildForm();
     this.initializeStoreVariables();
   }
 
   buildForm() {
-    this.loginForm = this.form.group({
-      password: ['', [Validators.required]],
-      confirmPassword: ['', [Validators.required]]
-    });
+    this.setPasswordForm = this.form.group(
+      {
+        password: ['', [Validators.required]],
+        confirmPassword: ['', [Validators.required]]
+      },
+      {
+        validator: CustomValidations.MatchPasswords
+      }
+    );
   }
 
   initializeStoreVariables() {
     this.isLoading$ = this.store$.select(
-      LoginStoreSelectors.selectLoginIsLoading
+      AuthenticationStoreSelectors.selectLoginRequestLoading
     );
 
     this.actionsSubject$
-      .pipe(filter((action: any) => action.type === ActionTypes.LOAD_SUCCESS))
+      .pipe(
+        filter(
+          (action: any) => action.type === ActionTypes.SET_PASSWORD_SUCCESS
+        )
+      )
       .subscribe(response => {
-        this.authenticationService.setUserSession(response.payload.item);
-        location.reload();
+        this.userAuthenticationService.setUserSession(response.payload.item);
       });
 
     this.actionsSubject$
-      .pipe(filter((action: any) => action.type === ActionTypes.LOAD_FAILURE))
+      .pipe(
+        filter(
+          (action: any) => action.type === ActionTypes.SET_PASSWORD_FAILURE
+        )
+      )
       .subscribe(() => {
-        const message = 'Could not log you in with the provided credentials';
-        this.notificationService.showError(message);
+        this.notificationService.showError(ErrorMessages.COULD_NOT_LOGIN_IN);
       });
   }
 
-  login(formData: any, formDirective: FormGroupDirective) {
+  setPassword(formData: any, formDirective: FormGroupDirective) {
+    if (!this.formService.isFormValid(this.setPasswordForm)) {
+      return false;
+    }
     const params = {
       password: this.password.value,
-      confirmPassword: this.confirmPassword.value
+      confirmPassword: this.confirmPassword.value,
+      email: this.identifier,
+      token: this.authenticationService.getToken()
     };
-    // this.store$.dispatch(new LoginStoreActions.LoadRequestAction(params));
+    this.store$.dispatch(
+      new AuthenticationStoreActions.SetPasswordRequestAction(params)
+    );
+  }
+
+  private checkAndSetIdentifier() {
+    if (!this.cookieService.check(StorageParams.RESET_PASSWORD_IDENTIFIER)) {
+      this.notificationService.showError(ErrorMessages.SOMETHING_WENT_WRONG);
+      this.router.navigate(['/']);
+    }
+    this.identifier = this.cookieService.get(
+      StorageParams.RESET_PASSWORD_IDENTIFIER
+    );
   }
 
   get password() {
-    return this.loginForm.get('password');
+    return this.setPasswordForm.get('password');
   }
 
   get confirmPassword() {
-    return this.loginForm.get('confirmPassword');
+    return this.setPasswordForm.get('confirmPassword');
   }
 
   get validationMessages() {

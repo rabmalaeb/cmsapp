@@ -5,6 +5,7 @@ import { AppComponent } from './app.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { PartialsModule } from './partials/partials.module';
 import { AdminModule } from './modules/admin/admin.module';
+import { CookieService } from 'ngx-cookie-service';
 import { UserModule } from './modules/user/user.module';
 import { CategoryModule } from './modules/category/category.module';
 import { ProductModule } from './modules/product/product.module';
@@ -33,6 +34,7 @@ import { ApiKeyInterceptor } from './core/interceptors/apiKey.interceptor';
 @NgModule({
   declarations: [AppComponent, DashboardComponent],
   imports: [
+    AppRoutingModule,
     HttpClientModule,
     BrowserAnimationsModule,
     PartialsModule,
@@ -49,8 +51,8 @@ import { ApiKeyInterceptor } from './core/interceptors/apiKey.interceptor';
     SupplierModule,
     RoleModule,
     BannerModule,
+    AuthenticationModule,
     RootStoreModule,
-    AppRoutingModule,
     StoreModule.forRoot({}),
     EffectsModule.forRoot([]),
     StoreRouterConnectingModule.forRoot(),
@@ -58,10 +60,9 @@ import { ApiKeyInterceptor } from './core/interceptors/apiKey.interceptor';
       maxAge: 25, // Retains last 25 states
       logOnly: false // Restrict extension to log-only mode
     }),
-
-    AuthenticationModule
   ],
   providers: [
+    CookieService,
     { provide: HTTP_INTERCEPTORS, useClass: BearerInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ApiKeyInterceptor, multi: true },

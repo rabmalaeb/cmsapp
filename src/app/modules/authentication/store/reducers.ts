@@ -1,28 +1,72 @@
 import { initialState, State } from './state';
 import { Actions, ActionTypes } from './actions';
 
-export function LoginReducer(state = initialState, action: Actions): State {
+export function AuthenticationReducer(state = initialState, action: Actions): State {
   switch (action.type) {
-    case ActionTypes.LOAD_REQUEST: {
+    case ActionTypes.LOGIN_REQUEST: {
       return {
         ...state,
-        isLoading: true,
-        error: null
+        isLoginRequestLoading: true,
+        loginError: null
       };
     }
-    case ActionTypes.LOAD_SUCCESS: {
+    case ActionTypes.LOGIN_SUCCESS: {
       return {
         ...state,
         admin: action.payload.item,
-        isLoading: false,
-        error: null
+        isLoginRequestLoading: false,
+        loginError: null
       };
     }
-    case ActionTypes.LOAD_FAILURE: {
+    case ActionTypes.LOGIN_FAILURE: {
       return {
         ...state,
-        isLoading: false,
-        error: action.payload.error
+        isLoginRequestLoading: false,
+        loginError: action.payload.error
+      };
+    }
+
+    case ActionTypes.RESET_PASSWORD_REQUEST: {
+      return {
+        ...state,
+        isResetPasswordRequestLoading: true,
+        resetPasswordError: null
+      };
+    }
+    case ActionTypes.RESET_PASSWORD_SUCCESS: {
+      return {
+        ...state,
+        isResetPasswordRequestLoading: false,
+        resetPasswordError: null
+      };
+    }
+    case ActionTypes.RESET_PASSWORD_FAILURE: {
+      return {
+        ...state,
+        isResetPasswordRequestLoading: false,
+        resetPasswordError: action.payload.error
+      };
+    }
+
+    case ActionTypes.SET_PASSWORD_REQUEST: {
+      return {
+        ...state,
+        isSetPasswordRequestLoading: true,
+        setPasswordError: null
+      };
+    }
+    case ActionTypes.SET_PASSWORD_SUCCESS: {
+      return {
+        ...state,
+        isSetPasswordRequestLoading: false,
+        setPasswordError: null
+      };
+    }
+    case ActionTypes.SET_PASSWORD_FAILURE: {
+      return {
+        ...state,
+        isSetPasswordRequestLoading: false,
+        setPasswordError: action.payload.error
       };
     }
     default: {

@@ -25,14 +25,14 @@ export class AppComponent implements OnInit {
     const successClass = ['snack-bar_is-success'];
     this.notificationService.getErrorMessage().subscribe(message => {
       errorSnackBar.open(message, 'Close', {
-        duration: 1000,
+        duration: 3000,
         panelClass: errorClass,
         verticalPosition: 'top'
       });
     });
     this.notificationService.getSuccessMessage().subscribe(message => {
       successSnackBar.open(message, 'Close', {
-        duration: 1000,
+        duration: 2000,
         verticalPosition: 'top',
         panelClass: successClass
       });

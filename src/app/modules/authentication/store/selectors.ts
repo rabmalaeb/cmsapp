@@ -7,37 +7,77 @@ import {
 import { State } from './state';
 import { Admin } from '../../admin/admin';
 
-export const getLoadingError = (state: State): any => state.error;
+export const getLoginError = (state: State): any => state.loginError;
 
-export const getIsLoading = (state: State): boolean => state.isLoading;
+export const isLoginRequestLoading = (state: State): boolean => state.isLoginRequestLoading;
 
 export const getLoggedInAdmin = (state: State): Admin => state.admin;
 
-export const selectLoginState: MemoizedSelector<
+export const getResetPasswordError = (state: State): any => state.resetPasswordError;
+
+export const isResetPasswordRequestLoading = (state: State): boolean => state.isResetPasswordRequestLoading;
+
+export const getSetPasswordError = (state: State): any => state.setPasswordError;
+
+export const isSetPasswordRequestLoading = (state: State): boolean => state.isSetPasswordRequestLoading;
+
+export const selectAuthenticationState: MemoizedSelector<
   object,
   State
-> = createFeatureSelector<State>('Login');
+  > = createFeatureSelector<State>('authentication');
 
 export const selectLoginLoadingError: MemoizedSelector<
   object,
   any
 > = createSelector(
-  selectLoginState,
-  getLoadingError
+  selectAuthenticationState,
+  getLoginError
 );
 
-export const selectLoginIsLoading: MemoizedSelector<
+export const selectLoginRequestLoading: MemoizedSelector<
   object,
   any
 > = createSelector(
-  selectLoginState,
-  getIsLoading
+  selectAuthenticationState,
+  isLoginRequestLoading
 );
 
-export const selectLoginLoggedInAdmin: MemoizedSelector<
+export const selectLoggedInAdmin: MemoizedSelector<
   object,
   Admin
 > = createSelector(
-  selectLoginState,
+  selectAuthenticationState,
   getLoggedInAdmin
+  );
+
+export const selectResetPasswordError: MemoizedSelector<
+  object,
+  any
+> = createSelector(
+  selectAuthenticationState,
+  getResetPasswordError
+);
+
+export const selectResetPasswordRequestLoading: MemoizedSelector<
+  object,
+  any
+> = createSelector(
+  selectAuthenticationState,
+  isResetPasswordRequestLoading
+  );
+
+export const selectSetPasswordLoadingError: MemoizedSelector<
+  object,
+  any
+> = createSelector(
+  selectAuthenticationState,
+  getSetPasswordError
+);
+
+export const selectSetPasswordRequestLoading: MemoizedSelector<
+  object,
+  any
+> = createSelector(
+  selectAuthenticationState,
+  isSetPasswordRequestLoading
 );

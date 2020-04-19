@@ -6,10 +6,6 @@ export class Alert {
   cancelButtonText: string;
 }
 
-export enum ALERT_MESSAGES {
-  FORM_NOT_VALID = 'The form is not valid'
-}
-
 export enum AlertType {
   ALERT,
   ALERT_SUCCESS,

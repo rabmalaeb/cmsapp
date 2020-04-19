@@ -13,10 +13,9 @@ import {
   FormGroupDirective
 } from '@angular/forms';
 import { ValidationMessagesService } from 'src/app/core/services/validation-messages.service';
-import { NotificationService } from 'src/app/core/services/notification.service';
 import { ActionType } from 'src/app/shared/models/general';
-import { ALERT_MESSAGES } from 'src/app/shared/models/alert';
 import { LanguageKey } from '../language-key';
+import { FormService } from 'src/app/core/services/form.service';
 
 @Component({
   selector: 'app-language-key-form',
@@ -26,7 +25,7 @@ import { LanguageKey } from '../language-key';
 export class LanguageKeyFormComponent implements OnInit, OnChanges {
   constructor(
     private form: FormBuilder,
-    private notificationService: NotificationService,
+    private formService: FormService,
     private validationMessagesService: ValidationMessagesService
   ) {}
 
@@ -100,9 +99,8 @@ export class LanguageKeyFormComponent implements OnInit, OnChanges {
 
   performAction(formDirective: FormGroupDirective) {
     this.formGroupDirective = formDirective;
-    if (!this.languageKeyForm.valid) {
-      this.notificationService.showError(ALERT_MESSAGES.FORM_NOT_VALID);
-      return;
+    if (!this.formService.isFormValid(this.languageKeyForm)) {
+      return false;
     }
     this.submitForm.emit(this.buildLanguageKeyParams());
   }

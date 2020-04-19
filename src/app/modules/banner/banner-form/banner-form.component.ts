@@ -13,11 +13,10 @@ import {
   FormGroupDirective
 } from '@angular/forms';
 import { ValidationMessagesService } from 'src/app/core/services/validation-messages.service';
-import { NotificationService } from 'src/app/core/services/notification.service';
 import { ActionType } from 'src/app/shared/models/general';
-import { ALERT_MESSAGES } from 'src/app/shared/models/alert';
 import { Banner } from '../banner';
 import { Language } from '../../language/language';
+import { FormService } from 'src/app/core/services/form.service';
 
 @Component({
   selector: 'app-banner-form',
@@ -27,7 +26,7 @@ import { Language } from '../../language/language';
 export class BannerFormComponent implements OnInit, OnChanges {
   constructor(
     private form: FormBuilder,
-    private notificationService: NotificationService,
+    private formService: FormService,
     private validationMessagesService: ValidationMessagesService
   ) {}
 
@@ -126,9 +125,8 @@ export class BannerFormComponent implements OnInit, OnChanges {
 
   performAction(formDirective: FormGroupDirective) {
     this.formGroupDirective = formDirective;
-    if (!this.bannerForm.valid) {
-      this.notificationService.showError(ALERT_MESSAGES.FORM_NOT_VALID);
-      return;
+    if (!this.formService.isFormValid(this.bannerForm)) {
+      return false;
     }
     this.submitForm.emit(this.buildBannerParams());
   }
