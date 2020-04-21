@@ -18,11 +18,10 @@ import {
 import { CustomValidations } from 'src/app/shared/validators/custom-validations';
 import { ValidationMessagesService } from 'src/app/core/services/validation-messages.service';
 import { Role } from '../../role/role';
-import { NotificationService } from 'src/app/core/services/notification.service';
 import { ActionType } from 'src/app/shared/models/general';
-import { ALERT_MESSAGES } from 'src/app/shared/models/alert';
 import { Partner } from '../../partner/partner';
 import { AuthenticationService } from 'src/app/core/services/authentication.service';
+import { FormService } from 'src/app/core/services/form.service';
 
 @Component({
   selector: 'app-admin-form',
@@ -34,7 +33,7 @@ export class AdminFormComponent implements OnInit, OnChanges {
     private form: FormBuilder,
     private validationMessagesService: ValidationMessagesService,
     private authenticationService: AuthenticationService,
-    private notificationService: NotificationService
+    private formService: FormService,
   ) {}
 
   @Input() admin: Admin;
@@ -48,7 +47,7 @@ export class AdminFormComponent implements OnInit, OnChanges {
   @Output() getRolesForPartner = new EventEmitter<number>();
   formGroupDirective: FormGroupDirective;
   showTogglePassword = false;
-  willSetPassword = false;
+  shouldSetPassword = false;
   adminForm: FormGroup;
 
   ngOnInit() {
@@ -56,7 +55,7 @@ export class AdminFormComponent implements OnInit, OnChanges {
       this.showTogglePassword = true;
     } else {
       this.showTogglePassword = false;
-      this.willSetPassword = true;
+      this.shouldSetPassword = true;
     }
   }
 
@@ -91,9 +90,7 @@ export class AdminFormComponent implements OnInit, OnChanges {
       partnerId: [partnerId ? partnerId : '', [Validators.required]],
       active: ['', [Validators.required]]
     });
-    if (!this.showTogglePassword) {
-      this.addPasswordControlsAndValidations();
-    }
+    this.addPasswordControlsAndValidations();
   }
 
   buildExistingAdminForm() {
@@ -107,25 +104,25 @@ export class AdminFormComponent implements OnInit, OnChanges {
       roleId: [this.admin.roleId, [Validators.required]],
       active: [this.admin.active, [Validators.required]]
     });
-    if (!this.showTogglePassword) {
+    if (this.shouldSetPassword) {
       this.addPasswordControlsAndValidations();
     }
   }
 
   togglePassword() {
-    this.willSetPassword = !this.willSetPassword;
+    this.shouldSetPassword = !this.shouldSetPassword;
     this.updateFormValidations();
   }
 
   updateFormValidations() {
-    if (this.willSetPassword) {
+    if (this.shouldSetPassword) {
       this.addPasswordControlsAndValidations();
     } else {
       this.removePasswordControlsAndValidations();
     }
   }
 
-  addPasswordControlsAndValidations() {
+  private addPasswordControlsAndValidations() {
     this.adminForm.addControl(
       'password',
       new FormControl('', [Validators.required])
@@ -147,9 +144,8 @@ export class AdminFormComponent implements OnInit, OnChanges {
 
   performAction(formGroupDirective: FormGroupDirective) {
     this.formGroupDirective = formGroupDirective;
-    if (!this.adminForm.valid) {
-      this.notificationService.showError(ALERT_MESSAGES.FORM_NOT_VALID);
-      return;
+    if (!this.formService.isFormValid(this.adminForm)) {
+      return false;
     }
     this.submitForm.emit(this.buildAdminParams());
   }
@@ -216,8 +212,9 @@ export class AdminFormComponent implements OnInit, OnChanges {
       partnerId: this.partnerId.value,
       roleId: this.roleId.value
     };
-    if (this.willSetPassword) {
+    if (this.shouldSetPassword) {
       admin.password = form.get('password').value;
+      // TODO password confirm
     }
     return admin;
   }

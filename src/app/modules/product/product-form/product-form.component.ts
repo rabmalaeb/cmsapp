@@ -14,11 +14,10 @@ import {
   FormGroupDirective
 } from '@angular/forms';
 import { ValidationMessagesService } from 'src/app/core/services/validation-messages.service';
-import { NotificationService } from 'src/app/core/services/notification.service';
 import { ActionType } from 'src/app/shared/models/general';
-import { ALERT_MESSAGES } from 'src/app/shared/models/alert';
 import { Product } from '../product';
 import { Category } from '../../category/category';
+import { FormService } from 'src/app/core/services/form.service';
 
 @Component({
   selector: 'app-product-form',
@@ -28,7 +27,7 @@ import { Category } from '../../category/category';
 export class ProductFormComponent implements OnInit, OnChanges {
   constructor(
     private form: FormBuilder,
-    private notificationService: NotificationService,
+    private formService: FormService,
     private validationMessagesService: ValidationMessagesService
   ) {}
 
@@ -126,9 +125,8 @@ export class ProductFormComponent implements OnInit, OnChanges {
 
   performAction(formDirective: FormGroupDirective) {
     this.formGroupDirective = formDirective;
-    if (!this.productForm.valid) {
-      this.notificationService.showError(ALERT_MESSAGES.FORM_NOT_VALID);
-      return;
+    if (!this.formService.isFormValid(this.productForm)) {
+      return false;
     }
     this.submitForm.emit(this.buildProductParams());
   }

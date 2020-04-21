@@ -22,3 +22,8 @@ export class OptionItem {
     public selected = false
   ) {}
 }
+
+export enum StorageParams {
+  RESET_PASSWORD_IDENTIFIER = 'reset_password_identifier',
+  CURRENT_USER = 'currentUser'
+}

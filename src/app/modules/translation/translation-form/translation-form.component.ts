@@ -13,12 +13,11 @@ import {
   FormGroupDirective
 } from '@angular/forms';
 import { ValidationMessagesService } from 'src/app/core/services/validation-messages.service';
-import { NotificationService } from 'src/app/core/services/notification.service';
 import { ActionType } from 'src/app/shared/models/general';
-import { ALERT_MESSAGES } from 'src/app/shared/models/alert';
 import { Translation } from '../translation';
 import { Language } from '../../language/language';
 import { LanguageKey } from '../../language-key/language-key';
+import { FormService } from 'src/app/core/services/form.service';
 
 @Component({
   selector: 'app-translation-form',
@@ -28,7 +27,7 @@ import { LanguageKey } from '../../language-key/language-key';
 export class TranslationFormComponent implements OnInit, OnChanges {
   constructor(
     private form: FormBuilder,
-    private notificationService: NotificationService,
+    private formService: FormService,
     private validationMessagesService: ValidationMessagesService
   ) { }
 
@@ -111,9 +110,8 @@ export class TranslationFormComponent implements OnInit, OnChanges {
 
   performAction(formDirective: FormGroupDirective) {
     this.formGroupDirective = formDirective;
-    if (!this.translationForm.valid) {
-      this.notificationService.showError(ALERT_MESSAGES.FORM_NOT_VALID);
-      return;
+    if (!this.formService.isFormValid(this.translationForm)) {
+      return false;
     }
     this.submitForm.emit(this.buildTranslationParams());
   }

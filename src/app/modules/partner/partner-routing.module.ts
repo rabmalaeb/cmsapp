@@ -5,22 +5,23 @@ import { PartnerAddComponent } from './partner-add/partner-add.component';
 import { ViewPartnerGuard } from './guards/view-partner.guard';
 import { EditPartnerGuard } from './guards/edit-partner.guard';
 import { AddPartnerGuard } from './guards/add-partner.guard';
+import { AuthenticationGuard } from 'src/app/core/guards/authentication.guard';
 
 const routes: Routes = [
   {
     path: 'partners',
     component: PartnersComponent,
-    canActivate: [ViewPartnerGuard]
+    canActivate: [ViewPartnerGuard, AuthenticationGuard]
   },
   {
     path: 'partners/:id/view',
     component: PartnerAddComponent,
-    canActivate: [EditPartnerGuard]
+    canActivate: [EditPartnerGuard, AuthenticationGuard]
   },
   {
     path: 'partners/add',
     component: PartnerAddComponent,
-    canActivate: [AddPartnerGuard]
+    canActivate: [AddPartnerGuard, AuthenticationGuard]
   }
 ];
 

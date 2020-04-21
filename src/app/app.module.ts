@@ -5,6 +5,7 @@ import { AppComponent } from './app.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { PartialsModule } from './partials/partials.module';
 import { AdminModule } from './modules/admin/admin.module';
+import { CookieService } from 'ngx-cookie-service';
 import { UserModule } from './modules/user/user.module';
 import { CategoryModule } from './modules/category/category.module';
 import { ProductModule } from './modules/product/product.module';
@@ -15,7 +16,7 @@ import { TranslationModule } from './modules/translation/translation.module';
 import { PermissionModule } from './modules/permissions/permission.module';
 import { RoleModule } from './modules/role/role.module';
 import { AppRoutingModule } from './app-routing.module';
-import { LoginModule } from './modules/login/login.module';
+import { AuthenticationModule } from './modules/authentication/authentication.module';
 import { DashboardComponent } from './modules/dashboard/dashboard.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
@@ -33,6 +34,7 @@ import { ApiKeyInterceptor } from './core/interceptors/apiKey.interceptor';
 @NgModule({
   declarations: [AppComponent, DashboardComponent],
   imports: [
+    AppRoutingModule,
     HttpClientModule,
     BrowserAnimationsModule,
     PartialsModule,
@@ -49,8 +51,8 @@ import { ApiKeyInterceptor } from './core/interceptors/apiKey.interceptor';
     SupplierModule,
     RoleModule,
     BannerModule,
+    AuthenticationModule,
     RootStoreModule,
-    AppRoutingModule,
     StoreModule.forRoot({}),
     EffectsModule.forRoot([]),
     StoreRouterConnectingModule.forRoot(),
@@ -58,10 +60,9 @@ import { ApiKeyInterceptor } from './core/interceptors/apiKey.interceptor';
       maxAge: 25, // Retains last 25 states
       logOnly: false // Restrict extension to log-only mode
     }),
-
-    LoginModule
   ],
   providers: [
+    CookieService,
     { provide: HTTP_INTERCEPTORS, useClass: BearerInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ApiKeyInterceptor, multi: true },

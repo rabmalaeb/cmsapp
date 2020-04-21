@@ -13,14 +13,13 @@ import {
   FormGroupDirective
 } from '@angular/forms';
 import { ValidationMessagesService } from 'src/app/core/services/validation-messages.service';
-import { NotificationService } from 'src/app/core/services/notification.service';
 import { ActionType } from 'src/app/shared/models/general';
-import { ALERT_MESSAGES } from 'src/app/shared/models/alert';
 import { Role, RoleActionRequest } from '../role';
 import { PermissionGroup, Permission } from '../../permissions/permission';
 import { PermissionSerializerService } from '../../permissions/permission-serializer.service';
 import { AuthenticationService } from 'src/app/core/services/authentication.service';
 import { Partner } from '../../partner/partner';
+import { FormService } from 'src/app/core/services/form.service';
 
 @Component({
   selector: 'app-role-form',
@@ -30,7 +29,7 @@ import { Partner } from '../../partner/partner';
 export class RoleFormComponent implements OnInit, OnChanges {
   constructor(
     private form: FormBuilder,
-    private notificationService: NotificationService,
+    private formService: FormService,
     private validationMessagesService: ValidationMessagesService,
     private authenticationService: AuthenticationService,
     private permissionSerializer: PermissionSerializerService
@@ -145,9 +144,8 @@ export class RoleFormComponent implements OnInit, OnChanges {
 
   performAction(formDirective: FormGroupDirective) {
     this.formGroupDirective = formDirective;
-    if (!this.roleForm.valid) {
-      this.notificationService.showError(ALERT_MESSAGES.FORM_NOT_VALID);
-      return;
+    if (!this.formService.isFormValid(this.roleForm)) {
+      return false;
     }
     this.submitForm.emit(this.buildRoleParams());
   }

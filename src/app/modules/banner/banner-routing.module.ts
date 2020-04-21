@@ -5,22 +5,23 @@ import { BannerAddComponent } from './banner-add/banner-add.component';
 import { ViewBannerGuard } from './guards/view-banner.guard';
 import { EditBannerGuard } from './guards/edit-banner.guard';
 import { AddBannerGuard } from './guards/add-banner.guard';
+import { AuthenticationGuard } from 'src/app/core/guards/authentication.guard';
 
 const routes: Routes = [
   {
     path: 'banners',
     component: BannersComponent,
-    canActivate: [ViewBannerGuard]
+    canActivate: [ViewBannerGuard, AuthenticationGuard]
   },
   {
     path: 'banners/:id/view',
     component: BannerAddComponent,
-    canActivate: [EditBannerGuard]
+    canActivate: [EditBannerGuard, AuthenticationGuard]
   },
   {
     path: 'banners/add',
     component: BannerAddComponent,
-    canActivate: [AddBannerGuard]
+    canActivate: [AddBannerGuard, AuthenticationGuard]
   }
 ];
 

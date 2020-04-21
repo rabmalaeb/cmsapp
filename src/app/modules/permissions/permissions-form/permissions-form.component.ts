@@ -13,16 +13,12 @@ import {
   FormGroupDirective
 } from '@angular/forms';
 import { ValidationMessagesService } from '../../../core/services/validation-messages.service';
-import { NotificationService } from '../../../core/services/notification.service';
-import {
-  ActionType,
-  PermissionType
-} from '../../../shared/models/general';
+import { ActionType, PermissionType } from '../../../shared/models/general';
 import { Permission, PermissionActionRequest } from '../permission';
 import { capitalize } from '../../../shared/utils/general';
 import { AppService } from '../../../core/services/app.service';
-import { ALERT_MESSAGES } from 'src/app/shared/models/alert';
 import { NavItem } from 'src/app/shared/models/nav';
+import { FormService } from 'src/app/core/services/form.service';
 
 @Component({
   selector: 'app-permissions-form',
@@ -33,7 +29,7 @@ export class PermissionFormComponent implements OnInit, OnChanges {
   constructor(
     private form: FormBuilder,
     private appService: AppService,
-    private notificationService: NotificationService,
+    private formService: FormService,
     private validationMessagesService: ValidationMessagesService
   ) {}
 
@@ -55,8 +51,6 @@ export class PermissionFormComponent implements OnInit, OnChanges {
 
   ngOnInit() {
     this.getAppModules();
-
-
   }
 
   ngOnChanges() {
@@ -126,9 +120,8 @@ export class PermissionFormComponent implements OnInit, OnChanges {
 
   performAction(formDirective: FormGroupDirective) {
     this.formGroupDirective = formDirective;
-    if (!this.permissionForm.valid) {
-      this.notificationService.showError(ALERT_MESSAGES.FORM_NOT_VALID);
-      return;
+    if (!this.formService.isFormValid(this.permissionForm)) {
+      return false;
     }
     this.submitForm.emit(this.buildPermissionParams());
   }

@@ -16,7 +16,7 @@ import { ValidationMessagesService } from 'src/app/core/services/validation-mess
 import { NotificationService } from 'src/app/core/services/notification.service';
 import { ActionType } from 'src/app/shared/models/general';
 import { User } from '../user';
-import { ALERT_MESSAGES } from 'src/app/shared/models/alert';
+import { FormService } from 'src/app/core/services/form.service';
 
 @Component({
   selector: 'app-user-form',
@@ -26,7 +26,7 @@ import { ALERT_MESSAGES } from 'src/app/shared/models/alert';
 export class UserFormComponent implements OnInit, OnChanges {
   constructor(
     private form: FormBuilder,
-    private notificationService: NotificationService,
+    private formService: FormService,
     private validationMessagesService: ValidationMessagesService
   ) {}
 
@@ -112,9 +112,8 @@ export class UserFormComponent implements OnInit, OnChanges {
 
   performAction(formDirective: FormGroupDirective) {
     this.formGroupDirective = formDirective;
-    if (!this.userForm.valid) {
-      this.notificationService.showError(ALERT_MESSAGES.FORM_NOT_VALID);
-      return;
+    if (!this.formService.isFormValid(this.userForm)) {
+      return false;
     }
     this.submitForm.emit(this.buildUserParams());
   }

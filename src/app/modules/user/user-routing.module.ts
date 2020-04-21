@@ -5,18 +5,23 @@ import { UsersComponent } from './users/users.component';
 import { ViewUserGuard } from './guards/view-user.guard';
 import { EditUserGuard } from './guards/edit-user.guard';
 import { AddUserGuard } from './guards/add-user.guard';
+import { AuthenticationGuard } from 'src/app/core/guards/authentication.guard';
 
 const routes: Routes = [
-  { path: 'users', component: UsersComponent, canActivate: [ViewUserGuard] },
+  {
+    path: 'users',
+    component: UsersComponent,
+    canActivate: [ViewUserGuard, AuthenticationGuard]
+  },
   {
     path: 'users/:id/view',
     component: UserAddComponent,
-    canActivate: [EditUserGuard]
+    canActivate: [EditUserGuard, AuthenticationGuard]
   },
   {
     path: 'users/add',
     component: UserAddComponent,
-    canActivate: [AddUserGuard]
+    canActivate: [AddUserGuard, AuthenticationGuard]
   }
 ];
 

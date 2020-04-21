@@ -19,20 +19,20 @@ export class AppComponent implements OnInit {
     public errorSnackBar: MatSnackBar,
     public successSnackBar: MatSnackBar,
     public authenticationService: AuthenticationService,
-    private authorizationService: AuthorizationService,
+    private authorizationService: AuthorizationService
   ) {
     const errorClass = ['snack-bar_is-error'];
     const successClass = ['snack-bar_is-success'];
     this.notificationService.getErrorMessage().subscribe(message => {
       errorSnackBar.open(message, 'Close', {
-        duration: 1000,
+        duration: 3000,
         panelClass: errorClass,
         verticalPosition: 'top'
       });
     });
     this.notificationService.getSuccessMessage().subscribe(message => {
       successSnackBar.open(message, 'Close', {
-        duration: 1000,
+        duration: 2000,
         verticalPosition: 'top',
         panelClass: successClass
       });

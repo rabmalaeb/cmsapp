@@ -10,7 +10,7 @@ import { LanguageStoreModule } from '../modules/language/store';
 import { CategoryStoreModule } from '../modules/category/store';
 import { TranslationStoreModule } from '../modules/translation/store';
 import { LanguageKeyStoreModule } from '../modules/language-key/store';
-import { LoginStoreModule } from '../modules/login/store';
+import { AuthenticationStoreModule } from '../modules/authentication/store';
 import { BannerStoreModule } from '../modules/banner/store';
 import { SupplierStoreModule } from '../modules/supplier/store';
 
@@ -29,7 +29,7 @@ import { SupplierStoreModule } from '../modules/supplier/store';
     LanguageKeyStoreModule,
     TranslationStoreModule,
     CategoryStoreModule,
-    LoginStoreModule,
+    AuthenticationStoreModule,
     PermissionStoreModule,
     AdminStoreModule,
     BannerStoreModule,

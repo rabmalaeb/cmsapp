@@ -6,7 +6,7 @@ import { PartnerStoreState } from '../modules/partner/store';
 import { LanguagekeyStoreState } from '../modules/language-key/store';
 import { LanguageStoreState } from '../modules/language/store';
 import { TranslationStoreState } from '../modules/translation/store';
-import { LoginStoreState } from '../modules/login/store';
+import { AuthenticationStoreState } from '../modules/authentication/store';
 import { BannerStoreState } from '../modules/banner/store';
 import { SupplierStoreState } from '../modules/supplier/store';
 
@@ -19,7 +19,7 @@ export interface State {
   languageKey: LanguagekeyStoreState.State;
   language: LanguageStoreState.State;
   translation: TranslationStoreState.State;
-  login: LoginStoreState.State;
+  authentication: AuthenticationStoreState.State;
   banner: BannerStoreState.State;
   supplier: SupplierStoreState.State;
 }

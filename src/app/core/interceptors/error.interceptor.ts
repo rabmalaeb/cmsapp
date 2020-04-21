@@ -9,13 +9,11 @@ import {
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { LogoutService } from '../services/logout.service';
-import { ErrorResponse } from '../../shared/models/error';
+import { ErrorResponse, ErrorMessages } from '../../shared/models/error';
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
   constructor(private logoutService: LogoutService) {}
-
-  DEFAULT_ERROR_MESSAGE = 'An Error has occurred. Please try again';
 
   intercept(
     request: HttpRequest<any>,
@@ -30,7 +28,7 @@ export class ErrorInterceptor implements HttpInterceptor {
           console.warn('thrown error ', error);
           return throwError({
             status: 500,
-            message: this.DEFAULT_ERROR_MESSAGE
+            message: ErrorMessages.DEFAULT_ERROR_MESSAGE
           });
         }
         return throwError(this.handleErrorResponse(error));
@@ -46,11 +44,14 @@ export class ErrorInterceptor implements HttpInterceptor {
     const status = error.status;
     if (error.error) {
       if (error.error.errors) {
-        message = error.error.errors[0].detail;
+        message = '';
+        error.error.errors.forEach(errorResponse => {
+          message = `${message} ${errorResponse.detail} `;
+        });
       } else {
         message = error.error.message
           ? error.error.message
-          : this.DEFAULT_ERROR_MESSAGE;
+          : ErrorMessages.DEFAULT_ERROR_MESSAGE;
       }
     }
     return {

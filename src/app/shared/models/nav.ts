@@ -4,7 +4,8 @@ export class NavItem {
   constructor(
     public name: ModuleName,
     public link: string,
-    public isActive: Observable<boolean> = of(true)
+    public isActive: Observable<boolean> = of(true),
+    public iconName: string
   ) { }
 }
 
