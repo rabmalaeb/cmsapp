@@ -44,7 +44,10 @@ export class ErrorInterceptor implements HttpInterceptor {
     const status = error.status;
     if (error.error) {
       if (error.error.errors) {
-        message = error.error.errors[0].detail;
+        message = '';
+        error.error.errors.forEach(errorResponse => {
+          message = `${message} ${errorResponse.detail} `;
+        });
       } else {
         message = error.error.message
           ? error.error.message

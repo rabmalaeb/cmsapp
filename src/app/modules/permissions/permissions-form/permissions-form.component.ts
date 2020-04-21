@@ -13,10 +13,7 @@ import {
   FormGroupDirective
 } from '@angular/forms';
 import { ValidationMessagesService } from '../../../core/services/validation-messages.service';
-import {
-  ActionType,
-  PermissionType
-} from '../../../shared/models/general';
+import { ActionType, PermissionType } from '../../../shared/models/general';
 import { Permission, PermissionActionRequest } from '../permission';
 import { capitalize } from '../../../shared/utils/general';
 import { AppService } from '../../../core/services/app.service';
@@ -54,8 +51,6 @@ export class PermissionFormComponent implements OnInit, OnChanges {
 
   ngOnInit() {
     this.getAppModules();
-
-
   }
 
   ngOnChanges() {

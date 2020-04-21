@@ -13,7 +13,7 @@ export class LoggedInGuard implements CanActivate {
     if (!this.authenticationService.isLoggedIn) {
       return true;
     }
-    this.router.navigate(['/dashboard']);
+    this.router.navigate(['/']);
     return false;
   }
 }

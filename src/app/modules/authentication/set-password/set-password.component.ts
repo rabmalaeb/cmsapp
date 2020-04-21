@@ -24,6 +24,8 @@ import { CustomValidations } from 'src/app/shared/validators/custom-validations'
 import { AuthenticationService } from '../authentication.service';
 import { FormService } from 'src/app/core/services/form.service';
 import { CookieService } from 'ngx-cookie-service';
+import { AuthenticationWorkflowService } from '../authentication-workflow.service';
+import { AuthenticationSteps } from '../authentication';
 
 @Component({
   selector: 'app-set-password',
@@ -34,7 +36,7 @@ export class SetPasswordComponent implements OnInit {
   constructor(
     private validationMessageService: ValidationMessagesService,
     private cookieService: CookieService,
-    private userAuthenticationService: UserAuthenticationService,
+    private authenticationWorkflowService: AuthenticationWorkflowService,
     private authenticationService: AuthenticationService,
     private notificationService: NotificationService,
     private store$: Store<RootStoreState.State>,
@@ -68,7 +70,7 @@ export class SetPasswordComponent implements OnInit {
 
   initializeStoreVariables() {
     this.isLoading$ = this.store$.select(
-      AuthenticationStoreSelectors.selectLoginRequestLoading
+      AuthenticationStoreSelectors.selectSetPasswordLoadingError
     );
 
     this.actionsSubject$
@@ -78,7 +80,8 @@ export class SetPasswordComponent implements OnInit {
         )
       )
       .subscribe(response => {
-        this.userAuthenticationService.setUserSession(response.payload.item);
+        this.authenticationWorkflowService.setCurrentStep(AuthenticationSteps.LOGIN);
+        this.notificationService.showSuccess('Password Updated Successfully');
       });
 
     this.actionsSubject$
@@ -87,8 +90,9 @@ export class SetPasswordComponent implements OnInit {
           (action: any) => action.type === ActionTypes.SET_PASSWORD_FAILURE
         )
       )
-      .subscribe(() => {
-        this.notificationService.showError(ErrorMessages.COULD_NOT_LOGIN_IN);
+      .subscribe((error) => {
+        const message = error.payload.error.message;
+        this.notificationService.showError(message);
       });
   }
 
@@ -99,7 +103,7 @@ export class SetPasswordComponent implements OnInit {
     const params = {
       password: this.password.value,
       confirmPassword: this.confirmPassword.value,
-      email: this.identifier,
+      identifier: this.identifier,
       token: this.authenticationService.getToken()
     };
     this.store$.dispatch(
@@ -133,9 +137,9 @@ export class SetPasswordComponent implements OnInit {
     return this.isLoading$.pipe(
       map(isLoading => {
         if (isLoading) {
-          return 'Resetting';
+          return 'Loading';
         }
-        return 'Reset Password';
+        return 'Set Password';
       })
     );
   }

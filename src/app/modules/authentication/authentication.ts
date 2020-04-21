@@ -11,6 +11,6 @@ export interface ResetPasswordRequest {
 export interface SetPasswordRequest {
   password: string;
   confirmPassword: string;
-  email: string;
+  identifier: string;
   token: string;
 }

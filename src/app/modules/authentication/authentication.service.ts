@@ -38,7 +38,7 @@ export class AuthenticationService {
   }
 
   setPassword(params: SetPasswordRequest) {
-    return this.httpService.post('password-reset-link-by-email', params);
+    return this.httpService.post('update-password-by-reset-token', params);
   }
 
   setToken(token: string) {
@@ -47,6 +47,10 @@ export class AuthenticationService {
 
   getToken() {
     return this.token;
+  }
+
+  deleteAuthentication() {
+    return this.httpService.delete('authentication');
   }
 
 }

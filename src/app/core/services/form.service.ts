@@ -7,6 +7,10 @@ import { ErrorMessages } from 'src/app/shared/models/error';
 export class FormService {
   constructor(private notificationService: NotificationService) {}
 
+  /**
+   * show a Notification if the form is not valid and returns false
+   * @param form form to be validated
+   */
   isFormValid(form: FormGroup) {
     if (!form.valid) {
       this.notificationService.showError(ErrorMessages.FORM_NOT_VALID);
