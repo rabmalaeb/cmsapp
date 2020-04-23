@@ -32,7 +32,7 @@ export class AdminService {
     );
   }
 
-  addAdmin(params: Admin) {
+  addAdmin(params: AdminRequest) {
     return this.httpService.post('admins', { ...params }).pipe(
       map(({ data }) => {
         return this.adminSerializer.getAdmin(data);
@@ -40,7 +40,7 @@ export class AdminService {
     );
   }
 
-  updateAdmin(id: number, params: Admin) {
+  updateAdmin(id: number, params: AdminRequest) {
     return this.httpService.put(`admins/${id}`, { ...params }).pipe(
       map(({ data }) => {
         return this.adminSerializer.getAdmin(data);

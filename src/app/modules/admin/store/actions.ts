@@ -52,7 +52,7 @@ export class GetAdminFailureAction implements Action {
 }
 export class AddAdminRequestAction implements Action {
   readonly type = ActionTypes.ADD_ADMIN_REQUEST;
-  constructor(public admin: Admin) {}
+  constructor(public admin: AdminRequest) {}
 }
 
 export class AddAdminSuccessAction implements Action {
@@ -67,7 +67,7 @@ export class AddAdminFailureAction implements Action {
 
 export class UpdateAdminRequestAction implements Action {
   readonly type = ActionTypes.UPDATE_ADMIN_REQUEST;
-  constructor(public id: number, public admin: Admin) {}
+  constructor(public id: number, public admin: AdminRequest) {}
 }
 
 export class UpdateAdminSuccessAction implements Action {

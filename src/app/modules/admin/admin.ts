@@ -11,9 +11,21 @@ export interface Admin {
   roleId: number;
   role?: Role;
   password?: string;
+  confirmPassword?: string;
   token?: string;
   partnerId?: number;
   apiKey?: string;
 }
 
-export interface AdminRequest extends Request {}
+export interface AdminRequest extends Request {
+  id?: number;
+  name?: string;
+  description?: string;
+  email?: string;
+  active?: string;
+  country?: string;
+  partnerId?: string;
+  roleId?: string;
+  password?: string;
+  confirmPassword?: string;
+}

@@ -7,7 +7,7 @@ import {
   OnChanges,
   SimpleChanges
 } from '@angular/core';
-import { Admin } from '../admin';
+import { Admin, AdminRequest } from '../admin';
 import {
   FormGroup,
   FormBuilder,
@@ -33,7 +33,7 @@ export class AdminFormComponent implements OnInit, OnChanges {
     private form: FormBuilder,
     private validationMessagesService: ValidationMessagesService,
     private authenticationService: AuthenticationService,
-    private formService: FormService,
+    private formService: FormService
   ) {}
 
   @Input() admin: Admin;
@@ -43,7 +43,7 @@ export class AdminFormComponent implements OnInit, OnChanges {
   @Input() canEditAdmin = false;
   @Input() isLoadingAction = false;
   @Input() actionType: ActionType;
-  @Output() submitForm = new EventEmitter<Admin>();
+  @Output() submitForm = new EventEmitter<AdminRequest>();
   @Output() getRolesForPartner = new EventEmitter<number>();
   formGroupDirective: FormGroupDirective;
   showTogglePassword = false;
@@ -63,12 +63,10 @@ export class AdminFormComponent implements OnInit, OnChanges {
     if (this.isLoadingAction) {
       return false;
     }
-    if (changes.admin && changes.admin.isFirstChange()) {
-      if (this.admin) {
-        this.buildExistingAdminForm();
-      } else {
-        this.buildNewAdminForm();
-      }
+    if (this.admin) {
+      this.buildExistingAdminForm();
+    } else {
+      this.buildNewAdminForm();
     }
     if (
       changes.isLoadingAction &&
@@ -111,6 +109,8 @@ export class AdminFormComponent implements OnInit, OnChanges {
 
   togglePassword() {
     this.shouldSetPassword = !this.shouldSetPassword;
+    console.log('should we set the password ', this.shouldSetPassword);
+
     this.updateFormValidations();
   }
 
@@ -147,7 +147,7 @@ export class AdminFormComponent implements OnInit, OnChanges {
     if (!this.formService.isFormValid(this.adminForm)) {
       return false;
     }
-    this.submitForm.emit(this.buildAdminParams());
+    this.submitForm.emit(this.buildAdminRequest());
   }
 
   get name() {
@@ -200,9 +200,9 @@ export class AdminFormComponent implements OnInit, OnChanges {
     return !this.admin && this.isLoading;
   }
 
-  buildAdminParams(): Admin {
+  buildAdminRequest(): AdminRequest {
     const form = this.adminForm;
-    const admin: Admin = {
+    const admin: AdminRequest = {
       id: form.get('id') ? form.get('id').value : '',
       name: this.name.value,
       description: this.description.value,
@@ -214,7 +214,7 @@ export class AdminFormComponent implements OnInit, OnChanges {
     };
     if (this.shouldSetPassword) {
       admin.password = form.get('password').value;
-      // TODO password confirm
+      admin.confirmPassword = form.get('confirmPassword').value;
     }
     return admin;
   }
