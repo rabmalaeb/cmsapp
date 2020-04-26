@@ -1,11 +1,11 @@
 import { Subject } from 'rxjs';
 import { PaginationControl } from 'src/app/shared/paginator';
-import Request from 'src/app/shared/request';
+import FilterRequest from 'src/app/shared/request';
 import { Sort } from '@angular/material/sort';
 import { FormGroup } from '@angular/forms';
 
 export class FilterHandler {
-  private request: Request;
+  private request: FilterRequest;
   private sort: Sort;
   private searchQuery;
   private paginator: PaginationControl = {
@@ -16,7 +16,7 @@ export class FilterHandler {
 
   constructor() {}
 
-  setRequest(request: Request) {
+  setRequest(request: FilterRequest) {
     this.request = request;
   }
 
@@ -64,6 +64,6 @@ export interface FilterComponent {
   isFormEmpty: boolean;
   submitFilters(): void;
   resetFilters(): void;
-  buildRequest(): Request;
+  buildRequest(): FilterRequest;
   buildForm(): void;
 }

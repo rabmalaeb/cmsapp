@@ -147,7 +147,7 @@ export class AdminFormComponent implements OnInit, OnChanges {
     if (!this.formService.isFormValid(this.adminForm)) {
       return false;
     }
-    this.submitForm.emit(this.buildAdminRequest());
+    this.submitForm.emit(this.buildAdminFilterRequest());
   }
 
   get name() {
@@ -200,7 +200,7 @@ export class AdminFormComponent implements OnInit, OnChanges {
     return !this.admin && this.isLoading;
   }
 
-  buildAdminRequest(): AdminRequest {
+  buildAdminFilterRequest(): AdminRequest {
     const form = this.adminForm;
     const admin: AdminRequest = {
       id: form.get('id') ? form.get('id').value : '',

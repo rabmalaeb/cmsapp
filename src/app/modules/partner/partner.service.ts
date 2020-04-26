@@ -2,7 +2,11 @@ import { Injectable } from '@angular/core';
 import { HttpService } from 'src/app/core/services/http.service';
 import { PartnerSerializerService } from './partner-serializer.service';
 import { map } from 'rxjs/operators';
-import { PartnerRequest, Partner } from './partner';
+import {
+  createFormDataFromObject,
+  addPutMethodToFormData
+} from 'src/app/shared/utils/general';
+import { PartnerRequest } from './partner';
 
 @Injectable({
   providedIn: 'root'
@@ -32,16 +36,19 @@ export class PartnerService {
     );
   }
 
-  addPartner(params: Partner) {
-    return this.httpService.post('partners', { ...params }).pipe(
+  addPartner(params: PartnerRequest) {
+    const formData = createFormDataFromObject(params);
+    return this.httpService.post('partners', formData).pipe(
       map(({ data }) => {
         return this.partnerSerializer.getPartner(data);
       })
     );
   }
 
-  updatePartner(id: number, params: Partner) {
-    return this.httpService.put(`partners/${id}`, { ...params }).pipe(
+  updatePartner(id: number, params: PartnerRequest) {
+    const formData = createFormDataFromObject(params);
+    addPutMethodToFormData(formData);
+    return this.httpService.post(`partners/${id}`, formData).pipe(
       map(({ data }) => {
         return this.partnerSerializer.getPartner(data);
       })

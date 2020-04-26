@@ -1,4 +1,4 @@
-export default class Request {
+export default class FilterRequest {
   public searchQuery?: string;
   public currentPage?: number;
   public perPage?: number;

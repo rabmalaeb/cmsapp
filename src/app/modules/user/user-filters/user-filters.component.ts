@@ -1,9 +1,9 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { FilterComponent, FilterHandler } from 'src/app/shared/filters/filter';
-import Request from 'src/app/shared/request';
+import FilterRequest from 'src/app/shared/request';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { Subject } from 'rxjs';
-import { User, UserRequest } from '../user';
+import { UserRequest } from '../user';
 
 @Component({
   selector: 'app-user-filters',
@@ -11,7 +11,7 @@ import { User, UserRequest } from '../user';
   styleUrls: ['./user-filters.component.sass']
 })
 export class UserFiltersComponent implements OnInit, FilterComponent {
-  @Input() filter: Subject<Request>;
+  @Input() filter: Subject<FilterRequest>;
   @Input() filterHandler: FilterHandler;
   filterForm: FormGroup;
 

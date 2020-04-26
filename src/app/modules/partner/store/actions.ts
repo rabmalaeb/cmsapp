@@ -52,7 +52,7 @@ export class GetPartnerFailureAction implements Action {
 }
 export class AddPartnerRequestAction implements Action {
   readonly type = ActionTypes.ADD_PARTNER_REQUEST;
-  constructor(public partner: Partner) {}
+  constructor(public partner: PartnerRequest) {}
 }
 
 export class AddPartnerSuccessAction implements Action {
@@ -67,7 +67,7 @@ export class AddPartnerFailureAction implements Action {
 
 export class UpdatePartnerRequestAction implements Action {
   readonly type = ActionTypes.UPDATE_PARTNER_REQUEST;
-  constructor(public id: number, public partner: Partner) {}
+  constructor(public id: number, public partner: PartnerRequest) {}
 }
 
 export class UpdatePartnerSuccessAction implements Action {

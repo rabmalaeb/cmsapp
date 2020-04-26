@@ -5,8 +5,8 @@ import {
   EventEmitter,
   Input
 } from '@angular/core';
-import Request from '../../request';
 import { FilterHandler } from '../../filters/filter';
+import FilterRequest from '../../request';
 
 @Component({
   selector: 'app-filter-control',

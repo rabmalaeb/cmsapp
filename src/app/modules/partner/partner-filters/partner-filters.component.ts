@@ -1,8 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { FilterComponent, FilterHandler } from 'src/app/shared/filters/filter';
 import { FormGroup, FormBuilder } from '@angular/forms';
-import { PartnerRequest } from '../partner';
 import { Subject } from 'rxjs';
+import { PartnerRequest } from '../partner';
 
 @Component({
   selector: 'app-partner-filters',

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { AdminSerializerService } from './admin-serializer.service';
 import { map, take } from 'rxjs/operators';
 import { HttpService } from 'src/app/core/services/http.service';
-import { AdminRequest, Admin } from './admin';
+import { AdminRequest } from './admin';
 
 @Injectable({
   providedIn: 'root'

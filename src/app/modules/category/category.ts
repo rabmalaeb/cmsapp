@@ -1,5 +1,5 @@
 import { Media } from '../media/media';
-import Request from 'src/app/shared/request';
+import FilterRequest from 'src/app/shared/request';
 import { ImageModel } from 'src/app/shared/models/image';
 
 export class Category extends ImageModel {
@@ -11,4 +11,4 @@ export class Category extends ImageModel {
   mediaId: number;
   media: Media;
 }
-export class CategoryRequest extends Request {}
+export class CategoryRequest extends FilterRequest {}
