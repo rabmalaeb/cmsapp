@@ -18,43 +18,43 @@ export class AppService {
       name: ModuleName.ADMINS,
       link: 'admins',
       isActive: this.authorizationService.canView(ModuleName.ADMINS),
-      iconName: 'supervisor_account'
+      iconName: 'account'
     }),
     new NavItem({
       name: ModuleName.USERS,
       link: 'users',
       isActive: this.authorizationService.canView(ModuleName.USERS),
-      iconName: 'person'
+      iconName: 'accounts'
     }),
     new NavItem({
       name: ModuleName.PARTNERS,
       link: 'partners',
       isActive: this.authorizationService.canView(ModuleName.PARTNERS),
-      iconName: 'business'
+      iconName: 'card-travel'
     }),
     new NavItem({
       name: ModuleName.PRODUCTS,
       link: 'products',
       isActive: this.authorizationService.canView(ModuleName.PRODUCTS),
-      iconName: 'shopping_cart'
+      iconName: 'collection-item'
     }),
     new NavItem({
       name: ModuleName.CATEGORIES,
       link: 'categories',
       isActive: this.authorizationService.canView(ModuleName.CATEGORIES),
-      iconName: 'list'
+      iconName: 'view-list'
     }),
     new NavItem({
       name: ModuleName.LANGUAGES,
       link: 'languages',
       isActive: this.authorizationService.canView(ModuleName.LANGUAGES),
-      iconName: 'language'
+      iconName: 'font'
     }),
     new NavItem({
       name: ModuleName.LANGUAGE_KEYS,
       link: 'keys',
       isActive: this.authorizationService.canView(ModuleName.LANGUAGE_KEYS),
-      iconName: 'vpn_key'
+      iconName: 'key'
     }),
     new NavItem({
       name: ModuleName.TRANSLATIONS,
@@ -72,19 +72,19 @@ export class AppService {
       name: ModuleName.ROLES,
       link: 'roles',
       isActive: this.authorizationService.canView(ModuleName.ROLES),
-      iconName: 'lock_open'
+      iconName: 'accounts-alt'
     }),
     new NavItem({
       name: ModuleName.BANNERS,
       link: 'banners',
       isActive: this.authorizationService.canView(ModuleName.BANNERS),
-      iconName: 'filter'
+      iconName: 'collection-image'
     }),
     new NavItem({
       name: ModuleName.SUPPLIERS,
       link: 'suppliers',
       isActive: this.authorizationService.canView(ModuleName.SUPPLIERS),
-      iconName: 'airport_shuttle'
+      iconName: 'truck'
     })
   ];
 

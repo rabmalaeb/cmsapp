@@ -62,13 +62,13 @@
         <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
         <mat-cell *matCellDef="let permission" class="action-link">
           <a class="table__action" (click)="editPermission(permission.id)"
-            ><mat-icon>edit</mat-icon></a
+            ><app-icon name="edit"></app-icon></a
           >
           <a
             class="table__action"
             (click)="deletePermission(permission.id)"
             *ngIf="canDeletePermission | async"
-            ><mat-icon>delete</mat-icon></a
+            ><app-icon name="delete"></app-icon></a
           >
         </mat-cell>
       </ng-container>

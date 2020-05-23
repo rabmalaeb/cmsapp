@@ -6,8 +6,7 @@
     *ngIf="navItem.isActive | async"
   >
     <div class="nav-item__icon">
-      <!-- <mat-icon> {{ navItem.iconName }}</mat-icon> -->
-    <i class="zmdi zmdi-flower-alt"></i>
+    <app-icon [name]="navItem.iconName"></app-icon>
     </div>
     <div class="nav-item__label">
       {{ navItem.name | titlecase }}

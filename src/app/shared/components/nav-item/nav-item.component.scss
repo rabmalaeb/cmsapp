@@ -24,6 +24,7 @@
   color: rgb(236, 236, 236);
   width: 100%;
   border-radius: 0;
+  transition: 0.2s ease-in-out all;
   &_is-active {
     background-color: $global--primary-color-hover;
   }

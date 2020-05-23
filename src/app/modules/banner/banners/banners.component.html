@@ -55,13 +55,13 @@
         <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
         <mat-cell *matCellDef="let banner" class="action-link">
           <a class="table__action" (click)="editBanner(banner.id)"
-            ><mat-icon>edit</mat-icon></a
+            ><app-icon name="edit"></app-icon></a
           >
           <a
             class="table__action"
             (click)="deleteBanner(banner.id)"
             *ngIf="canDeleteBanner | async"
-            ><mat-icon>delete</mat-icon></a
+            ><app-icon name="delete"></app-icon></a
           >
         </mat-cell>
       </ng-container>

@@ -60,13 +60,13 @@
         <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
         <mat-cell *matCellDef="let admin" class="action-link">
           <a class="table__action" (click)="editAdmin(admin.id)"
-            ><mat-icon>edit</mat-icon></a
+            ><app-icon name="edit"></app-icon></a
           >
           <a
             class="table__action"
             (click)="deleteAdmin(admin.id)"
             *ngIf="canDeleteAdmin | async"
-            ><mat-icon>delete</mat-icon></a
+            ><app-icon name="delete"></app-icon></a
           >
         </mat-cell>
       </ng-container>

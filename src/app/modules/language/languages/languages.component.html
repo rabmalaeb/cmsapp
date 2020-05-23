@@ -53,14 +53,14 @@
         <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
         <mat-cell *matCellDef="let language" class="action-link">
           <a class="table__action" (click)="editLanguage(language.id)"
-            ><mat-icon>edit</mat-icon></a
+            ><app-icon name="edit"></app-icon></a
           >
           <a
             class="table__action"
             (click)="deleteLanguage(language.id)"
             *ngIf="canDeleteLanguage | async"
           >
-            <mat-icon>delete</mat-icon>
+            <app-icon name="delete"></app-icon>
           </a>
         </mat-cell>
       </ng-container>

@@ -73,14 +73,14 @@
         <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
         <mat-cell *matCellDef="let translation" class="action-link">
           <a class="table__action" (click)="editTranslation(translation.id)">
-            <mat-icon>edit</mat-icon>
+            <app-icon name="edit"></app-icon>
           </a>
           <a
             class="table__action"
             (click)="deleteTranslation(translation.id)"
             *ngIf="canDeleteTranslation | async"
           >
-            <mat-icon>delete</mat-icon>
+            <app-icon name="delete"></app-icon>
           </a>
         </mat-cell>
       </ng-container>

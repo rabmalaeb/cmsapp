@@ -53,13 +53,13 @@
         <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
         <mat-cell *matCellDef="let partner" class="action-link">
           <a class="table__action" (click)="editPartner(partner.id)"
-            ><mat-icon>edit</mat-icon></a
+            ><app-icon name="edit"></app-icon></a
           >
           <a
             class="table__action"
             (click)="deletePartner(partner.id)"
             *ngIf="canDeletePartner | async"
-            ><mat-icon>delete</mat-icon></a
+            ><app-icon name="delete"></app-icon></a
           >
         </mat-cell>
       </ng-container>

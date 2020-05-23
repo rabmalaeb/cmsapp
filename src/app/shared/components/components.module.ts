@@ -14,6 +14,7 @@ import { PageHeaderComponent } from './page-header/page-header.component';
 import { RouterModule } from '@angular/router';
 import { FilterControlComponent } from './filter-control/filter-control.component';
 import { SearchInputComponent } from './search-input/search-input.component';
+import { IconComponent } from './icon/icon.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { SearchInputComponent } from './search-input/search-input.component';
     NavItemComponent,
     PageHeaderComponent,
     FilterControlComponent,
-    SearchInputComponent
+    SearchInputComponent,
+    IconComponent
   ],
   imports: [
     CommonModule,
@@ -45,7 +47,8 @@ import { SearchInputComponent } from './search-input/search-input.component';
     NavItemComponent,
     PageHeaderComponent,
     FilterControlComponent,
-    SearchInputComponent
+    IconComponent,
+    SearchInputComponent,
   ]
 })
 export class ComponentsModule {}
