@@ -23,7 +23,7 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { RootStoreModule } from './root-store';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
-import { StoreRouterConnectingModule } from '@ngrx/router-store';
+import { StoreRouterConnectingModule, DefaultRouterStateSerializer } from '@ngrx/router-store';
 import { BearerInterceptor } from './core/interceptors/bearer.interceptor';
 import { ErrorInterceptor } from './core/interceptors/error.interceptor';
 import { BannerModule } from './modules/banner/banner.module';
@@ -55,7 +55,7 @@ import { ApiKeyInterceptor } from './core/interceptors/apiKey.interceptor';
     RootStoreModule,
     StoreModule.forRoot({}),
     EffectsModule.forRoot([]),
-    StoreRouterConnectingModule.forRoot(),
+    StoreRouterConnectingModule.forRoot({ serializer: DefaultRouterStateSerializer }),
     StoreDevtoolsModule.instrument({
       maxAge: 25, // Retains last 25 states
       logOnly: false // Restrict extension to log-only mode
