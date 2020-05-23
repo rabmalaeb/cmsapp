@@ -10,7 +10,11 @@ import { AuthorizationService } from 'src/app/core/services/authorization.servic
 import { Observable, of } from 'rxjs';
 import { RoleStoreSelectors, RoleStoreActions } from '../store';
 import { Store, ActionsSubject } from '@ngrx/store';
-import { RootStoreState, PartnerStoreActions, PartnerStoreSelectors } from 'src/app/root-store';
+import {
+  RootStoreState,
+  PartnerStoreActions,
+  PartnerStoreSelectors
+} from 'src/app/root-store';
 import { filter } from 'rxjs/operators';
 import {
   PermissionStoreActions,
@@ -111,12 +115,15 @@ export class RoleAddComponent implements OnInit {
 
   getPartners() {
     this.store$.dispatch(new PartnerStoreActions.LoadRequestAction());
-    this.partners$ = this.store$.select(PartnerStoreSelectors.selectAllPartnerItems);
+    this.partners$ = this.store$.select(
+      PartnerStoreSelectors.selectAllPartnerItems
+    );
   }
 
-
   getPermissions() {
-    this.store$.dispatch(new PermissionStoreActions.LoadRequestAction());
+    this.store$.dispatch(
+      new PermissionStoreActions.LoadRequestAction({ perPage: 200 })
+    );
     this.permissions$ = this.store$.select(
       PermissionStoreSelectors.selectAllPermissionItems
     );

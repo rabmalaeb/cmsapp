@@ -14,9 +14,9 @@
             <mat-select placeholder="modules" formControlName="modules">
               <mat-option
                 *ngFor="let module of appModules"
-                [value]="module.name"
+                [value]="module.options.name"
               >
-                {{ module.name | titlecase }}
+                {{ module.options.name | titlecase }}
               </mat-option>
             </mat-select>
           </mat-form-field>

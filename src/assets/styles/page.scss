@@ -80,6 +80,10 @@
 
 .page__form-item {
   margin-bottom: 10px;
+  &_is-permission {
+    width: 250px;
+    margin-bottom: 10px;
+  }
 }
 
 .page__filters-container {
@@ -97,4 +101,11 @@
 .page .mat-progress-bar {
   position: fixed;
   top: 0;
+}
+
+.page__form-section {
+  &_is-wrap {
+    display: flex;
+    flex-wrap: wrap;
+  }
 }

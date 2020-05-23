@@ -36,14 +36,20 @@
         Set Permissions
       </div>
     </div>
-
-    <div
-      class="page__form-item"
-      *ngFor="let permissionGroup of permissionGroups"
-    >
-      <app-permission-group
-        [permissionGroup]="permissionGroup"
-      ></app-permission-group>
+    <div class="page__form-item">
+      <mat-checkbox [checked]="isAllPermissionsSelected" (change)="togglePermissions(isAllPermissionsSelected)">
+        Select All
+      </mat-checkbox>
+    </div>
+    <div class="page__form-section page__form-section_is-wrap">
+      <div
+        class="page__form-item page__form-item_is-permission"
+        *ngFor="let permissionGroup of permissionGroups"
+      >
+        <app-permission-group
+          [permissionGroup]="permissionGroup"
+        ></app-permission-group>
+      </div>
     </div>
   </div>
   <div class="page__form-button-container" *ngIf="canEditRole">
