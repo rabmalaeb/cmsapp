@@ -1,12 +1,14 @@
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
+
+export interface NavItemOptions {
+  name: string;
+  link: string;
+  isActive: Observable<boolean>;
+  iconName: string;
+}
 
 export class NavItem {
-  constructor(
-    public name: ModuleName,
-    public link: string,
-    public isActive: Observable<boolean> = of(true),
-    public iconName: string
-  ) { }
+  constructor(public options: NavItemOptions) {}
 }
 
 export enum ModuleName {

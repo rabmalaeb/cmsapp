@@ -14,78 +14,78 @@ export class AppService {
   ) {}
 
   private navBarItems = [
-    new NavItem(
-      ModuleName.ADMINS,
-      'admins',
-      this.authorizationService.canView(ModuleName.ADMINS),
-      'supervisor_account'
-    ),
-    new NavItem(
-      ModuleName.USERS,
-      'users',
-      this.authorizationService.canView(ModuleName.USERS),
-      'person'
-    ),
-    new NavItem(
-      ModuleName.PARTNERS,
-      'partners',
-      this.authorizationService.canView(ModuleName.PARTNERS),
-      'business'
-    ),
-    new NavItem(
-      ModuleName.PRODUCTS,
-      'products',
-      this.authorizationService.canView(ModuleName.PRODUCTS),
-      'shopping_cart'
-    ),
-    new NavItem(
-      ModuleName.CATEGORIES,
-      'categories',
-      this.authorizationService.canView(ModuleName.CATEGORIES),
-      'list'
-    ),
-    new NavItem(
-      ModuleName.LANGUAGES,
-      'languages',
-      this.authorizationService.canView(ModuleName.LANGUAGES),
-      'language'
-    ),
-    new NavItem(
-      ModuleName.LANGUAGE_KEYS,
-      'keys',
-      this.authorizationService.canView(ModuleName.LANGUAGE_KEYS),
-      'vpn_key'
-    ),
-    new NavItem(
-      ModuleName.TRANSLATIONS,
-      'translations',
-      this.authorizationService.canView(ModuleName.TRANSLATIONS),
-      'translate'
-    ),
-    new NavItem(
-      ModuleName.PERMISSIONS,
-      'permissions',
-      this.authorizationService.canView(ModuleName.PERMISSIONS),
-      'lock'
-    ),
-    new NavItem(
-      ModuleName.ROLES,
-      'roles',
-      this.authorizationService.canView(ModuleName.ROLES),
-      'lock_open'
-    ),
-    new NavItem(
-      ModuleName.BANNERS,
-      'banners',
-      this.authorizationService.canView(ModuleName.BANNERS),
-      'filter'
-    ),
-    new NavItem(
-      ModuleName.SUPPLIERS,
-      'suppliers',
-      this.authorizationService.canView(ModuleName.SUPPLIERS),
-      'airport_shuttle'
-    )
+    new NavItem({
+      name: ModuleName.ADMINS,
+      link: 'admins',
+      isActive: this.authorizationService.canView(ModuleName.ADMINS),
+      iconName: 'supervisor_account'
+    }),
+    new NavItem({
+      name: ModuleName.USERS,
+      link: 'users',
+      isActive: this.authorizationService.canView(ModuleName.USERS),
+      iconName: 'person'
+    }),
+    new NavItem({
+      name: ModuleName.PARTNERS,
+      link: 'partners',
+      isActive: this.authorizationService.canView(ModuleName.PARTNERS),
+      iconName: 'business'
+    }),
+    new NavItem({
+      name: ModuleName.PRODUCTS,
+      link: 'products',
+      isActive: this.authorizationService.canView(ModuleName.PRODUCTS),
+      iconName: 'shopping_cart'
+    }),
+    new NavItem({
+      name: ModuleName.CATEGORIES,
+      link: 'categories',
+      isActive: this.authorizationService.canView(ModuleName.CATEGORIES),
+      iconName: 'list'
+    }),
+    new NavItem({
+      name: ModuleName.LANGUAGES,
+      link: 'languages',
+      isActive: this.authorizationService.canView(ModuleName.LANGUAGES),
+      iconName: 'language'
+    }),
+    new NavItem({
+      name: ModuleName.LANGUAGE_KEYS,
+      link: 'keys',
+      isActive: this.authorizationService.canView(ModuleName.LANGUAGE_KEYS),
+      iconName: 'vpn_key'
+    }),
+    new NavItem({
+      name: ModuleName.TRANSLATIONS,
+      link: 'translations',
+      isActive: this.authorizationService.canView(ModuleName.TRANSLATIONS),
+      iconName: 'translate'
+    }),
+    new NavItem({
+      name: ModuleName.PERMISSIONS,
+      link: 'permissions',
+      isActive: this.authorizationService.canView(ModuleName.PERMISSIONS),
+      iconName: 'lock'
+    }),
+    new NavItem({
+      name: ModuleName.ROLES,
+      link: 'roles',
+      isActive: this.authorizationService.canView(ModuleName.ROLES),
+      iconName: 'lock_open'
+    }),
+    new NavItem({
+      name: ModuleName.BANNERS,
+      link: 'banners',
+      isActive: this.authorizationService.canView(ModuleName.BANNERS),
+      iconName: 'filter'
+    }),
+    new NavItem({
+      name: ModuleName.SUPPLIERS,
+      link: 'suppliers',
+      isActive: this.authorizationService.canView(ModuleName.SUPPLIERS),
+      iconName: 'airport_shuttle'
+    })
   ];
 
   get activeNavBarItems() {
