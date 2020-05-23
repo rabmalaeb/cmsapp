@@ -7,7 +7,7 @@
           mat-icon-button
           aria-label="Example icon-button with a menu"
         >
-          <mat-icon>filter_list</mat-icon>
+          <app-icon name="filter-list"></app-icon>
         </button>
       </div>
     </div>
@@ -22,7 +22,7 @@
   <div class="filter-control__title-container" *ngIf="label">
     <div class="filter-control__title">{{ label }}</div>
     <div class="filter-control__close" (click)="closeModal()">
-      <mat-icon>close</mat-icon>
+      <app-icon name="close"></app-icon>
     </div>
   </div>
   <div class="filter-control__filter-container">

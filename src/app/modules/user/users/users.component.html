@@ -38,19 +38,29 @@
       </ng-container>
 
       <ng-container matColumnDef="first_name">
-        <mat-header-cell mat-sort-header *matHeaderCellDef>First Name</mat-header-cell>
-        <mat-cell *matCellDef="let user">{{ user.firstName }}</mat-cell>
+        <mat-header-cell mat-sort-header *matHeaderCellDef
+          >First Name</mat-header-cell
+        >
+        <mat-cell *matCellDef="let user">
+          <div class="link" (click)="editUser(user.id)">
+            {{ user.firstName }}
+          </div>
+        </mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="last_name">
-        <mat-header-cell mat-sort-header *matHeaderCellDef>Last Name</mat-header-cell>
+        <mat-header-cell mat-sort-header *matHeaderCellDef
+          >Last Name</mat-header-cell
+        >
         <mat-cell *matCellDef="let user">
           {{ user.lastName }}
         </mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="email">
-        <mat-header-cell mat-sort-header *matHeaderCellDef>Email</mat-header-cell>
+        <mat-header-cell mat-sort-header *matHeaderCellDef
+          >Email</mat-header-cell
+        >
         <mat-cell *matCellDef="let user">
           {{ user.email }}
         </mat-cell>
@@ -67,14 +77,14 @@
         <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
         <mat-cell *matCellDef="let user" class="action-link">
           <a class="table__action" (click)="editUser(user.id)"
-            ><app-icon name="edit"></app-icon></a
-          >
+            ><app-icon name="edit"></app-icon
+          ></a>
           <a
             class="table__action"
             (click)="deleteUser(user.id)"
             *ngIf="canDeleteUser | async"
-            ><app-icon name="delete"></app-icon></a
-          >
+            ><app-icon name="delete"></app-icon
+          ></a>
         </mat-cell>
       </ng-container>
 

@@ -41,7 +41,11 @@
         <mat-header-cell mat-sort-header *matHeaderCellDef
           >Name</mat-header-cell
         >
-        <mat-cell *matCellDef="let permission">{{ permission.name }}</mat-cell>
+        <mat-cell *matCellDef="let permission">
+          <div class="link" (click)="editPermission(permission.id)">
+            {{ permission.name }}
+          </div>
+        </mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="type">
@@ -62,14 +66,14 @@
         <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
         <mat-cell *matCellDef="let permission" class="action-link">
           <a class="table__action" (click)="editPermission(permission.id)"
-            ><app-icon name="edit"></app-icon></a
-          >
+            ><app-icon name="edit"></app-icon
+          ></a>
           <a
             class="table__action"
             (click)="deletePermission(permission.id)"
             *ngIf="canDeletePermission | async"
-            ><app-icon name="delete"></app-icon></a
-          >
+            ><app-icon name="delete"></app-icon
+          ></a>
         </mat-cell>
       </ng-container>
 
