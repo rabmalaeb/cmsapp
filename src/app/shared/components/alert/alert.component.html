@@ -5,7 +5,7 @@
         class="alert__icon"
         [ngClass]="{ 'alert__icon_is-danger': isDanger }"
       >
-        <mat-icon>{{ alertOptions.icon }}</mat-icon>
+        <app-icon [name]="alertOptions.icon"></app-icon>
       </div>
       <div class="alert__title">
         {{ alertOptions.label }}

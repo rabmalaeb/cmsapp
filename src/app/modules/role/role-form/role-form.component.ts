@@ -86,6 +86,7 @@ export class RoleFormComponent implements OnInit, OnChanges {
       });
     }
   }
+  
 
   buildNewRoleForm() {
     const partnerId = this.authenticationService.getCurrentUser().partnerId;
@@ -99,7 +100,7 @@ export class RoleFormComponent implements OnInit, OnChanges {
     this.roleForm = this.form.group({
       id: [this.role.id],
       name: [this.role.name, [Validators.required]],
-      partnerId: ['', [Validators.required]]
+      partnerId: [this.role.partnerId, [Validators.required]]
     });
   }
 

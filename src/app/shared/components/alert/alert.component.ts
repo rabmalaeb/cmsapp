@@ -32,7 +32,7 @@ export class AlertComponent implements OnInit {
       case AlertType.CONFIRM_DELETE:
         return {
           label: 'Confirm Delete',
-          icon: 'warning'
+          icon: 'alert-triangle'
         };
       case AlertType.CONFIRM_UPDATE:
         return {
@@ -42,7 +42,7 @@ export class AlertComponent implements OnInit {
       default:
         return {
           label: 'Confirm',
-          icon: 'notification_important'
+          icon: 'alert-circle'
         };
     }
   }

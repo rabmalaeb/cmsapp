@@ -37,7 +37,10 @@
       </div>
     </div>
     <div class="page__form-item">
-      <mat-checkbox [checked]="isAllPermissionsSelected" (change)="togglePermissions(isAllPermissionsSelected)">
+      <mat-checkbox
+        [checked]="isAllPermissionsSelected"
+        (change)="togglePermissions(isAllPermissionsSelected)"
+      >
         Select All
       </mat-checkbox>
     </div>
