@@ -34,6 +34,7 @@ export class LanguageKeyFormComponent implements OnInit, OnChanges {
   @Input() actionType: ActionType;
   @Input() isLoadingAction: boolean;
   @Input() canEditLanguageKey = false;
+  @Input() actionError: boolean;
   @Input() isLoading: boolean;
   @Output() submitForm = new EventEmitter<LanguageKey>();
   formGroupDirective: FormGroupDirective;
@@ -41,7 +42,7 @@ export class LanguageKeyFormComponent implements OnInit, OnChanges {
   ngOnInit() {}
 
   ngOnChanges() {
-    if (this.isLoadingAction) {
+    if (this.isLoadingAction || this.actionError) {
       return false;
     }
     if (this.languageKey) {

@@ -10,6 +10,7 @@
         [isLoading]="isLoading$ | async"
         [canEditUser]="canEditUser$ | async"
         [isLoadingAction]="isLoadingAction$ | async"
+        [actionErrors]="actionErrors$ | async"
         (submitForm)="performAction($event)"
       >
       </app-user-form>

@@ -29,6 +29,7 @@ export class PartnerFormComponent implements OnInit, OnChanges {
   @Input() isLoadingAction: boolean;
   @Input() canEditPartner = false;
   @Input() isLoading: boolean;
+  @Input() actionError: boolean;
   @Output() submitForm = new EventEmitter<PartnerRequest>();
   formGroupDirective: FormGroupDirective;
   partnerImage: File;
@@ -43,7 +44,7 @@ export class PartnerFormComponent implements OnInit, OnChanges {
   ngOnInit() {}
 
   ngOnChanges() {
-    if (this.isLoadingAction) {
+    if (this.isLoadingAction || this.actionError) {
       return false;
     }
     if (this.partner) {

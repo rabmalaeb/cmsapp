@@ -41,13 +41,14 @@ export class TranslationFormComponent implements OnInit, OnChanges {
   @Input() isLoading: boolean;
   @Input() isLoadingLanguageKeys: boolean;
   @Input() isLoadingLanguages: boolean;
+  @Input() actionError: boolean;
   @Output() submitForm = new EventEmitter<Translation>();
   formGroupDirective: FormGroupDirective;
 
   ngOnInit() { }
 
   ngOnChanges() {
-    if (this.isLoadingAction) {
+    if (this.isLoadingAction || this.actionError) {
       return false;
     }
     if (this.translation) {

@@ -1,3 +1,5 @@
+@import '../../../../assets/styles/global';
+
 .alert__container {
   display: flex;
   flex-direction: column;
@@ -14,7 +16,7 @@
   margin-right: 10px;
   color: rgb(255, 139, 37);
   &_is-danger {
-    color: red;
+    color: $global--error-color;
   }
 }
 

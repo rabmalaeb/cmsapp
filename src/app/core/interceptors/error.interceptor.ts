@@ -9,7 +9,8 @@ import {
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { LogoutService } from '../services/logout.service';
-import { ErrorResponse, ErrorMessages } from '../../shared/models/error';
+import { ErrorResponse } from '../../shared/models/error';
+import { ErrorMessages } from 'src/app/shared/models/messages';
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {

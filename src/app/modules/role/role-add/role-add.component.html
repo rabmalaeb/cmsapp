@@ -12,6 +12,7 @@
         [isLoading]="isLoading$ | async"
         [canEditRole]="canEditRole$ | async"
         [isLoadingAction]="isLoadingAction$ | async"
+        [actionError]="actionErrors$ | async"
         (submitForm)="performAction($event)"
       >
       </app-role-form>

@@ -4,7 +4,6 @@ import { AlertComponent } from './alert/alert.component';
 import { ImagePreviewComponent } from './image-preview/image-preview.component';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { FormLoadingComponent } from './form-loading/form-loading.component';
-import { InputItemComponent } from './input-item/input-item.component';
 import { XModalComponent } from './x-modal/x-modal.component';
 import { SelectOptionsComponent } from './select-options/select-options.component';
 import { PipesModule } from '../pipes/pipes.module';
@@ -15,20 +14,27 @@ import { RouterModule } from '@angular/router';
 import { FilterControlComponent } from './filter-control/filter-control.component';
 import { SearchInputComponent } from './search-input/search-input.component';
 import { IconComponent } from './icon/icon.component';
+import { CustomPickerComponent } from './custom-picker/custom-picker.component';
+import { CustomSelectComponent } from './custom-select/custom-select.component';
+import { InputComponent } from './input/input.component';
+import { InputErrorComponent } from './input-error/input-error.component';
 
 @NgModule({
   declarations: [
     AlertComponent,
     ImagePreviewComponent,
     FormLoadingComponent,
-    InputItemComponent,
     XModalComponent,
     SelectOptionsComponent,
     NavItemComponent,
     PageHeaderComponent,
     FilterControlComponent,
     SearchInputComponent,
-    IconComponent
+    IconComponent,
+    CustomPickerComponent,
+    CustomSelectComponent,
+    InputComponent,
+    InputErrorComponent
   ],
   imports: [
     CommonModule,
@@ -41,13 +47,16 @@ import { IconComponent } from './icon/icon.component';
     AlertComponent,
     ImagePreviewComponent,
     FormLoadingComponent,
-    InputItemComponent,
     XModalComponent,
     SelectOptionsComponent,
     NavItemComponent,
     PageHeaderComponent,
     FilterControlComponent,
     IconComponent,
+    CustomPickerComponent,
+    CustomSelectComponent,
+    InputComponent,
+    InputErrorComponent,
     SearchInputComponent,
   ]
 })

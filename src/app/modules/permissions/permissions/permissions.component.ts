@@ -15,6 +15,7 @@ import { ActionTypes } from '../store/actions';
 import { filter } from 'rxjs/operators';
 import { FilterHandler } from 'src/app/shared/filters/filter';
 import { Sort } from '@angular/material/sort';
+import { SuccessMessages, ConfirmMessages } from 'src/app/shared/models/messages';
 
 @Component({
   selector: 'app-permissions',
@@ -69,7 +70,7 @@ export class PermissionsComponent implements OnInit {
         )
       )
       .subscribe(() => {
-        this.notificationService.showSuccess('Permission Deleted Successfully');
+        this.notificationService.showSuccess(SuccessMessages.PERMISSION_DELETED);
       });
 
     this.actionsSubject$
@@ -107,7 +108,7 @@ export class PermissionsComponent implements OnInit {
   }
 
   deletePermission(id: number) {
-    this.alertService.confirmDelete('Are you sure you want to delete? ', () => {
+    this.alertService.confirmDelete(ConfirmMessages.CONFIRM_DELETE, () => {
       this.store$.dispatch(
         new PermissionStoreActions.DeletePermissionRequestAction(id)
       );

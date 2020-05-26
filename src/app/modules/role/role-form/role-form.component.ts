@@ -42,6 +42,7 @@ export class RoleFormComponent implements OnInit, OnChanges {
   @Input() actionType: ActionType;
   @Input() partners: Partner[];
   @Input() permissions: Permission[];
+  @Input() actionError: boolean;
   @Input() isLoadingAction: boolean;
   @Input() isLoading: boolean;
   @Input() canEditRole = false;
@@ -50,7 +51,7 @@ export class RoleFormComponent implements OnInit, OnChanges {
   ngOnInit() {}
 
   ngOnChanges() {
-    if (this.isLoadingAction) {
+    if (this.isLoadingAction || this.actionError) {
       return false;
     }
     this.setPermissionGroups();
@@ -86,7 +87,6 @@ export class RoleFormComponent implements OnInit, OnChanges {
       });
     }
   }
-  
 
   buildNewRoleForm() {
     const partnerId = this.authenticationService.getCurrentUser().partnerId;

@@ -7,119 +7,123 @@
 >
   <div class="page__form-content">
     <div class="page__form-input">
-      <app-input-item
+      <app-input
         id="name"
         name="name"
         label="Name"
         [formControlItem]="name"
       >
-      </app-input-item>
+      </app-input>
     </div>
     <div class="page__form-input">
-      <app-input-item
+      <app-input
         id="description"
         name="description"
         label="Description"
         [formControlItem]="description"
       >
-      </app-input-item>
+      </app-input>
     </div>
 
     <div class="page__form-input">
-      <app-input-item
+      <app-input
         id="descriptiemailon"
         name="email"
         label="Email"
         [formControlItem]="email"
       >
-      </app-input-item>
+      </app-input>
     </div>
 
     <div class="page__form-input">
-      <app-input-item
+      <app-input
         id="country"
         name="country"
         label="Country"
         [formControlItem]="country"
       >
-      </app-input-item>
+      </app-input>
     </div>
     <div class="page__form-input">
       <div class="form-item">
         <div class="form-item__value form-item__value_is-textfield">
-          <mat-form-field appearance="outline">
-            <mat-label>Partner</mat-label>
-            <mat-select
-              placeholder="Partner"
-              (selectionChange)="getRoles()"
+          <app-custom-select
+            [formControlItem]="partnerId"
+            label="Partner"
+          >
+            <ng-select
+              (change)="getRoles()"
+              [searchable]="false"
               formControlName="partnerId"
             >
-              <mat-option *ngFor="let partner of partners" [value]="partner.id">
-                {{ partner.name }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
+              <ng-option *ngFor="let partner of partners" [value]="partner.id">
+                {{ partner.name }}</ng-option
+              >
+            </ng-select>
+          </app-custom-select>
         </div>
       </div>
     </div>
     <div class="page__form-input">
       <div class="form-item">
         <div class="form-item__value form-item__value_is-textfield">
-          <mat-form-field appearance="outline">
-            <mat-label>Role</mat-label>
-            <mat-select placeholder="Role" formControlName="roleId">
-              <mat-option *ngFor="let role of roles" [value]="role.id">
-                {{ role.name }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
+          <app-custom-select
+            [formControlItem]="roleId"
+            label="Role"
+          >
+            <ng-select [searchable]="false" formControlName="roleId">
+              <ng-option *ngFor="let role of roles" [value]="role.id">
+                {{ role.name }}</ng-option
+              >
+            </ng-select>
+          </app-custom-select>
         </div>
       </div>
-      <div class="page__form-input">
-        <div class="form-item" *ngIf="showTogglePassword">
-          <div class="form-item__value form-item__value_is-checkbox">
-            <mat-checkbox
-              [checked]="shouldSetPassword"
-              (change)="togglePassword()"
-            >
-              Change Password
-            </mat-checkbox>
-          </div>
+    </div>
+    <div class="page__form-input">
+      <div class="form-item" *ngIf="showTogglePassword">
+        <div class="form-item__value form-item__value_is-checkbox">
+          <mat-checkbox
+            [checked]="shouldSetPassword"
+            (change)="togglePassword()"
+          >
+            Change Password
+          </mat-checkbox>
         </div>
       </div>
     </div>
     <div class="form-item__container" *ngIf="shouldSetPassword">
       <div class="page__form-input">
-        <app-input-item
+        <app-input
           id="password"
           name="password"
           type="password"
           label="Password"
           [formControlItem]="password"
         >
-        </app-input-item>
+        </app-input>
       </div>
 
       <div class="page__form-input">
-        <app-input-item
+        <app-input
           id="confirmPassword"
           name="confirmPassword"
           type="password"
           label="Confirm Password"
           [formControlItem]="confirmPassword"
         >
-        </app-input-item>
+        </app-input>
       </div>
     </div>
 
     <div class="page__form-input">
-      <app-input-item
+      <app-input
         id="active"
         name="active"
         label="Active"
         [formControlItem]="active"
       >
-      </app-input-item>
+      </app-input>
     </div>
   </div>
   <div class="page__form-button-container" *ngIf="canEditAdmin">

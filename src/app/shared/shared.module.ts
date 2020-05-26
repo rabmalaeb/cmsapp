@@ -2,6 +2,8 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
+import { NgSelectModule } from '@ng-select/ng-select';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -30,6 +32,9 @@ import { MatSortModule } from '@angular/material/sort';
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
+    OwlDateTimeModule,
+    OwlNativeDateTimeModule,
+    NgSelectModule,
     MatButtonModule,
     MatInputModule,
     MatCheckboxModule,
@@ -54,6 +59,9 @@ import { MatSortModule } from '@angular/material/sort';
   exports: [
     FormsModule,
     ReactiveFormsModule,
+    OwlDateTimeModule,
+    OwlNativeDateTimeModule,
+    NgSelectModule,
     MatButtonModule,
     MatInputModule,
     MatCheckboxModule,

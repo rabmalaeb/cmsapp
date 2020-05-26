@@ -21,7 +21,7 @@ import { Observable } from 'rxjs';
 import { StorageParams } from 'src/app/shared/models/general';
 import { FormService } from 'src/app/core/services/form.service';
 import { CookieService } from 'ngx-cookie-service';
-import { ErrorMessages } from 'src/app/shared/models/error';
+import { ErrorMessages } from 'src/app/shared/models/messages';
 @Component({
   selector: 'app-reset-password',
   templateUrl: './reset-password.component.html',

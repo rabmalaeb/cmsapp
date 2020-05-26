@@ -4,6 +4,7 @@ import { AlertService } from './alert.service';
 import { Admin } from '../../modules/admin/admin';
 import { LogoutService } from './logout.service';
 import { StorageParams } from 'src/app/shared/models/general';
+import { ConfirmMessages } from 'src/app/shared/models/messages';
 
 @Injectable({
   providedIn: 'root'
@@ -29,7 +30,9 @@ export class AuthenticationService {
       return this.admin;
     }
     if (this.storage.has(StorageParams.CURRENT_USER)) {
-      const admin: Admin = JSON.parse(this.storage.get(StorageParams.CURRENT_USER));
+      const admin: Admin = JSON.parse(
+        this.storage.get(StorageParams.CURRENT_USER)
+      );
       return admin;
     }
   }
@@ -43,11 +46,11 @@ export class AuthenticationService {
 
   logout() {
     this.alertService.confirm(
-      'Are you sure you want to logout?',
+      ConfirmMessages.CONFIRM_LOGOUT,
       'Yes',
       'No',
       () => {
-       this.logoutService.logout();
+        this.logoutService.logout();
       }
     );
   }

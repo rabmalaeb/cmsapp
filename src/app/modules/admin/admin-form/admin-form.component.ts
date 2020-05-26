@@ -40,6 +40,7 @@ export class AdminFormComponent implements OnInit, OnChanges {
   @Input() roles: Role[];
   @Input() partners: Partner[];
   @Input() isLoading = false;
+  @Input() actionError: boolean;
   @Input() canEditAdmin = false;
   @Input() isLoadingAction = false;
   @Input() actionType: ActionType;
@@ -60,7 +61,7 @@ export class AdminFormComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (this.isLoadingAction) {
+    if (this.isLoadingAction || this.actionError) {
       return false;
     }
     if (this.admin) {

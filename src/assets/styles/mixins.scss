@@ -6,3 +6,31 @@
   font-size: 21px;
   margin-bottom: 20px;
 }
+
+@mixin inputErrorLabel {
+  color: $global--error-color;
+  font-size: 10px;
+  margin-top: 5px;
+}
+
+@mixin indicateError {
+  animation: indicate-error 300ms linear;
+}
+
+@keyframes indicate-error {
+  0% {
+    transform: translateX(0);
+  }
+
+  33% {
+    transform: translateX(1%);
+  }
+
+  66% {
+    transform: translateX(-1%);
+  }
+
+  100% {
+    transform: translateX(0);
+  }
+}

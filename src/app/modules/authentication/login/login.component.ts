@@ -19,7 +19,7 @@ import { AuthenticationWorkflowService } from '../authentication-workflow.servic
 import { AuthenticationSteps } from '../authentication';
 import { Router } from '@angular/router';
 import { FormService } from 'src/app/core/services/form.service';
-import { ErrorMessages } from 'src/app/shared/models/error';
+import { ErrorMessages } from 'src/app/shared/models/messages';
 
 @Component({
   selector: 'app-login',

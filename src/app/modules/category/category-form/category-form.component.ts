@@ -34,6 +34,7 @@ export class CategoryFormComponent implements OnInit, OnChanges {
   @Input() actionType: ActionType;
   @Input() isLoadingAction: boolean;
   @Input() canEditCategory = false;
+  @Input() actionError: boolean;
   @Input() isLoading: boolean;
   @Output() submitForm = new EventEmitter<Category>();
   formGroupDirective: FormGroupDirective;
@@ -44,7 +45,7 @@ export class CategoryFormComponent implements OnInit, OnChanges {
   ngOnInit() {}
 
   ngOnChanges() {
-    if (this.isLoadingAction) {
+    if (this.isLoadingAction || this.actionError) {
       return false;
     }
     if (this.category) {

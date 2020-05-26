@@ -7,26 +7,29 @@
 >
   <div class="page__form-content">
     <div class="page__form-input">
-      <app-input-item
+      <app-input
         id="name"
         name="name"
         label="Name"
         [formControlItem]="name"
       >
-      </app-input-item>
+      </app-input>
     </div>
 
     <div class="page__form-input">
       <div class="form-item">
         <div class="form-item__value form-item__value_is-textfield">
-          <mat-form-field appearance="outline">
-            <mat-label>Partner</mat-label>
-            <mat-select placeholder="Partner" formControlName="partnerId">
-              <mat-option *ngFor="let partner of partners" [value]="partner.id">
-                {{ partner.name }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
+          <app-custom-select
+            [formControlItem]="partnerId"
+            label="Partner"
+          >
+            <ng-select [searchable]="false" formControlName="partnerId">
+              <ng-option
+               *ngFor="let partner of partners" [value]="partner.id">
+                {{ partner.name }}</ng-option
+              >
+            </ng-select>
+          </app-custom-select>
         </div>
       </div>
     </div>

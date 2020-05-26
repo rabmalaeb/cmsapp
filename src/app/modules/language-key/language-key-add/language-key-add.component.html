@@ -15,6 +15,7 @@
         [canEditLanguageKey]="canEditLanguageKey$ | async"
         [isLoadingAction]="isLoadingAction$ | async"
         (submitForm)="performAction($event)"
+        [actionError]="actionErrors$ | async"
       >
       </app-language-key-form>
     </div>

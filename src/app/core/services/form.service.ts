@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { NotificationService } from './notification.service';
 import { FormGroup } from '@angular/forms';
-import { ErrorMessages } from 'src/app/shared/models/error';
+import { ErrorMessages } from 'src/app/shared/models/messages';
 
 @Injectable({ providedIn: 'root' })
 export class FormService {
@@ -13,6 +13,7 @@ export class FormService {
    */
   isFormValid(form: FormGroup) {
     if (!form.valid) {
+      form.markAllAsTouched();
       this.notificationService.showError(ErrorMessages.FORM_NOT_VALID);
       return false;
     }

@@ -15,6 +15,7 @@ import { ActionsSubject, Store } from '@ngrx/store';
 import { RootStoreState } from 'src/app/root-store';
 import { FilterHandler } from 'src/app/shared/filters/filter';
 import { Sort } from '@angular/material/sort';
+import { SuccessMessages, ConfirmMessages } from 'src/app/shared/models/messages';
 
 @Component({
   selector: 'app-languages',
@@ -69,7 +70,7 @@ export class LanguagesComponent implements OnInit {
         )
       )
       .subscribe(() => {
-        this.notificationService.showSuccess('Language Deleted Successfully');
+        this.notificationService.showSuccess(SuccessMessages.LANGUAGE_DELETED);
       });
 
     this.actionsSubject$
@@ -107,7 +108,7 @@ export class LanguagesComponent implements OnInit {
   }
 
   deleteLanguage(id: number) {
-    this.alertService.confirmDelete('Are you sure you want to delete? ', () => {
+    this.alertService.confirmDelete(ConfirmMessages.CONFIRM_DELETE, () => {
       this.store$.dispatch(
         new LanguageStoreActions.DeleteLanguageRequestAction(id)
       );

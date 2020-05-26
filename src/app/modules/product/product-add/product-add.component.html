@@ -15,6 +15,7 @@
         [isLoading]="isLoading$ | async"
         [canEditProduct]="canEditProduct$ | async"
         [isLoadingAction]="isLoadingAction$ | async"
+        [actionError]="actionErrors$ | async"
         (submitForm)="performAction($event)"
       >
       </app-product-form>

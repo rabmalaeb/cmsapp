@@ -6,7 +6,6 @@ import {
   Input
 } from '@angular/core';
 import { FilterHandler } from '../../filters/filter';
-import FilterRequest from '../../request';
 
 @Component({
   selector: 'app-filter-control',

@@ -19,6 +19,7 @@
         [isLoadingLanguages]="isLoadingLanguages$ | async"
         [canEditTranslation]="canEditTranslation$ | async"
         [isLoadingAction]="isLoadingAction$ | async"
+        [actionError]="actionErrors$ | async"
         (submitForm)="performAction($event)"
       >
       </app-translation-form>

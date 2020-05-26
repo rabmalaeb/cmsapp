@@ -7,41 +7,40 @@
 >
   <div class="page__form-content">
     <div class="page__form-input">
-      <app-input-item
+      <app-input
         id="name"
         name="name"
         label="Name"
         [formControlItem]="name"
       >
-      </app-input-item>
+      </app-input>
     </div>
 
     <div class="page__form-input">
-      <app-input-item
+      <app-input
         id="description"
         name="description"
         label="Description"
         [formControlItem]="description"
       >
-      </app-input-item>
+      </app-input>
     </div>
     <div class="page__form-input">
       <div class="form-item">
         <div class="form-item__value form-item__value_is-textfield">
-          <mat-form-field appearance="outline">
-            <mat-label>Parent Category</mat-label>
-            <mat-select
-              placeholder="Parent Category"
-              formControlName="parentId"
-            >
-              <mat-option
+          <app-custom-select
+            [formControlItem]="parentId"
+            label="Parent Category"
+          >
+            <ng-select [searchable]="false" formControlName="parentId">
+              <ng-option
                 *ngFor="let category of categories"
                 [value]="category.id"
               >
-                {{ category.name }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
+                {{ category.name }}</ng-option
+              >
+            </ng-select>
+          </app-custom-select>
         </div>
       </div>
     </div>

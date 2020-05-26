@@ -38,6 +38,7 @@ export class PermissionFormComponent implements OnInit, OnChanges {
   @Input() isLoadingAction: boolean;
   @Input() canEditPermission = false;
   @Input() isLoading: boolean;
+  @Input() actionError: boolean;
   @Output() submitForm = new EventEmitter<PermissionActionRequest>();
   formGroupDirective: FormGroupDirective;
   permissionForm: FormGroup;
@@ -54,8 +55,7 @@ export class PermissionFormComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges() {
-    console.log('permission ', this.permission);
-    if (this.isLoadingAction) {
+    if (this.isLoadingAction || this.actionError) {
       return false;
     }
     if (this.permission) {
