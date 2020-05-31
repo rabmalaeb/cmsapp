@@ -22,8 +22,7 @@
         <button
           [disabled]="isFormEmpty"
           type="reset"
-          mat-button
-          class="button button_is-secondary"
+          [isSecondary]="true"
           (click)="resetFilters()"
         >
           Clear Filters

@@ -18,6 +18,7 @@ import { CustomPickerComponent } from './custom-picker/custom-picker.component';
 import { CustomSelectComponent } from './custom-select/custom-select.component';
 import { InputComponent } from './input/input.component';
 import { InputErrorComponent } from './input-error/input-error.component';
+import { ButtonItemComponent } from './button-item/button-item.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { InputErrorComponent } from './input-error/input-error.component';
     CustomPickerComponent,
     CustomSelectComponent,
     InputComponent,
-    InputErrorComponent
+    InputErrorComponent,
+    ButtonItemComponent
   ],
   imports: [
     CommonModule,
@@ -58,6 +60,7 @@ import { InputErrorComponent } from './input-error/input-error.component';
     InputComponent,
     InputErrorComponent,
     SearchInputComponent,
+    ButtonItemComponent
   ]
 })
 export class ComponentsModule {}

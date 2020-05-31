@@ -61,6 +61,9 @@ export class AdminFormComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
+    if (changes.roles && !changes.roles.firstChange) {
+      return false;
+    }
     if (this.isLoadingAction || this.actionError) {
       return false;
     }
@@ -110,8 +113,6 @@ export class AdminFormComponent implements OnInit, OnChanges {
 
   togglePassword() {
     this.shouldSetPassword = !this.shouldSetPassword;
-    console.log('should we set the password ', this.shouldSetPassword);
-
     this.updateFormValidations();
   }
 
@@ -221,6 +222,7 @@ export class AdminFormComponent implements OnInit, OnChanges {
   }
 
   getRoles() {
+    this.roleId.setValue('');
     this.getRolesForPartner.emit(this.partnerId.value);
   }
 

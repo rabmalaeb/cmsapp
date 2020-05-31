@@ -1,0 +1,24 @@
+<button
+  *ngIf="link; else noLink"
+  mat-button
+  appMouseDown
+  [disabled]="disabled"
+  [type]="type"
+  [routerLink]="link"
+  class="button"
+  [ngClass]="{ 'button_is-secondary': isSecondary }"
+>
+  {{ label }}
+</button>
+<ng-template #noLink>
+  <button
+    mat-button
+    appMouseDown
+    [disabled]="disabled"
+    [type]="type"
+    class="button"
+    [ngClass]="{ 'button_is-secondary': isSecondary }"
+  >
+    {{ label }}
+  </button>
+</ng-template>

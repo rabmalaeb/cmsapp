@@ -27,8 +27,6 @@ export class LogoutService {
 
   removeSession() {
     this.storage.remove(StorageParams.CURRENT_USER);
-    this.router.navigate(['/login']).then(() => {
-      location.reload();
-    });
+    this.router.navigate(['/login']);
   }
 }

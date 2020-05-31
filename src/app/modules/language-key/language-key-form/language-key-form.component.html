@@ -7,12 +7,7 @@
 >
   <div class="page__form-content">
     <div class="page__form-input">
-      <app-input
-        id="name"
-        name="name"
-        label="Name"
-        [formControlItem]="name"
-      >
+      <app-input id="name" name="name" label="Name" [formControlItem]="name">
       </app-input>
     </div>
 
@@ -28,14 +23,10 @@
   </div>
   <div class="page__form-button-container" *ngIf="canEditLanguageKey">
     <div class="page__form__button">
-      <button mat-button type="reset" class="button button_is-secondary">
-        Reset
-      </button>
+      <app-button-item [isSecondary]="true" type="reset" label="Reset"> </app-button-item>
     </div>
     <div class="page__form__button">
-      <button mat-button type="submit" class="button button_is-primary">
-        {{ buttonLabel }}
-      </button>
+      <app-button-item [label]="buttonLabel"> </app-button-item>
     </div>
   </div>
 </form>

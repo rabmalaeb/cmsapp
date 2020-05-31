@@ -6,22 +6,12 @@
 >
   <div class="page__form-content">
     <div class="page__form-input">
-      <app-input
-        id="name"
-        name="name"
-        label="Name"
-        [formControlItem]="name"
-      >
+      <app-input id="name" name="name" label="Name" [formControlItem]="name">
       </app-input>
     </div>
 
     <div class="page__form-input">
-      <app-input
-        id="code"
-        name="code"
-        label="Code"
-        [formControlItem]="code"
-      >
+      <app-input id="code" name="code" label="Code" [formControlItem]="code">
       </app-input>
     </div>
     <div class="page__title-container">
@@ -71,14 +61,14 @@
 
   <div class="page__form-button-container" *ngIf="canEditPartner">
     <div class="page__form__button">
-      <button mat-button type="reset" class="button button_is-secondary">
-        Reset
-      </button>
+      <app-button-item
+        type="reset"
+        [isSecondary]="true"
+        label="reset"
+      ></app-button-item>
     </div>
     <div class="page__form__button">
-      <button mat-button type="submit" class="button button_is-primary">
-        {{ buttonLabel }}
-      </button>
+      <app-button-item type="submit" [label]="buttonLabel"></app-button-item>
     </div>
   </div>
 </form>

@@ -8,9 +8,15 @@
 }
 
 @mixin inputErrorLabel {
+  transform: translateY(-20%);
+  transition: 0.2s ease-in-out transform;
+  position: absolute;
   color: $global--error-color;
-  font-size: 10px;
-  margin-top: 5px;
+  font-size: 9px;
+}
+
+@mixin showInputErrorLabel {
+  transform: translateY(20%);
 }
 
 @mixin indicateError {

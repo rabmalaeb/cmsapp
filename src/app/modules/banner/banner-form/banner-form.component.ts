@@ -65,8 +65,8 @@ export class BannerFormComponent implements OnInit, OnChanges {
       name: ['', [Validators.required]],
       description: ['', [Validators.required]],
       link: ['', [Validators.required]],
-      mediaId: [0, [Validators.required]],
-      languageId: [0, [Validators.required]]
+      mediaId: ['', [Validators.required]],
+      languageId: ['', [Validators.required]]
     });
   }
 

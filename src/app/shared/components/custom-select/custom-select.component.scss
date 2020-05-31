@@ -2,6 +2,8 @@
 @import '../../../../assets/styles/mixins';
 
 .custom-select {
+  position: relative;
+  padding-bottom: 10px;
   &_has-error {
     .custom-select__label {
       color: $global--error-color;
@@ -11,6 +13,9 @@
     }
     ::ng-deep .ng-select .ng-select-container {
       border-color: $global--error-color;
+    }
+    .custom-select__error {
+      @include showInputErrorLabel;
     }
   }
 }

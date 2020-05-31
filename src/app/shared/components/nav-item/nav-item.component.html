@@ -5,11 +5,13 @@
     routerLinkActive="nav-item__link_is-active"
     *ngIf="navItem.isActive | async"
   >
-    <div class="nav-item__icon">
-    <app-icon [name]="navItem.iconName"></app-icon>
-    </div>
-    <div class="nav-item__label">
-      {{ navItem.name | titlecase }}
+    <div class="nav-item__container">
+      <div class="nav-item__icon">
+        <app-icon [name]="navItem.iconName"></app-icon>
+      </div>
+      <div class="nav-item__label">
+        {{ navItem.name | titlecase }}
+      </div>
     </div>
   </a>
 </div>

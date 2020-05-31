@@ -19,26 +19,25 @@
 
     <div class="filters__button-container">
       <div class="filters__button">
-        <button
+        <app-button-item
           [disabled]="isFormEmpty"
           type="reset"
-          mat-button
-          class="button button_is-secondary"
+          [isSecondary]="true"
           (click)="resetFilters()"
         >
           Clear Filters
-        </button>
+        </app-button-item>
       </div>
 
       <div class="filters__button">
-        <button
+        <app-button-item
           [disabled]="isFormEmpty"
           type="submit"
           mat-button
           class="button button_is-primary"
         >
           Apply Filters
-        </button>
+        </app-button-item>
       </div>
     </div>
   </form>

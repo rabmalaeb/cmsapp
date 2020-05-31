@@ -94,14 +94,10 @@
   </div>
   <div class="page__form-button-container" *ngIf="canEditProduct">
     <div class="page__form__button">
-      <button mat-button type="reset" class="button button_is-secondary">
-        Reset
-      </button>
+      <app-button-item [isSecondary]="true" type="reset" label="Reset"> </app-button-item>
     </div>
     <div class="page__form__button">
-      <button mat-button type="submit" class="button button_is-primary">
-        {{ buttonLabel }}
-      </button>
+      <app-button-item [label]="buttonLabel"> </app-button-item>
     </div>
   </div>
 </form>

@@ -16,7 +16,9 @@
     [formControl]="formControlItem"
     [readonly]="readonly"
   />
-</div>
-<div class="input__error" *ngIf="formControlItem && hasError">
-  <app-input-error [errorMessage]="errorMessage"></app-input-error>
+  <div class="input__error">
+    <div class="input__error-message" *ngIf="formControlItem && hasError">
+      <app-input-error [errorMessage]="errorMessage"></app-input-error>
+    </div>
+  </div>
 </div>

@@ -32,9 +32,7 @@
     <div class="authentication__form-section">
       <div class="authentication__button-container">
         <div class="authentication__button">
-          <button mat-button class="button button_is-primary">
-            {{ loginLabel | async }}
-          </button>
+          <app-button-item [label]="loginLabel | async"></app-button-item>
         </div>
       </div>
       <div class="authentication__form-item authentication__form-item_is-link">

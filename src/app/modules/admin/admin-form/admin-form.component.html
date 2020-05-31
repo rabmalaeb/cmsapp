@@ -7,12 +7,7 @@
 >
   <div class="page__form-content">
     <div class="page__form-input">
-      <app-input
-        id="name"
-        name="name"
-        label="Name"
-        [formControlItem]="name"
-      >
+      <app-input id="name" name="name" label="Name" [formControlItem]="name">
       </app-input>
     </div>
     <div class="page__form-input">
@@ -47,10 +42,7 @@
     <div class="page__form-input">
       <div class="form-item">
         <div class="form-item__value form-item__value_is-textfield">
-          <app-custom-select
-            [formControlItem]="partnerId"
-            label="Partner"
-          >
+          <app-custom-select [formControlItem]="partnerId" label="Partner">
             <ng-select
               (change)="getRoles()"
               [searchable]="false"
@@ -67,10 +59,7 @@
     <div class="page__form-input">
       <div class="form-item">
         <div class="form-item__value form-item__value_is-textfield">
-          <app-custom-select
-            [formControlItem]="roleId"
-            label="Role"
-          >
+          <app-custom-select [formControlItem]="roleId" label="Role">
             <ng-select [searchable]="false" formControlName="roleId">
               <ng-option *ngFor="let role of roles" [value]="role.id">
                 {{ role.name }}</ng-option
@@ -128,14 +117,11 @@
   </div>
   <div class="page__form-button-container" *ngIf="canEditAdmin">
     <div class="page__form__button">
-      <button mat-button type="reset" class="button button_is-secondary">
-        Reset
-      </button>
+      <app-button-item [isSecondary]="true" type="reset" label="Reset">
+      </app-button-item>
     </div>
     <div class="page__form__button">
-      <button mat-button type="submit" class="button button_is-primary">
-        {{ buttonLabel }}
-      </button>
+      <app-button-item [label]="buttonLabel"> </app-button-item>
     </div>
   </div>
 </form>

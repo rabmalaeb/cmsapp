@@ -2,6 +2,8 @@
 @import '../../../../assets/styles/mixins';
 
 .input {
+  padding-bottom: 10px;
+  position: relative;
   &_has-error {
     .input__label {
       color: $global--error-color;
@@ -9,6 +11,9 @@
     .input__item {
       @include indicateError;
       border-color: $global--error-color;
+    }
+    .input__error {
+      @include showInputErrorLabel;
     }
   }
 }

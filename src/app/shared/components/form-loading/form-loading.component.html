@@ -6,14 +6,11 @@
   </div>
   <div class="page__form-button-container">
     <div class="page__form__button">
-      <button mat-button type="reset" class="button button_is-secondary">
-        Reset
-      </button>
+      <app-button-item [isSecondary]="true" type="reset" label="Reset">
+      </app-button-item>
     </div>
     <div class="page__form__button">
-      <button mat-button type="submit" class="button button_is-primary">
-        Save
-      </button>
+      <app-button-item label="Save"> </app-button-item>
     </div>
   </div>
 </div>

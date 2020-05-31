@@ -10,9 +10,9 @@
       <ng-content></ng-content>
     </div>
   </div>
-  <div class="custom-select__error" *ngIf="formControlItem && hasError">
-    <app-input-error
-      [errorMessage]="errorMessage"
-    ></app-input-error>
+  <div class="custom-select__error">
+    <div class="custom-select__error-message" *ngIf="formControlItem && hasError">
+      <app-input-error [errorMessage]="errorMessage"></app-input-error>
+    </div>
   </div>
 </div>
