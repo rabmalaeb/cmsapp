@@ -20,6 +20,7 @@ import {
 } from '../../category/store';
 import { Sort } from '@angular/material/sort';
 import { FilterHandler } from 'src/app/shared/filters/filter';
+import { SuccessMessages, ConfirmMessages } from 'src/app/shared/models/messages';
 
 @Component({
   selector: 'app-products',
@@ -85,7 +86,7 @@ export class ProductsComponent implements OnInit {
         )
       )
       .subscribe(() => {
-        this.notificationService.showSuccess('Product Deleted Successfully');
+        this.notificationService.showSuccess(SuccessMessages.PRODUCT_DELETED);
       });
 
     this.actionsSubject$
@@ -142,7 +143,7 @@ export class ProductsComponent implements OnInit {
   }
 
   deleteProduct(id: number) {
-    this.alertService.confirmDelete('Are you sure you want to delete? ', () => {
+    this.alertService.confirmDelete(ConfirmMessages.CONFIRM_DELETE, () => {
       this.store$.dispatch(
         new ProductStoreActions.DeleteProductRequestAction(id)
       );

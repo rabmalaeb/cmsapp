@@ -5,7 +5,6 @@ import {
   EventEmitter,
   Input
 } from '@angular/core';
-import Request from '../../request';
 import { FilterHandler } from '../../filters/filter';
 
 @Component({

@@ -19,7 +19,8 @@ import { AuthenticationWorkflowService } from '../authentication-workflow.servic
 import { AuthenticationSteps } from '../authentication';
 import { Router } from '@angular/router';
 import { FormService } from 'src/app/core/services/form.service';
-import { ErrorMessages } from 'src/app/shared/models/error';
+import { ErrorMessages } from 'src/app/shared/models/messages';
+import { AuthorizationService } from 'src/app/core/services/authorization.service';
 
 @Component({
   selector: 'app-login',
@@ -32,6 +33,7 @@ export class LoginComponent implements OnInit {
     private notificationService: NotificationService,
     private form: FormBuilder,
     private router: Router,
+    private authorizationService: AuthorizationService,
     private authenticationWorkflowService: AuthenticationWorkflowService,
     private store$: Store<RootStoreState.State>,
     private actionsSubject$: ActionsSubject,
@@ -63,9 +65,8 @@ export class LoginComponent implements OnInit {
       .pipe(filter((action: any) => action.type === ActionTypes.LOGIN_SUCCESS))
       .subscribe(response => {
         this.authenticationService.setUserSession(response.payload.item);
-        this.router.navigate(['/']).then(() => {
-          location.reload();
-        });
+        this.authorizationService.getRolePermissions();
+        this.router.navigate(['/']);
       });
 
     this.actionsSubject$

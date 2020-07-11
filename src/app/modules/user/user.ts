@@ -1,4 +1,4 @@
-import Request from 'src/app/shared/request';
+import FilterRequest from 'src/app/shared/request';
 
 export interface User {
   id ?: number;
@@ -8,7 +8,7 @@ export interface User {
   mobile: string;
 }
 
-export interface UserRequest extends Request {
+export class UserRequest extends FilterRequest {
   firstName?: string;
   lastName?: string;
   email?: string;

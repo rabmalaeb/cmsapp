@@ -14,7 +14,7 @@ import {
 } from '@angular/forms';
 import { ValidationMessagesService } from 'src/app/core/services/validation-messages.service';
 import { ActionType } from 'src/app/shared/models/general';
-import { Partner } from '../partner';
+import { Partner, PartnerRequest } from '../partner';
 import { FormService } from 'src/app/core/services/form.service';
 
 @Component({
@@ -23,25 +23,28 @@ import { FormService } from 'src/app/core/services/form.service';
   styleUrls: ['./partner-form.component.sass']
 })
 export class PartnerFormComponent implements OnInit, OnChanges {
-  constructor(
-    private form: FormBuilder,
-    private formService: FormService,
-    private validationMessagesService: ValidationMessagesService
-  ) {}
-
   partnerForm: FormGroup;
   @Input() partner: Partner;
   @Input() actionType: ActionType;
   @Input() isLoadingAction: boolean;
   @Input() canEditPartner = false;
   @Input() isLoading: boolean;
-  @Output() submitForm = new EventEmitter<Partner>();
+  @Input() actionError: boolean;
+  @Output() submitForm = new EventEmitter<PartnerRequest>();
   formGroupDirective: FormGroupDirective;
+  partnerImage: File;
+  resetImage = false;
+
+  constructor(
+    private form: FormBuilder,
+    private formService: FormService,
+    private validationMessagesService: ValidationMessagesService
+  ) {}
 
   ngOnInit() {}
 
   ngOnChanges() {
-    if (this.isLoadingAction) {
+    if (this.isLoadingAction || this.actionError) {
       return false;
     }
     if (this.partner) {
@@ -57,7 +60,10 @@ export class PartnerFormComponent implements OnInit, OnChanges {
   buildNewPartnerForm() {
     this.partnerForm = this.form.group({
       name: ['', [Validators.required]],
-      code: ['', [Validators.required]]
+      code: ['', [Validators.required]],
+      partnerName: ['', [Validators.required]],
+      copyright: ['', [Validators.required]],
+      websiteUrl: ['', [Validators.required]]
     });
   }
 
@@ -65,7 +71,25 @@ export class PartnerFormComponent implements OnInit, OnChanges {
     this.partnerForm = this.form.group({
       id: [this.partner.id],
       name: [this.partner.name, [Validators.required]],
-      code: [this.partner.code, [Validators.required]]
+      code: [this.partner.code, [Validators.required]],
+      partnerName: [
+        this.partner.emailWhiteLabel
+          ? this.partner.emailWhiteLabel.partnerName
+          : '',
+        [Validators.required]
+      ],
+      copyright: [
+        this.partner.emailWhiteLabel
+          ? this.partner.emailWhiteLabel.copyright
+          : '',
+        [Validators.required]
+      ],
+      websiteUrl: [
+        this.partner.emailWhiteLabel
+          ? this.partner.emailWhiteLabel.websiteUrl
+          : '',
+        [Validators.required]
+      ]
     });
   }
 
@@ -77,11 +101,27 @@ export class PartnerFormComponent implements OnInit, OnChanges {
     return this.partnerForm.get('code');
   }
 
-  buildPartnerParams(): Partner {
+  get partnerName() {
+    return this.partnerForm.get('partnerName');
+  }
+
+  get copyright() {
+    return this.partnerForm.get('copyright');
+  }
+
+  get websiteUrl() {
+    return this.partnerForm.get('websiteUrl');
+  }
+
+  buildPartnerParams(): PartnerRequest {
     return {
       id: this.partnerForm.get('id') ? this.partnerForm.get('id').value : '',
       name: this.name.value,
-      code: this.code.value
+      code: this.code.value,
+      partnerName: this.partnerName.value,
+      copyright: this.copyright.value,
+      websiteUrl: this.websiteUrl.value,
+      image: this.partnerImage ? this.partnerImage : null
     };
   }
 
@@ -101,6 +141,10 @@ export class PartnerFormComponent implements OnInit, OnChanges {
       return false;
     }
     this.submitForm.emit(this.buildPartnerParams());
+  }
+
+  uploadImage(image: File) {
+    this.partnerImage = image;
   }
 
   get validationMessages() {

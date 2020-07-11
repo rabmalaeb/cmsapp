@@ -19,17 +19,31 @@
   display: flex;
   align-items: center;
   font-size: 14px;
-  padding: 15px 30px;
   cursor: pointer;
   color: rgb(236, 236, 236);
   width: 100%;
   border-radius: 0;
+  transition: 0.2s ease-in-out all;
   &_is-active {
     background-color: $global--primary-color-hover;
   }
   &:hover {
     background-color: rgba($global--primary-color-hover, 0.7);
   }
+
+  &:active {
+    .nav-item__container {
+      transform: scale(0.96);
+    }
+  }
+}
+
+.nav-item__container {
+  display: flex;
+  width: 100%;
+  transition: 0.2s ease-in-out all;
+  padding: 15px 30px;
+  align-items: center;
 }
 
 .nav-item__label {

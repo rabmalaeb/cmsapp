@@ -6,35 +6,69 @@
 >
   <div class="page__form-content">
     <div class="page__form-input">
-      <app-input-item
-        id="name"
-        name="name"
-        label="Name"
-        [formControlItem]="name"
-      >
-      </app-input-item>
+      <app-input id="name" name="name" label="Name" [formControlItem]="name">
+      </app-input>
     </div>
 
     <div class="page__form-input">
-      <app-input-item
-        id="code"
-        name="code"
-        label="Code"
-        [formControlItem]="code"
+      <app-input id="code" name="code" label="Code" [formControlItem]="code">
+      </app-input>
+    </div>
+    <div class="page__title-container">
+      <div class="page__title">
+        Email White Label Setup
+      </div>
+    </div>
+    <div class="page__form-input">
+      <app-input
+        id="partnerName"
+        name="partnerName"
+        label="Partner Name"
+        [formControlItem]="partnerName"
       >
-      </app-input-item>
+      </app-input>
+    </div>
+    <div class="page__form-input">
+      <app-input
+        id="copyright"
+        name="copyright"
+        label="Copyright"
+        [formControlItem]="copyright"
+      >
+      </app-input>
+    </div>
+    <div class="page__form-input">
+      <app-input
+        id="websiteUrl"
+        name="websiteUrl"
+        label="Website Url"
+        [formControlItem]="websiteUrl"
+      >
+      </app-input>
+    </div>
+    <div class="page__form-input">
+      <div class="form-item">
+        <div class="form-item__value form-item__value_is-textfield">
+          <app-image-preview
+            (imageSelected)="uploadImage($event)"
+            [resetImage]="resetImage"
+          >
+          </app-image-preview>
+        </div>
+      </div>
     </div>
   </div>
+
   <div class="page__form-button-container" *ngIf="canEditPartner">
     <div class="page__form__button">
-      <button mat-button type="reset" class="button button_is-secondary">
-        Reset
-      </button>
+      <app-button-item
+        type="reset"
+        [isSecondary]="true"
+        label="reset"
+      ></app-button-item>
     </div>
     <div class="page__form__button">
-      <button mat-button type="submit" class="button button_is-primary">
-        {{ buttonLabel }}
-      </button>
+      <app-button-item type="submit" [label]="buttonLabel"></app-button-item>
     </div>
   </div>
 </form>

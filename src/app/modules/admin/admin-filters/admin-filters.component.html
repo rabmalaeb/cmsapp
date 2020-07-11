@@ -7,38 +7,33 @@
   >
     <div class="filters__item-container">
       <div class="filters__item">
-        <app-input-item
+        <app-input
           id="searchQuery"
           name="searchQuery"
           label="Search By Name and Email"
           [formControlItem]="searchQuery"
         >
-        </app-input-item>
+        </app-input>
       </div>
     </div>
 
     <div class="filters__button-container">
       <div class="filters__button">
-        <button
+        <app-button-item
           [disabled]="isFormEmpty"
           type="reset"
-          mat-button
-          class="button button_is-secondary"
+          [isSecondary]="true"
+          label="Clear Filters"
           (click)="resetFilters()"
         >
-          Clear Filters
-        </button>
+        </app-button-item>
       </div>
 
       <div class="filters__button">
-        <button
+        <app-button-item
+          label="Apply Filters"
           [disabled]="isFormEmpty"
-          type="submit"
-          mat-button
-          class="button button_is-primary"
-        >
-          Apply Filters
-        </button>
+        ></app-button-item>
       </div>
     </div>
   </form>

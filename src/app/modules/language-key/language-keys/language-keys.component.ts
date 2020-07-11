@@ -15,6 +15,7 @@ import { NotificationService } from 'src/app/core/services/notification.service'
 import { filter } from 'rxjs/operators';
 import { FilterHandler } from 'src/app/shared/filters/filter';
 import { Sort } from '@angular/material/sort';
+import { SuccessMessages, ConfirmMessages } from 'src/app/shared/models/messages';
 
 @Component({
   selector: 'app-languagekeys',
@@ -71,7 +72,7 @@ export class LanguageKeysComponent implements OnInit {
       )
       .subscribe(() => {
         this.notificationService.showSuccess(
-          'LanguageKey Deleted Successfully'
+          SuccessMessages.LANGUAGE_KEY_DELETED
         );
       });
 
@@ -113,7 +114,7 @@ export class LanguageKeysComponent implements OnInit {
   }
 
   deleteLanguageKey(id: number) {
-    this.alertService.confirmDelete('Are you sure you want to delete? ', () => {
+    this.alertService.confirmDelete(ConfirmMessages.CONFIRM_DELETE, () => {
       this.store$.dispatch(
         new LanguagekeyStoreActions.DeleteLanguageKeyRequestAction(id)
       );

@@ -7,14 +7,13 @@
 />
 <div class="page__upload-container">
   <div class="page__upload-button">
-    <button
+    <app-button-item
       type="button"
-      mat-button
-      class="button button_is-secondary"
+      [isSecondary]="true"
       (click)="fileInput.click()"
+      label=" Select image"
     >
-      Select image
-    </button>
+    </app-button-item>
   </div>
   <div class="page__upload-error" *ngIf="message">
     {{ message }}

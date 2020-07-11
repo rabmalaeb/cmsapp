@@ -14,6 +14,7 @@
         [isLoading]="isLoading$ | async"
         [canEditLanguage]="canEditLanguage$ | async"
         [isLoadingAction]="isLoadingAction$ | async"
+        [actionError]="actionErrors$ | async"
         (submitForm)="performAction($event)"
       >
       </app-language-form>

@@ -3,11 +3,15 @@
   }
 
   &_is-error {
-    background: #96251c;
+    background: $global--error-color;
     color: white;
   }
 
   &_is-arabic {
     direction: rtl;
   }
+}
+
+.mat-simple-snackbar-action {
+  color: #fff;
 }

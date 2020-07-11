@@ -1,5 +1,5 @@
 import { Role } from '../role/role';
-import Request from 'src/app/shared/request';
+import FilterRequest from 'src/app/shared/request';
 
 export interface Admin {
   id?: number;
@@ -11,9 +11,21 @@ export interface Admin {
   roleId: number;
   role?: Role;
   password?: string;
+  confirmPassword?: string;
   token?: string;
   partnerId?: number;
   apiKey?: string;
 }
 
-export interface AdminRequest extends Request {}
+export class AdminRequest extends FilterRequest {
+  id?: number;
+  name?: string;
+  description?: string;
+  email?: string;
+  active?: string;
+  country?: string;
+  partnerId?: string;
+  roleId?: string;
+  password?: string;
+  confirmPassword?: string;
+}

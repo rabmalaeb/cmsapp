@@ -11,7 +11,7 @@ import { filter, map } from 'rxjs/operators';
 import { PartnerStoreSelectors, PartnerStoreActions } from '../store';
 import { ActionsSubject, Store } from '@ngrx/store';
 import { RootStoreState } from 'src/app/root-store';
-import { Partner } from '../partner';
+import { Partner, PartnerRequest } from '../partner';
 
 @Component({
   selector: 'app-partner-add',
@@ -100,7 +100,7 @@ export class PartnerAddComponent implements OnInit {
     );
   }
 
-  performAction(partner: Partner) {
+  performAction(partner: PartnerRequest) {
     if (this.actionType === ActionType.EDIT) {
       this.updatePartner(partner);
     } else {
@@ -108,13 +108,13 @@ export class PartnerAddComponent implements OnInit {
     }
   }
 
-  addPartner(params: Partner) {
+  addPartner(params: PartnerRequest) {
     this.store$.dispatch(
       new PartnerStoreActions.AddPartnerRequestAction(params)
     );
   }
 
-  updatePartner(params: Partner) {
+  updatePartner(params: PartnerRequest) {
     const id = params.id;
     this.store$.dispatch(
       new PartnerStoreActions.UpdatePartnerRequestAction(id, params)

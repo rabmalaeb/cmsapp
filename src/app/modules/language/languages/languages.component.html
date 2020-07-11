@@ -38,12 +38,20 @@
       </ng-container>
 
       <ng-container matColumnDef="name">
-        <mat-header-cell mat-sort-header *matHeaderCellDef>Name</mat-header-cell>
-        <mat-cell *matCellDef="let language">{{ language.name }}</mat-cell>
+        <mat-header-cell mat-sort-header *matHeaderCellDef
+          >Name</mat-header-cell
+        >
+        <mat-cell *matCellDef="let language">
+          <div class="link" (click)="editLanguage(language.id)">
+            {{ language.name }}
+          </div>
+        </mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="code">
-        <mat-header-cell mat-sort-header *matHeaderCellDef>Code</mat-header-cell>
+        <mat-header-cell mat-sort-header *matHeaderCellDef
+          >Code</mat-header-cell
+        >
         <mat-cell *matCellDef="let language">
           {{ language.code }}
         </mat-cell>
@@ -53,14 +61,14 @@
         <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
         <mat-cell *matCellDef="let language" class="action-link">
           <a class="table__action" (click)="editLanguage(language.id)"
-            ><mat-icon>edit</mat-icon></a
-          >
+            ><app-icon name="edit"></app-icon
+          ></a>
           <a
             class="table__action"
             (click)="deleteLanguage(language.id)"
             *ngIf="canDeleteLanguage | async"
           >
-            <mat-icon>delete</mat-icon>
+            <app-icon name="delete"></app-icon>
           </a>
         </mat-cell>
       </ng-container>

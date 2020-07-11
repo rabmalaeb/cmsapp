@@ -40,6 +40,10 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
+   this.getPermissions();
+  }
+
+  getPermissions() {
     if (this.authenticationService.isLoggedIn) {
       this.authorizationService.getRolePermissions();
     }

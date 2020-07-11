@@ -4,7 +4,9 @@ import {
   Input,
   Output,
   EventEmitter,
-  OnChanges
+  OnChanges,
+  SimpleChange,
+  SimpleChanges
 } from '@angular/core';
 import {
   Validators,
@@ -36,13 +38,14 @@ export class UserFormComponent implements OnInit, OnChanges {
   @Input() isLoadingAction: boolean;
   @Input() canEditUser = false;
   @Input() isLoading: boolean;
+  @Input() actionErrors: boolean;
   @Output() submitForm = new EventEmitter<User>();
   formGroupDirective: FormGroupDirective;
 
   ngOnInit() {}
 
   ngOnChanges() {
-    if (this.isLoadingAction) {
+    if (this.isLoadingAction || this.actionErrors) {
       return false;
     }
     if (this.user) {

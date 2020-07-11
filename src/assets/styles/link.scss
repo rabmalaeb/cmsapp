@@ -1,0 +1,8 @@
+.link {
+  cursor: pointer;
+  color: $global--secondary-color;
+  transition: 0.2s ease-in-out all;
+  &:hover {
+    text-decoration: underline;
+  }
+}

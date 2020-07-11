@@ -17,6 +17,7 @@
         [actionType]="actionType"
         [isLoadingAction]="isLoadingAction$ | async"
         [canEditAdmin]="canEditAdmin$ | async"
+        [actionError]="actionErrors$ | async"
         (getRolesForPartner)="getRoles($event)"
         (submitForm)="performAction($event)"
       >

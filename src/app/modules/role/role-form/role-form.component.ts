@@ -42,6 +42,7 @@ export class RoleFormComponent implements OnInit, OnChanges {
   @Input() actionType: ActionType;
   @Input() partners: Partner[];
   @Input() permissions: Permission[];
+  @Input() actionError: boolean;
   @Input() isLoadingAction: boolean;
   @Input() isLoading: boolean;
   @Input() canEditRole = false;
@@ -50,7 +51,7 @@ export class RoleFormComponent implements OnInit, OnChanges {
   ngOnInit() {}
 
   ngOnChanges() {
-    if (this.isLoadingAction) {
+    if (this.isLoadingAction || this.actionError) {
       return false;
     }
     this.setPermissionGroups();
@@ -91,7 +92,7 @@ export class RoleFormComponent implements OnInit, OnChanges {
     const partnerId = this.authenticationService.getCurrentUser().partnerId;
     this.roleForm = this.form.group({
       name: ['', [Validators.required]],
-      partnerId: [partnerId ? partnerId : '', [Validators.required]],
+      partnerId: [partnerId ? partnerId : '', [Validators.required]]
     });
   }
 
@@ -99,7 +100,7 @@ export class RoleFormComponent implements OnInit, OnChanges {
     this.roleForm = this.form.group({
       id: [this.role.id],
       name: [this.role.name, [Validators.required]],
-      partnerId: ['', [Validators.required]],
+      partnerId: [this.role.partnerId, [Validators.required]]
     });
   }
 
@@ -156,5 +157,25 @@ export class RoleFormComponent implements OnInit, OnChanges {
 
   get isLoadingForm() {
     return !this.role && this.isLoading;
+  }
+
+  togglePermissions(value: boolean) {
+    this.permissionGroups.forEach(group => {
+      group.permissions.forEach(permission => {
+        permission.isChecked = !value;
+      });
+    });
+  }
+
+  get isAllPermissionsSelected() {
+    let isAllPermissionsSelected = true;
+    this.permissionGroups.forEach(group => {
+      group.permissions.forEach(permission => {
+        if (!permission.isChecked) {
+          isAllPermissionsSelected = false;
+        }
+      });
+    });
+    return isAllPermissionsSelected;
   }
 }

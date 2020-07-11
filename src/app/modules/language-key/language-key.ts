@@ -1,4 +1,4 @@
-import Request from 'src/app/shared/request';
+import FilterRequest from 'src/app/shared/request';
 
 export class LanguageKey {
   id: number;
@@ -6,4 +6,4 @@ export class LanguageKey {
   description: string;
 }
 
-export class LanguageKeyRequest extends Request {}
+export class LanguageKeyRequest extends FilterRequest {}

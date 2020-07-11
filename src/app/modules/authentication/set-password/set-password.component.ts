@@ -6,7 +6,6 @@ import {
   Validators,
   FormGroupDirective
 } from '@angular/forms';
-import { AuthenticationService as UserAuthenticationService } from 'src/app/core/services/authentication.service';
 import { NotificationService } from 'src/app/core/services/notification.service';
 import {
   RootStoreState,
@@ -18,7 +17,7 @@ import { ActionTypes } from '../store/actions';
 import { map, filter } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { StorageParams } from 'src/app/shared/models/general';
-import { ErrorMessages } from 'src/app/shared/models/error';
+import { ErrorMessages } from 'src/app/shared/models/messages';
 import { Router } from '@angular/router';
 import { CustomValidations } from 'src/app/shared/validators/custom-validations';
 import { AuthenticationService } from '../authentication.service';

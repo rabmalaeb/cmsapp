@@ -38,12 +38,20 @@
       </ng-container>
 
       <ng-container matColumnDef="name">
-        <mat-header-cell mat-sort-header *matHeaderCellDef>Name</mat-header-cell>
-        <mat-cell *matCellDef="let supplier">{{ supplier.name }}</mat-cell>
+        <mat-header-cell mat-sort-header *matHeaderCellDef
+          >Name</mat-header-cell
+        >
+        <mat-cell *matCellDef="let supplier">
+          <div class="link" (click)="editSupplier(supplier.id)">
+            {{ supplier.name }}
+          </div>
+        </mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="code">
-        <mat-header-cell mat-sort-header *matHeaderCellDef>Code</mat-header-cell>
+        <mat-header-cell mat-sort-header *matHeaderCellDef
+          >Code</mat-header-cell
+        >
         <mat-cell *matCellDef="let supplier">
           {{ supplier.code }}
         </mat-cell>
@@ -53,14 +61,14 @@
         <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
         <mat-cell *matCellDef="let supplier" class="action-link">
           <a class="table__action" (click)="editSupplier(supplier.id)"
-            ><mat-icon>edit</mat-icon></a
-          >
+            ><app-icon name="edit"></app-icon
+          ></a>
           <a
             class="table__action"
             (click)="deleteSupplier(supplier.id)"
             *ngIf="canDeleteSupplier | async"
-            ><mat-icon>delete</mat-icon></a
-          >
+            ><app-icon name="delete"></app-icon
+          ></a>
         </mat-cell>
       </ng-container>
 

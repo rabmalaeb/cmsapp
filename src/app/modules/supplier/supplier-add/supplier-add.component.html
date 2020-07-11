@@ -14,6 +14,7 @@
         [isLoading]="isLoading$ | async"
         [canEditSupplier]="canEditSupplier$ | async"
         [isLoadingAction]="isLoadingAction$ | async"
+        [actionError]="actionErrors$ | async"
         (submitForm)="performAction($event)"
       >
       </app-supplier-form>

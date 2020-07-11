@@ -15,6 +15,7 @@ import { NotificationService } from 'src/app/core/services/notification.service'
 import { filter } from 'rxjs/operators';
 import { FilterHandler } from 'src/app/shared/filters/filter';
 import { Sort } from '@angular/material/sort';
+import { SuccessMessages, ConfirmMessages } from 'src/app/shared/models/messages';
 
 @Component({
   selector: 'app-admins',
@@ -66,7 +67,7 @@ export class AdminsComponent implements OnInit {
         )
       )
       .subscribe(() => {
-        this.notificationService.showSuccess('Admin Deleted Successfully');
+        this.notificationService.showSuccess(SuccessMessages.ADMIN_DELETED);
       });
 
     this.actionsSubject$
@@ -104,7 +105,7 @@ export class AdminsComponent implements OnInit {
   }
 
   deleteAdmin(id: number) {
-    this.alertService.confirmDelete('Are you sure you want to delete? ', () => {
+    this.alertService.confirmDelete(ConfirmMessages.CONFIRM_DELETE, () => {
       this.store$.dispatch(new AdminStoreActions.DeleteAdminRequestAction(id));
     });
   }

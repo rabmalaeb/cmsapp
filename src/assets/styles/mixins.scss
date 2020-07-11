@@ -3,7 +3,40 @@
 }
 
 @mixin title {
-  font-weight: bold;
-  font-size: 31px;
+  font-size: 21px;
   margin-bottom: 20px;
+}
+
+@mixin inputErrorLabel {
+  transform: translateY(-20%);
+  transition: 0.2s ease-in-out transform;
+  position: absolute;
+  color: $global--error-color;
+  font-size: 9px;
+}
+
+@mixin showInputErrorLabel {
+  transform: translateY(20%);
+}
+
+@mixin indicateError {
+  animation: indicate-error 300ms linear;
+}
+
+@keyframes indicate-error {
+  0% {
+    transform: translateX(0);
+  }
+
+  33% {
+    transform: translateX(2%);
+  }
+
+  66% {
+    transform: translateX(-2%);
+  }
+
+  100% {
+    transform: translateX(0);
+  }
 }

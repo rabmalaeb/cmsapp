@@ -7,7 +7,7 @@
           mat-icon-button
           aria-label="Example icon-button with a menu"
         >
-          <mat-icon>filter_list</mat-icon>
+          <app-icon name="filter-list"></app-icon>
         </button>
       </div>
     </div>
@@ -22,7 +22,7 @@
   <div class="filter-control__title-container" *ngIf="label">
     <div class="filter-control__title">{{ label }}</div>
     <div class="filter-control__close" (click)="closeModal()">
-      <mat-icon>close</mat-icon>
+      <app-icon name="close"></app-icon>
     </div>
   </div>
   <div class="filter-control__filter-container">
@@ -30,25 +30,21 @@
   </div>
   <div class="filter-control__buttons-container">
     <div class="filter-control__button">
-      <button
+      <app-button-item
         type="reset"
-        mat-button
         (click)="resetFilters()"
-        class="button button_is-secondary"
+        [isSecondary]="true"
+        label="Reset Filters"
       >
-        Reset Filters
-      </button>
+      </app-button-item>
     </div>
 
     <div class="filter-control__button">
-      <button
-        type="submit"
-        mat-button
-        class="button button_is-primary"
+      <app-button-item
         (click)="submitFilters()"
+        label="Apply Filters"
       >
-        Apply Filters
-      </button>
+      </app-button-item>
     </div>
   </div>
 </app-x-modal>

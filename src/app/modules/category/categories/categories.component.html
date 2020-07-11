@@ -38,8 +38,14 @@
       </ng-container>
 
       <ng-container matColumnDef="name">
-        <mat-header-cell mat-sort-header *matHeaderCellDef>Name</mat-header-cell>
-        <mat-cell *matCellDef="let category">{{ category.name }}</mat-cell>
+        <mat-header-cell mat-sort-header *matHeaderCellDef
+          >Name</mat-header-cell
+        >
+        <mat-cell *matCellDef="let category">
+          <div class="link" (click)="editCategory(category.id)">
+            {{ category.name }}
+          </div>
+        </mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="parent">
@@ -55,14 +61,14 @@
         <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
         <mat-cell *matCellDef="let category" class="action-link">
           <a class="table__action" (click)="editCategory(category.id)"
-            ><mat-icon>edit</mat-icon></a
-          >
+            ><app-icon name="edit"></app-icon
+          ></a>
           <a
             class="table__action"
             (click)="deleteCategory(category.id)"
             *ngIf="canDeleteCategory | async"
-            ><mat-icon>delete</mat-icon></a
-          >
+            ><app-icon name="delete"></app-icon
+          ></a>
         </mat-cell>
       </ng-container>
 

@@ -54,7 +54,11 @@
         <mat-header-cell mat-sort-header *matHeaderCellDef
           >Name</mat-header-cell
         >
-        <mat-cell *matCellDef="let product">{{ product.name }}</mat-cell>
+        <mat-cell *matCellDef="let product">
+          <div class="link" (click)="editProduct(product.id)">
+            {{ product.name }}
+          </div>
+        </mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="image">
@@ -79,14 +83,14 @@
         <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
         <mat-cell *matCellDef="let product" class="action-link">
           <a class="table__action" (click)="editProduct(product.id)"
-            ><mat-icon>edit</mat-icon></a
-          >
+            ><app-icon name="edit"></app-icon
+          ></a>
           <a
             class="table__action"
             (click)="deleteProduct(product.id)"
             *ngIf="canDeleteProduct | async"
-            ><mat-icon>delete</mat-icon></a
-          >
+            ><app-icon name="delete"></app-icon
+          ></a>
         </mat-cell>
       </ng-container>
 

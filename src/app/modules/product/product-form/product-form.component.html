@@ -1,98 +1,53 @@
-<form
-  [formGroup]="productForm"
-  #formDirective="ngForm"
-  (ngSubmit)="performAction(formDirective)"
-  class="page__form"
-  *ngIf="!isLoadingForm; else loadingMask"
->
+<form [formGroup]="productForm" #formDirective="ngForm" (ngSubmit)="performAction(formDirective)" class="page__form"
+  *ngIf="!isLoadingForm; else loadingMask">
   <div class="page__form-content">
     <div class="page__form-input">
-      <app-input-item
-        id="name"
-        name="name"
-        label="Name"
-        [formControlItem]="name"
-      >
-      </app-input-item>
+      <app-input id="name" name="name" label="Name" [formControlItem]="name">
+      </app-input>
     </div>
 
     <div class="page__form-input">
-      <app-input-item
-        id="description"
-        name="description"
-        label="Description"
-        [formControlItem]="description"
-      >
-      </app-input-item>
+      <app-input id="description" name="description" label="Description" [formControlItem]="description">
+      </app-input>
     </div>
 
     <div class="page__form-input">
-      <app-input-item
-        id="retailPrice"
-        name="retailPrice"
-        label="Retail Price"
-        type="number"
-        [formControlItem]="retailPrice"
-      >
-      </app-input-item>
+      <app-input id="retailPrice" name="retailPrice" label="Retail Price" type="number" [formControlItem]="retailPrice">
+      </app-input>
     </div>
 
     <div class="page__form-input">
-      <app-input-item
-        id="originalPrice"
-        name="originalPrice"
-        label="Original Price"
-        type="number"
-        [formControlItem]="originalPrice"
-      >
-      </app-input-item>
+      <app-input id="originalPrice" name="originalPrice" label="Original Price" type="number"
+        [formControlItem]="originalPrice">
+      </app-input>
     </div>
 
     <div class="page__form-input">
-      <app-input-item
-        id="quantity"
-        name="quantity"
-        label="Quantity"
-        type="number"
-        [formControlItem]="quantity"
-      >
-      </app-input-item>
+      <app-input id="quantity" name="quantity" label="Quantity" type="number" [formControlItem]="quantity">
+      </app-input>
     </div>
 
     <div class="page__form-input">
-      <app-input-item
-        id="unitOfCount"
-        name="unitOfCount"
-        label="Unit Of Count"
-        [formControlItem]="unitOfCount"
-      >
-      </app-input-item>
+      <app-input id="unitOfCount" name="unitOfCount" label="Unit Of Count" [formControlItem]="unitOfCount">
+      </app-input>
     </div>
 
     <div class="page__form-input">
       <div class="form-item">
         <div class="form-item__value form-item__value_is-textfield">
-          <mat-form-field appearance="outline">
-            <mat-label>Category</mat-label>
-            <mat-select placeholder="Category" formControlName="categoryId">
-              <mat-option
-                *ngFor="let category of categories"
-                [value]="category.id"
-              >
-                {{ category.name }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
+          <app-custom-select [formControlItem]="categoryId" label="Category">
+            <ng-select [searchable]="false" [clearable]="false" formControlName="categoryId">
+              <ng-option *ngFor="let category of categories" [value]="category.id">
+                {{ category.name }}</ng-option>
+            </ng-select>
+          </app-custom-select>
         </div>
       </div>
     </div>
     <div class="page__form-input">
       <div class="form-item">
         <div class="form-item__value form-item__value_is-textfield">
-          <app-image-preview
-            (imageSelected)="uploadImage($event)"
-            [resetImage]="resetImage"
-          >
+          <app-image-preview (imageSelected)="uploadImage($event)" [resetImage]="resetImage">
           </app-image-preview>
         </div>
       </div>
@@ -100,14 +55,10 @@
   </div>
   <div class="page__form-button-container" *ngIf="canEditProduct">
     <div class="page__form__button">
-      <button mat-button type="reset" class="button button_is-secondary">
-        Reset
-      </button>
+      <app-button-item [isSecondary]="true" type="reset" label="Reset"> </app-button-item>
     </div>
     <div class="page__form__button">
-      <button mat-button type="submit" class="button button_is-primary">
-        {{ buttonLabel }}
-      </button>
+      <app-button-item [label]="buttonLabel"> </app-button-item>
     </div>
   </div>
 </form>

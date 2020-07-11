@@ -7,22 +7,15 @@
         </div>
       </div>
       <div class="page-header__item" *ngIf="condition">
-        <button
+        <app-button-item
           *ngIf="link; else buttonWithAction"
-          mat-button
-          [routerLink]="link"
-          class="button button_is-primary"
+          [link]="link"
+          [label]="buttonLabel"
         >
-          {{ buttonLabel }}
-        </button>
+        </app-button-item>
         <ng-template #buttonWithAction>
-          <button
-            mat-button
-            (click)="sendAction()"
-            class="button button_is-primary"
-          >
-            {{ buttonLabel }}
-          </button>
+          <app-button-item (click)="sendAction()" [label]="buttonLabel">
+          </app-button-item>
         </ng-template>
       </div>
     </div>

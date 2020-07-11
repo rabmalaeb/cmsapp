@@ -1,5 +1,5 @@
 import { PermissionType } from 'src/app/shared/models/general';
-import Request from 'src/app/shared/request';
+import FilterRequest from 'src/app/shared/request';
 import { ModuleName } from 'src/app/shared/models/nav';
 
 export interface Permission {
@@ -18,7 +18,7 @@ export interface PermissionActionRequest {
   group?: string;
 }
 
-export interface PermissionRequest extends Request {}
+export class PermissionRequest extends FilterRequest {}
 
 
 export class PermissionGroup {

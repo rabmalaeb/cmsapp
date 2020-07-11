@@ -15,6 +15,7 @@ import { ActionTypes } from '../store/actions';
 import { filter } from 'rxjs/operators';
 import { FilterHandler } from 'src/app/shared/filters/filter';
 import { Sort } from '@angular/material/sort';
+import { SuccessMessages, ConfirmMessages } from 'src/app/shared/models/messages';
 
 @Component({
   selector: 'app-suppliers',
@@ -69,7 +70,7 @@ export class SuppliersComponent implements OnInit {
         )
       )
       .subscribe(() => {
-        this.notificationService.showSuccess('Supplier Deleted Successfully');
+        this.notificationService.showSuccess(SuccessMessages.SUPPLIER_DELETED);
       });
 
     this.actionsSubject$
@@ -107,7 +108,7 @@ export class SuppliersComponent implements OnInit {
   }
 
   deleteSupplier(id: number) {
-    this.alertService.confirmDelete('Are you sure you want to delete? ', () => {
+    this.alertService.confirmDelete(ConfirmMessages.CONFIRM_DELETE, () => {
       this.store$.dispatch(
         new SupplierStoreActions.DeleteSupplierRequestAction(id)
       );

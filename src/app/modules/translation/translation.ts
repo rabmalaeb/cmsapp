@@ -1,7 +1,7 @@
 import { Language } from '../language/language';
 import { Partner } from '../partner/partner';
 import { LanguageKey } from '../language-key/language-key';
-import Request from 'src/app/shared/request';
+import FilterRequest from 'src/app/shared/request';
 
 export class Translation {
   id: number;
@@ -14,4 +14,4 @@ export class Translation {
   value: string;
 }
 
-export class TranslationRequest extends Request {}
+export class TranslationRequest extends FilterRequest {}

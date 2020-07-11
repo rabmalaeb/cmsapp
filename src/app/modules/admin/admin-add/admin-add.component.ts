@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Admin } from '../admin';
+import { Admin, AdminRequest } from '../admin';
 import { Role } from '../../role/role';
 import { NotificationService } from 'src/app/core/services/notification.service';
 import { AuthorizationService } from 'src/app/core/services/authorization.service';
@@ -126,22 +126,22 @@ export class AdminAddComponent implements OnInit {
     );
   }
 
-  performAction(admin: Admin) {
+  performAction(adminRequest: AdminRequest) {
     if (this.actionType === ActionType.EDIT) {
-      this.updateAdmin(admin);
+      this.updateAdmin(adminRequest);
     } else {
-      this.addAdmin(admin);
+      this.addAdmin(adminRequest);
     }
   }
 
-  addAdmin(admin: Admin) {
-    this.store$.dispatch(new AdminStoreActions.AddAdminRequestAction(admin));
+  addAdmin(adminRequest: AdminRequest) {
+    this.store$.dispatch(new AdminStoreActions.AddAdminRequestAction(adminRequest));
   }
 
-  updateAdmin(admin: Admin) {
-    const id = admin.id;
+  updateAdmin(adminRequest: AdminRequest) {
+    const id = adminRequest.id;
     this.store$.dispatch(
-      new AdminStoreActions.UpdateAdminRequestAction(id, admin)
+      new AdminStoreActions.UpdateAdminRequestAction(id, adminRequest)
     );
   }
 

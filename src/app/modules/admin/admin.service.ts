@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { AdminSerializerService } from './admin-serializer.service';
 import { map, take } from 'rxjs/operators';
 import { HttpService } from 'src/app/core/services/http.service';
-import { AdminRequest, Admin } from './admin';
+import { AdminRequest } from './admin';
 
 @Injectable({
   providedIn: 'root'
@@ -32,7 +32,7 @@ export class AdminService {
     );
   }
 
-  addAdmin(params: Admin) {
+  addAdmin(params: AdminRequest) {
     return this.httpService.post('admins', { ...params }).pipe(
       map(({ data }) => {
         return this.adminSerializer.getAdmin(data);
@@ -40,7 +40,7 @@ export class AdminService {
     );
   }
 
-  updateAdmin(id: number, params: Admin) {
+  updateAdmin(id: number, params: AdminRequest) {
     return this.httpService.put(`admins/${id}`, { ...params }).pipe(
       map(({ data }) => {
         return this.adminSerializer.getAdmin(data);

@@ -1,5 +1,5 @@
 import { Category } from '../category/category';
-import Request from 'src/app/shared/request';
+import FilterRequest from 'src/app/shared/request';
 
 export class Supplier {
   id: number;
@@ -7,4 +7,4 @@ export class Supplier {
   code: string;
 }
 
-export class SupplierRequest extends Request {}
+export class SupplierRequest extends FilterRequest {}

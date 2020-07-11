@@ -7,49 +7,41 @@
 >
   <div class="page__form-content">
     <div class="page__form-input">
-      <app-input-item
-        id="name"
-        name="name"
-        label="Name"
-        [formControlItem]="name"
-      >
-      </app-input-item>
+      <app-input id="name" name="name" label="Name" [formControlItem]="name">
+      </app-input>
     </div>
 
     <div class="page__form-input">
-      <app-input-item
+      <app-input
         id="description"
         name="description"
         label="Description"
         [formControlItem]="description"
       >
-      </app-input-item>
+      </app-input>
     </div>
 
     <div class="page__form-input">
-      <app-input-item
-        id="link"
-        name="link"
-        label="Link"
-        [formControlItem]="link"
-      >
-      </app-input-item>
+      <app-input id="link" name="link" label="Link" [formControlItem]="link">
+      </app-input>
     </div>
 
     <div class="page__form-input">
       <div class="form-item">
         <div class="form-item__value form-item__value_is-textfield">
-          <mat-form-field appearance="outline">
-            <mat-label>Language</mat-label>
-            <mat-select placeholder="Language" formControlName="languageId">
-              <mat-option
+          <app-custom-select [formControlItem]="languageId" label="Language">
+            <ng-select
+              [searchable]="false"
+              [clearable]="false"
+              formControlName="languageId">
+              <ng-option
                 *ngFor="let language of languages"
                 [value]="language.id"
               >
-                {{ language.name }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
+                {{ language.name }}</ng-option
+              >
+            </ng-select>
+          </app-custom-select>
         </div>
       </div>
     </div>
@@ -67,14 +59,11 @@
   </div>
   <div class="page__form-button-container" *ngIf="canEditBanner">
     <div class="page__form__button">
-      <button mat-button type="reset" class="button button_is-secondary">
-        Reset
-      </button>
+      <app-button-item [isSecondary]="true" type="reset" label="Reset">
+      </app-button-item>
     </div>
     <div class="page__form__button">
-      <button mat-button type="submit" class="button button_is-primary">
-        {{ buttonLabel }}
-      </button>
+      <app-button-item [label]="buttonLabel"> </app-button-item>
     </div>
   </div>
 </form>

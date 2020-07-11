@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { AlertService } from 'src/app/core/services/alert.service';
-import { Partner, PartnerRequest } from '../partner';
+import { Partner } from '../partner';
 import { ModuleName } from 'src/app/shared/models/nav';
 import { AuthorizationService } from 'src/app/core/services/authorization.service';
 import { Observable } from 'rxjs';
@@ -15,6 +15,7 @@ import { ActionTypes } from '../store/actions';
 import { filter } from 'rxjs/operators';
 import { FilterHandler } from 'src/app/shared/filters/filter';
 import { Sort } from '@angular/material/sort';
+import { SuccessMessages, ConfirmMessages } from 'src/app/shared/models/messages';
 
 @Component({
   selector: 'app-partners',
@@ -69,7 +70,7 @@ export class PartnersComponent implements OnInit {
         )
       )
       .subscribe(() => {
-        this.notificationService.showSuccess('Partner Deleted Successfully');
+        this.notificationService.showSuccess(SuccessMessages.PARTNER_DELETED);
       });
 
     this.actionsSubject$
@@ -89,7 +90,7 @@ export class PartnersComponent implements OnInit {
       });
   }
 
-  getPartners(partnerRequest: PartnerRequest = null) {
+  getPartners() {
     const request = this.filterHandler.getRequest();
     this.store$.dispatch(new PartnerStoreActions.LoadRequestAction(request));
   }
@@ -107,7 +108,7 @@ export class PartnersComponent implements OnInit {
   }
 
   deletePartner(id: number) {
-    this.alertService.confirmDelete('Are you sure you want to delete? ', () => {
+    this.alertService.confirmDelete(ConfirmMessages.CONFIRM_DELETE, () => {
       this.store$.dispatch(
         new PartnerStoreActions.DeletePartnerRequestAction(id)
       );

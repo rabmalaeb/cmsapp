@@ -1,66 +1,42 @@
-<form
-  [formGroup]="translationForm"
-  #formDirective="ngForm"
-  (ngSubmit)="performAction(formDirective)"
-  class="page__form"
-  *ngIf="!isLoadingForm; else loadingMask"
->
+<form [formGroup]="translationForm" #formDirective="ngForm" (ngSubmit)="performAction(formDirective)" class="page__form"
+  *ngIf="!isLoadingForm; else loadingMask">
   <div class="page__form-content">
     <div class="page__form-input">
       <div class="form-item" *ngIf="!isLoadingLanguages">
         <div class="form-item__value form-item__value_is-textfield">
-          <mat-form-field appearance="outline">
-            <mat-label>Language</mat-label>
-            <mat-select placeholder="Language" formControlName="languageId">
-              <mat-option
-                *ngFor="let language of languages"
-                [value]="language.id"
-              >
-                {{ language.name }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
+          <app-custom-select [formControlItem]="languageId" label="Language">
+            <ng-select [searchable]="false" [clearable]="false" formControlName="languageId">
+              <ng-option *ngFor="let language of languages" [value]="language.id">
+                {{ language.name }}</ng-option>
+            </ng-select>
+          </app-custom-select>
         </div>
       </div>
     </div>
     <div class="page__form-input">
       <div class="form-item" *ngIf="!isLoadingLanguageKeys">
         <div class="form-item__value form-item__value_is-textfield">
-          <mat-form-field appearance="outline">
-            <mat-label>Key</mat-label>
-            <mat-select placeholder="Key" formControlName="languageKeyId">
-              <mat-option
-                *ngFor="let languageKey of languageKeys"
-                [value]="languageKey.id"
-              >
-                {{ languageKey.name }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
+          <app-custom-select [formControlItem]="languageKeyId" label="Key">
+            <ng-select [searchable]="false" [clearable]="false" formControlName="languageKeyId">
+              <ng-option *ngFor="let languageKey of languageKeys" [value]="languageKey.id">
+                {{ languageKey.name }}</ng-option>
+            </ng-select>
+          </app-custom-select>
         </div>
       </div>
     </div>
 
     <div class="page__form-input">
-      <app-input-item
-        id="value"
-        name="value"
-        label="Value"
-        [formControlItem]="value"
-      >
-      </app-input-item>
+      <app-input id="value" name="value" label="Value" [formControlItem]="value">
+      </app-input>
     </div>
   </div>
   <div class="page__form-button-container" *ngIf="canEditTranslation">
     <div class="page__form__button">
-      <button mat-button type="reset" class="button button_is-secondary">
-        Reset
-      </button>
+      <app-button-item [isSecondary]="true" type="reset" label="Reset"> </app-button-item>
     </div>
     <div class="page__form__button">
-      <button mat-button type="submit" class="button button_is-primary">
-        {{ buttonLabel }}
-      </button>
+      <app-button-item [label]="buttonLabel"> </app-button-item>
     </div>
   </div>
 </form>

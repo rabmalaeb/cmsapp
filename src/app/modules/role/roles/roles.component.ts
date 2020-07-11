@@ -18,6 +18,7 @@ import { NotificationService } from 'src/app/core/services/notification.service'
 import { filter } from 'rxjs/operators';
 import { FilterHandler } from 'src/app/shared/filters/filter';
 import { Sort } from '@angular/material/sort';
+import { SuccessMessages, ConfirmMessages } from 'src/app/shared/models/messages';
 
 @Component({
   selector: 'app-roles',
@@ -66,7 +67,7 @@ export class RolesComponent implements OnInit {
         filter((action: any) => action.type === ActionTypes.DELETE_ROLE_SUCCESS)
       )
       .subscribe(() => {
-        this.notificationService.showSuccess('Role Deleted Successfully');
+        this.notificationService.showSuccess(SuccessMessages.ROLE_DELETED);
       });
 
     this.actionsSubject$
@@ -110,7 +111,7 @@ export class RolesComponent implements OnInit {
   }
 
   deleteRole(id: number) {
-    this.alertService.confirmDelete('Are you sure you want to delete? ', () => {
+    this.alertService.confirmDelete(ConfirmMessages.CONFIRM_DELETE, () => {
       this.store$.dispatch(new RoleStoreActions.DeleteRoleRequestAction(id));
     });
   }

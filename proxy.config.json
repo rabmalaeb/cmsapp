@@ -1,6 +1,6 @@
 {
   "/v1/*": {
-    "target": "http://192.168.10.10/",
+    "target": "http://smartcms.test/",
       "logLevel": "debug",
         "changeOrigin": true,
           "secure": false

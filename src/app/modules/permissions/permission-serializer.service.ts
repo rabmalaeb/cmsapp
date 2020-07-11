@@ -13,6 +13,7 @@ export class PermissionSerializerService {
       name: permissionResponse.attributes.name,
       type: permissionResponse.attributes.type,
       group: permissionResponse.attributes.group,
+      isChecked: false,
       isRolePermission
     };
     return permission;

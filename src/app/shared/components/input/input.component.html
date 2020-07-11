@@ -1,0 +1,24 @@
+<div
+  class="input"
+  [ngClass]="{ 'input_has-error': hasError }"
+  (click)="moveFocusToInput()"
+>
+  <div class="input__label">
+    {{ label }}
+  </div>
+  <input
+    #input
+    class="input__item"
+    [type]="type"
+    [id]="id"
+    [name]="name"
+    [value]="value"
+    [formControl]="formControlItem"
+    [readonly]="readonly"
+  />
+  <div class="input__error">
+    <div class="input__error-message" *ngIf="formControlItem && hasError">
+      <app-input-error [errorMessage]="errorMessage"></app-input-error>
+    </div>
+  </div>
+</div>

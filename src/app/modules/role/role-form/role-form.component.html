@@ -1,32 +1,20 @@
-<form
-  [formGroup]="roleForm"
-  #formDirective="ngForm"
-  (ngSubmit)="performAction(formDirective)"
-  class="page__form"
-  *ngIf="!isLoadingForm; else loadingMask"
->
+<form [formGroup]="roleForm" #formDirective="ngForm" (ngSubmit)="performAction(formDirective)" class="page__form"
+  *ngIf="!isLoadingForm; else loadingMask">
   <div class="page__form-content">
     <div class="page__form-input">
-      <app-input-item
-        id="name"
-        name="name"
-        label="Name"
-        [formControlItem]="name"
-      >
-      </app-input-item>
+      <app-input id="name" name="name" label="Name" [formControlItem]="name">
+      </app-input>
     </div>
 
     <div class="page__form-input">
       <div class="form-item">
         <div class="form-item__value form-item__value_is-textfield">
-          <mat-form-field appearance="outline">
-            <mat-label>Partner</mat-label>
-            <mat-select placeholder="Partner" formControlName="partnerId">
-              <mat-option *ngFor="let partner of partners" [value]="partner.id">
-                {{ partner.name }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
+          <app-custom-select [formControlItem]="partnerId" label="Partner">
+            <ng-select [searchable]="false" [clearable]="false" formControlName="partnerId">
+              <ng-option *ngFor="let partner of partners" [value]="partner.id">
+                {{ partner.name }}</ng-option>
+            </ng-select>
+          </app-custom-select>
         </div>
       </div>
     </div>
@@ -36,26 +24,24 @@
         Set Permissions
       </div>
     </div>
-
-    <div
-      class="page__form-item"
-      *ngFor="let permissionGroup of permissionGroups"
-    >
-      <app-permission-group
-        [permissionGroup]="permissionGroup"
-      ></app-permission-group>
+    <div class="page__form-item">
+      <mat-checkbox [checked]="isAllPermissionsSelected" (change)="togglePermissions(isAllPermissionsSelected)">
+        Select All
+      </mat-checkbox>
+    </div>
+    <div class="page__form-section page__form-section_is-wrap">
+      <div class="page__form-item page__form-item_is-permission" *ngFor="let permissionGroup of permissionGroups">
+        <app-permission-group [permissionGroup]="permissionGroup"></app-permission-group>
+      </div>
     </div>
   </div>
   <div class="page__form-button-container" *ngIf="canEditRole">
     <div class="page__form__button">
-      <button mat-button type="reset" class="button button_is-secondary">
-        Reset
-      </button>
+      <app-button-item [isSecondary]="true" type="reset" label="Reset">
+      </app-button-item>
     </div>
     <div class="page__form__button">
-      <button mat-button type="submit" class="button button_is-primary">
-        {{ buttonLabel }}
-      </button>
+      <app-button-item [label]="buttonLabel"> </app-button-item>
     </div>
   </div>
 </form>

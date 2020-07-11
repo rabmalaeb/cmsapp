@@ -32,6 +32,7 @@ export class SupplierFormComponent implements OnInit, OnChanges {
   supplierForm: FormGroup;
   @Input() supplier: Supplier;
   @Input() actionType: ActionType;
+  @Input() actionError: boolean;
   @Input() isLoadingAction: boolean;
   @Input() canEditSupplier = false;
   @Input() isLoading: boolean;
@@ -41,7 +42,7 @@ export class SupplierFormComponent implements OnInit, OnChanges {
   ngOnInit() {}
 
   ngOnChanges() {
-    if (this.isLoadingAction) {
+    if (this.isLoadingAction || this.actionError) {
       return false;
     }
     if (this.supplier) {

@@ -1,7 +1,7 @@
 import { Category } from '../category/category';
 import { Media } from '../media/media';
-import Request from 'src/app/shared/request';
 import { ImageModel } from 'src/app/shared/models/image';
+import FilterRequest from 'src/app/shared/request';
 
 export class Product extends ImageModel {
   id: number;
@@ -17,13 +17,11 @@ export class Product extends ImageModel {
   media: Media;
 }
 
-export class ProductRequest extends Request {
+export class ProductRequest extends FilterRequest implements Partial<ProductFilterLimits> {
   minimumRetailPrice?: number;
   maximumRetailPrice?: number;
   minimumOriginalPrice?: number;
   maximumOriginalPrice?: number;
-  sortBy?: string;
-  sortDirection?: string;
   'categories[]'?: number[];
 }
 

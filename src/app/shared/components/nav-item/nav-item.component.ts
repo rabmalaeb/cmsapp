@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { NavItem } from '../../models/nav';
+import { NavItemOptions } from '../../models/nav';
 
 @Component({
   selector: 'app-nav-item',
@@ -8,7 +8,7 @@ import { NavItem } from '../../models/nav';
 })
 export class NavItemComponent implements OnInit {
 
-  @Input() navItem: NavItem;
+  @Input() navItem: NavItemOptions;
 
   constructor() { }
 

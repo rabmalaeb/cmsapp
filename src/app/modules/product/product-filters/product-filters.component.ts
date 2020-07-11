@@ -95,7 +95,7 @@ export class ProductFiltersComponent
    * the currentPage is always 1 since we always return the first page of the filtered list
    */
   buildRequest(): ProductRequest {
-    const productRequest = {
+    const productRequest: ProductRequest = {
       searchQuery: this.searchQuery.value ? this.searchQuery.value : '',
       minimumRetailPrice: this.selectedRetailPriceRange.minimum,
       maximumRetailPrice: this.selectedRetailPriceRange.maximum,

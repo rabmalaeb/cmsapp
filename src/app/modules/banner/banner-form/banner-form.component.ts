@@ -35,6 +35,7 @@ export class BannerFormComponent implements OnInit, OnChanges {
   @Input() actionType: ActionType;
   @Input() isLoadingAction: boolean;
   @Input() canEditBanner = false;
+  @Input() actionError: boolean;
   @Input() isLoading: boolean;
   @Output() submitForm = new EventEmitter<Banner>();
   formGroupDirective: FormGroupDirective;
@@ -45,7 +46,7 @@ export class BannerFormComponent implements OnInit, OnChanges {
   ngOnInit() {}
 
   ngOnChanges() {
-    if (this.isLoadingAction) {
+    if (this.isLoadingAction || this.actionError) {
       return false;
     }
     if (this.banner) {
@@ -64,8 +65,8 @@ export class BannerFormComponent implements OnInit, OnChanges {
       name: ['', [Validators.required]],
       description: ['', [Validators.required]],
       link: ['', [Validators.required]],
-      mediaId: [0, [Validators.required]],
-      languageId: [0, [Validators.required]]
+      mediaId: ['', [Validators.required]],
+      languageId: ['', [Validators.required]]
     });
   }
 

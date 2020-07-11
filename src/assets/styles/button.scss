@@ -3,20 +3,17 @@
   padding: 10px;
   cursor: pointer;
   width: 100%;
-
-  &_is-primary {
-    background-color: $global--secondary-color;
-    color: #fff;
-    &:hover {
+  transition: 0.2s ease-in-out all;
+  background-color: $global--secondary-color;
+  color: #fff;
+  &:hover {
     background-color: $global--secondary-color-hover;
-    }
   }
 
   &_is-secondary {
     background-color: $global--button-secondary-color;
-    color: #fff;
     &:hover {
-    background-color: $global--button-secondary-color-hover;
+      background-color: $global--button-secondary-color-hover;
     }
   }
 
@@ -24,4 +21,7 @@
     background-color: #b9b9b9;
   }
 
+  &_is-clicked {
+    transform: scale(0.96);
+  }
 }

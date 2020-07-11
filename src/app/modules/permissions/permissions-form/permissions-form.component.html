@@ -1,59 +1,37 @@
-<form
-  [formGroup]="permissionForm"
-  #formDirective="ngForm"
-  (ngSubmit)="performAction(formDirective)"
-  class="page__form"
-  *ngIf="!isLoadingForm; else loadingMask"
->
+<form [formGroup]="permissionForm" #formDirective="ngForm" (ngSubmit)="performAction(formDirective)" class="page__form"
+  *ngIf="!isLoadingForm; else loadingMask">
   <div class="page__form-content">
     <div class="page__form-input">
       <div class="form-item">
         <div class="form-item__value form-item__value_is-textfield">
-          <mat-form-field appearance="outline">
-            <mat-label>modules</mat-label>
-            <mat-select placeholder="modules" formControlName="modules">
-              <mat-option
-                *ngFor="let module of appModules"
-                [value]="module.name"
-              >
-                {{ module.name | titlecase }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
+          <app-custom-select [formControlItem]="modules" label="Modules">
+            <ng-select [searchable]="false" [clearable]="false" formControlName="modules">
+              <ng-option *ngFor="let module of appModules" [value]="module.options.name">
+                {{ module.options.name | titlecase }}</ng-option>
+            </ng-select>
+          </app-custom-select>
         </div>
       </div>
     </div>
     <div class="page__form-input">
       <div class="form-item">
         <div class="form-item__value form-item__value_is-textfield">
-          <mat-form-field appearance="outline">
-            <mat-label>Permission Type</mat-label>
-            <mat-select
-              placeholder="Permission Type"
-              formControlName="permissionType"
-            >
-              <mat-option
-                *ngFor="let permissionType of permissionTypes"
-                [value]="permissionType"
-              >
-                {{ permissionType | titlecase }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
+          <app-custom-select [formControlItem]="permissionType" label="Permission Type">
+            <ng-select [searchable]="false" [clearable]="false" formControlName="permissionType">
+              <ng-option *ngFor="let permissionType of permissionTypes" [value]="permissionType">
+                {{ permissionType | titlecase }}</ng-option>
+            </ng-select>
+          </app-custom-select>
         </div>
       </div>
     </div>
   </div>
   <div class="page__form-button-container" *ngIf="canEditPermission">
     <div class="page__form__button">
-      <button mat-button type="reset" class="button button_is-secondary">
-        Reset
-      </button>
+      <app-button-item [isSecondary]="true" type="reset" label="Reset"> </app-button-item>
     </div>
     <div class="page__form__button">
-      <button mat-button type="submit" class="button button_is-primary">
-        {{ buttonLabel }}
-      </button>
+      <app-button-item [label]="buttonLabel"> </app-button-item>
     </div>
   </div>
 </form>

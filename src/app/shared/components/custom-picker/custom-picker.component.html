@@ -1,0 +1,26 @@
+<div
+  class="custom-picker"
+  (click)="triggerInputClick()"
+  [ngClass]="{ 'custom-picker_has-error': hasError }"
+>
+  <div class="custom-picker__container">
+    <div class="custom-picker__label">
+      {{ label }}
+    </div>
+    <div class="custom-picker__input-container">
+      <input
+        #input
+        [formControl]="formControl"
+        [owlDateTimeTrigger]="selector"
+        [owlDateTimeFilter]="filter"
+        [owlDateTime]="selector"
+        class="custom-picker__input"
+        (dateTimeChange)="triggerDateTimeChange($event)"
+      />
+      <ng-content></ng-content>
+    </div>
+  </div>
+  <div class="custom-picker__error" *ngIf="formControl && validate">
+    <app-input-error [errorMessage]="errorMessage"> </app-input-error>
+  </div>
+</div>

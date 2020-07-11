@@ -1,0 +1,18 @@
+<div
+  class="custom-select"
+  [ngClass]="{ 'custom-select_has-error': hasError }"
+>
+  <div class="custom-select__container">
+    <div class="custom-select__label">
+      {{ label }}
+    </div>
+    <div class="custom-select__input">
+      <ng-content></ng-content>
+    </div>
+  </div>
+  <div class="custom-select__error">
+    <div class="custom-select__error-message" *ngIf="formControlItem && hasError">
+      <app-input-error [errorMessage]="errorMessage"></app-input-error>
+    </div>
+  </div>
+</div>

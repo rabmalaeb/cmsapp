@@ -1,0 +1,25 @@
+.ng-select.ng-select-focused:not(.ng-select-opened) > .ng-select-container {
+  box-shadow: unset;
+  border-width: 2px;
+  border-color: $global--primary-color;
+}
+
+.ng-select.ng-select-focused.ng-select-opened > .ng-select-container {
+  box-shadow: unset;
+  border-width: 2px;
+  border-color: $global--secondary-color;
+}
+
+.ng-select .ng-select-container:hover {
+  box-shadow: unset;
+  border-width: 2px;
+  border-color: #000;
+}
+
+.ng-dropdown-panel.ng-select-bottom {
+  top: 104%;
+}
+
+.ng-dropdown-panel.ng-select-top {
+  bottom: 104%;
+}

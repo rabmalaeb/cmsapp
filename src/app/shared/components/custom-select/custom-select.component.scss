@@ -1,0 +1,29 @@
+@import '../../../../assets/styles/global';
+@import '../../../../assets/styles/mixins';
+
+.custom-select {
+  position: relative;
+  padding-bottom: 10px;
+  &_has-error {
+    .custom-select__label {
+      color: $global--error-color;
+    }
+    .custom-select__input {
+      @include indicateError;
+    }
+    ::ng-deep .ng-select .ng-select-container {
+      border-color: $global--error-color;
+    }
+    .custom-select__error {
+      @include showInputErrorLabel;
+    }
+  }
+}
+
+.custom-select__label {
+  margin-bottom: 5px;
+}
+
+.custom-select__error {
+  @include inputErrorLabel;
+}
