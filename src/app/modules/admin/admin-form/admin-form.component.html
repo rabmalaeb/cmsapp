@@ -46,6 +46,7 @@
             <ng-select
               (change)="getRoles()"
               [searchable]="false"
+              [clearable]="false"
               formControlName="partnerId"
             >
               <ng-option *ngFor="let partner of partners" [value]="partner.id">
@@ -60,7 +61,10 @@
       <div class="form-item">
         <div class="form-item__value form-item__value_is-textfield">
           <app-custom-select [formControlItem]="roleId" label="Role">
-            <ng-select [searchable]="false" formControlName="roleId">
+            <ng-select
+              [searchable]="false"
+              [clearable]="false"
+               formControlName="roleId">
               <ng-option *ngFor="let role of roles" [value]="role.id">
                 {{ role.name }}</ng-option
               >

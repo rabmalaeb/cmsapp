@@ -1,22 +1,13 @@
-<form
-  [formGroup]="permissionForm"
-  #formDirective="ngForm"
-  (ngSubmit)="performAction(formDirective)"
-  class="page__form"
-  *ngIf="!isLoadingForm; else loadingMask"
->
+<form [formGroup]="permissionForm" #formDirective="ngForm" (ngSubmit)="performAction(formDirective)" class="page__form"
+  *ngIf="!isLoadingForm; else loadingMask">
   <div class="page__form-content">
     <div class="page__form-input">
       <div class="form-item">
         <div class="form-item__value form-item__value_is-textfield">
           <app-custom-select [formControlItem]="modules" label="Modules">
-            <ng-select [searchable]="false" formControlName="modules">
-              <ng-option
-                *ngFor="let module of appModules"
-                [value]="module.options.name"
-              >
-                {{ module.options.name | titlecase }}</ng-option
-              >
+            <ng-select [searchable]="false" [clearable]="false" formControlName="modules">
+              <ng-option *ngFor="let module of appModules" [value]="module.options.name">
+                {{ module.options.name | titlecase }}</ng-option>
             </ng-select>
           </app-custom-select>
         </div>
@@ -25,17 +16,10 @@
     <div class="page__form-input">
       <div class="form-item">
         <div class="form-item__value form-item__value_is-textfield">
-          <app-custom-select
-            [formControlItem]="permissionType"
-            label="Permission Type"
-          >
-            <ng-select [searchable]="false" formControlName="permissionType">
-              <ng-option
-                *ngFor="let permissionType of permissionTypes"
-                [value]="permissionType"
-              >
-                {{ permissionType | titlecase }}</ng-option
-              >
+          <app-custom-select [formControlItem]="permissionType" label="Permission Type">
+            <ng-select [searchable]="false" [clearable]="false" formControlName="permissionType">
+              <ng-option *ngFor="let permissionType of permissionTypes" [value]="permissionType">
+                {{ permissionType | titlecase }}</ng-option>
             </ng-select>
           </app-custom-select>
         </div>

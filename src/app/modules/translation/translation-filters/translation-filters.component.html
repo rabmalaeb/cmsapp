@@ -19,14 +19,14 @@
 
     <div class="filters__button-container">
       <div class="filters__button">
-        <button
+        <app-button-item
           [disabled]="isFormEmpty"
           type="reset"
           [isSecondary]="true"
           (click)="resetFilters()"
         >
           Clear Filters
-        </button>
+        </app-button-item>
       </div>
 
       <div class="filters__button">

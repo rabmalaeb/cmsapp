@@ -1,10 +1,5 @@
-<form
-  [formGroup]="categoryForm"
-  #formDirective="ngForm"
-  (ngSubmit)="performAction(formDirective)"
-  class="page__form"
-  *ngIf="!isLoadingForm; else loadingMask"
->
+<form [formGroup]="categoryForm" #formDirective="ngForm" (ngSubmit)="performAction(formDirective)" class="page__form"
+  *ngIf="!isLoadingForm; else loadingMask">
   <div class="page__form-content">
     <div class="page__form-input">
       <app-input id="name" name="name" label="Name" [formControlItem]="name">
@@ -12,28 +7,16 @@
     </div>
 
     <div class="page__form-input">
-      <app-input
-        id="description"
-        name="description"
-        label="Description"
-        [formControlItem]="description"
-      >
+      <app-input id="description" name="description" label="Description" [formControlItem]="description">
       </app-input>
     </div>
     <div class="page__form-input">
       <div class="form-item">
         <div class="form-item__value form-item__value_is-textfield">
-          <app-custom-select
-            [formControlItem]="parentId"
-            label="Parent Category"
-          >
-            <ng-select [searchable]="false" formControlName="parentId">
-              <ng-option
-                *ngFor="let category of categories"
-                [value]="category.id"
-              >
-                {{ category.name }}</ng-option
-              >
+          <app-custom-select [formControlItem]="parentId" label="Parent Category">
+            <ng-select [searchable]="false" [clearable]="false" formControlName="parentId">
+              <ng-option *ngFor="let category of categories" [value]="category.id">
+                {{ category.name }}</ng-option>
             </ng-select>
           </app-custom-select>
         </div>
@@ -42,10 +25,7 @@
     <div class="page__form-input">
       <div class="form-item">
         <div class="form-item__value form-item__value_is-textfield">
-          <app-image-preview
-            (imageSelected)="uploadImage($event)"
-            [resetImage]="resetImage"
-          >
+          <app-image-preview (imageSelected)="uploadImage($event)" [resetImage]="resetImage">
           </app-image-preview>
         </div>
       </div>

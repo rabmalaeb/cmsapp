@@ -1,10 +1,5 @@
-<form
-  [formGroup]="roleForm"
-  #formDirective="ngForm"
-  (ngSubmit)="performAction(formDirective)"
-  class="page__form"
-  *ngIf="!isLoadingForm; else loadingMask"
->
+<form [formGroup]="roleForm" #formDirective="ngForm" (ngSubmit)="performAction(formDirective)" class="page__form"
+  *ngIf="!isLoadingForm; else loadingMask">
   <div class="page__form-content">
     <div class="page__form-input">
       <app-input id="name" name="name" label="Name" [formControlItem]="name">
@@ -15,10 +10,9 @@
       <div class="form-item">
         <div class="form-item__value form-item__value_is-textfield">
           <app-custom-select [formControlItem]="partnerId" label="Partner">
-            <ng-select [searchable]="false" formControlName="partnerId">
+            <ng-select [searchable]="false" [clearable]="false" formControlName="partnerId">
               <ng-option *ngFor="let partner of partners" [value]="partner.id">
-                {{ partner.name }}</ng-option
-              >
+                {{ partner.name }}</ng-option>
             </ng-select>
           </app-custom-select>
         </div>
@@ -31,21 +25,13 @@
       </div>
     </div>
     <div class="page__form-item">
-      <mat-checkbox
-        [checked]="isAllPermissionsSelected"
-        (change)="togglePermissions(isAllPermissionsSelected)"
-      >
+      <mat-checkbox [checked]="isAllPermissionsSelected" (change)="togglePermissions(isAllPermissionsSelected)">
         Select All
       </mat-checkbox>
     </div>
     <div class="page__form-section page__form-section_is-wrap">
-      <div
-        class="page__form-item page__form-item_is-permission"
-        *ngFor="let permissionGroup of permissionGroups"
-      >
-        <app-permission-group
-          [permissionGroup]="permissionGroup"
-        ></app-permission-group>
+      <div class="page__form-item page__form-item_is-permission" *ngFor="let permissionGroup of permissionGroups">
+        <app-permission-group [permissionGroup]="permissionGroup"></app-permission-group>
       </div>
     </div>
   </div>

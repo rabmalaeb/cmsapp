@@ -26,9 +26,6 @@
   transition: 0.2s ease-in-out all;
   &_is-active {
     background-color: $global--primary-color-hover;
-    // .nav-item__container {
-    //   transform: scale(0.96);
-    // }
   }
   &:hover {
     background-color: rgba($global--primary-color-hover, 0.7);

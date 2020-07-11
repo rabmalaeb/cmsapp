@@ -1,5 +1,6 @@
 .icon {
   font-size: 18px;
+  transition: 0.2s ease-in-out transform;
   &:hover {
     transform: scale(1.1);
   }
