@@ -85,6 +85,18 @@ export class AppService {
       link: 'suppliers',
       isActive: this.authorizationService.canView(ModuleName.SUPPLIERS),
       iconName: 'truck'
+    }),
+    new NavItem({
+      name: ModuleName.BRANDS,
+      link: 'brands',
+      isActive: this.authorizationService.canView(ModuleName.BRANDS),
+      iconName: 'truck'
+    }),
+    new NavItem({
+      name: ModuleName.MANUFACTURERS,
+      link: 'manufacturers',
+      isActive: this.authorizationService.canView(ModuleName.MANUFACTURERS),
+      iconName: 'truck'
     })
   ];
 

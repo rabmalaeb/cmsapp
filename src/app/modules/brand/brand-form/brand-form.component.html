@@ -1,0 +1,30 @@
+<form
+  [formGroup]="brandForm"
+  #formDirective="ngForm"
+  (ngSubmit)="performAction(formDirective)"
+  class="page__form"
+  *ngIf="!isLoadingForm; else loadingMask"
+>
+  <div class="page__form-content">
+    <div class="page__form-input">
+      <app-input id="name" name="name" label="Name" [formControlItem]="name">
+      </app-input>
+    </div>
+
+    <div class="page__form-input">
+      <app-input id="code" name="code" label="Code" [formControlItem]="code">
+      </app-input>
+    </div>
+  </div>
+  <div class="page__form-button-container" *ngIf="canEditBrand">
+    <div class="page__form__button">
+      <app-button-item [isSecondary]="true" type="reset" label="Reset"> </app-button-item>
+    </div>
+    <div class="page__form__button">
+      <app-button-item [label]="buttonLabel"> </app-button-item>
+    </div>
+  </div>
+</form>
+<ng-template #loadingMask>
+  <app-form-loading [size]="2"></app-form-loading>
+</ng-template>

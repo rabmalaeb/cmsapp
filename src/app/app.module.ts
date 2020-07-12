@@ -29,6 +29,8 @@ import { ErrorInterceptor } from './core/interceptors/error.interceptor';
 import { BannerModule } from './modules/banner/banner.module';
 import { SupplierModule } from './modules/supplier/supplier.module';
 import { ApiKeyInterceptor } from './core/interceptors/apiKey.interceptor';
+import { BrandModule } from './modules/brand/brand.module';
+import { ManufacturerModule } from './modules/manufacturer/manufacturer.module';
 
 
 @NgModule({
@@ -51,6 +53,8 @@ import { ApiKeyInterceptor } from './core/interceptors/apiKey.interceptor';
     SupplierModule,
     RoleModule,
     BannerModule,
+    BrandModule,
+    ManufacturerModule,
     AuthenticationModule,
     RootStoreModule,
     StoreModule.forRoot({}),

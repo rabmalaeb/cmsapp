@@ -13,11 +13,16 @@ export class Product extends ImageModel {
   originalPrice: number;
   unitOfCount: string;
   quantity: number;
+  brand: string;
+  manufacturer: string;
+  country: string;
+  code: string;
   category: Category;
   media: Media;
 }
 
-export class ProductRequest extends FilterRequest implements Partial<ProductFilterLimits> {
+export class ProductRequest extends FilterRequest
+  implements Partial<ProductFilterLimits> {
   minimumRetailPrice?: number;
   maximumRetailPrice?: number;
   minimumOriginalPrice?: number;

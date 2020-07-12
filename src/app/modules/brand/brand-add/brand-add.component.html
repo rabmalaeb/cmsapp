@@ -1,0 +1,23 @@
+<div class="page">
+  <div class="page__section">
+    <app-page-header
+      [label]="title"
+      buttonLabel="Back to Brands"
+      link="/brands"
+    >
+    </app-page-header>
+  </div>
+  <div class="page__container">
+    <div class="page__form-container">
+      <app-brand-form
+        [brand]="brand$ | async"
+        [isLoading]="isLoading$ | async"
+        [canEditBrand]="canEditBrand$ | async"
+        [isLoadingAction]="isLoadingAction$ | async"
+        [actionError]="actionErrors$ | async"
+        (submitForm)="performAction($event)"
+      >
+      </app-brand-form>
+    </div>
+  </div>
+</div>

@@ -69,6 +69,10 @@ export class ProductFormComponent implements OnInit, OnChanges {
       retailPrice: ['', [Validators.required]],
       originalPrice: ['', [Validators.required]],
       quantity: ['', [Validators.required]],
+      brand: ['', [Validators.required]],
+      manufacturer: ['', [Validators.required]],
+      country: ['', Validators.required],
+      code: ['', Validators.required],
       unitOfCount: ['', [Validators.required]]
     });
   }
@@ -82,6 +86,10 @@ export class ProductFormComponent implements OnInit, OnChanges {
       retailPrice: [this.product.retailPrice, [Validators.required]],
       originalPrice: [this.product.originalPrice, [Validators.required]],
       quantity: [this.product.quantity, [Validators.required]],
+      brand: [this.product.brand, [Validators.required]],
+      manufacturer: [this.product.manufacturer, [Validators.required]],
+      country: [this.product.country, Validators.required],
+      code: [this.product.code, Validators.required],
       unitOfCount: [this.product.unitOfCount, [Validators.required]]
     });
   }
@@ -90,8 +98,24 @@ export class ProductFormComponent implements OnInit, OnChanges {
     return this.productForm.get('name');
   }
 
+  get brand() {
+    return this.productForm.get('brand');
+  }
+
+  get manufacturer() {
+    return this.productForm.get('manufacturer');
+  }
+
+  get code() {
+    return this.productForm.get('code');
+  }
+
   get description() {
     return this.productForm.get('description');
+  }
+
+  get country() {
+    return this.productForm.get('country');
   }
 
   get retailPrice() {
@@ -144,6 +168,9 @@ export class ProductFormComponent implements OnInit, OnChanges {
     product.originalPrice = this.originalPrice.value;
     product.quantity = this.quantity.value;
     product.unitOfCount = this.unitOfCount.value;
+    product.code = this.code.value;
+    product.manufacturer = this.manufacturer.value;
+    product.brand = this.brand.value;
     if (this.productImage) {
       product.image = this.productImage;
     }

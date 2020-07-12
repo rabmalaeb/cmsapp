@@ -28,6 +28,9 @@ export class ProductSerializerService {
     );
     product.quantity = parseInt(productResponse.attributes.quantity, 0);
     product.unitOfCount = productResponse.attributes.unitOfCount;
+    product.brand = productResponse.attributes.brand;
+    product.manufacturer = productResponse.attributes.manufacturer;
+    product.code = productResponse.attributes.code;
     product.category = this.categorySerializer.getCategory(
       productResponse.relationships.category
     );

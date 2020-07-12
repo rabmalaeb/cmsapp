@@ -63,9 +63,8 @@ export class BannerFormComponent implements OnInit, OnChanges {
   buildNewBannerForm() {
     this.bannerForm = this.form.group({
       name: ['', [Validators.required]],
-      description: ['', [Validators.required]],
-      link: ['', [Validators.required]],
-      mediaId: ['', [Validators.required]],
+      description: [''],
+      link: [''],
       languageId: ['', [Validators.required]]
     });
   }
@@ -74,9 +73,8 @@ export class BannerFormComponent implements OnInit, OnChanges {
     this.bannerForm = this.form.group({
       id: [this.banner.id],
       name: [this.banner.name, [Validators.required]],
-      description: [this.banner.description, [Validators.required]],
-      link: [this.banner.link, [Validators.required]],
-      mediaId: [this.banner.mediaId, [Validators.required]],
+      description: [this.banner.description],
+      link: [this.banner.link],
       languageId: [this.banner.languageId, [Validators.required]]
     });
   }
@@ -110,7 +108,9 @@ export class BannerFormComponent implements OnInit, OnChanges {
     banner.description = this.description.value;
     banner.link = this.link.value;
     banner.languageId = this.languageId.value;
-    banner.image = this.bannerImage;
+    if (this.bannerImage) {
+      banner.image = this.bannerImage;
+    }
     return banner;
   }
 

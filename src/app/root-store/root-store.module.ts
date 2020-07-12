@@ -13,6 +13,8 @@ import { LanguageKeyStoreModule } from '../modules/language-key/store';
 import { AuthenticationStoreModule } from '../modules/authentication/store';
 import { BannerStoreModule } from '../modules/banner/store';
 import { SupplierStoreModule } from '../modules/supplier/store';
+import { BrandStoreModule } from '../modules/brand/store';
+import { ManufacturerStoreModule } from '../modules/manufacturer/store';
 
 
 
@@ -33,7 +35,9 @@ import { SupplierStoreModule } from '../modules/supplier/store';
     PermissionStoreModule,
     AdminStoreModule,
     BannerStoreModule,
-    SupplierStoreModule
+    SupplierStoreModule,
+    BrandStoreModule,
+    ManufacturerStoreModule
   ]
 })
 export class RootStoreModule { }

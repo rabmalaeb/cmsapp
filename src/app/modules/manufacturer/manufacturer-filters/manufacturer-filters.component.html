@@ -1,0 +1,44 @@
+<div class="filters__container">
+  <form
+    class="filters__form"
+    #ngForm="ngForm"
+    [formGroup]="filterForm"
+    (ngSubmit)="submitFilters()"
+  >
+    <div class="filters__item-container">
+      <div class="filters__item">
+        <app-input
+          id="searchQuery"
+          name="searchQuery"
+          label="Search By Name"
+          [formControlItem]="searchQuery"
+        >
+        </app-input>
+      </div>
+    </div>
+
+    <div class="filters__button-container">
+      <div class="filters__button">
+        <app-button-item
+          [disabled]="isFormEmpty"
+          type="reset"
+          [isSecondary]="true"
+          (click)="resetFilters()"
+        >
+          Clear Filters
+        </app-button-item>
+      </div>
+
+      <div class="filters__button">
+        <app-button-item
+          [disabled]="isFormEmpty"
+          type="submit"
+          mat-button
+          class="button button_is-primary"
+        >
+          Apply Filters
+        </app-button-item>
+      </div>
+    </div>
+  </form>
+</div>
