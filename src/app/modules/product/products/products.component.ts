@@ -20,7 +20,14 @@ import {
 } from '../../category/store';
 import { Sort } from '@angular/material/sort';
 import { FilterHandler } from 'src/app/shared/filters/filter';
-import { SuccessMessages, ConfirmMessages } from 'src/app/shared/models/messages';
+import {
+  SuccessMessages,
+  ConfirmMessages
+} from 'src/app/shared/models/messages';
+import { BrandStoreActions, BrandStoreSelectors } from '../../brand/store';
+import { Brand } from '../../brand/brand';
+import { ManufacturerStoreActions, ManufacturerStoreSelectors } from '../../manufacturer/store';
+import { Manufacturer } from '../../manufacturer/manufacturer';
 
 @Component({
   selector: 'app-products',
@@ -32,6 +39,8 @@ export class ProductsComponent implements OnInit {
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   products$: Observable<Product[]>;
   categories$: Observable<Category[]>;
+  manufacturers$: Observable<Manufacturer[]>;
+  brands$: Observable<Brand[]>;
   error$: Observable<string>;
   totalNumberOfItems$: Observable<number>;
   productFilterLimits$: Observable<ProductFilterLimits>;
@@ -51,22 +60,12 @@ export class ProductsComponent implements OnInit {
     this.getProducts();
     this.getProductFilterLimits();
     this.getCategories();
+    this.getBrands();
+    this.getManufacturers();
     this.initializeStoreVariables();
   }
 
   initializeStoreVariables() {
-    this.products$ = this.store$.select(
-      ProductStoreSelectors.selectAllProductItems
-    );
-
-    this.categories$ = this.store$.select(
-      CategoryStoreSelectors.selectAllCategoryItems
-    );
-
-    this.productFilterLimits$ = this.store$.select(
-      ProductStoreSelectors.selectProductFilterLimits
-    );
-
     this.error$ = this.store$.select(
       ProductStoreSelectors.selectProductLoadingError
     );
@@ -118,16 +117,39 @@ export class ProductsComponent implements OnInit {
   getProducts() {
     const request = this.filterHandler.getRequest();
     this.store$.dispatch(new ProductStoreActions.LoadRequestAction(request));
+    this.products$ = this.store$.select(
+      ProductStoreSelectors.selectAllProductItems
+    );
+  }
+
+  getCategories() {
+    this.store$.dispatch(new CategoryStoreActions.LoadRequestAction());
+    this.categories$ = this.store$.select(
+      CategoryStoreSelectors.selectAllCategoryItems
+    );
+  }
+
+  getBrands() {
+    this.store$.dispatch(new BrandStoreActions.LoadRequestAction());
+    this.brands$ = this.store$.select(
+      BrandStoreSelectors.selectAllBrandItems
+    );
   }
 
   getProductFilterLimits() {
     this.store$.dispatch(
       new ProductStoreActions.GetProductFilterLimitsRequestAction()
     );
+    this.productFilterLimits$ = this.store$.select(
+      ProductStoreSelectors.selectProductFilterLimits
+    );
   }
 
-  getCategories() {
-    this.store$.dispatch(new CategoryStoreActions.LoadRequestAction());
+  getManufacturers() {
+    this.store$.dispatch(new ManufacturerStoreActions.LoadRequestAction());
+    this.manufacturers$ = this.store$.select(
+      ManufacturerStoreSelectors.selectAllManufacturerItems
+    );
   }
 
   addProduct() {

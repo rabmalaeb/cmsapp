@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnChanges } from '@angular/core';
 import { OptionItem } from 'src/app/shared/models/general';
 
 @Component({
@@ -13,6 +13,7 @@ export class SelectOptionsComponent implements OnInit {
   @Output() selected = new EventEmitter<any>();
 
   ngOnInit() {}
+
 
   get selectAllChecked() {
     let isChecked = true;

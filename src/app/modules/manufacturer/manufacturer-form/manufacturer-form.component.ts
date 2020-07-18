@@ -16,6 +16,7 @@ import { ValidationMessagesService } from 'src/app/core/services/validation-mess
 import { ActionType } from 'src/app/shared/models/general';
 import { Manufacturer } from '../manufacturer';
 import { FormService } from 'src/app/core/services/form.service';
+import { Country } from '../../country/country';
 
 @Component({
   selector: 'app-manufacturer-form',
@@ -31,6 +32,7 @@ export class ManufacturerFormComponent implements OnInit, OnChanges {
 
   languageForm: FormGroup;
   @Input() manufacturer: Manufacturer;
+  @Input() countries: Country[];
   @Input() actionType: ActionType;
   @Input() isLoadingAction: boolean;
   @Input() canEditManufacturer = false;
@@ -58,7 +60,7 @@ export class ManufacturerFormComponent implements OnInit, OnChanges {
   buildNewManufacturerForm() {
     this.languageForm = this.form.group({
       name: ['', [Validators.required]],
-      code: ['', [Validators.required]]
+      countryId: ['', [Validators.required]]
     });
   }
 
@@ -66,7 +68,7 @@ export class ManufacturerFormComponent implements OnInit, OnChanges {
     this.languageForm = this.form.group({
       id: [this.manufacturer.id],
       name: [this.manufacturer.name, [Validators.required]],
-      code: [this.manufacturer.code, [Validators.required]]
+      countryId: [this.manufacturer.countryId, [Validators.required]]
     });
   }
 
@@ -74,15 +76,15 @@ export class ManufacturerFormComponent implements OnInit, OnChanges {
     return this.languageForm.get('name');
   }
 
-  get code() {
-    return this.languageForm.get('code');
+  get countryId() {
+    return this.languageForm.get('countryId');
   }
 
   buildManufacturerParams(): Manufacturer {
     return {
       id: this.languageForm.get('id') ? this.languageForm.get('id').value : '',
       name: this.name.value,
-      code: this.code.value
+      countryId: this.countryId.value
     };
   }
 

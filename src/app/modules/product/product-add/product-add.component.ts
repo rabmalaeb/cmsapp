@@ -16,6 +16,8 @@ import {
   CategoryStoreSelectors,
   CategoryStoreActions
 } from '../../category/store';
+import { Brand } from '../../brand/brand';
+import { BrandStoreActions, BrandStoreSelectors } from '../../brand/store';
 
 @Component({
   selector: 'app-product-add',
@@ -34,6 +36,7 @@ export class ProductAddComponent implements OnInit {
   actionType: ActionType;
   product$: Observable<Product>;
   categories$: Observable<Category[]>;
+  brands$: Observable<Brand[]>;
   isLoading$: Observable<boolean>;
   isLoadingCategories$: Observable<boolean>;
   isLoadingAction$: Observable<boolean>;
@@ -42,6 +45,7 @@ export class ProductAddComponent implements OnInit {
 
   ngOnInit() {
     this.getCategories();
+    this.getBrands();
     this.initializeStoreVariables();
     this.route.params.forEach(param => {
       if (param.id) {
@@ -90,6 +94,11 @@ export class ProductAddComponent implements OnInit {
       .subscribe(errorResponse => {
         this.notificationService.showError(errorResponse.payload.error.message);
       });
+  }
+
+  getBrands() {
+    this.store$.dispatch(new BrandStoreActions.LoadRequestAction());
+    this.brands$ = this.store$.select(BrandStoreSelectors.selectAllBrandItems);
   }
 
   getProduct(id: number) {

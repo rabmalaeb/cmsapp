@@ -29,8 +29,10 @@
           >
             <app-product-filters
               [productFilterLimits]="productFilterLimits$ | async"
-              [filterHandler]="filterHandler"
+              [manufacturers]="manufacturers$ | async"
               [categories]="categories$ | async"
+              [brands]="brands$ | async"
+              [filterHandler]="filterHandler"
             ></app-product-filters>
           </app-filter-control>
         </div>

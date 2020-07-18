@@ -23,7 +23,7 @@ import { SuccessMessages, ConfirmMessages } from 'src/app/shared/models/messages
   styleUrls: ['./manufacturers.component.scss']
 })
 export class ManufacturersComponent implements OnInit {
-  displayedColumns: string[] = ['id', 'name', 'code', 'action'];
+  displayedColumns: string[] = ['id', 'name', 'country', 'action'];
   manufacturers$: Observable<Manufacturer[]>;
   error$: Observable<string>;
   isLoading$: Observable<boolean>;

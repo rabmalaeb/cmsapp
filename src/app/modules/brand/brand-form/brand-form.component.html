@@ -1,10 +1,5 @@
-<form
-  [formGroup]="brandForm"
-  #formDirective="ngForm"
-  (ngSubmit)="performAction(formDirective)"
-  class="page__form"
-  *ngIf="!isLoadingForm; else loadingMask"
->
+<form [formGroup]="brandForm" #formDirective="ngForm" (ngSubmit)="performAction(formDirective)" class="page__form"
+  *ngIf="!isLoadingForm; else loadingMask">
   <div class="page__form-content">
     <div class="page__form-input">
       <app-input id="name" name="name" label="Name" [formControlItem]="name">
@@ -12,8 +7,15 @@
     </div>
 
     <div class="page__form-input">
-      <app-input id="code" name="code" label="Code" [formControlItem]="code">
-      </app-input>
+      <div class="form-item">
+        <div class="form-item__value form-item__value_is-textfield">
+          <app-custom-select [formControlItem]="manufacturerId" label="Manufacturer">
+            <ng-select [searchable]="false" [clearable]="false" [items]="manufacturers" bindLabel="name" bindValue="id"
+              formControlName="manufacturerId">
+            </ng-select>
+          </app-custom-select>
+        </div>
+      </div>
     </div>
   </div>
   <div class="page__form-button-container" *ngIf="canEditBrand">

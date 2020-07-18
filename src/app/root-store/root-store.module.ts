@@ -15,6 +15,7 @@ import { BannerStoreModule } from '../modules/banner/store';
 import { SupplierStoreModule } from '../modules/supplier/store';
 import { BrandStoreModule } from '../modules/brand/store';
 import { ManufacturerStoreModule } from '../modules/manufacturer/store';
+import { CountryStoreModule } from '../modules/country/store';
 
 
 
@@ -37,7 +38,8 @@ import { ManufacturerStoreModule } from '../modules/manufacturer/store';
     BannerStoreModule,
     SupplierStoreModule,
     BrandStoreModule,
-    ManufacturerStoreModule
+    ManufacturerStoreModule,
+    CountryStoreModule,
   ]
 })
 export class RootStoreModule { }

@@ -48,12 +48,12 @@
         </mat-cell>
       </ng-container>
 
-      <ng-container matColumnDef="code">
+      <ng-container matColumnDef="manufacturer">
         <mat-header-cell mat-sort-header *matHeaderCellDef
-          >Code</mat-header-cell
+          >Manufacturer</mat-header-cell
         >
         <mat-cell *matCellDef="let brand">
-          {{ brand.code }}
+          {{ brand.manufacturer.name }}
         </mat-cell>
       </ng-container>
 

@@ -5,13 +5,14 @@ import {
   OnChanges,
   SimpleChanges
 } from '@angular/core';
-
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { ProductRequest, ProductFilterLimits } from '../product';
 import { Options, LabelType } from 'ng5-slider';
 import { NumberRange, OptionItem } from 'src/app/shared/models/general';
 import { Category } from '../../category/category';
 import { FilterHandler, FilterComponent } from 'src/app/shared/filters/filter';
+import { Brand } from '../../brand/brand';
+import { Manufacturer } from '../../manufacturer/manufacturer';
 
 @Component({
   selector: 'app-product-filters',
@@ -23,6 +24,8 @@ export class ProductFiltersComponent
   @Input() filterHandler: FilterHandler;
   @Input() productFilterLimits: ProductFilterLimits;
   @Input() categories: Category[];
+  @Input() brands: Brand[];
+  @Input() manufacturers: Manufacturer[];
 
   /**
    * store the original price selected by the user
@@ -44,6 +47,8 @@ export class ProductFiltersComponent
   retailPriceSliderOptions: Options;
   filterForm: FormGroup;
   categoryOptionItems: OptionItem[];
+  brandsOptionItems: OptionItem[];
+  manufacturersOptionItems: OptionItem[];
 
   constructor(private form: FormBuilder) {}
 
@@ -51,6 +56,8 @@ export class ProductFiltersComponent
     this.sendInitialRequest();
     this.buildForm();
     this.buildCategoryOptionItems();
+    this.buildBrandOptionItems();
+    this.buildManufacturersOptionItems();
   }
 
   sendInitialRequest() {
@@ -68,6 +75,12 @@ export class ProductFiltersComponent
     if (changes.categories) {
       this.buildCategoryOptionItems();
     }
+    if (changes.brands) {
+      this.buildBrandOptionItems();
+    }
+    if (changes.manufacturers) {
+      this.buildManufacturersOptionItems();
+    }
     if (changes.filterHandler) {
       this.filterHandler.resetSubject.subscribe(() => this.resetFilters());
     }
@@ -78,6 +91,8 @@ export class ProductFiltersComponent
    */
   resetFilters(): void {
     this.resetCategories();
+    this.resetBrands();
+    this.resetManufacturers();
     this.resetSliderRanges();
     this.submitFilters();
   }
@@ -102,7 +117,9 @@ export class ProductFiltersComponent
       minimumOriginalPrice: this.selectedOriginalPriceRange.minimum,
       maximumOriginalPrice: this.selectedOriginalPriceRange.maximum,
       currentPage: 1,
-      'categories[]': this.getSelectedCategories()
+      'categories[]': this.getSelectedCategories(),
+      'brands[]': this.getSelectedBrands(),
+      'manufacturers[]': this.getSelectedManufacturers(),
     };
     return productRequest;
   }
@@ -120,8 +137,42 @@ export class ProductFiltersComponent
     return selectedCategories;
   }
 
+  /**
+   * get all categories that have selected = true
+   */
+  getSelectedBrands(): number[] {
+    const selectedBrands = [];
+    this.brandsOptionItems.forEach(option => {
+      if (option.selected) {
+        selectedBrands.push(option.value);
+      }
+    });
+    return selectedBrands;
+  }
+
+  /**
+   * get all categories that have selected = true
+   */
+  getSelectedManufacturers(): number[] {
+    const selectedManufacturers = [];
+    this.manufacturersOptionItems.forEach(option => {
+      if (option.selected) {
+        selectedManufacturers.push(option.value);
+      }
+    });
+    return selectedManufacturers;
+  }
+
   resetCategories() {
     this.categoryOptionItems.map(categories => (categories.selected = true));
+  }
+
+  resetBrands() {
+    this.brandsOptionItems.map(brands => (brands.selected = true));
+  }
+
+  resetManufacturers() {
+    this.manufacturersOptionItems.map(manufacturer => (manufacturer.selected = true));
   }
 
   buildForm(): void {
@@ -182,6 +233,30 @@ export class ProductFiltersComponent
     this.categories.forEach(category => {
       this.categoryOptionItems.push(
         new OptionItem(category.name, category.id, true)
+      );
+    });
+  }
+
+  /**
+   * build option items array from the categories array
+   */
+  buildBrandOptionItems(): void {
+    this.brandsOptionItems = [];
+    this.brands.forEach(brand => {
+      this.brandsOptionItems.push(
+        new OptionItem(brand.name, brand.id, true)
+      );
+    });
+  }
+
+  /**
+   * build option items array from the categories array
+   */
+  buildManufacturersOptionItems(): void {
+    this.manufacturersOptionItems = [];
+    this.manufacturers.forEach(manufacturer => {
+      this.manufacturersOptionItems.push(
+        new OptionItem(manufacturer.name, manufacturer.id, true)
       );
     });
   }

@@ -12,6 +12,11 @@ import { BrandStoreSelectors, BrandStoreActions } from '../store';
 import { filter } from 'rxjs/operators';
 import { ActionTypes } from '../store/actions';
 import { Brand } from '../brand';
+import {
+  ManufacturerStoreActions,
+  ManufacturerStoreSelectors
+} from '../../manufacturer/store';
+import { Manufacturer } from '../../manufacturer/manufacturer';
 
 @Component({
   selector: 'app-brand-add',
@@ -30,13 +35,16 @@ export class BrandAddComponent implements OnInit {
 
   actionType: ActionType;
   brand$: Observable<Brand>;
+  manufacturers$: Observable<Manufacturer[]>;
   isLoading$: Observable<boolean>;
   isLoadingAction$: Observable<boolean>;
   loadingErrors$: Observable<string[]>;
+  loadingManufacturersErrors$: Observable<string[]>;
   actionErrors$: Observable<string[]>;
 
   ngOnInit() {
     this.initializeStoreVariables();
+    this.getManufacturers();
     this.route.params.forEach(param => {
       if (param.id) {
         const id = parseInt(param.id, 0);
@@ -90,11 +98,19 @@ export class BrandAddComponent implements OnInit {
       });
   }
 
+  getManufacturers() {
+    this.store$.dispatch(new ManufacturerStoreActions.LoadRequestAction());
+    this.manufacturers$ = this.store$.select(
+      ManufacturerStoreSelectors.selectAllManufacturerItems
+    );
+    this.loadingManufacturersErrors$ = this.store$.select(
+      ManufacturerStoreSelectors.selectManufacturerLoadingError
+    );
+  }
+
   getBrand(id: number) {
     this.store$.dispatch(new BrandStoreActions.GetBrandRequestAction(id));
-    this.brand$ = this.store$.select(
-      BrandStoreSelectors.selectBrandById(id)
-    );
+    this.brand$ = this.store$.select(BrandStoreSelectors.selectBrandById(id));
     this.loadingErrors$ = this.store$.select(
       BrandStoreSelectors.selectBrandLoadingError
     );
@@ -109,9 +125,7 @@ export class BrandAddComponent implements OnInit {
   }
 
   addBrand(brand: Brand) {
-    this.store$.dispatch(
-      new BrandStoreActions.AddBrandRequestAction(brand)
-    );
+    this.store$.dispatch(new BrandStoreActions.AddBrandRequestAction(brand));
   }
 
   updateBrand(brand: Brand) {

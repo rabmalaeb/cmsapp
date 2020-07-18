@@ -11,6 +11,7 @@
     <div class="page__form-container">
       <app-brand-form
         [brand]="brand$ | async"
+        [manufacturers]="manufacturers$ | async"
         [isLoading]="isLoading$ | async"
         [canEditBrand]="canEditBrand$ | async"
         [isLoadingAction]="isLoadingAction$ | async"

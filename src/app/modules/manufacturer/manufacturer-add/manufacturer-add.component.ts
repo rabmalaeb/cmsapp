@@ -12,6 +12,8 @@ import { Observable, of } from 'rxjs';
 import { ManufacturerStoreSelectors, ManufacturerStoreActions } from '../store';
 import { filter } from 'rxjs/operators';
 import { ActionTypes } from '../store/actions';
+import { CountryStoreActions, CountryStoreSelectors } from '../../country/store';
+import { Country } from '../../country/country';
 
 @Component({
   selector: 'app-manufacturer-add',
@@ -30,6 +32,7 @@ export class ManufacturerAddComponent implements OnInit {
 
   actionType: ActionType;
   manufacturer$: Observable<Manufacturer>;
+  countries$: Observable<Country[]>;
   isLoading$: Observable<boolean>;
   isLoadingAction$: Observable<boolean>;
   loadingErrors$: Observable<string[]>;
@@ -37,6 +40,7 @@ export class ManufacturerAddComponent implements OnInit {
 
   ngOnInit() {
     this.initializeStoreVariables();
+    this.getCountries();
     this.route.params.forEach(param => {
       if (param.id) {
         const id = parseInt(param.id, 0);
@@ -88,6 +92,15 @@ export class ManufacturerAddComponent implements OnInit {
       .subscribe(errorResponse => {
         this.notificationService.showError(errorResponse.payload.error.message);
       });
+  }
+
+  getCountries() {
+    this.store$.dispatch(
+      new CountryStoreActions.LoadRequestAction()
+    );
+    this.countries$ = this.store$.select(
+      CountryStoreSelectors.selectAllCountryItems
+    );
   }
 
   getManufacturer(id: number) {

@@ -11,6 +11,8 @@
   &_is-filter {
     .x-modal__container {
       width: 600px;
+      max-height: 400px;
+      overflow: scroll;
     }
   }
 }

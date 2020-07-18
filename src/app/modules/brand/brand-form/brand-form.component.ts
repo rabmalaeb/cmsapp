@@ -16,6 +16,7 @@ import { ValidationMessagesService } from 'src/app/core/services/validation-mess
 import { ActionType } from 'src/app/shared/models/general';
 import { Brand } from '../brand';
 import { FormService } from 'src/app/core/services/form.service';
+import { Manufacturer } from '../../manufacturer/manufacturer';
 
 @Component({
   selector: 'app-brand-form',
@@ -31,6 +32,7 @@ export class BrandFormComponent implements OnInit, OnChanges {
 
   brandForm: FormGroup;
   @Input() brand: Brand;
+  @Input() manufacturers: Manufacturer[];
   @Input() actionType: ActionType;
   @Input() isLoadingAction: boolean;
   @Input() canEditBrand = false;
@@ -39,7 +41,10 @@ export class BrandFormComponent implements OnInit, OnChanges {
   @Output() submitForm = new EventEmitter<Brand>();
   formGroupDirective: FormGroupDirective;
 
-  ngOnInit() { }
+  ngOnInit() {
+    console.log('manufacturers', this.manufacturers);
+
+  }
 
   ngOnChanges() {
     if (this.isLoadingAction || this.actionError) {
@@ -58,7 +63,7 @@ export class BrandFormComponent implements OnInit, OnChanges {
   buildNewBrandForm() {
     this.brandForm = this.form.group({
       name: ['', [Validators.required]],
-      code: ['', [Validators.required]]
+      manufacturerId: ['', [Validators.required]]
     });
   }
 
@@ -66,7 +71,7 @@ export class BrandFormComponent implements OnInit, OnChanges {
     this.brandForm = this.form.group({
       id: [this.brand.id],
       name: [this.brand.name, [Validators.required]],
-      code: [this.brand.code, [Validators.required]]
+      manufacturerId: [this.brand.manufacturerId, [Validators.required]]
     });
   }
 
@@ -74,15 +79,15 @@ export class BrandFormComponent implements OnInit, OnChanges {
     return this.brandForm.get('name');
   }
 
-  get code() {
-    return this.brandForm.get('code');
+  get manufacturerId() {
+    return this.brandForm.get('manufacturerId');
   }
 
   buildBrandParams(): Brand {
     return {
       id: this.brandForm.get('id') ? this.brandForm.get('id').value : '',
       name: this.name.value,
-      code: this.code.value
+      manufacturerId: this.manufacturerId.value
     };
   }
 

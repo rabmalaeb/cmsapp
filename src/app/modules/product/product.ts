@@ -2,6 +2,7 @@ import { Category } from '../category/category';
 import { Media } from '../media/media';
 import { ImageModel } from 'src/app/shared/models/image';
 import FilterRequest from 'src/app/shared/request';
+import { Brand } from '../brand/brand';
 
 export class Product extends ImageModel {
   id: number;
@@ -13,12 +14,11 @@ export class Product extends ImageModel {
   originalPrice: number;
   unitOfCount: string;
   quantity: number;
-  brand: string;
-  manufacturer: string;
-  country: string;
+  brandId: number;
   code: string;
   category: Category;
   media: Media;
+  brand: Brand;
 }
 
 export class ProductRequest extends FilterRequest
@@ -28,6 +28,8 @@ export class ProductRequest extends FilterRequest
   minimumOriginalPrice?: number;
   maximumOriginalPrice?: number;
   'categories[]'?: number[];
+  'brands[]'?: number[];
+  'manufacturers[]'?: number[];
 }
 
 export interface ProductFilterLimits {

@@ -18,6 +18,7 @@ import { ActionType } from 'src/app/shared/models/general';
 import { Product } from '../product';
 import { Category } from '../../category/category';
 import { FormService } from 'src/app/core/services/form.service';
+import { Brand } from '../../brand/brand';
 
 @Component({
   selector: 'app-product-form',
@@ -33,6 +34,7 @@ export class ProductFormComponent implements OnInit, OnChanges {
 
   @Input() product: Product;
   @Input() categories: Category[];
+  @Input() brands: Brand[];
   @Input() actionType: ActionType;
   @Input() isLoadingAction: boolean;
   @Input() canEditProduct = false;
@@ -69,9 +71,7 @@ export class ProductFormComponent implements OnInit, OnChanges {
       retailPrice: ['', [Validators.required]],
       originalPrice: ['', [Validators.required]],
       quantity: ['', [Validators.required]],
-      brand: ['', [Validators.required]],
-      manufacturer: ['', [Validators.required]],
-      country: ['', Validators.required],
+      brandId: ['', [Validators.required]],
       code: ['', Validators.required],
       unitOfCount: ['', [Validators.required]]
     });
@@ -86,9 +86,7 @@ export class ProductFormComponent implements OnInit, OnChanges {
       retailPrice: [this.product.retailPrice, [Validators.required]],
       originalPrice: [this.product.originalPrice, [Validators.required]],
       quantity: [this.product.quantity, [Validators.required]],
-      brand: [this.product.brand, [Validators.required]],
-      manufacturer: [this.product.manufacturer, [Validators.required]],
-      country: [this.product.country, Validators.required],
+      brandId: [this.product.brandId, [Validators.required]],
       code: [this.product.code, Validators.required],
       unitOfCount: [this.product.unitOfCount, [Validators.required]]
     });
@@ -98,8 +96,8 @@ export class ProductFormComponent implements OnInit, OnChanges {
     return this.productForm.get('name');
   }
 
-  get brand() {
-    return this.productForm.get('brand');
+  get brandId() {
+    return this.productForm.get('brandId');
   }
 
   get manufacturer() {
@@ -112,10 +110,6 @@ export class ProductFormComponent implements OnInit, OnChanges {
 
   get description() {
     return this.productForm.get('description');
-  }
-
-  get country() {
-    return this.productForm.get('country');
   }
 
   get retailPrice() {
@@ -169,8 +163,7 @@ export class ProductFormComponent implements OnInit, OnChanges {
     product.quantity = this.quantity.value;
     product.unitOfCount = this.unitOfCount.value;
     product.code = this.code.value;
-    product.manufacturer = this.manufacturer.value;
-    product.brand = this.brand.value;
+    product.brandId = this.brandId.value;
     if (this.productImage) {
       product.image = this.productImage;
     }

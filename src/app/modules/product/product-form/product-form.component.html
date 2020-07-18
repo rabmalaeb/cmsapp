@@ -33,27 +33,7 @@
     </div>
 
     <div class="page__form-input">
-      <app-input id="unitOfCount" name="unitOfCount" label="Unit Of Count" [formControlItem]="unitOfCount">
-      </app-input>
-    </div>
-
-    <div class="page__form-input">
-      <app-input id="country" name="country" label="Country" [formControlItem]="country">
-      </app-input>
-    </div>
-
-    <div class="page__form-input">
       <app-input id="code" name="code" label="Code" [formControlItem]="code">
-      </app-input>
-    </div>
-
-    <div class="page__form-input">
-      <app-input id="manufacturer" name="manufacturer" label="Manufacturer" [formControlItem]="manufacturer">
-      </app-input>
-    </div>
-
-    <div class="page__form-input">
-      <app-input id="brand" name="brand" label="Brand" [formControlItem]="brand">
       </app-input>
     </div>
 
@@ -64,6 +44,18 @@
             <ng-select [searchable]="false" [clearable]="false" formControlName="categoryId">
               <ng-option *ngFor="let category of categories" [value]="category.id">
                 {{ category.name }}</ng-option>
+            </ng-select>
+          </app-custom-select>
+        </div>
+      </div>
+    </div>
+    <div class="page__form-input">
+      <div class="form-item">
+        <div class="form-item__value form-item__value_is-textfield">
+          <app-custom-select [formControlItem]="brandId" label="Brand">
+            <ng-select [searchable]="false" [clearable]="false" [items]="brands" bindLabel="name" bindValue="id"
+              formControlName="brandId">
+
             </ng-select>
           </app-custom-select>
         </div>

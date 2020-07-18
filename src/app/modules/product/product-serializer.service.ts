@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Product, ProductFilterLimits } from './product';
 import { CategorySerializerService } from '../category/category-serializer.service';
 import { MediaSerializerService } from '../media/media.serializer.service';
+import { BrandSerializerService } from '../brand/brand-serializer.service';
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +10,8 @@ import { MediaSerializerService } from '../media/media.serializer.service';
 export class ProductSerializerService {
   constructor(
     private categorySerializer: CategorySerializerService,
-    private mediaSerializer: MediaSerializerService
+    private mediaSerializer: MediaSerializerService,
+    private brandSerializer: BrandSerializerService
   ) {}
 
   getProduct(productResponse: any) {
@@ -28,8 +30,8 @@ export class ProductSerializerService {
     );
     product.quantity = parseInt(productResponse.attributes.quantity, 0);
     product.unitOfCount = productResponse.attributes.unitOfCount;
-    product.brand = productResponse.attributes.brand;
-    product.manufacturer = productResponse.attributes.manufacturer;
+    product.brandId = parseInt(productResponse.attributes.brand_id, 0);
+    product.brand = this.brandSerializer.getBrand(productResponse.relationships.brand);
     product.code = productResponse.attributes.code;
     product.category = this.categorySerializer.getCategory(
       productResponse.relationships.category

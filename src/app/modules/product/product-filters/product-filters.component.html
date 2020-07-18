@@ -49,5 +49,30 @@
         </div>
       </div>
     </div>
+    <div class="filters__item-container">
+      <div class="filters__item-section">
+        <div class="filters__item">
+          <div class="filters__item-label">
+            Filter By Manufacturer
+          </div>
+          <div class="filters__item-input">
+            <app-select-options [options]="manufacturersOptionItems" (selected)="submitFilters()">
+            </app-select-options>
+          </div>
+        </div>
+      </div>
+
+      <div class="filters__item-section">
+        <div class="filters__item">
+          <div class="filters__item-label">
+            Filter By Brand
+          </div>
+          <div class="filters__item-input">
+            <app-select-options [options]="brandsOptionItems" (selected)="submitFilters()">
+            </app-select-options>
+          </div>
+        </div>
+      </div>
+    </div>
   </form>
 </div>

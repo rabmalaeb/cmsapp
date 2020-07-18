@@ -11,6 +11,7 @@
     <div class="page__form-container">
       <app-manufacturer-form
         [manufacturer]="manufacturer$ | async"
+        [countries]="countries$ | async"
         [isLoading]="isLoading$ | async"
         [canEditManufacturer]="canEditManufacturer$ | async"
         [isLoadingAction]="isLoadingAction$ | async"
