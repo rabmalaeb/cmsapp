@@ -1,6 +1,6 @@
 {
   "/v1/*": {
-    "target": "http://smartcms.test/",
+    "target": "http://www.metas-store.com/",
       "logLevel": "debug",
         "changeOrigin": true,
           "secure": false

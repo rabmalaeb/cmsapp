@@ -5,7 +5,7 @@
 export const environment = {
   production: false,
   apiUrl: 'http://localhost:4200/v1/',
-  serverUrl: 'http://smartcms.test/'
+  imageUrl: 'http://smartcms.test/storage'
 };
 
 /*

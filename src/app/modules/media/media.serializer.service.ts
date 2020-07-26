@@ -8,7 +8,7 @@ import { environment } from 'src/environments/environment';
 export class MediaSerializerService {
   constructor() {}
 
-  private imagePath = `${environment.serverUrl}/storage/`;
+  private imagePath = environment.imageUrl;
 
   getMedia(mediaResponse: any) {
     if (!mediaResponse) {
