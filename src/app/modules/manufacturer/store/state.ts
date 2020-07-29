@@ -1,7 +1,7 @@
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 import { Manufacturer } from '../manufacturer';
 
-export const languageAdapter: EntityAdapter<Manufacturer> = createEntityAdapter<
+export const manufacturerAdapter: EntityAdapter<Manufacturer> = createEntityAdapter<
   Manufacturer
 >({
   selectId: model => model.id,
@@ -17,7 +17,7 @@ export interface State extends EntityState<Manufacturer> {
   total?: number;
 }
 
-export const initialState: State = languageAdapter.getInitialState({
+export const initialState: State = manufacturerAdapter.getInitialState({
   isLoading: false,
   error: null
 });

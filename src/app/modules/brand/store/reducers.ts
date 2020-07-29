@@ -25,56 +25,56 @@ export function brandReducer(state = initialState, action: Actions): State {
         loadingError: action.payload.error
       };
     }
-    case ActionTypes.GET_LANGUAGE_REQUEST: {
+    case ActionTypes.GET_BRAND_REQUEST: {
       return {
         ...state,
         isLoadingItem: true,
         actionError: null
       };
     }
-    case ActionTypes.GET_LANGUAGE_SUCCESS: {
+    case ActionTypes.GET_BRAND_SUCCESS: {
       return brandAdapter.addOne(action.payload.item, {
         ...state,
         isLoadingItem: false,
         actionError: null
       });
     }
-    case ActionTypes.GET_LANGUAGE_FAILURE: {
+    case ActionTypes.GET_BRAND_FAILURE: {
       return {
         ...state,
         isLoadingItem: false,
         actionError: action.payload.error.message
       };
     }
-    case ActionTypes.ADD_LANGUAGE_REQUEST: {
+    case ActionTypes.ADD_BRAND_REQUEST: {
       return {
         ...state,
         isLoadingAction: true,
         actionError: null
       };
     }
-    case ActionTypes.ADD_LANGUAGE_SUCCESS: {
+    case ActionTypes.ADD_BRAND_SUCCESS: {
       return brandAdapter.addOne(action.payload.item, {
         ...state,
         isLoadingAction: false,
         actionError: null
       });
     }
-    case ActionTypes.ADD_LANGUAGE_FAILURE: {
+    case ActionTypes.ADD_BRAND_FAILURE: {
       return {
         ...state,
         isLoadingAction: false,
         actionError: action.payload.error.message
       };
     }
-    case ActionTypes.UPDATE_LANGUAGE_REQUEST: {
+    case ActionTypes.UPDATE_BRAND_REQUEST: {
       return {
         ...state,
         isLoadingAction: true,
         actionError: null
       };
     }
-    case ActionTypes.UPDATE_LANGUAGE_SUCCESS: {
+    case ActionTypes.UPDATE_BRAND_SUCCESS: {
       return brandAdapter.updateOne(
         { id: action.payload.id, changes: action.payload.item },
         {
@@ -84,28 +84,28 @@ export function brandReducer(state = initialState, action: Actions): State {
         }
       );
     }
-    case ActionTypes.UPDATE_LANGUAGE_FAILURE: {
+    case ActionTypes.UPDATE_BRAND_FAILURE: {
       return {
         ...state,
         isLoadingAction: false,
         actionError: action.payload.error.message
       };
     }
-    case ActionTypes.DELETE_LANGUAGE_REQUEST: {
+    case ActionTypes.DELETE_BRAND_REQUEST: {
       return {
         ...state,
         isLoadingAction: true,
         actionError: null
       };
     }
-    case ActionTypes.DELETE_LANGUAGE_SUCCESS: {
+    case ActionTypes.DELETE_BRAND_SUCCESS: {
       return brandAdapter.removeOne(action.payload.id, {
         ...state,
         isLoadingAction: false,
         actionError: null
       });
     }
-    case ActionTypes.DELETE_LANGUAGE_FAILURE: {
+    case ActionTypes.DELETE_BRAND_FAILURE: {
       return {
         ...state,
         isLoadingAction: false,

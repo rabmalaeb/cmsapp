@@ -59,8 +59,6 @@ export class RoleService {
   getRoleByPartner(partnerId: number) {
     return this.httpService.get(`role-by-partner/${partnerId}`, {}).pipe(
       map(response => {
-        console.log('response da d a is ', response);
-
         return response.map(data => this.roleSerializer.getRole(data));
       })
     );

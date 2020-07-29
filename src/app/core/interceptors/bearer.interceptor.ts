@@ -19,7 +19,7 @@ export class BearerInterceptor implements HttpInterceptor {
     if (this.authenticationService.isLoggedIn) {
       const loginToken = this.authenticationService.getCurrentUser().token;
       request = request.clone({
-        headers: request.headers.append('Authorization', `Bearer ${loginToken}`)
+        headers: request.headers.append('Authorization', `Bearer ${loginToken}`),
       });
     }
     return next.handle(request);

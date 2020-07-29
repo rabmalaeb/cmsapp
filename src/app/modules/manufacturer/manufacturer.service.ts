@@ -10,14 +10,14 @@ import { ManufacturerRequest, Manufacturer } from './manufacturer';
 export class ManufacturerService {
   constructor(
     private httpService: HttpService,
-    private languageSerializer: ManufacturerSerializerService
+    private manufacturerSerializer: ManufacturerSerializerService
   ) {}
 
-  getManufacturers(languageRequest: ManufacturerRequest) {
-    return this.httpService.get('manufacturers', languageRequest).pipe(
+  getManufacturers(manufacturerRequest: ManufacturerRequest) {
+    return this.httpService.get('manufacturers', manufacturerRequest).pipe(
       map(({ data: { items, paginator } }) => {
         return {
-          items: items.map(item => this.languageSerializer.getManufacturer(item)),
+          items: items.map(item => this.manufacturerSerializer.getManufacturer(item)),
           paginator
         };
       })
@@ -27,7 +27,7 @@ export class ManufacturerService {
   getManufacturer(id: number) {
     return this.httpService.get(`manufacturers/${id}`, {}).pipe(
       map(({ data }) => {
-        return this.languageSerializer.getManufacturer(data);
+        return this.manufacturerSerializer.getManufacturer(data);
       })
     );
   }
@@ -35,7 +35,7 @@ export class ManufacturerService {
   addManufacturer(params: Manufacturer) {
     return this.httpService.post('manufacturers', { ...params }).pipe(
       map(({ data }) => {
-        return this.languageSerializer.getManufacturer(data);
+        return this.manufacturerSerializer.getManufacturer(data);
       })
     );
   }
@@ -43,7 +43,7 @@ export class ManufacturerService {
   updateManufacturer(id: number, params: Manufacturer) {
     return this.httpService.put(`manufacturers/${id}`, { ...params }).pipe(
       map(({ data }) => {
-        return this.languageSerializer.getManufacturer(data);
+        return this.manufacturerSerializer.getManufacturer(data);
       })
     );
   }
@@ -51,7 +51,7 @@ export class ManufacturerService {
   deleteManufacturer(id: number) {
     return this.httpService.delete(`manufacturers/${id}`).pipe(
       map(response => {
-        return response.map(data => this.languageSerializer.getManufacturer(data));
+        return response.map(data => this.manufacturerSerializer.getManufacturer(data));
       })
     );
   }

@@ -3,7 +3,7 @@ import { Actions, Effect, ofType, act } from '@ngrx/effects';
 import { Action } from '@ngrx/store';
 import { Observable, of as observableOf } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
-import * as languageActions from './actions';
+import * as manufacturerActions from './actions';
 import { ManufacturerService } from '../manufacturer.service';
 
 @Injectable()
@@ -15,20 +15,20 @@ export class ManufacturerStoreEffects {
 
   @Effect()
   loadRequestEffect$: Observable<Action> = this.actions$.pipe(
-    ofType<languageActions.LoadRequestAction>(
-      languageActions.ActionTypes.LOAD_REQUEST
+    ofType<manufacturerActions.LoadRequestAction>(
+      manufacturerActions.ActionTypes.LOAD_REQUEST
     ),
     switchMap(action =>
-      this.manufacturerService.getManufacturers(action.languageRequest).pipe(
+      this.manufacturerService.getManufacturers(action.manufacturerRequest).pipe(
         map(
           ({ items, paginator }) =>
-            new languageActions.LoadSuccessAction({
+            new manufacturerActions.LoadSuccessAction({
               items,
               paginator
             })
         ),
         catchError(error =>
-          observableOf(new languageActions.LoadFailureAction({ error }))
+          observableOf(new manufacturerActions.LoadFailureAction({ error }))
         )
       )
     )
@@ -36,19 +36,19 @@ export class ManufacturerStoreEffects {
 
   @Effect()
   getManufacturerEffect$: Observable<Action> = this.actions$.pipe(
-    ofType<languageActions.GetManufacturerRequestAction>(
-      languageActions.ActionTypes.GET_LANGUAGE_REQUEST
+    ofType<manufacturerActions.GetManufacturerRequestAction>(
+      manufacturerActions.ActionTypes.GET_MANUFACTURER_REQUEST
     ),
     switchMap(action =>
       this.manufacturerService.getManufacturer(action.id).pipe(
         map(
           item =>
-            new languageActions.GetManufacturerSuccessAction({
+            new manufacturerActions.GetManufacturerSuccessAction({
               item
             })
         ),
         catchError(error =>
-          observableOf(new languageActions.GetManufacturerFailureAction({ error }))
+          observableOf(new manufacturerActions.GetManufacturerFailureAction({ error }))
         )
       )
     )
@@ -56,19 +56,19 @@ export class ManufacturerStoreEffects {
 
   @Effect()
   addManufacturerEffect$: Observable<Action> = this.actions$.pipe(
-    ofType<languageActions.AddManufacturerRequestAction>(
-      languageActions.ActionTypes.ADD_LANGUAGE_REQUEST
+    ofType<manufacturerActions.AddManufacturerRequestAction>(
+      manufacturerActions.ActionTypes.ADD_MANUFACTURER_REQUEST
     ),
     switchMap(action =>
       this.manufacturerService.addManufacturer(action.manufacturer).pipe(
         map(
           item =>
-            new languageActions.AddManufacturerSuccessAction({
+            new manufacturerActions.AddManufacturerSuccessAction({
               item
             })
         ),
         catchError(error =>
-          observableOf(new languageActions.AddManufacturerFailureAction({ error }))
+          observableOf(new manufacturerActions.AddManufacturerFailureAction({ error }))
         )
       )
     )
@@ -76,21 +76,21 @@ export class ManufacturerStoreEffects {
 
   @Effect()
   updateManufacturerEffect$: Observable<Action> = this.actions$.pipe(
-    ofType<languageActions.UpdateManufacturerRequestAction>(
-      languageActions.ActionTypes.UPDATE_LANGUAGE_REQUEST
+    ofType<manufacturerActions.UpdateManufacturerRequestAction>(
+      manufacturerActions.ActionTypes.UPDATE_MANUFACTURER_REQUEST
     ),
     switchMap(action =>
       this.manufacturerService.updateManufacturer(action.id, action.manufacturer).pipe(
         map(
           item =>
-            new languageActions.UpdateManufacturerSuccessAction({
+            new manufacturerActions.UpdateManufacturerSuccessAction({
               id: action.id,
               item
             })
         ),
         catchError(error =>
           observableOf(
-            new languageActions.UpdateManufacturerFailureAction({ error })
+            new manufacturerActions.UpdateManufacturerFailureAction({ error })
           )
         )
       )
@@ -99,21 +99,21 @@ export class ManufacturerStoreEffects {
 
   @Effect()
   deleteManufacturerEffect$: Observable<Action> = this.actions$.pipe(
-    ofType<languageActions.DeleteManufacturerRequestAction>(
-      languageActions.ActionTypes.DELETE_LANGUAGE_REQUEST
+    ofType<manufacturerActions.DeleteManufacturerRequestAction>(
+      manufacturerActions.ActionTypes.DELETE_MANUFACTURER_REQUEST
     ),
     switchMap(action =>
       this.manufacturerService.deleteManufacturer(action.id).pipe(
         map(
           items =>
-            new languageActions.DeleteManufacturerSuccessAction({
+            new manufacturerActions.DeleteManufacturerSuccessAction({
               id: action.id,
               items
             })
         ),
         catchError(error =>
           observableOf(
-            new languageActions.DeleteManufacturerFailureAction({ error })
+            new manufacturerActions.DeleteManufacturerFailureAction({ error })
           )
         )
       )

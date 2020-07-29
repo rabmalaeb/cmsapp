@@ -73,8 +73,8 @@ export class BrandAddComponent implements OnInit {
       .pipe(
         filter(
           (action: any) =>
-            action.type === ActionTypes.UPDATE_LANGUAGE_SUCCESS ||
-            action.type === ActionTypes.ADD_LANGUAGE_SUCCESS
+            action.type === ActionTypes.UPDATE_BRAND_SUCCESS ||
+            action.type === ActionTypes.ADD_BRAND_SUCCESS
         )
       )
       .subscribe(() => {
@@ -89,8 +89,8 @@ export class BrandAddComponent implements OnInit {
       .pipe(
         filter(
           (action: any) =>
-            action.type === ActionTypes.UPDATE_LANGUAGE_FAILURE ||
-            action.type === ActionTypes.ADD_LANGUAGE_FAILURE
+            action.type === ActionTypes.UPDATE_BRAND_FAILURE ||
+            action.type === ActionTypes.ADD_BRAND_FAILURE
         )
       )
       .subscribe(errorResponse => {
@@ -152,7 +152,7 @@ export class BrandAddComponent implements OnInit {
     }
     return (
       this.actionType === ActionType.EDIT &&
-      this.authorizationService.canEdit(ModuleName.LANGUAGES)
+      this.authorizationService.canEdit(ModuleName.BRANDS)
     );
   }
 }

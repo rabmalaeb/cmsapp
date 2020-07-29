@@ -30,7 +30,7 @@ export class ManufacturerFormComponent implements OnInit, OnChanges {
     private validationMessagesService: ValidationMessagesService
   ) { }
 
-  languageForm: FormGroup;
+  manufacturerForm: FormGroup;
   @Input() manufacturer: Manufacturer;
   @Input() countries: Country[];
   @Input() actionType: ActionType;
@@ -58,14 +58,14 @@ export class ManufacturerFormComponent implements OnInit, OnChanges {
   }
 
   buildNewManufacturerForm() {
-    this.languageForm = this.form.group({
+    this.manufacturerForm = this.form.group({
       name: ['', [Validators.required]],
       countryId: ['', [Validators.required]]
     });
   }
 
   buildExistingManufacturerForm() {
-    this.languageForm = this.form.group({
+    this.manufacturerForm = this.form.group({
       id: [this.manufacturer.id],
       name: [this.manufacturer.name, [Validators.required]],
       countryId: [this.manufacturer.countryId, [Validators.required]]
@@ -73,16 +73,16 @@ export class ManufacturerFormComponent implements OnInit, OnChanges {
   }
 
   get name() {
-    return this.languageForm.get('name');
+    return this.manufacturerForm.get('name');
   }
 
   get countryId() {
-    return this.languageForm.get('countryId');
+    return this.manufacturerForm.get('countryId');
   }
 
   buildManufacturerParams(): Manufacturer {
     return {
-      id: this.languageForm.get('id') ? this.languageForm.get('id').value : '',
+      id: this.manufacturerForm.get('id') ? this.manufacturerForm.get('id').value : '',
       name: this.name.value,
       countryId: this.countryId.value
     };
@@ -100,7 +100,7 @@ export class ManufacturerFormComponent implements OnInit, OnChanges {
 
   performAction(formDirective: FormGroupDirective) {
     this.formGroupDirective = formDirective;
-    if (!this.formService.isFormValid(this.languageForm)) {
+    if (!this.formService.isFormValid(this.manufacturerForm)) {
       return false;
     }
     this.submitForm.emit(this.buildManufacturerParams());

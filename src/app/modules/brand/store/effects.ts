@@ -37,7 +37,7 @@ export class BrandStoreEffects {
   @Effect()
   getBrandEffect$: Observable<Action> = this.actions$.pipe(
     ofType<brandActions.GetBrandRequestAction>(
-      brandActions.ActionTypes.GET_LANGUAGE_REQUEST
+      brandActions.ActionTypes.GET_BRAND_REQUEST
     ),
     switchMap(action =>
       this.brandService.getBrand(action.id).pipe(
@@ -57,7 +57,7 @@ export class BrandStoreEffects {
   @Effect()
   addBrandEffect$: Observable<Action> = this.actions$.pipe(
     ofType<brandActions.AddBrandRequestAction>(
-      brandActions.ActionTypes.ADD_LANGUAGE_REQUEST
+      brandActions.ActionTypes.ADD_BRAND_REQUEST
     ),
     switchMap(action =>
       this.brandService.addBrand(action.brand).pipe(
@@ -77,7 +77,7 @@ export class BrandStoreEffects {
   @Effect()
   updateBrandEffect$: Observable<Action> = this.actions$.pipe(
     ofType<brandActions.UpdateBrandRequestAction>(
-      brandActions.ActionTypes.UPDATE_LANGUAGE_REQUEST
+      brandActions.ActionTypes.UPDATE_BRAND_REQUEST
     ),
     switchMap(action =>
       this.brandService.updateBrand(action.id, action.brand).pipe(
@@ -100,7 +100,7 @@ export class BrandStoreEffects {
   @Effect()
   deleteBrandEffect$: Observable<Action> = this.actions$.pipe(
     ofType<brandActions.DeleteBrandRequestAction>(
-      brandActions.ActionTypes.DELETE_LANGUAGE_REQUEST
+      brandActions.ActionTypes.DELETE_BRAND_REQUEST
     ),
     switchMap(action =>
       this.brandService.deleteBrand(action.id).pipe(

@@ -10,9 +10,10 @@ export enum SuccessMessages {
   TRANSLATION_DELETED = 'Translation has been deleted successfully',
   SUPPLIER_DELETED = 'Supplier has been deleted successfully',
   ROLE_DELETED = 'Role has been deleted successfully',
-  PARTNER_DELETED = 'Partner has been deleted successfully'
+  PARTNER_DELETED = 'Partner has been deleted successfully',
+  BRAND_DELETED = 'Brand has been deleted successfully',
+  MANUFACTURER_DELETED = 'Manufacturer has been deleted successfully'
 }
-
 
 export enum ConfirmMessages {
   CONFIRM_DELETE = 'Are you sure you want to delete?',

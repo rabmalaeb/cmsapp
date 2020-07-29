@@ -16,6 +16,6 @@ export class AddBrandGuard implements CanActivate {
   ) { }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    return this.authorizationService.canAdd(ModuleName.LANGUAGES);
+    return this.authorizationService.canAdd(ModuleName.BRANDS);
   }
 }

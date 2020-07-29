@@ -1,7 +1,7 @@
-import { languageAdapter, initialState, State } from './state';
+import { manufacturerAdapter, initialState, State } from './state';
 import { Actions, ActionTypes } from './actions';
 
-export function languageReducer(state = initialState, action: Actions): State {
+export function manufacturerReducer(state = initialState, action: Actions): State {
   switch (action.type) {
     case ActionTypes.LOAD_REQUEST: {
       return {
@@ -11,7 +11,7 @@ export function languageReducer(state = initialState, action: Actions): State {
       };
     }
     case ActionTypes.LOAD_SUCCESS: {
-      return languageAdapter.addAll(action.payload.items, {
+      return manufacturerAdapter.addAll(action.payload.items, {
         ...state,
         isLoading: false,
         total: action.payload.paginator.total,
@@ -25,57 +25,57 @@ export function languageReducer(state = initialState, action: Actions): State {
         loadingError: action.payload.error
       };
     }
-    case ActionTypes.GET_LANGUAGE_REQUEST: {
+    case ActionTypes.GET_MANUFACTURER_REQUEST: {
       return {
         ...state,
         isLoadingItem: true,
         actionError: null
       };
     }
-    case ActionTypes.GET_LANGUAGE_SUCCESS: {
-      return languageAdapter.addOne(action.payload.item, {
+    case ActionTypes.GET_MANUFACTURER_SUCCESS: {
+      return manufacturerAdapter.addOne(action.payload.item, {
         ...state,
         isLoadingItem: false,
         actionError: null
       });
     }
-    case ActionTypes.GET_LANGUAGE_FAILURE: {
+    case ActionTypes.GET_MANUFACTURER_FAILURE: {
       return {
         ...state,
         isLoadingItem: false,
         actionError: action.payload.error.message
       };
     }
-    case ActionTypes.ADD_LANGUAGE_REQUEST: {
+    case ActionTypes.ADD_MANUFACTURER_REQUEST: {
       return {
         ...state,
         isLoadingAction: true,
         actionError: null
       };
     }
-    case ActionTypes.ADD_LANGUAGE_SUCCESS: {
-      return languageAdapter.addOne(action.payload.item, {
+    case ActionTypes.ADD_MANUFACTURER_SUCCESS: {
+      return manufacturerAdapter.addOne(action.payload.item, {
         ...state,
         isLoadingAction: false,
         actionError: null
       });
     }
-    case ActionTypes.ADD_LANGUAGE_FAILURE: {
+    case ActionTypes.ADD_MANUFACTURER_FAILURE: {
       return {
         ...state,
         isLoadingAction: false,
         actionError: action.payload.error.message
       };
     }
-    case ActionTypes.UPDATE_LANGUAGE_REQUEST: {
+    case ActionTypes.UPDATE_MANUFACTURER_REQUEST: {
       return {
         ...state,
         isLoadingAction: true,
         actionError: null
       };
     }
-    case ActionTypes.UPDATE_LANGUAGE_SUCCESS: {
-      return languageAdapter.updateOne(
+    case ActionTypes.UPDATE_MANUFACTURER_SUCCESS: {
+      return manufacturerAdapter.updateOne(
         { id: action.payload.id, changes: action.payload.item },
         {
           ...state,
@@ -84,28 +84,28 @@ export function languageReducer(state = initialState, action: Actions): State {
         }
       );
     }
-    case ActionTypes.UPDATE_LANGUAGE_FAILURE: {
+    case ActionTypes.UPDATE_MANUFACTURER_FAILURE: {
       return {
         ...state,
         isLoadingAction: false,
         actionError: action.payload.error.message
       };
     }
-    case ActionTypes.DELETE_LANGUAGE_REQUEST: {
+    case ActionTypes.DELETE_MANUFACTURER_REQUEST: {
       return {
         ...state,
         isLoadingAction: true,
         actionError: null
       };
     }
-    case ActionTypes.DELETE_LANGUAGE_SUCCESS: {
-      return languageAdapter.removeOne(action.payload.id, {
+    case ActionTypes.DELETE_MANUFACTURER_SUCCESS: {
+      return manufacturerAdapter.removeOne(action.payload.id, {
         ...state,
         isLoadingAction: false,
         actionError: null
       });
     }
-    case ActionTypes.DELETE_LANGUAGE_FAILURE: {
+    case ActionTypes.DELETE_MANUFACTURER_FAILURE: {
       return {
         ...state,
         isLoadingAction: false,

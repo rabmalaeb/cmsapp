@@ -16,6 +16,6 @@ export class EditBrandGuard implements CanActivate {
   ) { }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    return this.authorizationService.canEdit(ModuleName.ADMINS);
+    return this.authorizationService.canEdit(ModuleName.BRANDS);
   }
 }

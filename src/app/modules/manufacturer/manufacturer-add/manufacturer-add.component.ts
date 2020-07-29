@@ -69,8 +69,8 @@ export class ManufacturerAddComponent implements OnInit {
       .pipe(
         filter(
           (action: any) =>
-            action.type === ActionTypes.UPDATE_LANGUAGE_SUCCESS ||
-            action.type === ActionTypes.ADD_LANGUAGE_SUCCESS
+            action.type === ActionTypes.UPDATE_MANUFACTURER_SUCCESS ||
+            action.type === ActionTypes.ADD_MANUFACTURER_SUCCESS
         )
       )
       .subscribe(() => {
@@ -85,8 +85,8 @@ export class ManufacturerAddComponent implements OnInit {
       .pipe(
         filter(
           (action: any) =>
-            action.type === ActionTypes.UPDATE_LANGUAGE_FAILURE ||
-            action.type === ActionTypes.ADD_LANGUAGE_FAILURE
+            action.type === ActionTypes.UPDATE_MANUFACTURER_FAILURE ||
+            action.type === ActionTypes.ADD_MANUFACTURER_FAILURE
         )
       )
       .subscribe(errorResponse => {
@@ -151,7 +151,7 @@ export class ManufacturerAddComponent implements OnInit {
     }
     return (
       this.actionType === ActionType.EDIT &&
-      this.authorizationService.canEdit(ModuleName.LANGUAGES)
+      this.authorizationService.canEdit(ModuleName.MANUFACTURERS)
     );
   }
 }

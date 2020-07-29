@@ -41,10 +41,7 @@ export class BrandFormComponent implements OnInit, OnChanges {
   @Output() submitForm = new EventEmitter<Brand>();
   formGroupDirective: FormGroupDirective;
 
-  ngOnInit() {
-    console.log('manufacturers', this.manufacturers);
-
-  }
+  ngOnInit() {}
 
   ngOnChanges() {
     if (this.isLoadingAction || this.actionError) {

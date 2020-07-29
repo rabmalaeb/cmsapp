@@ -49,7 +49,7 @@ export class ProductFormComponent implements OnInit, OnChanges {
   ngOnInit() {}
 
   ngOnChanges() {
-    if (this.isLoadingAction || this.actionError) {
+    if (this.isLoadingAction || this.actionError && this.productForm) {
       return false;
     }
     if (this.product) {

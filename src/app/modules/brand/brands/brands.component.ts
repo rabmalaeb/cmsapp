@@ -66,17 +66,17 @@ export class BrandsComponent implements OnInit {
     this.actionsSubject$
       .pipe(
         filter(
-          (action: any) => action.type === ActionTypes.DELETE_LANGUAGE_SUCCESS
+          (action: any) => action.type === ActionTypes.DELETE_BRAND_SUCCESS
         )
       )
       .subscribe(() => {
-        this.notificationService.showSuccess(SuccessMessages.LANGUAGE_DELETED);
+        this.notificationService.showSuccess(SuccessMessages.BRAND_DELETED);
       });
 
     this.actionsSubject$
       .pipe(
         filter(
-          (action: any) => action.type === ActionTypes.DELETE_LANGUAGE_FAILURE
+          (action: any) => action.type === ActionTypes.DELETE_BRAND_FAILURE
         )
       )
       .subscribe(errorResponse => {
@@ -116,11 +116,11 @@ export class BrandsComponent implements OnInit {
   }
 
   get canAddBrand() {
-    return this.authorizationService.canAdd(ModuleName.LANGUAGES);
+    return this.authorizationService.canAdd(ModuleName.BRANDS);
   }
 
   get canDeleteBrand() {
-    return this.authorizationService.canDelete(ModuleName.LANGUAGES);
+    return this.authorizationService.canDelete(ModuleName.BRANDS);
   }
 
   get perPage() {

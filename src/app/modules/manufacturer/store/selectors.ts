@@ -4,7 +4,7 @@ import {
   MemoizedSelector
 } from '@ngrx/store';
 
-import { languageAdapter, State } from './state';
+import { manufacturerAdapter, State } from './state';
 import { Manufacturer } from '../manufacturer';
 
 export const getLoadingError = (state: State): any => state.loadingError;
@@ -27,7 +27,7 @@ export const selectManufacturerState: MemoizedSelector<
 
 export const selectAllManufacturerItems: (
   state: object
-) => Manufacturer[] = languageAdapter.getSelectors(selectManufacturerState).selectAll;
+) => Manufacturer[] = manufacturerAdapter.getSelectors(selectManufacturerState).selectAll;
 
 export const selectManufacturerById = (id: number) =>
   createSelector(

@@ -66,17 +66,17 @@ export class ManufacturersComponent implements OnInit {
     this.actionsSubject$
       .pipe(
         filter(
-          (action: any) => action.type === ActionTypes.DELETE_LANGUAGE_SUCCESS
+          (action: any) => action.type === ActionTypes.DELETE_MANUFACTURER_SUCCESS
         )
       )
       .subscribe(() => {
-        this.notificationService.showSuccess(SuccessMessages.LANGUAGE_DELETED);
+        this.notificationService.showSuccess(SuccessMessages.MANUFACTURER_DELETED);
       });
 
     this.actionsSubject$
       .pipe(
         filter(
-          (action: any) => action.type === ActionTypes.DELETE_LANGUAGE_FAILURE
+          (action: any) => action.type === ActionTypes.DELETE_MANUFACTURER_FAILURE
         )
       )
       .subscribe(errorResponse => {
@@ -116,11 +116,11 @@ export class ManufacturersComponent implements OnInit {
   }
 
   get canAddManufacturer() {
-    return this.authorizationService.canAdd(ModuleName.LANGUAGES);
+    return this.authorizationService.canAdd(ModuleName.MANUFACTURERS);
   }
 
   get canDeleteManufacturer() {
-    return this.authorizationService.canDelete(ModuleName.LANGUAGES);
+    return this.authorizationService.canDelete(ModuleName.MANUFACTURERS);
   }
 
   get perPage() {

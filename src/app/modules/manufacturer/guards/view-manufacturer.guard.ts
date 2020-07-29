@@ -15,6 +15,6 @@ export class ViewManufacturerGuard implements CanActivate {
     private authorizationService: AuthorizationService
   ) { }
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    return this.authorizationService.canView(ModuleName.LANGUAGES);
+    return this.authorizationService.canView(ModuleName.MANUFACTURERS);
   }
 }
