@@ -45,7 +45,7 @@ export class CategoryFormComponent implements OnInit, OnChanges {
   ngOnInit() {}
 
   ngOnChanges() {
-    if (this.isLoadingAction || this.actionError) {
+    if (this.isLoadingAction || this.actionError && this.categoryForm) {
       return false;
     }
     if (this.category) {

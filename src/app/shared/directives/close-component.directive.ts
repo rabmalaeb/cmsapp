@@ -10,8 +10,6 @@ export class CloseComponentDirective {
 
   @HostListener('document:keydown', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent) {
-    console.log('event ', event);
-
     if (event.code === 'Escape') {
       this.escapeClicked.emit();
     }

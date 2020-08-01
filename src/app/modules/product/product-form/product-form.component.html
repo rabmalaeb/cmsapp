@@ -32,8 +32,8 @@
       </app-input>
     </div>
 
-    <div class="page__form-input">
-      <app-input id="code" name="code" label="Code" [formControlItem]="code">
+    <div class="page__form-input" *ngIf="isUpdate">
+      <app-input id="code" name="code" label="Code" [formControlItem]="code" [readonly]="true">
       </app-input>
     </div>
 

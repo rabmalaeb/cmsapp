@@ -48,7 +48,7 @@ export class TranslationFormComponent implements OnInit, OnChanges {
   ngOnInit() { }
 
   ngOnChanges() {
-    if (this.isLoadingAction || this.actionError) {
+    if (this.isLoadingAction || this.actionError && this.translationForm) {
       return false;
     }
     if (this.translation) {

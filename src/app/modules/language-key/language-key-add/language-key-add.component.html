@@ -16,6 +16,7 @@
         [isLoadingAction]="isLoadingAction$ | async"
         (submitForm)="performAction($event)"
         [actionError]="actionErrors$ | async"
+        [actionType]="actionType"
       >
       </app-language-key-form>
     </div>

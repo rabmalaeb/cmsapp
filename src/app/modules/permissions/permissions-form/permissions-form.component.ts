@@ -55,7 +55,7 @@ export class PermissionFormComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges() {
-    if (this.isLoadingAction || this.actionError) {
+    if (this.isLoadingAction || this.actionError && this.permissionForm) {
       return false;
     }
     if (this.permission) {

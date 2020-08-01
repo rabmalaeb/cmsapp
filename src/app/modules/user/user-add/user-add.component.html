@@ -11,6 +11,7 @@
         [canEditUser]="canEditUser$ | async"
         [isLoadingAction]="isLoadingAction$ | async"
         [actionErrors]="actionErrors$ | async"
+        [actionType]="actionType"
         (submitForm)="performAction($event)"
       >
       </app-user-form>

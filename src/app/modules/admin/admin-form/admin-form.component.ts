@@ -64,7 +64,7 @@ export class AdminFormComponent implements OnInit, OnChanges {
     if (changes.roles && !changes.roles.firstChange) {
       return false;
     }
-    if (this.isLoadingAction || this.actionError) {
+    if (this.isLoadingAction || this.actionError && this.adminForm) {
       return false;
     }
     if (this.admin) {

@@ -46,7 +46,7 @@ export class BannerFormComponent implements OnInit, OnChanges {
   ngOnInit() {}
 
   ngOnChanges() {
-    if (this.isLoadingAction || this.actionError) {
+    if (this.isLoadingAction || this.actionError && this.bannerForm) {
       return false;
     }
     if (this.banner) {

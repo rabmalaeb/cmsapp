@@ -44,7 +44,7 @@ export class PartnerFormComponent implements OnInit, OnChanges {
   ngOnInit() {}
 
   ngOnChanges() {
-    if (this.isLoadingAction || this.actionError) {
+    if (this.isLoadingAction || this.actionError && this.partnerForm) {
       return false;
     }
     if (this.partner) {

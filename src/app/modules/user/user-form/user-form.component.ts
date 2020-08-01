@@ -45,7 +45,7 @@ export class UserFormComponent implements OnInit, OnChanges {
   ngOnInit() {}
 
   ngOnChanges() {
-    if (this.isLoadingAction || this.actionErrors) {
+    if (this.isLoadingAction || this.actionErrors && this.userForm) {
       return false;
     }
     if (this.user) {

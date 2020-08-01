@@ -16,6 +16,7 @@
         [canEditCategory]="canEditCategory$ | async"
         [isLoadingAction]="isLoadingAction$ | async"
         [actionError]="actionErrors$ | async"
+        [actionType]="actionType"
         (submitForm)="performAction($event)"
       >
       </app-category-form>

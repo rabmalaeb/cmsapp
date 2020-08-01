@@ -42,7 +42,7 @@ export class SupplierFormComponent implements OnInit, OnChanges {
   ngOnInit() {}
 
   ngOnChanges() {
-    if (this.isLoadingAction || this.actionError) {
+    if (this.isLoadingAction || this.actionError && this.submitForm) {
       return false;
     }
     if (this.supplier) {

@@ -44,7 +44,7 @@ export class BrandFormComponent implements OnInit, OnChanges {
   ngOnInit() {}
 
   ngOnChanges() {
-    if (this.isLoadingAction || this.actionError) {
+    if (this.isLoadingAction || this.actionError && this.brandForm) {
       return false;
     }
     if (this.brand) {

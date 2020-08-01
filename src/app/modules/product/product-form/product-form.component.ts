@@ -71,8 +71,8 @@ export class ProductFormComponent implements OnInit, OnChanges {
       retailPrice: ['', [Validators.required]],
       originalPrice: ['', [Validators.required]],
       quantity: ['', [Validators.required]],
+      code: [''],
       brandId: ['', [Validators.required]],
-      code: ['', Validators.required],
       unitOfCount: ['', [Validators.required]]
     });
   }
@@ -87,7 +87,7 @@ export class ProductFormComponent implements OnInit, OnChanges {
       originalPrice: [this.product.originalPrice, [Validators.required]],
       quantity: [this.product.quantity, [Validators.required]],
       brandId: [this.product.brandId, [Validators.required]],
-      code: [this.product.code, Validators.required],
+      code: [this.product.code],
       unitOfCount: [this.product.unitOfCount, [Validators.required]]
     });
   }
@@ -162,7 +162,6 @@ export class ProductFormComponent implements OnInit, OnChanges {
     product.originalPrice = this.originalPrice.value;
     product.quantity = this.quantity.value;
     product.unitOfCount = this.unitOfCount.value;
-    product.code = this.code.value;
     product.brandId = this.brandId.value;
     if (this.productImage) {
       product.image = this.productImage;
@@ -180,5 +179,9 @@ export class ProductFormComponent implements OnInit, OnChanges {
 
   get isLoadingForm() {
     return !this.product && this.isLoading;
+  }
+
+  get isUpdate() {
+    return this.actionType === ActionType.EDIT;
   }
 }

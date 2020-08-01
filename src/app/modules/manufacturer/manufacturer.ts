@@ -4,6 +4,7 @@ import { Country } from '../country/country';
 export class Manufacturer {
   id: number;
   name: string;
+  code: string;
   countryId: number;
   country?: Country;
 }

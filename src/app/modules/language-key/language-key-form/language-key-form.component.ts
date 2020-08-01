@@ -42,7 +42,7 @@ export class LanguageKeyFormComponent implements OnInit, OnChanges {
   ngOnInit() {}
 
   ngOnChanges() {
-    if (this.isLoadingAction || this.actionError) {
+    if (this.isLoadingAction || this.actionError && this.languageKeyForm) {
       return false;
     }
     if (this.languageKey) {

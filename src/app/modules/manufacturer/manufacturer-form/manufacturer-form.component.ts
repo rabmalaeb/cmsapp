@@ -44,7 +44,7 @@ export class ManufacturerFormComponent implements OnInit, OnChanges {
   ngOnInit() { }
 
   ngOnChanges() {
-    if (this.isLoadingAction || this.actionError) {
+    if (this.isLoadingAction || this.actionError && this.manufacturerForm) {
       return false;
     }
     if (this.manufacturer) {
@@ -60,6 +60,7 @@ export class ManufacturerFormComponent implements OnInit, OnChanges {
   buildNewManufacturerForm() {
     this.manufacturerForm = this.form.group({
       name: ['', [Validators.required]],
+      code: ['', [Validators.required]],
       countryId: ['', [Validators.required]]
     });
   }
@@ -68,12 +69,18 @@ export class ManufacturerFormComponent implements OnInit, OnChanges {
     this.manufacturerForm = this.form.group({
       id: [this.manufacturer.id],
       name: [this.manufacturer.name, [Validators.required]],
+      code: [this.manufacturer.code, [Validators.required]],
       countryId: [this.manufacturer.countryId, [Validators.required]]
     });
   }
 
   get name() {
     return this.manufacturerForm.get('name');
+  }
+
+
+  get code() {
+    return this.manufacturerForm.get('code');
   }
 
   get countryId() {
@@ -84,6 +91,7 @@ export class ManufacturerFormComponent implements OnInit, OnChanges {
     return {
       id: this.manufacturerForm.get('id') ? this.manufacturerForm.get('id').value : '',
       name: this.name.value,
+      code: this.code.value,
       countryId: this.countryId.value
     };
   }

@@ -15,6 +15,7 @@ export class ManufacturerSerializerService {
     const manufacturer = new Manufacturer();
     manufacturer.id = parseInt(manufacturerResponse.id, 0);
     manufacturer.name = manufacturerResponse.attributes.name;
+    manufacturer.code = manufacturerResponse.attributes.code;
     (manufacturer.country = this.countrySerializer.getCountry(
       manufacturerResponse.relationships.country
     )),

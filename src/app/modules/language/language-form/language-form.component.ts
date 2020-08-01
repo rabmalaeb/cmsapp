@@ -42,7 +42,7 @@ export class LanguageFormComponent implements OnInit, OnChanges {
   ngOnInit() { }
 
   ngOnChanges() {
-    if (this.isLoadingAction || this.actionError) {
+    if (this.isLoadingAction || this.actionError && this.languageForm) {
       return false;
     }
     if (this.language) {
