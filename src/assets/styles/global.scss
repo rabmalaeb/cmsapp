@@ -1,3 +1,9 @@
+$mq-breakpoints: (mobile: 266px,
+  mobile-plus: 390px,
+  tablet: 740px,
+  tablet-plus: 950px,
+  desktop: 980px,
+  wide: 1300px);
 $global--primary-color: #444F5D;
 $global--primary-color-hover: #262D37;
 $global--secondary-color: #4099DF;

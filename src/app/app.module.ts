@@ -31,6 +31,7 @@ import { SupplierModule } from './modules/supplier/supplier.module';
 import { ApiKeyInterceptor } from './core/interceptors/apiKey.interceptor';
 import { BrandModule } from './modules/brand/brand.module';
 import { ManufacturerModule } from './modules/manufacturer/manufacturer.module';
+import { DirectivesModule } from './shared/directives/directives.module';
 
 
 @NgModule({
@@ -41,6 +42,7 @@ import { ManufacturerModule } from './modules/manufacturer/manufacturer.module';
     BrowserAnimationsModule,
     PartialsModule,
     BrowserModule,
+    DirectivesModule,
     AdminModule,
     UserModule,
     CategoryModule,

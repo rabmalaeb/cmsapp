@@ -4,17 +4,30 @@
   justify-content: center;
   height: 100%;
   background-color: $global--background-color;
+
+  @include mq ($until: tablet) {
+    padding: 0 10px;
+    flex-direction: column;
+  }
 }
 
 .authentication__logo {
   position: absolute;
+  width: 400px;
   top: 0;
   left: 0;
   padding: 20px;
+
+  @include mq ($until: tablet) {
+    position: relative;
+    margin-bottom: 40px;
+    width: 80%;
+    padding: 0;
+  }
 }
 
 .authentication__logo-image {
-  height: 50px;
+  width: 100%;
 }
 
 .authentication__container {
@@ -27,6 +40,10 @@
   align-items: center;
   justify-content: center;
   background-color: #fff;
+
+  @include mq ($until: tablet) {
+    width: 100%;
+  }
 }
 
 .authentication__section {
@@ -49,9 +66,9 @@
 }
 
 .authentication__form {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 .authentication__form-section {
@@ -66,6 +83,7 @@
 
 .authentication__form-item {
   margin-bottom: 20px;
+
   &_is-link {
     text-align: center;
     margin: 10px 0;

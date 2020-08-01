@@ -1,103 +1,74 @@
 <div class="page">
-  <mat-progress-bar
-    *ngIf="isLoading$ | async"
-    class="page__progress-bar"
-    mode="indeterminate"
-    color="primary"
-  >
+  <mat-progress-bar *ngIf="isLoading$ | async" class="page__progress-bar" mode="indeterminate" color="primary">
   </mat-progress-bar>
   <div class="page__section">
-    <app-page-header
-      label="Users"
-      buttonLabel="Add User"
-      [condition]="canAddUser | async"
-      (action)="addUser()"
-    >
+    <app-page-header label="Users" buttonLabel="Add User" [condition]="canAddUser | async" (action)="addUser()">
       <div class="page__filters-container">
         <div class="page__filter-item page__filter-item_is-search">
-          <app-search-input
-            placeholder="Search"
-            [filterHandler]="filterHandler"
-            (filter)="getUsers()"
-          ></app-search-input>
+          <app-search-input placeholder="Search" [filterHandler]="filterHandler" (filter)="getUsers()">
+          </app-search-input>
         </div>
       </div>
     </app-page-header>
   </div>
   <div class="page__container">
-    <mat-table
-      mat-table
-      matSort
-      (matSortChange)="sortItems($event)"
-      [dataSource]="users$ | async"
-      class="mat-elevation-z8"
-    >
-      <ng-container matColumnDef="id">
-        <mat-header-cell mat-sort-header *matHeaderCellDef>Id</mat-header-cell>
-        <mat-cell *matCellDef="let user">{{ user.id }}</mat-cell>
-      </ng-container>
+    <div class="page__table-container">
+      <mat-table mat-table matSort (matSortChange)="sortItems($event)" [dataSource]="users$ | async"
+        class="mat-elevation-z8">
+        <ng-container matColumnDef="id">
+          <mat-header-cell mat-sort-header *matHeaderCellDef>Id</mat-header-cell>
+          <mat-cell *matCellDef="let user">{{ user.id }}</mat-cell>
+        </ng-container>
 
-      <ng-container matColumnDef="first_name">
-        <mat-header-cell mat-sort-header *matHeaderCellDef
-          >First Name</mat-header-cell
-        >
-        <mat-cell *matCellDef="let user">
-          <div class="link" (click)="editUser(user.id)">
-            {{ user.firstName }}
-          </div>
-        </mat-cell>
-      </ng-container>
+        <ng-container matColumnDef="first_name">
+          <mat-header-cell mat-sort-header *matHeaderCellDef>First Name</mat-header-cell>
+          <mat-cell *matCellDef="let user">
+            <div class="link" (click)="editUser(user.id)">
+              {{ user.firstName }}
+            </div>
+          </mat-cell>
+        </ng-container>
 
-      <ng-container matColumnDef="last_name">
-        <mat-header-cell mat-sort-header *matHeaderCellDef
-          >Last Name</mat-header-cell
-        >
-        <mat-cell *matCellDef="let user">
-          {{ user.lastName }}
-        </mat-cell>
-      </ng-container>
+        <ng-container matColumnDef="last_name">
+          <mat-header-cell mat-sort-header *matHeaderCellDef>Last Name</mat-header-cell>
+          <mat-cell *matCellDef="let user">
+            {{ user.lastName }}
+          </mat-cell>
+        </ng-container>
 
-      <ng-container matColumnDef="email">
-        <mat-header-cell mat-sort-header *matHeaderCellDef
-          >Email</mat-header-cell
-        >
-        <mat-cell *matCellDef="let user">
-          {{ user.email }}
-        </mat-cell>
-      </ng-container>
+        <ng-container matColumnDef="email">
+          <mat-header-cell mat-sort-header *matHeaderCellDef>Email</mat-header-cell>
+          <mat-cell *matCellDef="let user">
+            {{ user.email }}
+          </mat-cell>
+        </ng-container>
 
-      <ng-container matColumnDef="mobile">
-        <mat-header-cell *matHeaderCellDef>Mobile</mat-header-cell>
-        <mat-cell *matCellDef="let user">
-          {{ user.mobile }}
-        </mat-cell>
-      </ng-container>
+        <ng-container matColumnDef="mobile">
+          <mat-header-cell *matHeaderCellDef>Mobile</mat-header-cell>
+          <mat-cell *matCellDef="let user">
+            {{ user.mobile }}
+          </mat-cell>
+        </ng-container>
 
-      <ng-container matColumnDef="action">
-        <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
-        <mat-cell *matCellDef="let user" class="action-link">
-          <a class="table__action" (click)="editUser(user.id)"
-            ><app-icon name="edit"></app-icon
-          ></a>
-          <a
-            class="table__action"
-            (click)="deleteUser(user.id)"
-            *ngIf="canDeleteUser | async"
-            ><app-icon name="delete"></app-icon
-          ></a>
-        </mat-cell>
-      </ng-container>
+        <ng-container matColumnDef="action">
+          <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
+          <mat-cell *matCellDef="let user" class="action-link">
+            <a class="table__action" (click)="editUser(user.id)">
+              <app-icon name="edit"></app-icon>
+            </a>
+            <a class="table__action" (click)="deleteUser(user.id)" *ngIf="canDeleteUser | async">
+              <app-icon name="delete"></app-icon>
+            </a>
+          </mat-cell>
+        </ng-container>
 
-      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-      <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
-    </mat-table>
-
-    <mat-paginator
-      [pageSizeOptions]="[20, 50, 100]"
-      [length]="totalNumberOfItems$ | async"
-      [pageSize]="perPage"
-      (page)="setPage($event)"
-      showFirstLastButtons
-    ></mat-paginator>
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+      </mat-table>
+    </div>
+   <div class="page__paginator-container">
+    <mat-paginator [pageSizeOptions]="[20, 50, 100]" [length]="totalNumberOfItems$ | async" [pageSize]="perPage"
+      (page)="setPage($event)" showFirstLastButtons></mat-paginator>
+    </div>
   </div>
 </div>

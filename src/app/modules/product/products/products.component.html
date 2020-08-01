@@ -1,111 +1,79 @@
 <div class="page">
-  <mat-progress-bar
-    *ngIf="isLoading$ | async"
-    class="page__progress-bar"
-    mode="indeterminate"
-    color="primary"
-  >
+  <mat-progress-bar *ngIf="isLoading$ | async" class="page__progress-bar" mode="indeterminate" color="primary">
   </mat-progress-bar>
   <div class="page__section">
-    <app-page-header
-      label="Products"
-      buttonLabel="Add Product"
-      [condition]="canAddProduct | async"
-      (action)="addProduct()"
-    >
+    <app-page-header label="Products" buttonLabel="Add Product" [condition]="canAddProduct | async"
+      (action)="addProduct()">
       <div class="page__filters-container">
         <div class="page__filter-item page__filter-item_is-search">
-          <app-search-input
-            placeholder="Search"
-            [filterHandler]="filterHandler"
-            (filter)="filterProducts()"
-          ></app-search-input>
+          <app-search-input placeholder="Search" [filterHandler]="filterHandler" (filter)="filterProducts()">
+          </app-search-input>
         </div>
         <div class="page__filter-item">
-          <app-filter-control
-            label="Filter Products"
-            [filterHandler]="filterHandler"
-            (filter)="filterProducts()"
-          >
-            <app-product-filters
-              [productFilterLimits]="productFilterLimits$ | async"
-              [manufacturers]="manufacturers$ | async"
-              [categories]="categories$ | async"
-              [brands]="brands$ | async"
-              [filterHandler]="filterHandler"
-            ></app-product-filters>
+          <app-filter-control label="Filter Products" [filterHandler]="filterHandler" (filter)="filterProducts()">
+            <app-product-filters [productFilterLimits]="productFilterLimits$ | async"
+              [manufacturers]="manufacturers$ | async" [categories]="categories$ | async" [brands]="brands$ | async"
+              [filterHandler]="filterHandler"></app-product-filters>
           </app-filter-control>
         </div>
       </div>
     </app-page-header>
   </div>
   <div class="page__container">
-    <mat-table
-      mat-table
-      matSort
-      (matSortChange)="sortProducts($event)"
-      [dataSource]="products$ | async"
-      class="mat-elevation-z8"
-    >
-      <ng-container matColumnDef="id">
-        <mat-header-cell mat-sort-header *matHeaderCellDef>Id</mat-header-cell>
-        <mat-cell *matCellDef="let product">{{ product.id }}</mat-cell>
-      </ng-container>
+    <div class="page__table-container">
+      <mat-table mat-table matSort (matSortChange)="sortProducts($event)" [dataSource]="products$ | async"
+        class="mat-elevation-z8">
+        <ng-container matColumnDef="id">
+          <mat-header-cell mat-sort-header *matHeaderCellDef>Id</mat-header-cell>
+          <mat-cell *matCellDef="let product">{{ product.id }}</mat-cell>
+        </ng-container>
 
-      <ng-container matColumnDef="name">
-        <mat-header-cell mat-sort-header *matHeaderCellDef
-          >Name</mat-header-cell
-        >
-        <mat-cell *matCellDef="let product">
-          <div class="link" (click)="editProduct(product.id)">
-            {{ product.name }}
-          </div>
-        </mat-cell>
-      </ng-container>
+        <ng-container matColumnDef="name">
+          <mat-header-cell mat-sort-header *matHeaderCellDef>Name</mat-header-cell>
+          <mat-cell *matCellDef="let product">
+            <div class="link" (click)="editProduct(product.id)">
+              {{ product.name }}
+            </div>
+          </mat-cell>
+        </ng-container>
 
-      <ng-container matColumnDef="image">
-        <mat-header-cell *matHeaderCellDef>Image</mat-header-cell>
-        <mat-cell *matCellDef="let product">
-          <div class="table__image-container" *ngIf="product.media">
-            <img class="table__image" [src]="product.media.imageUrl" alt="" />
-          </div>
-        </mat-cell>
-      </ng-container>
+        <ng-container matColumnDef="image">
+          <mat-header-cell *matHeaderCellDef>Image</mat-header-cell>
+          <mat-cell *matCellDef="let product">
+            <div class="table__image-container" *ngIf="product.media">
+              <img class="table__image" [src]="product.media.imageUrl" alt="" />
+            </div>
+          </mat-cell>
+        </ng-container>
 
-      <ng-container matColumnDef="category">
-        <mat-header-cell *matHeaderCellDef>Category</mat-header-cell>
-        <mat-cell *matCellDef="let product">
-          <p *ngIf="product.category">
-            {{ product.category.name }}
-          </p>
-        </mat-cell>
-      </ng-container>
+        <ng-container matColumnDef="category">
+          <mat-header-cell *matHeaderCellDef>Category</mat-header-cell>
+          <mat-cell *matCellDef="let product">
+            <p *ngIf="product.category">
+              {{ product.category.name }}
+            </p>
+          </mat-cell>
+        </ng-container>
 
-      <ng-container matColumnDef="action">
-        <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
-        <mat-cell *matCellDef="let product" class="action-link">
-          <a class="table__action" (click)="editProduct(product.id)"
-            ><app-icon name="edit"></app-icon
-          ></a>
-          <a
-            class="table__action"
-            (click)="deleteProduct(product.id)"
-            *ngIf="canDeleteProduct | async"
-            ><app-icon name="delete"></app-icon
-          ></a>
-        </mat-cell>
-      </ng-container>
+        <ng-container matColumnDef="action">
+          <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
+          <mat-cell *matCellDef="let product" class="action-link">
+            <a class="table__action" (click)="editProduct(product.id)">
+              <app-icon name="edit"></app-icon>
+            </a>
+            <a class="table__action" (click)="deleteProduct(product.id)" *ngIf="canDeleteProduct | async">
+              <app-icon name="delete"></app-icon>
+            </a>
+          </mat-cell>
+        </ng-container>
 
-      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-      <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
-    </mat-table>
-
-    <mat-paginator
-      [pageSizeOptions]="[20, 50, 100]"
-      [length]="totalNumberOfItems$ | async"
-      [pageSize]="perPage"
-      (page)="setPage($event)"
-      showFirstLastButtons
-    ></mat-paginator>
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+      </mat-table>
+    </div>
+    <div class="page__paginator-container">
+      <mat-paginator [pageSizeOptions]="[20, 50, 100]" [length]="totalNumberOfItems$ | async" [pageSize]="perPage"
+        (page)="setPage($event)" showFirstLastButtons></mat-paginator>
+    </div>
   </div>
 </div>

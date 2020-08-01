@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AuthenticationService } from 'src/app/core/services/authentication.service';
 import { RoleService } from 'src/app/modules/role/role.service';
 import { Role } from 'src/app/modules/role/role';
+import { AppService } from 'src/app/core/services/app.service';
 
 @Component({
   selector: 'app-header',
@@ -15,6 +16,7 @@ export class HeaderComponent implements OnInit {
 
   constructor(
     private authenticationService: AuthenticationService,
+    private appService: AppService,
     private roleService: RoleService
   ) { }
 
@@ -32,6 +34,11 @@ export class HeaderComponent implements OnInit {
       this.isLoading = false;
       this.role = response;
     });
+  }
+
+  toggleMenu(event: MouseEvent) {
+    event.stopPropagation();
+    this.appService.setIsMenuOpened(!this.appService.getIsMenuOpened());
   }
 
   logout() {

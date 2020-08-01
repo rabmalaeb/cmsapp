@@ -4,6 +4,7 @@ import { AuthenticationService } from './core/services/authentication.service';
 import { AuthorizationService } from './core/services/authorization.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable } from 'rxjs';
+import { AppService } from './core/services/app.service';
 
 @Component({
   selector: 'app-root',
@@ -18,6 +19,7 @@ export class AppComponent implements OnInit {
     private notificationService: NotificationService,
     public errorSnackBar: MatSnackBar,
     public successSnackBar: MatSnackBar,
+    private appService: AppService,
     public authenticationService: AuthenticationService,
     private authorizationService: AuthorizationService
   ) {
@@ -55,5 +57,15 @@ export class AppComponent implements OnInit {
 
   get isLoggedIn() {
     return this.authenticationService.isLoggedIn;
+  }
+
+  get isMenuOpened() {
+    return this.appService.getIsMenuOpened();
+  }
+
+  closeMenu() {
+    if (this.appService.getIsMenuOpened()) {
+      this.appService.setIsMenuOpened(false);
+    }
   }
 }

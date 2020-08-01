@@ -8,6 +8,7 @@ import { AuthorizationService } from './authorization.service';
 export class AppService {
 
   private returnUrl: string;
+  private isMenuOpened: boolean;
 
   constructor(
     private authorizationService: AuthorizationService
@@ -114,5 +115,13 @@ export class AppService {
 
   getReturnUrl() {
     return this.returnUrl;
+  }
+
+  setIsMenuOpened(value: boolean) {
+    this.isMenuOpened = value;
+  }
+
+  getIsMenuOpened() {
+    return this.isMenuOpened;
   }
 }

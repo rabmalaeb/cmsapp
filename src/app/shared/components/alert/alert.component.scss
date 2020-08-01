@@ -1,9 +1,14 @@
 @import '../../../../assets/styles/global';
+@import 'sass-mq';
 
 .alert__container {
   display: flex;
   flex-direction: column;
   width: 400px;
+
+  @include mq ($until: tablet) {
+    width: 100%;
+  }
 }
 
 .alert__title-container {
@@ -15,6 +20,7 @@
 .alert__icon {
   margin-right: 10px;
   color: rgb(255, 139, 37);
+
   &_is-danger {
     color: $global--error-color;
   }
@@ -34,6 +40,10 @@
   display: flex;
   justify-content: flex-end;
   width: 100%;
+
+  @include mq ($until: tablet) {
+    justify-content: center;
+  }
 }
 
 .alert__action {

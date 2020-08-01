@@ -13,46 +13,51 @@
     </app-page-header>
   </div>
   <div class="page__container">
-    <mat-table mat-table matSort (matSortChange)="sortItems($event)" [dataSource]="manufacturers$ | async"
-      class="mat-elevation-z8">
-      <ng-container matColumnDef="id">
-        <mat-header-cell mat-sort-header *matHeaderCellDef>Id</mat-header-cell>
-        <mat-cell *matCellDef="let manufacturer">{{ manufacturer.id }}</mat-cell>
-      </ng-container>
+    <div class="page__table-container">
+      <mat-table mat-table matSort (matSortChange)="sortItems($event)" [dataSource]="manufacturers$ | async"
+        class="mat-elevation-z8">
+        <ng-container matColumnDef="id">
+          <mat-header-cell mat-sort-header *matHeaderCellDef>Id</mat-header-cell>
+          <mat-cell *matCellDef="let manufacturer">{{ manufacturer.id }}</mat-cell>
+        </ng-container>
 
-      <ng-container matColumnDef="name">
-        <mat-header-cell mat-sort-header *matHeaderCellDef>Name</mat-header-cell>
-        <mat-cell *matCellDef="let manufacturer">
-          <div class="link" (click)="editManufacturer(manufacturer.id)">
-            {{ manufacturer.name }}
-          </div>
-        </mat-cell>
-      </ng-container>
+        <ng-container matColumnDef="name">
+          <mat-header-cell mat-sort-header *matHeaderCellDef>Name</mat-header-cell>
+          <mat-cell *matCellDef="let manufacturer">
+            <div class="link" (click)="editManufacturer(manufacturer.id)">
+              {{ manufacturer.name }}
+            </div>
+          </mat-cell>
+        </ng-container>
 
-      <ng-container matColumnDef="country">
-        <mat-header-cell *matHeaderCellDef>Country</mat-header-cell>
-        <mat-cell *matCellDef="let manufacturer">
-          {{ manufacturer.country.name }}
-        </mat-cell>
-      </ng-container>
+        <ng-container matColumnDef="country">
+          <mat-header-cell *matHeaderCellDef>Country</mat-header-cell>
+          <mat-cell *matCellDef="let manufacturer">
+            {{ manufacturer.country.name }}
+          </mat-cell>
+        </ng-container>
 
-      <ng-container matColumnDef="action">
-        <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
-        <mat-cell *matCellDef="let manufacturer" class="action-link">
-          <a class="table__action" (click)="editManufacturer(manufacturer.id)">
-            <app-icon name="edit"></app-icon>
-          </a>
-          <a class="table__action" (click)="deleteManufacturer(manufacturer.id)" *ngIf="canDeleteManufacturer | async">
-            <app-icon name="delete"></app-icon>
-          </a>
-        </mat-cell>
-      </ng-container>
+        <ng-container matColumnDef="action">
+          <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
+          <mat-cell *matCellDef="let manufacturer" class="action-link">
+            <a class="table__action" (click)="editManufacturer(manufacturer.id)">
+              <app-icon name="edit"></app-icon>
+            </a>
+            <a class="table__action" (click)="deleteManufacturer(manufacturer.id)"
+              *ngIf="canDeleteManufacturer | async">
+              <app-icon name="delete"></app-icon>
+            </a>
+          </mat-cell>
+        </ng-container>
 
-      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-      <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
-    </mat-table>
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+      </mat-table>
+    </div>
 
+   <div class="page__paginator-container">
     <mat-paginator [pageSizeOptions]="[20, 50, 100]" [length]="totalNumberOfItems$ | async" [pageSize]="perPage"
       (page)="setPage($event)" showFirstLastButtons></mat-paginator>
+    </div>
   </div>
 </div>

@@ -4,6 +4,7 @@
     [routerLink]="navItem.link"
     routerLinkActive="nav-item__link_is-active"
     *ngIf="navItem.isActive | async"
+    (click)="closeMenu()"
   >
     <div class="nav-item__container">
       <div class="nav-item__icon">

@@ -1,3 +1,4 @@
+@import 'sass-mq';
 .x-modal {
   position: fixed;
   width: 100%;
@@ -13,6 +14,11 @@
       width: 600px;
       max-height: 400px;
       overflow: scroll;
+      @include mq ($until: tablet) {
+        width: 100%;
+        overflow-y: auto;
+        padding: 0 10px;
+      }
     }
   }
 }

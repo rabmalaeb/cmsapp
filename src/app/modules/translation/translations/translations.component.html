@@ -25,70 +25,64 @@
     </app-page-header>
   </div>
   <div class="page__container">
-    <mat-table
-      mat-table
-      matSort
-      (matSortChange)="sortItems($event)"
-      [dataSource]="translations$ | async"
-      class="mat-elevation-z8"
-    >
-      <ng-container matColumnDef="id">
-        <mat-header-cell mat-sort-header *matHeaderCellDef>Id</mat-header-cell>
-        <mat-cell *matCellDef="let translation">{{ translation.id }}</mat-cell>
-      </ng-container>
+     <div class="page__table-container">
+       <mat-table mat-table matSort (matSortChange)="sortItems($event)" [dataSource]="translations$ | async"
+         class="mat-elevation-z8">
+         <ng-container matColumnDef="id">
+           <mat-header-cell mat-sort-header *matHeaderCellDef>Id</mat-header-cell>
+           <mat-cell *matCellDef="let translation">{{ translation.id }}</mat-cell>
+         </ng-container>
 
-      <ng-container matColumnDef="partner">
-        <mat-header-cell *matHeaderCellDef>Partner</mat-header-cell>
-        <mat-cell *matCellDef="let translation">{{
+         <ng-container matColumnDef="partner">
+           <mat-header-cell *matHeaderCellDef>Partner</mat-header-cell>
+           <mat-cell *matCellDef="let translation">{{
           translation.partner.name
         }}</mat-cell>
-      </ng-container>
+         </ng-container>
 
-      <ng-container matColumnDef="language">
-        <mat-header-cell *matHeaderCellDef>Language</mat-header-cell>
-        <mat-cell *matCellDef="let translation">
-          <span *ngIf="translation.language">
-            {{ translation.language.name }}
-          </span>
-        </mat-cell>
-      </ng-container>
+         <ng-container matColumnDef="language">
+           <mat-header-cell *matHeaderCellDef>Language</mat-header-cell>
+           <mat-cell *matCellDef="let translation">
+             <span *ngIf="translation.language">
+               {{ translation.language.name }}
+             </span>
+           </mat-cell>
+         </ng-container>
 
-      <ng-container matColumnDef="key">
-        <mat-header-cell *matHeaderCellDef>Key</mat-header-cell>
-        <mat-cell *matCellDef="let translation">
-          <span *ngIf="translation.languageKey">
-            {{ translation.languageKey.name }}
-          </span>
-        </mat-cell>
-      </ng-container>
+         <ng-container matColumnDef="key">
+           <mat-header-cell *matHeaderCellDef>Key</mat-header-cell>
+           <mat-cell *matCellDef="let translation">
+             <span *ngIf="translation.languageKey">
+               {{ translation.languageKey.name }}
+             </span>
+           </mat-cell>
+         </ng-container>
 
-      <ng-container matColumnDef="value">
-        <mat-header-cell mat-sort-header *matHeaderCellDef>Value</mat-header-cell>
-        <mat-cell *matCellDef="let translation">
-          {{ translation.value }}
-        </mat-cell>
-      </ng-container>
+         <ng-container matColumnDef="value">
+           <mat-header-cell mat-sort-header *matHeaderCellDef>Value</mat-header-cell>
+           <mat-cell *matCellDef="let translation">
+             {{ translation.value }}
+           </mat-cell>
+         </ng-container>
 
-      <ng-container matColumnDef="action">
-        <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
-        <mat-cell *matCellDef="let translation" class="action-link">
-          <a class="table__action" (click)="editTranslation(translation.id)">
-            <app-icon name="edit"></app-icon>
-          </a>
-          <a
-            class="table__action"
-            (click)="deleteTranslation(translation.id)"
-            *ngIf="canDeleteTranslation | async"
-          >
-            <app-icon name="delete"></app-icon>
-          </a>
-        </mat-cell>
-      </ng-container>
+         <ng-container matColumnDef="action">
+           <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
+           <mat-cell *matCellDef="let translation" class="action-link">
+             <a class="table__action" (click)="editTranslation(translation.id)">
+               <app-icon name="edit"></app-icon>
+             </a>
+             <a class="table__action" (click)="deleteTranslation(translation.id)" *ngIf="canDeleteTranslation | async">
+               <app-icon name="delete"></app-icon>
+             </a>
+           </mat-cell>
+         </ng-container>
 
-      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-      <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
-    </mat-table>
+         <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+         <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+       </mat-table>
+     </div>
 
+   <div class="page__paginator-container">
     <mat-paginator
       [pageSizeOptions]="[20, 50, 100]"
       [length]="totalNumberOfItems$ | async"
@@ -96,5 +90,6 @@
       (page)="setPage($event)"
       showFirstLastButtons
     ></mat-paginator>
+    </div>
   </div>
 </div>

@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { NavItemOptions } from '../../models/nav';
+import { AppService } from 'src/app/core/services/app.service';
 
 @Component({
   selector: 'app-nav-item',
@@ -10,8 +11,14 @@ export class NavItemComponent implements OnInit {
 
   @Input() navItem: NavItemOptions;
 
-  constructor() { }
+  constructor(
+    private appService: AppService
+  ) { }
 
   ngOnInit() {}
+
+  closeMenu() {
+    this.appService.setIsMenuOpened(false);
+  }
 
 }

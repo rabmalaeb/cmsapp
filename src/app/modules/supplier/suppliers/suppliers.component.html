@@ -1,87 +1,62 @@
 <div class="page">
-  <mat-progress-bar
-    *ngIf="isLoading$ | async"
-    class="page__progress-bar"
-    mode="indeterminate"
-    color="primary"
-  >
+  <mat-progress-bar *ngIf="isLoading$ | async" class="page__progress-bar" mode="indeterminate" color="primary">
   </mat-progress-bar>
   <div class="page__section">
-    <app-page-header
-      label="Suppliers"
-      buttonLabel="Add Supplier"
-      [condition]="canAddSupplier | async"
-      (action)="addSupplier()"
-    >
+    <app-page-header label="Suppliers" buttonLabel="Add Supplier" [condition]="canAddSupplier | async"
+      (action)="addSupplier()">
       <div class="page__filters-container">
         <div class="page__filter-item page__filter-item_is-search">
-          <app-search-input
-            placeholder="Search"
-            [filterHandler]="filterHandler"
-            (filter)="getSuppliers()"
-          ></app-search-input>
+          <app-search-input placeholder="Search" [filterHandler]="filterHandler" (filter)="getSuppliers()">
+          </app-search-input>
         </div>
       </div>
     </app-page-header>
   </div>
   <div class="page__container">
-    <mat-table
-      mat-table
-      matSort
-      (matSortChange)="sortItems($event)"
-      [dataSource]="suppliers$ | async"
-      class="mat-elevation-z8"
-    >
-      <ng-container matColumnDef="id">
-        <mat-header-cell mat-sort-header *matHeaderCellDef>Id</mat-header-cell>
-        <mat-cell *matCellDef="let supplier">{{ supplier.id }}</mat-cell>
-      </ng-container>
+    <div class="page__table-container">
+      <mat-table mat-table matSort (matSortChange)="sortItems($event)" [dataSource]="suppliers$ | async"
+        class="mat-elevation-z8">
+        <ng-container matColumnDef="id">
+          <mat-header-cell mat-sort-header *matHeaderCellDef>Id</mat-header-cell>
+          <mat-cell *matCellDef="let supplier">{{ supplier.id }}</mat-cell>
+        </ng-container>
 
-      <ng-container matColumnDef="name">
-        <mat-header-cell mat-sort-header *matHeaderCellDef
-          >Name</mat-header-cell
-        >
-        <mat-cell *matCellDef="let supplier">
-          <div class="link" (click)="editSupplier(supplier.id)">
-            {{ supplier.name }}
-          </div>
-        </mat-cell>
-      </ng-container>
+        <ng-container matColumnDef="name">
+          <mat-header-cell mat-sort-header *matHeaderCellDef>Name</mat-header-cell>
+          <mat-cell *matCellDef="let supplier">
+            <div class="link" (click)="editSupplier(supplier.id)">
+              {{ supplier.name }}
+            </div>
+          </mat-cell>
+        </ng-container>
 
-      <ng-container matColumnDef="code">
-        <mat-header-cell mat-sort-header *matHeaderCellDef
-          >Code</mat-header-cell
-        >
-        <mat-cell *matCellDef="let supplier">
-          {{ supplier.code }}
-        </mat-cell>
-      </ng-container>
+        <ng-container matColumnDef="code">
+          <mat-header-cell mat-sort-header *matHeaderCellDef>Code</mat-header-cell>
+          <mat-cell *matCellDef="let supplier">
+            {{ supplier.code }}
+          </mat-cell>
+        </ng-container>
 
-      <ng-container matColumnDef="action">
-        <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
-        <mat-cell *matCellDef="let supplier" class="action-link">
-          <a class="table__action" (click)="editSupplier(supplier.id)"
-            ><app-icon name="edit"></app-icon
-          ></a>
-          <a
-            class="table__action"
-            (click)="deleteSupplier(supplier.id)"
-            *ngIf="canDeleteSupplier | async"
-            ><app-icon name="delete"></app-icon
-          ></a>
-        </mat-cell>
-      </ng-container>
+        <ng-container matColumnDef="action">
+          <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
+          <mat-cell *matCellDef="let supplier" class="action-link">
+            <a class="table__action" (click)="editSupplier(supplier.id)">
+              <app-icon name="edit"></app-icon>
+            </a>
+            <a class="table__action" (click)="deleteSupplier(supplier.id)" *ngIf="canDeleteSupplier | async">
+              <app-icon name="delete"></app-icon>
+            </a>
+          </mat-cell>
+        </ng-container>
 
-      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-      <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
-    </mat-table>
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+      </mat-table>
+    </div>
 
-    <mat-paginator
-      [pageSizeOptions]="[20, 50, 100]"
-      [length]="totalNumberOfItems$ | async"
-      [pageSize]="perPage"
-      (page)="setPage($event)"
-      showFirstLastButtons
-    ></mat-paginator>
+    <div class="page__paginator-container">
+      <mat-paginator [pageSizeOptions]="[20, 50, 100]" [length]="totalNumberOfItems$ | async" [pageSize]="perPage"
+        (page)="setPage($event)" showFirstLastButtons></mat-paginator>
+    </div>
   </div>
 </div>

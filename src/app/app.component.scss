@@ -1,8 +1,18 @@
 @import '../assets/styles/global';
+@import 'sass-mq';
 
 .app {
   display: flex;
   height: 100%;
+
+  &_is-menu-open {
+    overflow: hidden;
+    @include mq ($until: tablet) {
+      .app__nav-container {
+        transform: translateX(0);
+      }
+    }
+  }
 }
 
 .app__container {
@@ -13,6 +23,10 @@
   display: flex;
   flex: 1;
   background-color: $global--background-color;
+
+  @include mq ($until: tablet) {
+    transition: transform 0.3s ease-in-out;
+  }
 }
 
 .app__login {
@@ -29,9 +43,13 @@
 .app__nav-container {
   width: 200px;
   position: relative;
-}
 
-.app__nav-bar {
+  @include mq ($until: tablet) {
+    z-index: 9;
+    position: absolute;
+    transition: transform 0.3s ease-in-out;
+    transform: translateX(-200px);
+  }
 }
 
 .app__body-container {
@@ -51,6 +69,4 @@
   background-color: $global--background-color;
 }
 
-.app__footer {
-
-}
+.app__footer {}

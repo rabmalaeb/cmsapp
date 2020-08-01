@@ -1,11 +1,16 @@
 .page__container {
   @include container;
   background-color: #fff;
+
+  @include mq ($until :tablet) {
+    overflow: auto;
+  }
 }
 
 .page__section {
   display: flex;
   align-items: center;
+
   &:not(:last-child) {
     margin-bottom: 20px;
   }
@@ -26,6 +31,10 @@
 .page__form-input {
   margin-bottom: 10px;
   width: 300px;
+
+  @include mq ($until: tablet) {
+    width: 100%;
+  }
 }
 
 .page__form-container {
@@ -42,6 +51,7 @@
 
 .page__form__button {
   min-width: 100px;
+
   &:not(:last-child) {
     margin-right: 10px;
   }
@@ -81,6 +91,7 @@
 
 .page__form-item {
   margin-bottom: 10px;
+
   &_is-permission {
     width: 250px;
     margin-bottom: 10px;
@@ -96,6 +107,10 @@
 .page__filter-item {
   &_is-search {
     width: 350px;
+
+    @include mq ($until: tablet) {
+      width: 100%;
+    }
   }
 }
 
@@ -108,5 +123,18 @@
   &_is-wrap {
     display: flex;
     flex-wrap: wrap;
+  }
+}
+
+.page__table-container {
+  @include mq ($until: tablet) {
+    width: 700px;
+  }
+}
+
+.page__paginator-container {
+  @include mq ($until: tablet) {
+    display: flex;
+    width: 700px;
   }
 }

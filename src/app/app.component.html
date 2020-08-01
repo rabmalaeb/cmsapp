@@ -1,7 +1,7 @@
-<div class="app" *ngIf="!(isAppLoading$ | async)">
+<div class="app" *ngIf="!(isAppLoading$ | async)" [ngClass]="{'app_is-menu-open': isMenuOpened}">
   <div class="app__container" *ngIf="isLoggedIn; else login">
     <div class="app__body">
-      <div class="app__nav-container">
+      <div class="app__nav-container" appClickOutside (clickOutside)="closeMenu()">
         <div class="app__nav-bar">
           <app-nav-bar></app-nav-bar>
         </div>
@@ -23,7 +23,7 @@
   <ng-template #login>
     <div class="app__container">
       <div class="app__login">
-       <router-outlet></router-outlet>
+        <router-outlet></router-outlet>
       </div>
     </div>
   </ng-template>
