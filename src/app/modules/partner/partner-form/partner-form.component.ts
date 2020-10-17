@@ -4,13 +4,13 @@ import {
   Input,
   Output,
   EventEmitter,
-  OnChanges
+  OnChanges,
 } from '@angular/core';
 import {
   Validators,
   FormBuilder,
   FormGroup,
-  FormGroupDirective
+  FormGroupDirective,
 } from '@angular/forms';
 import { ValidationMessagesService } from 'src/app/core/services/validation-messages.service';
 import { ActionType } from 'src/app/shared/models/general';
@@ -20,7 +20,7 @@ import { FormService } from 'src/app/core/services/form.service';
 @Component({
   selector: 'app-partner-form',
   templateUrl: './partner-form.component.html',
-  styleUrls: ['./partner-form.component.sass']
+  styleUrls: ['./partner-form.component.sass'],
 })
 export class PartnerFormComponent implements OnInit, OnChanges {
   partnerForm: FormGroup;
@@ -44,7 +44,7 @@ export class PartnerFormComponent implements OnInit, OnChanges {
   ngOnInit() {}
 
   ngOnChanges() {
-    if (this.isLoadingAction || this.actionError && this.partnerForm) {
+    if (this.isLoadingAction || (this.actionError && this.partnerForm)) {
       return false;
     }
     if (this.partner) {
@@ -63,7 +63,8 @@ export class PartnerFormComponent implements OnInit, OnChanges {
       code: ['', [Validators.required]],
       partnerName: ['', [Validators.required]],
       copyright: ['', [Validators.required]],
-      websiteUrl: ['', [Validators.required]]
+      websiteUrl: ['', [Validators.required]],
+      supportEmail: ['', [Validators.required]],
     });
   }
 
@@ -76,25 +77,35 @@ export class PartnerFormComponent implements OnInit, OnChanges {
         this.partner.emailWhiteLabel
           ? this.partner.emailWhiteLabel.partnerName
           : '',
-        [Validators.required]
+        [Validators.required],
       ],
       copyright: [
         this.partner.emailWhiteLabel
           ? this.partner.emailWhiteLabel.copyright
           : '',
-        [Validators.required]
+        [Validators.required],
       ],
       websiteUrl: [
         this.partner.emailWhiteLabel
           ? this.partner.emailWhiteLabel.websiteUrl
           : '',
-        [Validators.required]
-      ]
+        [Validators.required],
+      ],
+      supportEmail: [
+        this.partner.emailWhiteLabel
+          ? this.partner.emailWhiteLabel.supportEmail
+          : '',
+        [Validators.required],
+      ],
     });
   }
 
   get name() {
     return this.partnerForm.get('name');
+  }
+
+  get supportEmail() {
+    return this.partnerForm.get('supportEmail');
   }
 
   get code() {
@@ -121,7 +132,8 @@ export class PartnerFormComponent implements OnInit, OnChanges {
       partnerName: this.partnerName.value,
       copyright: this.copyright.value,
       websiteUrl: this.websiteUrl.value,
-      image: this.partnerImage ? this.partnerImage : null
+      supportEmail: this.supportEmail.value,
+      image: this.partnerImage ? this.partnerImage : null,
     };
   }
 

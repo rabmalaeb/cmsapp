@@ -26,6 +26,8 @@ export class PartnerSerializerService {
         partnerResponse.relationships.emailWhiteLabel.image;
       partner.emailWhiteLabel.websiteUrl =
         partnerResponse.relationships.emailWhiteLabel.websiteUrl;
+      partner.emailWhiteLabel.supportEmail =
+        partnerResponse.relationships.emailWhiteLabel.supportEmail;
     }
     return partner;
   }

@@ -1,9 +1,5 @@
-<form
-  #formDirective="ngForm"
-  (ngSubmit)="performAction(formDirective)"
-  class="page__form"
-  *ngIf="!isLoadingForm; else loadingMask"
->
+<form #formDirective="ngForm" (ngSubmit)="performAction(formDirective)" class="page__form"
+  *ngIf="!isLoadingForm; else loadingMask">
   <div class="page__form-content">
     <div class="page__form-input">
       <app-input id="name" name="name" label="Name" [formControlItem]="name">
@@ -20,39 +16,25 @@
       </div>
     </div>
     <div class="page__form-input">
-      <app-input
-        id="partnerName"
-        name="partnerName"
-        label="Partner Name"
-        [formControlItem]="partnerName"
-      >
+      <app-input id="partnerName" name="partnerName" label="Partner Name" [formControlItem]="partnerName">
       </app-input>
     </div>
     <div class="page__form-input">
-      <app-input
-        id="copyright"
-        name="copyright"
-        label="Copyright"
-        [formControlItem]="copyright"
-      >
+      <app-input id="copyright" name="copyright" label="Copyright" [formControlItem]="copyright">
       </app-input>
     </div>
     <div class="page__form-input">
-      <app-input
-        id="websiteUrl"
-        name="websiteUrl"
-        label="Website Url"
-        [formControlItem]="websiteUrl"
-      >
+      <app-input id="websiteUrl" name="websiteUrl" label="Website Url" [formControlItem]="websiteUrl">
+      </app-input>
+    </div>
+    <div class="page__form-input">
+      <app-input id="supportEmail" name="supportEmail" label="Support Email" [formControlItem]="supportEmail">
       </app-input>
     </div>
     <div class="page__form-input">
       <div class="form-item">
         <div class="form-item__value form-item__value_is-textfield">
-          <app-image-preview
-            (imageSelected)="uploadImage($event)"
-            [resetImage]="resetImage"
-          >
+          <app-image-preview (imageSelected)="uploadImage($event)" [resetImage]="resetImage">
           </app-image-preview>
         </div>
       </div>
@@ -61,11 +43,7 @@
 
   <div class="page__form-button-container" *ngIf="canEditPartner">
     <div class="page__form__button">
-      <app-button-item
-        type="reset"
-        [isSecondary]="true"
-        label="reset"
-      ></app-button-item>
+      <app-button-item type="reset" [isSecondary]="true" label="reset"></app-button-item>
     </div>
     <div class="page__form__button">
       <app-button-item type="submit" [label]="buttonLabel"></app-button-item>

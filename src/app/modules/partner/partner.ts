@@ -11,6 +11,7 @@ export class EmailWhiteLabel {
   partnerName: string;
   copyright: string;
   websiteUrl: string;
+  supportEmail: string;
   image: File;
 }
 
@@ -21,5 +22,6 @@ export class PartnerRequest extends FilterRequest {
   partnerName?: string;
   copyright?: string;
   websiteUrl?: string;
+  supportEmail?: string;
   image?: File;
 }
