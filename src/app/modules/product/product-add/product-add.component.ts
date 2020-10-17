@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NotificationService } from 'src/app/core/services/notification.service';
 import { ActionType } from 'src/app/shared/models/general';
 import { ModuleName } from 'src/app/shared/models/nav';
@@ -8,13 +8,13 @@ import { Category } from '../../category/category';
 import { AuthorizationService } from 'src/app/core/services/authorization.service';
 import { ActionsSubject, Store } from '@ngrx/store';
 import { RootStoreState } from 'src/app/root-store';
-import { Observable, of } from 'rxjs';
+import { Observable, of, Subscription } from 'rxjs';
 import { ProductStoreSelectors, ProductStoreActions } from '../store';
 import { filter } from 'rxjs/operators';
 import { ActionTypes } from '../store/actions';
 import {
   CategoryStoreSelectors,
-  CategoryStoreActions
+  CategoryStoreActions,
 } from '../../category/store';
 import { Brand } from '../../brand/brand';
 import { BrandStoreActions, BrandStoreSelectors } from '../../brand/store';
@@ -22,9 +22,9 @@ import { BrandStoreActions, BrandStoreSelectors } from '../../brand/store';
 @Component({
   selector: 'app-product-add',
   templateUrl: './product-add.component.html',
-  styleUrls: ['./product-add.component.scss']
+  styleUrls: ['./product-add.component.scss'],
 })
-export class ProductAddComponent implements OnInit {
+export class ProductAddComponent implements OnInit, OnDestroy {
   constructor(
     private notificationService: NotificationService,
     private authorizationService: AuthorizationService,
@@ -42,12 +42,13 @@ export class ProductAddComponent implements OnInit {
   isLoadingAction$: Observable<boolean>;
   loadingErrors$: Observable<string[]>;
   actionErrors$: Observable<string[]>;
+  subscriptions: Subscription[] = [];
 
   ngOnInit() {
     this.getCategories();
     this.getBrands();
     this.initializeStoreVariables();
-    this.route.params.forEach(param => {
+    this.route.params.forEach((param) => {
       if (param.id) {
         const id = parseInt(param.id, 0);
         this.getProduct(id);
@@ -67,33 +68,39 @@ export class ProductAddComponent implements OnInit {
       ProductStoreSelectors.selectIsLoadingAction
     );
 
-    this.actionsSubject$
-      .pipe(
-        filter(
-          (action: any) =>
-            action.type === ActionTypes.UPDATE_PRODUCT_SUCCESS ||
-            action.type === ActionTypes.ADD_PRODUCT_SUCCESS
+    this.subscriptions.push(
+      this.actionsSubject$
+        .pipe(
+          filter(
+            (action: any) =>
+              action.type === ActionTypes.UPDATE_PRODUCT_SUCCESS ||
+              action.type === ActionTypes.ADD_PRODUCT_SUCCESS
+          )
         )
-      )
-      .subscribe(() => {
-        let message = 'Product Updated Successfully';
-        if (this.actionType === ActionType.ADD) {
-          message = 'Product Added Successfully';
-        }
-        this.notificationService.showSuccess(message);
-      });
+        .subscribe(() => {
+          let message = 'Product Updated Successfully';
+          if (this.actionType === ActionType.ADD) {
+            message = 'Product Added Successfully';
+          }
+          this.notificationService.showSuccess(message);
+        })
+    );
 
-    this.actionsSubject$
-      .pipe(
-        filter(
-          (action: any) =>
-            action.type === ActionTypes.UPDATE_PRODUCT_FAILURE ||
-            action.type === ActionTypes.ADD_PRODUCT_FAILURE
+    this.subscriptions.push(
+      this.actionsSubject$
+        .pipe(
+          filter(
+            (action: any) =>
+              action.type === ActionTypes.UPDATE_PRODUCT_FAILURE ||
+              action.type === ActionTypes.ADD_PRODUCT_FAILURE
+          )
         )
-      )
-      .subscribe(errorResponse => {
-        this.notificationService.showError(errorResponse.payload.error.message);
-      });
+        .subscribe((errorResponse) => {
+          this.notificationService.showError(
+            errorResponse.payload.error.message
+          );
+        })
+    );
   }
 
   getBrands() {
@@ -160,5 +167,9 @@ export class ProductAddComponent implements OnInit {
       this.actionType === ActionType.EDIT &&
       this.authorizationService.canEdit(ModuleName.PRODUCTS)
     );
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 }

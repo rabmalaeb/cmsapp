@@ -1,0 +1,14 @@
+.nav-group {
+  &_is-children-hidden {
+    .nav-group__item-container {
+      display: none;
+    }
+  }
+}
+.nav-group__title {
+  font-size: 14px;
+  padding: 15px;
+  color: #ababab;
+  text-transform: uppercase;
+  cursor: pointer;
+}

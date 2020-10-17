@@ -1,11 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ValidationMessagesService } from 'src/app/core/services/validation-messages.service';
 import { NotificationService } from 'src/app/core/services/notification.service';
 import { ActionType } from 'src/app/shared/models/general';
 import { ModuleName } from 'src/app/shared/models/nav';
 import { ActivatedRoute } from '@angular/router';
 import { AuthorizationService } from 'src/app/core/services/authorization.service';
-import { Observable, of } from 'rxjs';
+import { Observable, of, Subscription } from 'rxjs';
 import { ActionTypes } from '../store/actions';
 import { filter, map } from 'rxjs/operators';
 import { SupplierStoreSelectors, SupplierStoreActions } from '../store';
@@ -16,9 +16,9 @@ import { Supplier } from '../supplier';
 @Component({
   selector: 'app-supplier-add',
   templateUrl: './supplier-add.component.html',
-  styleUrls: ['./supplier-add.component.scss']
+  styleUrls: ['./supplier-add.component.scss'],
 })
-export class SupplierAddComponent implements OnInit {
+export class SupplierAddComponent implements OnInit, OnDestroy {
   constructor(
     private notificationService: NotificationService,
     private validationMessagesService: ValidationMessagesService,
@@ -34,10 +34,11 @@ export class SupplierAddComponent implements OnInit {
   isLoadingAction$: Observable<boolean>;
   loadingErrors$: Observable<string[]>;
   actionErrors$: Observable<string[]>;
+  subscriptions: Subscription[] = [];
 
   ngOnInit() {
     this.initializeStoreVariables();
-    this.route.params.forEach(param => {
+    this.route.params.forEach((param) => {
       if (param.id) {
         const id = parseInt(param.id, 0);
         this.getSupplier(id);
@@ -60,34 +61,38 @@ export class SupplierAddComponent implements OnInit {
     this.isLoading$ = this.store$.select(
       SupplierStoreSelectors.selectIsLoadingItem
     );
-
-    this.actionsSubject$
-      .pipe(
-        filter(
-          (action: any) =>
-            action.type === ActionTypes.UPDATE_SUPPLIER_SUCCESS ||
-            action.type === ActionTypes.ADD_SUPPLIER_SUCCESS
+    this.subscriptions.push(
+      this.actionsSubject$
+        .pipe(
+          filter(
+            (action: any) =>
+              action.type === ActionTypes.UPDATE_SUPPLIER_SUCCESS ||
+              action.type === ActionTypes.ADD_SUPPLIER_SUCCESS
+          )
         )
-      )
-      .subscribe(() => {
-        let message = 'Supplier Updated Successfully';
-        if (this.actionType === ActionType.ADD) {
-          message = 'Supplier Added Successfully';
-        }
-        this.notificationService.showSuccess(message);
-      });
-
-    this.actionsSubject$
-      .pipe(
-        filter(
-          (action: any) =>
-            action.type === ActionTypes.UPDATE_SUPPLIER_FAILURE ||
-            action.type === ActionTypes.ADD_SUPPLIER_FAILURE
+        .subscribe(() => {
+          let message = 'Supplier Updated Successfully';
+          if (this.actionType === ActionType.ADD) {
+            message = 'Supplier Added Successfully';
+          }
+          this.notificationService.showSuccess(message);
+        })
+    );
+    this.subscriptions.push(
+      this.actionsSubject$
+        .pipe(
+          filter(
+            (action: any) =>
+              action.type === ActionTypes.UPDATE_SUPPLIER_FAILURE ||
+              action.type === ActionTypes.ADD_SUPPLIER_FAILURE
+          )
         )
-      )
-      .subscribe(errorResponse => {
-        this.notificationService.showError(errorResponse.payload.error.message);
-      });
+        .subscribe((errorResponse) => {
+          this.notificationService.showError(
+            errorResponse.payload.error.message
+          );
+        })
+    );
   }
 
   getSupplier(id: number) {
@@ -123,7 +128,7 @@ export class SupplierAddComponent implements OnInit {
 
   get buttonLabel() {
     return this.isLoadingAction$.pipe(
-      map(isLoading => {
+      map((isLoading) => {
         if (isLoading) {
           return 'Loading';
         }
@@ -154,5 +159,9 @@ export class SupplierAddComponent implements OnInit {
       this.actionType === ActionType.EDIT &&
       this.authorizationService.canEdit(ModuleName.SUPPLIERS)
     );
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 }

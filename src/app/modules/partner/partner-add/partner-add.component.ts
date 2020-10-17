@@ -1,11 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ValidationMessagesService } from 'src/app/core/services/validation-messages.service';
 import { NotificationService } from 'src/app/core/services/notification.service';
 import { ActionType } from 'src/app/shared/models/general';
 import { ModuleName } from 'src/app/shared/models/nav';
 import { ActivatedRoute } from '@angular/router';
 import { AuthorizationService } from 'src/app/core/services/authorization.service';
-import { Observable, of } from 'rxjs';
+import { Observable, of, Subscription } from 'rxjs';
 import { ActionTypes } from '../store/actions';
 import { filter, map } from 'rxjs/operators';
 import { PartnerStoreSelectors, PartnerStoreActions } from '../store';
@@ -16,9 +16,9 @@ import { Partner, PartnerRequest } from '../partner';
 @Component({
   selector: 'app-partner-add',
   templateUrl: './partner-add.component.html',
-  styleUrls: ['./partner-add.component.scss']
+  styleUrls: ['./partner-add.component.scss'],
 })
-export class PartnerAddComponent implements OnInit {
+export class PartnerAddComponent implements OnInit, OnDestroy {
   constructor(
     private notificationService: NotificationService,
     private validationMessagesService: ValidationMessagesService,
@@ -34,10 +34,11 @@ export class PartnerAddComponent implements OnInit {
   isLoadingAction$: Observable<boolean>;
   loadingErrors$: Observable<string[]>;
   actionErrors$: Observable<string[]>;
+  subscriptions: Subscription[] = [];
 
   ngOnInit() {
     this.initializeStoreVariables();
-    this.route.params.forEach(param => {
+    this.route.params.forEach((param) => {
       if (param.id) {
         const id = parseInt(param.id, 0);
         this.getPartner(id);
@@ -61,33 +62,39 @@ export class PartnerAddComponent implements OnInit {
       PartnerStoreSelectors.selectIsLoadingItem
     );
 
-    this.actionsSubject$
-      .pipe(
-        filter(
-          (action: any) =>
-            action.type === ActionTypes.UPDATE_PARTNER_SUCCESS ||
-            action.type === ActionTypes.ADD_PARTNER_SUCCESS
+    this.subscriptions.push(
+      this.actionsSubject$
+        .pipe(
+          filter(
+            (action: any) =>
+              action.type === ActionTypes.UPDATE_PARTNER_SUCCESS ||
+              action.type === ActionTypes.ADD_PARTNER_SUCCESS
+          )
         )
-      )
-      .subscribe(() => {
-        let message = 'Partner Updated Successfully';
-        if (this.actionType === ActionType.ADD) {
-          message = 'Partner Added Successfully';
-        }
-        this.notificationService.showSuccess(message);
-      });
+        .subscribe(() => {
+          let message = 'Partner Updated Successfully';
+          if (this.actionType === ActionType.ADD) {
+            message = 'Partner Added Successfully';
+          }
+          this.notificationService.showSuccess(message);
+        })
+    );
 
-    this.actionsSubject$
-      .pipe(
-        filter(
-          (action: any) =>
-            action.type === ActionTypes.UPDATE_PARTNER_FAILURE ||
-            action.type === ActionTypes.ADD_PARTNER_FAILURE
+    this.subscriptions.push(
+      this.actionsSubject$
+        .pipe(
+          filter(
+            (action: any) =>
+              action.type === ActionTypes.UPDATE_PARTNER_FAILURE ||
+              action.type === ActionTypes.ADD_PARTNER_FAILURE
+          )
         )
-      )
-      .subscribe(errorResponse => {
-        this.notificationService.showError(errorResponse.payload.error.message);
-      });
+        .subscribe((errorResponse) => {
+          this.notificationService.showError(
+            errorResponse.payload.error.message
+          );
+        })
+    );
   }
 
   getPartner(id: number) {
@@ -123,7 +130,7 @@ export class PartnerAddComponent implements OnInit {
 
   get buttonLabel() {
     return this.isLoadingAction$.pipe(
-      map(isLoading => {
+      map((isLoading) => {
         if (isLoading) {
           return 'Loading';
         }
@@ -154,5 +161,9 @@ export class PartnerAddComponent implements OnInit {
       this.actionType === ActionType.EDIT &&
       this.authorizationService.canEdit(ModuleName.PARTNERS)
     );
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 }

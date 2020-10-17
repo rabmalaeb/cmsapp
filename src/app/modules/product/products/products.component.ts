@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
@@ -9,32 +9,35 @@ import { ModuleName } from 'src/app/shared/models/nav';
 import { filter } from 'rxjs/operators';
 import { ProductStoreActions, ProductStoreSelectors } from '../store';
 import { ActionTypes } from '../store/actions';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { Store, ActionsSubject } from '@ngrx/store';
 import { RootStoreState } from 'src/app/root-store';
 import { NotificationService } from 'src/app/core/services/notification.service';
 import { Category } from '../../category/category';
 import {
   CategoryStoreActions,
-  CategoryStoreSelectors
+  CategoryStoreSelectors,
 } from '../../category/store';
 import { Sort } from '@angular/material/sort';
 import { FilterHandler } from 'src/app/shared/filters/filter';
 import {
   SuccessMessages,
-  ConfirmMessages
+  ConfirmMessages,
 } from 'src/app/shared/models/messages';
 import { BrandStoreActions, BrandStoreSelectors } from '../../brand/store';
 import { Brand } from '../../brand/brand';
-import { ManufacturerStoreActions, ManufacturerStoreSelectors } from '../../manufacturer/store';
+import {
+  ManufacturerStoreActions,
+  ManufacturerStoreSelectors,
+} from '../../manufacturer/store';
 import { Manufacturer } from '../../manufacturer/manufacturer';
 
 @Component({
   selector: 'app-products',
   templateUrl: './products.component.html',
-  styleUrls: ['./products.component.scss']
+  styleUrls: ['./products.component.scss'],
 })
-export class ProductsComponent implements OnInit {
+export class ProductsComponent implements OnInit, OnDestroy {
   displayedColumns: string[] = ['id', 'name', 'category', 'image', 'action'];
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   products$: Observable<Product[]>;
@@ -47,6 +50,7 @@ export class ProductsComponent implements OnInit {
   isLoading$: Observable<boolean>;
   filterHandler = new FilterHandler();
   dataSource: MatTableDataSource<any>;
+  subscriptions: Subscription[] = [];
   constructor(
     private alertService: AlertService,
     private authorizationService: AuthorizationService,
@@ -78,31 +82,41 @@ export class ProductsComponent implements OnInit {
       ProductStoreSelectors.selectTotalNumberOfItems
     );
 
-    this.actionsSubject$
-      .pipe(
-        filter(
-          (action: any) => action.type === ActionTypes.DELETE_PRODUCT_SUCCESS
+    this.subscriptions.push(
+      this.actionsSubject$
+        .pipe(
+          filter(
+            (action: any) => action.type === ActionTypes.DELETE_PRODUCT_SUCCESS
+          )
         )
-      )
-      .subscribe(() => {
-        this.notificationService.showSuccess(SuccessMessages.PRODUCT_DELETED);
-      });
+        .subscribe(() => {
+          this.notificationService.showSuccess(SuccessMessages.PRODUCT_DELETED);
+        })
+    );
 
-    this.actionsSubject$
-      .pipe(
-        filter(
-          (action: any) => action.type === ActionTypes.DELETE_PRODUCT_FAILURE
+    this.subscriptions.push(
+      this.actionsSubject$
+        .pipe(
+          filter(
+            (action: any) => action.type === ActionTypes.DELETE_PRODUCT_FAILURE
+          )
         )
-      )
-      .subscribe(errorResponse => {
-        this.notificationService.showError(errorResponse.payload.error.message);
-      });
+        .subscribe((errorResponse) => {
+          this.notificationService.showError(
+            errorResponse.payload.error.message
+          );
+        })
+    );
 
-    this.actionsSubject$
-      .pipe(filter((action: any) => action.type === ActionTypes.LOAD_FAILURE))
-      .subscribe(errorResponse => {
-        this.notificationService.showError(errorResponse.payload.error.message);
-      });
+    this.subscriptions.push(
+      this.actionsSubject$
+        .pipe(filter((action: any) => action.type === ActionTypes.LOAD_FAILURE))
+        .subscribe((errorResponse) => {
+          this.notificationService.showError(
+            errorResponse.payload.error.message
+          );
+        })
+    );
   }
 
   filterProducts() {
@@ -131,9 +145,7 @@ export class ProductsComponent implements OnInit {
 
   getBrands() {
     this.store$.dispatch(new BrandStoreActions.LoadRequestAction());
-    this.brands$ = this.store$.select(
-      BrandStoreSelectors.selectAllBrandItems
-    );
+    this.brands$ = this.store$.select(BrandStoreSelectors.selectAllBrandItems);
   }
 
   getProductFilterLimits() {
@@ -197,5 +209,9 @@ export class ProductsComponent implements OnInit {
   sortItems(sort: Sort) {
     this.filterHandler.setSort(sort);
     this.getProducts();
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 }

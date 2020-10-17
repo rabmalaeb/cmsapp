@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
@@ -6,7 +6,7 @@ import { Admin } from '../admin';
 import { AuthorizationService } from 'src/app/core/services/authorization.service';
 import { ModuleName } from 'src/app/shared/models/nav';
 import { AlertService } from 'src/app/core/services/alert.service';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { Store, ActionsSubject } from '@ngrx/store';
 import { RootStoreState } from 'src/app/root-store';
 import { AdminStoreSelectors, AdminStoreActions } from '../store';
@@ -15,14 +15,17 @@ import { NotificationService } from 'src/app/core/services/notification.service'
 import { filter } from 'rxjs/operators';
 import { FilterHandler } from 'src/app/shared/filters/filter';
 import { Sort } from '@angular/material/sort';
-import { SuccessMessages, ConfirmMessages } from 'src/app/shared/models/messages';
+import {
+  SuccessMessages,
+  ConfirmMessages,
+} from 'src/app/shared/models/messages';
 
 @Component({
   selector: 'app-admins',
   templateUrl: './admins.component.html',
-  styleUrls: ['./admins.component.scss']
+  styleUrls: ['./admins.component.scss'],
 })
-export class AdminsComponent implements OnInit {
+export class AdminsComponent implements OnInit, OnDestroy {
   displayedColumns: string[] = ['id', 'name', 'email', 'active', 'action'];
   dataSource: MatTableDataSource<any>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
@@ -31,6 +34,7 @@ export class AdminsComponent implements OnInit {
   isLoading$: Observable<boolean>;
   totalNumberOfItems$: Observable<number>;
   filterHandler = new FilterHandler();
+  subscriptions: Subscription[] = [];
   constructor(
     private alertService: AlertService,
     private router: Router,
@@ -60,31 +64,39 @@ export class AdminsComponent implements OnInit {
       AdminStoreSelectors.selectAdminIsLoading
     );
 
-    this.actionsSubject$
-      .pipe(
-        filter(
-          (action: any) => action.type === ActionTypes.DELETE_ADMIN_SUCCESS
+    this.subscriptions.push(
+      this.actionsSubject$
+        .pipe(
+          filter(
+            (action: any) => action.type === ActionTypes.DELETE_ADMIN_SUCCESS
+          )
         )
-      )
-      .subscribe(() => {
-        this.notificationService.showSuccess(SuccessMessages.ADMIN_DELETED);
-      });
-
-    this.actionsSubject$
-      .pipe(
-        filter(
-          (action: any) => action.type === ActionTypes.DELETE_ADMIN_FAILURE
+        .subscribe(() => {
+          this.notificationService.showSuccess(SuccessMessages.ADMIN_DELETED);
+        })
+    );
+    this.subscriptions.push(
+      this.actionsSubject$
+        .pipe(
+          filter(
+            (action: any) => action.type === ActionTypes.DELETE_ADMIN_FAILURE
+          )
         )
-      )
-      .subscribe(errorResponse => {
-        this.notificationService.showError(errorResponse.payload.error.message);
-      });
-
-    this.actionsSubject$
-      .pipe(filter((action: any) => action.type === ActionTypes.LOAD_FAILURE))
-      .subscribe(errorResponse => {
-        this.notificationService.showError(errorResponse.payload.error.message);
-      });
+        .subscribe((errorResponse) => {
+          this.notificationService.showError(
+            errorResponse.payload.error.message
+          );
+        })
+    );
+    this.subscriptions.push(
+      this.actionsSubject$
+        .pipe(filter((action: any) => action.type === ActionTypes.LOAD_FAILURE))
+        .subscribe((errorResponse) => {
+          this.notificationService.showError(
+            errorResponse.payload.error.message
+          );
+        })
+    );
   }
 
   getAdmins() {
@@ -130,5 +142,9 @@ export class AdminsComponent implements OnInit {
   sortItems(sort: Sort) {
     this.filterHandler.setSort(sort);
     this.getAdmins();
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 }

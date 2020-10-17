@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
@@ -6,7 +6,7 @@ import { AlertService } from 'src/app/core/services/alert.service';
 import { Role } from '../role';
 import { AuthorizationService } from 'src/app/core/services/authorization.service';
 import { ModuleName } from 'src/app/shared/models/nav';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { Store, ActionsSubject } from '@ngrx/store';
 import {
   RootStoreState,
@@ -23,9 +23,9 @@ import { SuccessMessages, ConfirmMessages } from 'src/app/shared/models/messages
 @Component({
   selector: 'app-roles',
   templateUrl: './roles.component.html',
-  styleUrls: ['./roles.component.scss']
+  styleUrls: ['./roles.component.scss'],
 })
-export class RolesComponent implements OnInit {
+export class RolesComponent implements OnInit, OnDestroy {
   roles$: Observable<Role[]>;
   error$: Observable<string>;
   totalNumberOfItems$: Observable<number>;
@@ -33,6 +33,7 @@ export class RolesComponent implements OnInit {
   filterHandler = new FilterHandler();
   displayedColumns: string[] = ['id', 'name', 'partner', 'action'];
   dataSource: MatTableDataSource<any>;
+  subscriptions: Subscription[] = [];
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 
   constructor(
@@ -61,28 +62,39 @@ export class RolesComponent implements OnInit {
     this.totalNumberOfItems$ = this.store$.select(
       RoleStoreSelectors.selectTotalNumberOfItems
     );
-
-    this.actionsSubject$
-      .pipe(
-        filter((action: any) => action.type === ActionTypes.DELETE_ROLE_SUCCESS)
-      )
-      .subscribe(() => {
-        this.notificationService.showSuccess(SuccessMessages.ROLE_DELETED);
-      });
-
-    this.actionsSubject$
-      .pipe(
-        filter((action: any) => action.type === ActionTypes.DELETE_ROLE_FAILURE)
-      )
-      .subscribe(errorResponse => {
-        this.notificationService.showError(errorResponse.payload.error.message);
-      });
-
-    this.actionsSubject$
-      .pipe(filter((action: any) => action.type === ActionTypes.LOAD_FAILURE))
-      .subscribe(errorResponse => {
-        this.notificationService.showError(errorResponse.payload.error.message);
-      });
+    this.subscriptions.push(
+      this.actionsSubject$
+        .pipe(
+          filter(
+            (action: any) => action.type === ActionTypes.DELETE_ROLE_SUCCESS
+          )
+        )
+        .subscribe(() => {
+          this.notificationService.showSuccess(SuccessMessages.ROLE_DELETED);
+        })
+    );
+    this.subscriptions.push(
+      this.actionsSubject$
+        .pipe(
+          filter(
+            (action: any) => action.type === ActionTypes.DELETE_ROLE_FAILURE
+          )
+        )
+        .subscribe((errorResponse) => {
+          this.notificationService.showError(
+            errorResponse.payload.error.message
+          );
+        })
+    );
+    this.subscriptions.push(
+      this.actionsSubject$
+        .pipe(filter((action: any) => action.type === ActionTypes.LOAD_FAILURE))
+        .subscribe((errorResponse) => {
+          this.notificationService.showError(
+            errorResponse.payload.error.message
+          );
+        })
+    );
   }
 
   getRoles() {
@@ -128,5 +140,9 @@ export class RolesComponent implements OnInit {
   sortItems(sort: Sort) {
     this.filterHandler.setSort(sort);
     this.getRoles();
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ValidationMessagesService } from 'src/app/core/services/validation-messages.service';
 import { NotificationService } from 'src/app/core/services/notification.service';
 import { ActionType } from 'src/app/shared/models/general';
@@ -8,19 +8,22 @@ import { Manufacturer } from '../manufacturer';
 import { AuthorizationService } from 'src/app/core/services/authorization.service';
 import { ActionsSubject, Store } from '@ngrx/store';
 import { RootStoreState } from 'src/app/root-store';
-import { Observable, of } from 'rxjs';
+import { Observable, of, Subscription } from 'rxjs';
 import { ManufacturerStoreSelectors, ManufacturerStoreActions } from '../store';
 import { filter } from 'rxjs/operators';
 import { ActionTypes } from '../store/actions';
-import { CountryStoreActions, CountryStoreSelectors } from '../../country/store';
+import {
+  CountryStoreActions,
+  CountryStoreSelectors,
+} from '../../country/store';
 import { Country } from '../../country/country';
 
 @Component({
   selector: 'app-manufacturer-add',
   templateUrl: './manufacturer-add.component.html',
-  styleUrls: ['./manufacturer-add.component.scss']
+  styleUrls: ['./manufacturer-add.component.scss'],
 })
-export class ManufacturerAddComponent implements OnInit {
+export class ManufacturerAddComponent implements OnInit, OnDestroy {
   constructor(
     private notificationService: NotificationService,
     private validationMessagesService: ValidationMessagesService,
@@ -37,11 +40,12 @@ export class ManufacturerAddComponent implements OnInit {
   isLoadingAction$: Observable<boolean>;
   loadingErrors$: Observable<string[]>;
   actionErrors$: Observable<string[]>;
+  subscriptions: Subscription[] = [];
 
   ngOnInit() {
     this.initializeStoreVariables();
     this.getCountries();
-    this.route.params.forEach(param => {
+    this.route.params.forEach((param) => {
       if (param.id) {
         const id = parseInt(param.id, 0);
         this.getManufacturer(id);
@@ -65,46 +69,52 @@ export class ManufacturerAddComponent implements OnInit {
       ManufacturerStoreSelectors.selectIsLoadingItem
     );
 
-    this.actionsSubject$
-      .pipe(
-        filter(
-          (action: any) =>
-            action.type === ActionTypes.UPDATE_MANUFACTURER_SUCCESS ||
-            action.type === ActionTypes.ADD_MANUFACTURER_SUCCESS
+    this.subscriptions.push(
+      this.actionsSubject$
+        .pipe(
+          filter(
+            (action: any) =>
+              action.type === ActionTypes.UPDATE_MANUFACTURER_SUCCESS ||
+              action.type === ActionTypes.ADD_MANUFACTURER_SUCCESS
+          )
         )
-      )
-      .subscribe(() => {
-        let message = 'Manufacturer Updated Successfully';
-        if (this.actionType === ActionType.ADD) {
-          message = 'Manufacturer Added Successfully';
-        }
-        this.notificationService.showSuccess(message);
-      });
+        .subscribe(() => {
+          let message = 'Manufacturer Updated Successfully';
+          if (this.actionType === ActionType.ADD) {
+            message = 'Manufacturer Added Successfully';
+          }
+          this.notificationService.showSuccess(message);
+        })
+    );
 
-    this.actionsSubject$
-      .pipe(
-        filter(
-          (action: any) =>
-            action.type === ActionTypes.UPDATE_MANUFACTURER_FAILURE ||
-            action.type === ActionTypes.ADD_MANUFACTURER_FAILURE
+    this.subscriptions.push(
+      this.actionsSubject$
+        .pipe(
+          filter(
+            (action: any) =>
+              action.type === ActionTypes.UPDATE_MANUFACTURER_FAILURE ||
+              action.type === ActionTypes.ADD_MANUFACTURER_FAILURE
+          )
         )
-      )
-      .subscribe(errorResponse => {
-        this.notificationService.showError(errorResponse.payload.error.message);
-      });
+        .subscribe((errorResponse) => {
+          this.notificationService.showError(
+            errorResponse.payload.error.message
+          );
+        })
+    );
   }
 
   getCountries() {
-    this.store$.dispatch(
-      new CountryStoreActions.LoadRequestAction()
-    );
+    this.store$.dispatch(new CountryStoreActions.LoadRequestAction());
     this.countries$ = this.store$.select(
       CountryStoreSelectors.selectAllCountryItems
     );
   }
 
   getManufacturer(id: number) {
-    this.store$.dispatch(new ManufacturerStoreActions.GetManufacturerRequestAction(id));
+    this.store$.dispatch(
+      new ManufacturerStoreActions.GetManufacturerRequestAction(id)
+    );
     this.manufacturer$ = this.store$.select(
       ManufacturerStoreSelectors.selectManufacturerById(id)
     );
@@ -130,7 +140,10 @@ export class ManufacturerAddComponent implements OnInit {
   updateManufacturer(manufacturer: Manufacturer) {
     const id = manufacturer.id;
     this.store$.dispatch(
-      new ManufacturerStoreActions.UpdateManufacturerRequestAction(id, manufacturer)
+      new ManufacturerStoreActions.UpdateManufacturerRequestAction(
+        id,
+        manufacturer
+      )
     );
   }
 
@@ -153,5 +166,9 @@ export class ManufacturerAddComponent implements OnInit {
       this.actionType === ActionType.EDIT &&
       this.authorizationService.canEdit(ModuleName.MANUFACTURERS)
     );
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 }

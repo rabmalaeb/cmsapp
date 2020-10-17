@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Admin, AdminRequest } from '../admin';
 import { Role } from '../../role/role';
@@ -6,7 +6,7 @@ import { NotificationService } from 'src/app/core/services/notification.service'
 import { AuthorizationService } from 'src/app/core/services/authorization.service';
 import { ActionType } from 'src/app/shared/models/general';
 import { ModuleName } from 'src/app/shared/models/nav';
-import { Observable, of } from 'rxjs';
+import { Observable, of, Subscription } from 'rxjs';
 import { AdminStoreSelectors, AdminStoreActions } from '../store';
 import { ActionsSubject, Store } from '@ngrx/store';
 import {
@@ -14,7 +14,7 @@ import {
   RoleStoreSelectors,
   RoleStoreActions,
   PartnerStoreActions,
-  PartnerStoreSelectors
+  PartnerStoreSelectors,
 } from 'src/app/root-store';
 import { ActionTypes } from '../store/actions';
 import { filter } from 'rxjs/operators';
@@ -24,9 +24,9 @@ import { AuthenticationService } from 'src/app/core/services/authentication.serv
 @Component({
   selector: 'app-admin-add',
   templateUrl: './admin-add.component.html',
-  styleUrls: ['./admin-add.component.scss']
+  styleUrls: ['./admin-add.component.scss'],
 })
-export class AdminAddComponent implements OnInit {
+export class AdminAddComponent implements OnInit, OnDestroy {
   constructor(
     private notificationService: NotificationService,
     private authorizationService: AuthorizationService,
@@ -43,13 +43,14 @@ export class AdminAddComponent implements OnInit {
   isLoadingAction$: Observable<boolean>;
   loadingErrors$: Observable<string[]>;
   actionErrors$: Observable<string[]>;
+  subscriptions: Subscription[] = [];
 
   ngOnInit() {
     const partnerId = this.authenticationService.getCurrentUser().partnerId;
     this.getRoles(partnerId);
     this.initializeStoreVariables();
     this.getPartners();
-    this.route.params.forEach(param => {
+    this.route.params.forEach((param) => {
       if (param.id) {
         const id = parseInt(param.id, 0);
         this.getAdmin(id);
@@ -73,33 +74,38 @@ export class AdminAddComponent implements OnInit {
       AdminStoreSelectors.selectIsLoadingAction
     );
 
-    this.actionsSubject$
-      .pipe(
-        filter(
-          (action: any) =>
-            action.type === ActionTypes.UPDATE_ADMIN_SUCCESS ||
-            action.type === ActionTypes.ADD_ADMIN_SUCCESS
+    this.subscriptions.push(
+      this.actionsSubject$
+        .pipe(
+          filter(
+            (action: any) =>
+              action.type === ActionTypes.UPDATE_ADMIN_SUCCESS ||
+              action.type === ActionTypes.ADD_ADMIN_SUCCESS
+          )
         )
-      )
-      .subscribe(() => {
-        let message = 'Admin Updated Successfully';
-        if (this.actionType === ActionType.ADD) {
-          message = 'Admin Added Successfully';
-        }
-        this.notificationService.showSuccess(message);
-      });
-
-    this.actionsSubject$
-      .pipe(
-        filter(
-          (action: any) =>
-            action.type === ActionTypes.UPDATE_ADMIN_FAILURE ||
-            action.type === ActionTypes.ADD_ADMIN_FAILURE
+        .subscribe(() => {
+          let message = 'Admin Updated Successfully';
+          if (this.actionType === ActionType.ADD) {
+            message = 'Admin Added Successfully';
+          }
+          this.notificationService.showSuccess(message);
+        })
+    );
+    this.subscriptions.push(
+      this.actionsSubject$
+        .pipe(
+          filter(
+            (action: any) =>
+              action.type === ActionTypes.UPDATE_ADMIN_FAILURE ||
+              action.type === ActionTypes.ADD_ADMIN_FAILURE
+          )
         )
-      )
-      .subscribe(errorResponse => {
-        this.notificationService.showError(errorResponse.payload.error.message);
-      });
+        .subscribe((errorResponse) => {
+          this.notificationService.showError(
+            errorResponse.payload.error.message
+          );
+        })
+    );
   }
 
   getAdmin(id: number) {
@@ -135,7 +141,9 @@ export class AdminAddComponent implements OnInit {
   }
 
   addAdmin(adminRequest: AdminRequest) {
-    this.store$.dispatch(new AdminStoreActions.AddAdminRequestAction(adminRequest));
+    this.store$.dispatch(
+      new AdminStoreActions.AddAdminRequestAction(adminRequest)
+    );
   }
 
   updateAdmin(adminRequest: AdminRequest) {
@@ -160,5 +168,9 @@ export class AdminAddComponent implements OnInit {
       this.actionType === ActionType.EDIT &&
       this.authorizationService.canEdit(ModuleName.ADMINS)
     );
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 }

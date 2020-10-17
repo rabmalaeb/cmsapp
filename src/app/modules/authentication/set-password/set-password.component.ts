@@ -1,21 +1,21 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
 import { ValidationMessagesService } from 'src/app/core/services/validation-messages.service';
 import {
   FormGroup,
   FormBuilder,
   Validators,
-  FormGroupDirective
+  FormGroupDirective,
 } from '@angular/forms';
 import { NotificationService } from 'src/app/core/services/notification.service';
 import {
   RootStoreState,
   AuthenticationStoreSelectors,
-  AuthenticationStoreActions
+  AuthenticationStoreActions,
 } from 'src/app/root-store';
 import { Store, ActionsSubject } from '@ngrx/store';
 import { ActionTypes } from '../store/actions';
 import { map, filter } from 'rxjs/operators';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { StorageParams } from 'src/app/shared/models/general';
 import { ErrorMessages } from 'src/app/shared/models/messages';
 import { Router } from '@angular/router';
@@ -29,9 +29,9 @@ import { AuthenticationSteps } from '../authentication';
 @Component({
   selector: 'app-set-password',
   templateUrl: './set-password.component.html',
-  styleUrls: ['./set-password.component.scss']
+  styleUrls: ['./set-password.component.scss'],
 })
-export class SetPasswordComponent implements OnInit {
+export class SetPasswordComponent implements OnInit, OnDestroy {
   constructor(
     private validationMessageService: ValidationMessagesService,
     private cookieService: CookieService,
@@ -48,6 +48,7 @@ export class SetPasswordComponent implements OnInit {
   setPasswordForm: FormGroup;
   isLoading$: Observable<boolean>;
   identifier: string;
+  subscriptions: Subscription[] = [];
 
   ngOnInit() {
     this.checkAndSetIdentifier();
@@ -59,10 +60,10 @@ export class SetPasswordComponent implements OnInit {
     this.setPasswordForm = this.form.group(
       {
         password: ['', [Validators.required]],
-        confirmPassword: ['', [Validators.required]]
+        confirmPassword: ['', [Validators.required]],
       },
       {
-        validator: CustomValidations.MatchPasswords
+        validator: CustomValidations.MatchPasswords,
       }
     );
   }
@@ -71,28 +72,32 @@ export class SetPasswordComponent implements OnInit {
     this.isLoading$ = this.store$.select(
       AuthenticationStoreSelectors.selectSetPasswordLoadingError
     );
-
-    this.actionsSubject$
-      .pipe(
-        filter(
-          (action: any) => action.type === ActionTypes.SET_PASSWORD_SUCCESS
+    this.subscriptions.push(
+      this.actionsSubject$
+        .pipe(
+          filter(
+            (action: any) => action.type === ActionTypes.SET_PASSWORD_SUCCESS
+          )
         )
-      )
-      .subscribe(response => {
-        this.authenticationWorkflowService.setCurrentStep(AuthenticationSteps.LOGIN);
-        this.notificationService.showSuccess('Password Updated Successfully');
-      });
-
-    this.actionsSubject$
-      .pipe(
-        filter(
-          (action: any) => action.type === ActionTypes.SET_PASSWORD_FAILURE
+        .subscribe((response) => {
+          this.authenticationWorkflowService.setCurrentStep(
+            AuthenticationSteps.LOGIN
+          );
+          this.notificationService.showSuccess('Password Updated Successfully');
+        })
+    );
+    this.subscriptions.push(
+      this.actionsSubject$
+        .pipe(
+          filter(
+            (action: any) => action.type === ActionTypes.SET_PASSWORD_FAILURE
+          )
         )
-      )
-      .subscribe((error) => {
-        const message = error.payload.error.message;
-        this.notificationService.showError(message);
-      });
+        .subscribe((error) => {
+          const message = error.payload.error.message;
+          this.notificationService.showError(message);
+        })
+    );
   }
 
   setPassword(formData: any, formDirective: FormGroupDirective) {
@@ -103,7 +108,7 @@ export class SetPasswordComponent implements OnInit {
       password: this.password.value,
       confirmPassword: this.confirmPassword.value,
       identifier: this.identifier,
-      token: this.authenticationService.getToken()
+      token: this.authenticationService.getToken(),
     };
     this.store$.dispatch(
       new AuthenticationStoreActions.SetPasswordRequestAction(params)
@@ -134,12 +139,16 @@ export class SetPasswordComponent implements OnInit {
 
   get resetLabel() {
     return this.isLoading$.pipe(
-      map(isLoading => {
+      map((isLoading) => {
         if (isLoading) {
           return 'Loading';
         }
         return 'Set Password';
       })
     );
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 }

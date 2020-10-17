@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Category, CategoryRequest } from '../category';
@@ -10,16 +10,16 @@ import { ValidationMessagesService } from 'src/app/core/services/validation-mess
 import { map, filter } from 'rxjs/operators';
 import { ActionsSubject, Store } from '@ngrx/store';
 import { RootStoreState } from 'src/app/root-store';
-import { Observable, of } from 'rxjs';
+import { Observable, of, Subscription } from 'rxjs';
 import { CategoryStoreSelectors, CategoryStoreActions } from '../store';
 import { ActionTypes } from '../store/actions';
 
 @Component({
   selector: 'app-category-add',
   templateUrl: './category-add.component.html',
-  styleUrls: ['./category-add.component.scss']
+  styleUrls: ['./category-add.component.scss'],
 })
-export class CategoryAddComponent implements OnInit {
+export class CategoryAddComponent implements OnInit, OnDestroy {
   constructor(
     private notificationService: NotificationService,
     private validationMessagesService: ValidationMessagesService,
@@ -38,11 +38,12 @@ export class CategoryAddComponent implements OnInit {
   isLoadingAction$: Observable<boolean>;
   loadingErrors$: Observable<string[]>;
   actionErrors$: Observable<string[]>;
+  subscriptions: Subscription[] = [];
 
   ngOnInit() {
     this.initializeStoreVariables();
     this.getCategories();
-    this.route.params.forEach(param => {
+    this.route.params.forEach((param) => {
       if (param.id) {
         const id = parseInt(param.id, 0);
         this.getCategory(id);
@@ -66,33 +67,39 @@ export class CategoryAddComponent implements OnInit {
       CategoryStoreSelectors.selectIsLoadingItem
     );
 
-    this.actionsSubject$
-      .pipe(
-        filter(
-          (action: any) =>
-            action.type === ActionTypes.UPDATE_CATEGORY_SUCCESS ||
-            action.type === ActionTypes.ADD_CATEGORY_SUCCESS
+    this.subscriptions.push(
+      this.actionsSubject$
+        .pipe(
+          filter(
+            (action: any) =>
+              action.type === ActionTypes.UPDATE_CATEGORY_SUCCESS ||
+              action.type === ActionTypes.ADD_CATEGORY_SUCCESS
+          )
         )
-      )
-      .subscribe(() => {
-        let message = 'Category Updated Successfully';
-        if (this.actionType === ActionType.ADD) {
-          message = 'Category Added Successfully';
-        }
-        this.notificationService.showSuccess(message);
-      });
+        .subscribe(() => {
+          let message = 'Category Updated Successfully';
+          if (this.actionType === ActionType.ADD) {
+            message = 'Category Added Successfully';
+          }
+          this.notificationService.showSuccess(message);
+        })
+    );
 
-    this.actionsSubject$
-      .pipe(
-        filter(
-          (action: any) =>
-            action.type === ActionTypes.UPDATE_CATEGORY_FAILURE ||
-            action.type === ActionTypes.ADD_CATEGORY_FAILURE
+    this.subscriptions.push(
+      this.actionsSubject$
+        .pipe(
+          filter(
+            (action: any) =>
+              action.type === ActionTypes.UPDATE_CATEGORY_FAILURE ||
+              action.type === ActionTypes.ADD_CATEGORY_FAILURE
+          )
         )
-      )
-      .subscribe(errorResponse => {
-        this.notificationService.showError(errorResponse.payload.error.message);
-      });
+        .subscribe((errorResponse) => {
+          this.notificationService.showError(
+            errorResponse.payload.error.message
+          );
+        })
+    );
   }
 
   getCategory(id: number) {
@@ -106,7 +113,9 @@ export class CategoryAddComponent implements OnInit {
   }
 
   getCategories(categoryRequest: CategoryRequest = null) {
-    this.store$.dispatch(new CategoryStoreActions.LoadRequestAction(categoryRequest));
+    this.store$.dispatch(
+      new CategoryStoreActions.LoadRequestAction(categoryRequest)
+    );
     this.categories$ = this.store$.select(
       CategoryStoreSelectors.selectAllCategoryItems
     );
@@ -152,5 +161,9 @@ export class CategoryAddComponent implements OnInit {
       this.actionType === ActionType.EDIT &&
       this.authorizationService.canEdit(ModuleName.CATEGORIES)
     );
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 }

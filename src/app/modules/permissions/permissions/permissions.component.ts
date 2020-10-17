@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
@@ -6,7 +6,7 @@ import { AlertService } from 'src/app/core/services/alert.service';
 import { Permission, PermissionRequest } from '../permission';
 import { AuthorizationService } from 'src/app/core/services/authorization.service';
 import { ModuleName } from 'src/app/shared/models/nav';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { Store, ActionsSubject } from '@ngrx/store';
 import { RootStoreState } from 'src/app/root-store';
 import { NotificationService } from 'src/app/core/services/notification.service';
@@ -15,14 +15,17 @@ import { ActionTypes } from '../store/actions';
 import { filter } from 'rxjs/operators';
 import { FilterHandler } from 'src/app/shared/filters/filter';
 import { Sort } from '@angular/material/sort';
-import { SuccessMessages, ConfirmMessages } from 'src/app/shared/models/messages';
+import {
+  SuccessMessages,
+  ConfirmMessages,
+} from 'src/app/shared/models/messages';
 
 @Component({
   selector: 'app-permissions',
   templateUrl: './permissions.component.html',
-  styleUrls: ['./permissions.component.scss']
+  styleUrls: ['./permissions.component.scss'],
 })
-export class PermissionsComponent implements OnInit {
+export class PermissionsComponent implements OnInit, OnDestroy {
   permissions$: Observable<Permission[]>;
   error$: Observable<string>;
   isLoading$: Observable<boolean>;
@@ -30,6 +33,7 @@ export class PermissionsComponent implements OnInit {
   filterHandler = new FilterHandler();
   displayedColumns: string[] = ['id', 'name', 'type', 'group', 'action'];
   dataSource: MatTableDataSource<any>;
+  subscriptions: Subscription[] = [];
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 
   constructor(
@@ -63,31 +67,45 @@ export class PermissionsComponent implements OnInit {
       PermissionStoreSelectors.selectPermissionIsLoading
     );
 
-    this.actionsSubject$
-      .pipe(
-        filter(
-          (action: any) => action.type === ActionTypes.DELETE_PERMISSION_SUCCESS
+    this.subscriptions.push(
+      this.actionsSubject$
+        .pipe(
+          filter(
+            (action: any) =>
+              action.type === ActionTypes.DELETE_PERMISSION_SUCCESS
+          )
         )
-      )
-      .subscribe(() => {
-        this.notificationService.showSuccess(SuccessMessages.PERMISSION_DELETED);
-      });
+        .subscribe(() => {
+          this.notificationService.showSuccess(
+            SuccessMessages.PERMISSION_DELETED
+          );
+        })
+    );
 
-    this.actionsSubject$
-      .pipe(
-        filter(
-          (action: any) => action.type === ActionTypes.DELETE_PERMISSION_FAILURE
+    this.subscriptions.push(
+      this.actionsSubject$
+        .pipe(
+          filter(
+            (action: any) =>
+              action.type === ActionTypes.DELETE_PERMISSION_FAILURE
+          )
         )
-      )
-      .subscribe(errorResponse => {
-        this.notificationService.showError(errorResponse.payload.error.message);
-      });
+        .subscribe((errorResponse) => {
+          this.notificationService.showError(
+            errorResponse.payload.error.message
+          );
+        })
+    );
 
-    this.actionsSubject$
-      .pipe(filter((action: any) => action.type === ActionTypes.LOAD_FAILURE))
-      .subscribe(errorResponse => {
-        this.notificationService.showError(errorResponse.payload.error.message);
-      });
+    this.subscriptions.push(
+      this.actionsSubject$
+        .pipe(filter((action: any) => action.type === ActionTypes.LOAD_FAILURE))
+        .subscribe((errorResponse) => {
+          this.notificationService.showError(
+            errorResponse.payload.error.message
+          );
+        })
+    );
   }
 
   getPermissions() {
@@ -135,5 +153,9 @@ export class PermissionsComponent implements OnInit {
   sortItems(sort: Sort) {
     this.filterHandler.setSort(sort);
     this.getPermissions();
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 }

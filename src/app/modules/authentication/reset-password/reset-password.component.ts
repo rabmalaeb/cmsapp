@@ -1,15 +1,15 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
 import { ValidationMessagesService } from 'src/app/core/services/validation-messages.service';
 import {
   FormGroup,
   FormBuilder,
   Validators,
-  FormGroupDirective
+  FormGroupDirective,
 } from '@angular/forms';
 import { NotificationService } from 'src/app/core/services/notification.service';
 import {
   AuthenticationStoreActions,
-  AuthenticationStoreSelectors
+  AuthenticationStoreSelectors,
 } from '../store';
 import { AuthenticationWorkflowService } from '../authentication-workflow.service';
 import { AuthenticationSteps } from '../authentication';
@@ -17,7 +17,7 @@ import { Store, ActionsSubject } from '@ngrx/store';
 import { RootStoreState } from 'src/app/root-store';
 import { ActionTypes } from '../store/actions';
 import { map, filter } from 'rxjs/operators';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { StorageParams } from 'src/app/shared/models/general';
 import { FormService } from 'src/app/core/services/form.service';
 import { CookieService } from 'ngx-cookie-service';
@@ -25,9 +25,9 @@ import { ErrorMessages } from 'src/app/shared/models/messages';
 @Component({
   selector: 'app-reset-password',
   templateUrl: './reset-password.component.html',
-  styleUrls: ['./reset-password.component.scss']
+  styleUrls: ['./reset-password.component.scss'],
 })
-export class ResetPasswordComponent implements OnInit {
+export class ResetPasswordComponent implements OnInit, OnDestroy {
   constructor(
     private validationMessageService: ValidationMessagesService,
     private notificationService: NotificationService,
@@ -41,6 +41,7 @@ export class ResetPasswordComponent implements OnInit {
 
   resetPasswordForm: FormGroup;
   isLoading$: Observable<boolean>;
+  subscriptions: Subscription[] = [];
 
   ngOnInit() {
     this.buildForm();
@@ -49,7 +50,7 @@ export class ResetPasswordComponent implements OnInit {
 
   buildForm() {
     this.resetPasswordForm = this.form.group({
-      email: ['', [Validators.required, Validators.email]]
+      email: ['', [Validators.required, Validators.email]],
     });
   }
 
@@ -58,25 +59,28 @@ export class ResetPasswordComponent implements OnInit {
       AuthenticationStoreSelectors.selectResetPasswordRequestLoading
     );
 
-    this.actionsSubject$
-      .pipe(
-        filter(
-          (action: any) => action.type === ActionTypes.RESET_PASSWORD_SUCCESS
+    this.subscriptions.push(
+      this.actionsSubject$
+        .pipe(
+          filter(
+            (action: any) => action.type === ActionTypes.RESET_PASSWORD_SUCCESS
+          )
         )
-      )
-      .subscribe(response => {
-        this.notificationService.showSuccess(response.payload.message);
-      });
-
-    this.actionsSubject$
-      .pipe(
-        filter(
-          (action: any) => action.type === ActionTypes.RESET_PASSWORD_FAILURE
+        .subscribe((response) => {
+          this.notificationService.showSuccess(response.payload.message);
+        })
+    );
+    this.subscriptions.push(
+      this.actionsSubject$
+        .pipe(
+          filter(
+            (action: any) => action.type === ActionTypes.RESET_PASSWORD_FAILURE
+          )
         )
-      )
-      .subscribe(error => {
-        this.notificationService.showError(ErrorMessages.RESET_REQUEST_ERROR);
-      });
+        .subscribe((error) => {
+          this.notificationService.showError(ErrorMessages.RESET_REQUEST_ERROR);
+        })
+    );
   }
 
   sendResetPassword(formData: any, formDirective: FormGroupDirective) {
@@ -86,7 +90,7 @@ export class ResetPasswordComponent implements OnInit {
     const email = this.email.value;
     this.addResetPasswordIdentifierToStorage(email);
     const params = {
-      email
+      email,
     };
     this.store$.dispatch(
       new AuthenticationStoreActions.ResetPasswordRequestAction(params)
@@ -109,7 +113,7 @@ export class ResetPasswordComponent implements OnInit {
 
   get resetLabel() {
     return this.isLoading$.pipe(
-      map(isLoading => {
+      map((isLoading) => {
         if (isLoading) {
           return 'Resetting';
         }
@@ -122,9 +126,10 @@ export class ResetPasswordComponent implements OnInit {
     if (this.cookieService.check(StorageParams.RESET_PASSWORD_IDENTIFIER)) {
       this.cookieService.delete(StorageParams.RESET_PASSWORD_IDENTIFIER);
     }
-    this.cookieService.set(
-      StorageParams.RESET_PASSWORD_IDENTIFIER,
-      identifier
-    );
+    this.cookieService.set(StorageParams.RESET_PASSWORD_IDENTIFIER, identifier);
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 }

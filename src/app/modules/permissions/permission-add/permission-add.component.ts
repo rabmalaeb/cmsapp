@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NotificationService } from 'src/app/core/services/notification.service';
 import { ActivatedRoute } from '@angular/router';
 import { Permission, PermissionActionRequest } from '../permission';
@@ -8,7 +8,7 @@ import {
 } from 'src/app/shared/models/general';
 import { ActionsSubject, Store } from '@ngrx/store';
 import { RootStoreState } from 'src/app/root-store';
-import { Observable, of } from 'rxjs';
+import { Observable, of, Subscription } from 'rxjs';
 import { PermissionStoreSelectors, PermissionStoreActions } from '../store';
 import { ActionTypes } from '../store/actions';
 import { filter } from 'rxjs/operators';
@@ -17,15 +17,15 @@ import { NavItem, ModuleName } from 'src/app/shared/models/nav';
 @Component({
   selector: 'app-permission-add',
   templateUrl: './permission-add.component.html',
-  styleUrls: ['./permission-add.component.scss']
+  styleUrls: ['./permission-add.component.scss'],
 })
-export class PermissionAddComponent implements OnInit {
+export class PermissionAddComponent implements OnInit, OnDestroy {
   constructor(
     private notificationService: NotificationService,
     private authorizationService: AuthorizationService,
     private route: ActivatedRoute,
     private actionsSubject$: ActionsSubject,
-    private store$: Store<RootStoreState.State>,
+    private store$: Store<RootStoreState.State>
   ) {}
 
   actionType: ActionType;
@@ -37,10 +37,11 @@ export class PermissionAddComponent implements OnInit {
   isLoadingAction$: Observable<boolean>;
   loadingErrors$: Observable<string[]>;
   actionErrors$: Observable<string[]>;
+  subscriptions: Subscription[] = [];
 
   ngOnInit() {
     this.initializeStoreVariables();
-    this.route.params.forEach(param => {
+    this.route.params.forEach((param) => {
       if (param.id) {
         const id = parseInt(param.id, 0);
         this.getPermission(id);
@@ -64,33 +65,39 @@ export class PermissionAddComponent implements OnInit {
       PermissionStoreSelectors.selectIsLoadingItem
     );
 
-    this.actionsSubject$
-      .pipe(
-        filter(
-          (action: any) =>
-            action.type === ActionTypes.UPDATE_PERMISSION_SUCCESS ||
-            action.type === ActionTypes.ADD_PERMISSION_SUCCESS
+    this.subscriptions.push(
+      this.actionsSubject$
+        .pipe(
+          filter(
+            (action: any) =>
+              action.type === ActionTypes.UPDATE_PERMISSION_SUCCESS ||
+              action.type === ActionTypes.ADD_PERMISSION_SUCCESS
+          )
         )
-      )
-      .subscribe(() => {
-        let message = 'Permission Updated Successfully';
-        if (this.actionType === ActionType.ADD) {
-          message = 'Permission Added Successfully';
-        }
-        this.notificationService.showSuccess(message);
-      });
+        .subscribe(() => {
+          let message = 'Permission Updated Successfully';
+          if (this.actionType === ActionType.ADD) {
+            message = 'Permission Added Successfully';
+          }
+          this.notificationService.showSuccess(message);
+        })
+    );
 
-    this.actionsSubject$
-      .pipe(
-        filter(
-          (action: any) =>
-            action.type === ActionTypes.UPDATE_PERMISSION_FAILURE ||
-            action.type === ActionTypes.ADD_PERMISSION_FAILURE
+    this.subscriptions.push(
+      this.actionsSubject$
+        .pipe(
+          filter(
+            (action: any) =>
+              action.type === ActionTypes.UPDATE_PERMISSION_FAILURE ||
+              action.type === ActionTypes.ADD_PERMISSION_FAILURE
+          )
         )
-      )
-      .subscribe(errorResponse => {
-        this.notificationService.showError(errorResponse.payload.error.message);
-      });
+        .subscribe((errorResponse) => {
+          this.notificationService.showError(
+            errorResponse.payload.error.message
+          );
+        })
+    );
   }
 
   getPermission(id: number) {
@@ -141,5 +148,9 @@ export class PermissionAddComponent implements OnInit {
       this.actionType === ActionType.EDIT &&
       this.authorizationService.canEdit(ModuleName.PERMISSIONS)
     );
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 }

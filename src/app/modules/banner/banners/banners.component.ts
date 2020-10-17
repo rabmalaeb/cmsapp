@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
@@ -9,20 +9,23 @@ import { ModuleName } from 'src/app/shared/models/nav';
 import { filter } from 'rxjs/operators';
 import { BannerStoreActions, BannerStoreSelectors } from '../store';
 import { ActionTypes } from '../store/actions';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { Store, ActionsSubject } from '@ngrx/store';
 import { RootStoreState } from 'src/app/root-store';
 import { NotificationService } from 'src/app/core/services/notification.service';
 import { FilterHandler } from 'src/app/shared/filters/filter';
 import { Sort } from '@angular/material/sort';
-import { SuccessMessages, ConfirmMessages } from 'src/app/shared/models/messages';
+import {
+  SuccessMessages,
+  ConfirmMessages,
+} from 'src/app/shared/models/messages';
 
 @Component({
   selector: 'app-banners',
   templateUrl: './banners.component.html',
-  styleUrls: ['./banners.component.scss']
+  styleUrls: ['./banners.component.scss'],
 })
-export class BannersComponent implements OnInit {
+export class BannersComponent implements OnInit, OnDestroy {
   displayedColumns: string[] = ['id', 'name', 'image', 'action'];
   dataSource: MatTableDataSource<any>;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
@@ -31,6 +34,7 @@ export class BannersComponent implements OnInit {
   error$: Observable<string>;
   isLoading$: Observable<boolean>;
   filterHandler = new FilterHandler();
+  subscriptions: Subscription[] = [];
   constructor(
     private alertService: AlertService,
     private authorizationService: AuthorizationService,
@@ -62,29 +66,35 @@ export class BannersComponent implements OnInit {
       BannerStoreSelectors.selectBannerIsLoading
     );
 
-    this.actionsSubject$
-      .pipe(
-        filter(
-          (action: any) => action.type === ActionTypes.DELETE_PRODUCT_SUCCESS
+    this.subscriptions.push(
+      this.actionsSubject$
+        .pipe(
+          filter(
+            (action: any) => action.type === ActionTypes.DELETE_PRODUCT_SUCCESS
+          )
         )
-      )
-      .subscribe(() => {
-        this.notificationService.showSuccess(SuccessMessages.BANNER_DELETED);
-      });
+        .subscribe(() => {
+          this.notificationService.showSuccess(SuccessMessages.BANNER_DELETED);
+        })
+    );
 
-    this.actionsSubject$
-      .pipe(
-        filter(
-          (action: any) => action.type === ActionTypes.DELETE_PRODUCT_FAILURE
+    this.subscriptions.push(
+      this.actionsSubject$
+        .pipe(
+          filter(
+            (action: any) => action.type === ActionTypes.DELETE_PRODUCT_FAILURE
+          )
         )
-      )
-      .subscribe(errorResponse => {
-        this.notificationService.showError(errorResponse.payload.error.message);
-      });
+        .subscribe((errorResponse) => {
+          this.notificationService.showError(
+            errorResponse.payload.error.message
+          );
+        })
+    );
 
     this.actionsSubject$
       .pipe(filter((action: any) => action.type === ActionTypes.LOAD_FAILURE))
-      .subscribe(errorResponse => {
+      .subscribe((errorResponse) => {
         this.notificationService.showError(errorResponse.payload.error.message);
       });
   }
@@ -134,5 +144,9 @@ export class BannersComponent implements OnInit {
   sortItems(sort: Sort) {
     this.filterHandler.setSort(sort);
     this.getBanners();
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import {
   FormGroup,
   FormBuilder
@@ -13,7 +13,7 @@ import { AuthorizationService } from 'src/app/core/services/authorization.servic
 import { LanguagekeyStoreSelectors, LanguagekeyStoreActions } from '../store';
 import { ActionsSubject, Store } from '@ngrx/store';
 import { RootStoreState } from 'src/app/root-store';
-import { Observable, of } from 'rxjs';
+import { Observable, of, Subscription } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 import { ActionTypes } from '../store/actions';
 import { ModuleName } from 'src/app/shared/models/nav';
@@ -21,9 +21,9 @@ import { ModuleName } from 'src/app/shared/models/nav';
 @Component({
   selector: 'app-language-key-add',
   templateUrl: './language-key-add.component.html',
-  styleUrls: ['./language-key-add.component.scss']
+  styleUrls: ['./language-key-add.component.scss'],
 })
-export class LanguageKeyAddComponent implements OnInit {
+export class LanguageKeyAddComponent implements OnInit, OnDestroy {
   constructor(
     private form: FormBuilder,
     private notificationService: NotificationService,
@@ -45,10 +45,11 @@ export class LanguageKeyAddComponent implements OnInit {
   isLoadingAction$: Observable<boolean>;
   loadingErrors$: Observable<string[]>;
   actionErrors$: Observable<string[]>;
+  subscriptions: Subscription[] = [];
 
   ngOnInit() {
     this.initializeStoreVariables();
-    this.route.params.forEach(param => {
+    this.route.params.forEach((param) => {
       if (param.id) {
         const id = parseInt(param.id, 0);
         this.getLanguageKey(id);
@@ -72,33 +73,39 @@ export class LanguageKeyAddComponent implements OnInit {
       LanguagekeyStoreSelectors.selectIsLoadingItem
     );
 
-    this.actionsSubject$
-      .pipe(
-        filter(
-          (action: any) =>
-            action.type === ActionTypes.UPDATE_LANGUAGEKEY_SUCCESS ||
-            action.type === ActionTypes.ADD_LANGUAGEKEY_SUCCESS
+    this.subscriptions.push(
+      this.actionsSubject$
+        .pipe(
+          filter(
+            (action: any) =>
+              action.type === ActionTypes.UPDATE_LANGUAGEKEY_SUCCESS ||
+              action.type === ActionTypes.ADD_LANGUAGEKEY_SUCCESS
+          )
         )
-      )
-      .subscribe(() => {
-        let message = 'LanguageKey Updated Successfully';
-        if (this.actionType === ActionType.ADD) {
-          message = 'LanguageKey Added Successfully';
-        }
-        this.notificationService.showSuccess(message);
-      });
+        .subscribe(() => {
+          let message = 'LanguageKey Updated Successfully';
+          if (this.actionType === ActionType.ADD) {
+            message = 'LanguageKey Added Successfully';
+          }
+          this.notificationService.showSuccess(message);
+        })
+    );
 
-    this.actionsSubject$
-      .pipe(
-        filter(
-          (action: any) =>
-            action.type === ActionTypes.UPDATE_LANGUAGEKEY_FAILURE ||
-            action.type === ActionTypes.ADD_LANGUAGEKEY_FAILURE
+    this.subscriptions.push(
+      this.actionsSubject$
+        .pipe(
+          filter(
+            (action: any) =>
+              action.type === ActionTypes.UPDATE_LANGUAGEKEY_FAILURE ||
+              action.type === ActionTypes.ADD_LANGUAGEKEY_FAILURE
+          )
         )
-      )
-       .subscribe(errorResponse => {
-        this.notificationService.showError(errorResponse.payload.error.message);
-      });
+        .subscribe((errorResponse) => {
+          this.notificationService.showError(
+            errorResponse.payload.error.message
+          );
+        })
+    );
   }
 
   getLanguageKey(id: number) {
@@ -130,13 +137,16 @@ export class LanguageKeyAddComponent implements OnInit {
   updateLanguageKey(languageKey: LanguageKey) {
     const id = languageKey.id;
     this.store$.dispatch(
-      new LanguagekeyStoreActions.UpdateLanguageKeyRequestAction(id, languageKey)
+      new LanguagekeyStoreActions.UpdateLanguageKeyRequestAction(
+        id,
+        languageKey
+      )
     );
   }
 
   get buttonLabel() {
     return this.isLoadingAction$.pipe(
-      map(isLoading => {
+      map((isLoading) => {
         if (isLoading) {
           return 'Loading';
         }
@@ -167,5 +177,9 @@ export class LanguageKeyAddComponent implements OnInit {
       this.actionType === ActionType.EDIT &&
       this.authorizationService.canEdit(ModuleName.LANGUAGE_KEYS)
     );
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 }

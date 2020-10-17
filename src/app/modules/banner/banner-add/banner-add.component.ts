@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NotificationService } from 'src/app/core/services/notification.service';
 import { ActionType } from 'src/app/shared/models/general';
 import { ModuleName } from 'src/app/shared/models/nav';
@@ -7,22 +7,22 @@ import { Banner } from '../banner';
 import { AuthorizationService } from 'src/app/core/services/authorization.service';
 import { ActionsSubject, Store } from '@ngrx/store';
 import { RootStoreState } from 'src/app/root-store';
-import { Observable, of } from 'rxjs';
+import { Observable, of, Subscription } from 'rxjs';
 import { BannerStoreSelectors, BannerStoreActions } from '../store';
 import { filter } from 'rxjs/operators';
 import { ActionTypes } from '../store/actions';
 import {
   LanguageStoreSelectors,
-  LanguageStoreActions
+  LanguageStoreActions,
 } from '../../language/store';
 import { Language, LanguageRequest } from '../../language/language';
 
 @Component({
   selector: 'app-banner-add',
   templateUrl: './banner-add.component.html',
-  styleUrls: ['./banner-add.component.scss']
+  styleUrls: ['./banner-add.component.scss'],
 })
-export class BannerAddComponent implements OnInit {
+export class BannerAddComponent implements OnInit, OnDestroy {
   constructor(
     private notificationService: NotificationService,
     private authorizationService: AuthorizationService,
@@ -39,11 +39,12 @@ export class BannerAddComponent implements OnInit {
   isLoadingAction$: Observable<boolean>;
   loadingErrors$: Observable<string[]>;
   actionErrors$: Observable<string[]>;
+  subscriptions: Subscription[] = [];
 
   ngOnInit() {
     this.getLanguages();
     this.initializeStoreVariables();
-    this.route.params.forEach(param => {
+    this.route.params.forEach((param) => {
       if (param.id) {
         const id = parseInt(param.id, 0);
         this.getBanner(id);
@@ -63,33 +64,38 @@ export class BannerAddComponent implements OnInit {
       BannerStoreSelectors.selectIsLoadingAction
     );
 
-    this.actionsSubject$
-      .pipe(
-        filter(
-          (action: any) =>
-            action.type === ActionTypes.UPDATE_PRODUCT_SUCCESS ||
-            action.type === ActionTypes.ADD_PRODUCT_SUCCESS
+    this.subscriptions.push(
+      this.actionsSubject$
+        .pipe(
+          filter(
+            (action: any) =>
+              action.type === ActionTypes.UPDATE_PRODUCT_SUCCESS ||
+              action.type === ActionTypes.ADD_PRODUCT_SUCCESS
+          )
         )
-      )
-      .subscribe(() => {
-        let message = 'Banner Updated Successfully';
-        if (this.actionType === ActionType.ADD) {
-          message = 'Banner Added Successfully';
-        }
-        this.notificationService.showSuccess(message);
-      });
-
-    this.actionsSubject$
-      .pipe(
-        filter(
-          (action: any) =>
-            action.type === ActionTypes.UPDATE_PRODUCT_FAILURE ||
-            action.type === ActionTypes.ADD_PRODUCT_FAILURE
+        .subscribe(() => {
+          let message = 'Banner Updated Successfully';
+          if (this.actionType === ActionType.ADD) {
+            message = 'Banner Added Successfully';
+          }
+          this.notificationService.showSuccess(message);
+        })
+    );
+    this.subscriptions.push(
+      this.actionsSubject$
+        .pipe(
+          filter(
+            (action: any) =>
+              action.type === ActionTypes.UPDATE_PRODUCT_FAILURE ||
+              action.type === ActionTypes.ADD_PRODUCT_FAILURE
+          )
         )
-      )
-      .subscribe(errorResponse => {
-        this.notificationService.showError(errorResponse.payload.error.message);
-      });
+        .subscribe((errorResponse) => {
+          this.notificationService.showError(
+            errorResponse.payload.error.message
+          );
+        })
+    );
   }
 
   getBanner(id: number) {
@@ -151,5 +157,9 @@ export class BannerAddComponent implements OnInit {
       this.actionType === ActionType.EDIT &&
       this.authorizationService.canEdit(ModuleName.PRODUCTS)
     );
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 }

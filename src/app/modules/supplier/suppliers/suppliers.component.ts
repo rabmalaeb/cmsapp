@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
@@ -6,7 +6,7 @@ import { AlertService } from 'src/app/core/services/alert.service';
 import { Supplier } from '../supplier';
 import { ModuleName } from 'src/app/shared/models/nav';
 import { AuthorizationService } from 'src/app/core/services/authorization.service';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { SupplierStoreSelectors, SupplierStoreActions } from '../store';
 import { Store, ActionsSubject } from '@ngrx/store';
 import { RootStoreState } from 'src/app/root-store';
@@ -15,14 +15,17 @@ import { ActionTypes } from '../store/actions';
 import { filter } from 'rxjs/operators';
 import { FilterHandler } from 'src/app/shared/filters/filter';
 import { Sort } from '@angular/material/sort';
-import { SuccessMessages, ConfirmMessages } from 'src/app/shared/models/messages';
+import {
+  SuccessMessages,
+  ConfirmMessages,
+} from 'src/app/shared/models/messages';
 
 @Component({
   selector: 'app-suppliers',
   templateUrl: './suppliers.component.html',
-  styleUrls: ['./suppliers.component.scss']
+  styleUrls: ['./suppliers.component.scss'],
 })
-export class SuppliersComponent implements OnInit {
+export class SuppliersComponent implements OnInit, OnDestroy {
   displayedColumns: string[] = ['id', 'name', 'code', 'action'];
   dataSource: MatTableDataSource<any>;
   suppliers$: Observable<Supplier[]>;
@@ -30,6 +33,7 @@ export class SuppliersComponent implements OnInit {
   error$: Observable<string>;
   isLoading$: Observable<boolean>;
   filterHandler = new FilterHandler();
+  subscriptions: Subscription[] = [];
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 
   constructor(
@@ -62,32 +66,41 @@ export class SuppliersComponent implements OnInit {
     this.totalNumberOfItems$ = this.store$.select(
       SupplierStoreSelectors.selectTotalNumberOfItems
     );
-
-    this.actionsSubject$
-      .pipe(
-        filter(
-          (action: any) => action.type === ActionTypes.DELETE_SUPPLIER_SUCCESS
+    this.subscriptions.push(
+      this.actionsSubject$
+        .pipe(
+          filter(
+            (action: any) => action.type === ActionTypes.DELETE_SUPPLIER_SUCCESS
+          )
         )
-      )
-      .subscribe(() => {
-        this.notificationService.showSuccess(SuccessMessages.SUPPLIER_DELETED);
-      });
-
-    this.actionsSubject$
-      .pipe(
-        filter(
-          (action: any) => action.type === ActionTypes.DELETE_SUPPLIER_FAILURE
+        .subscribe(() => {
+          this.notificationService.showSuccess(
+            SuccessMessages.SUPPLIER_DELETED
+          );
+        })
+    );
+    this.subscriptions.push(
+      this.actionsSubject$
+        .pipe(
+          filter(
+            (action: any) => action.type === ActionTypes.DELETE_SUPPLIER_FAILURE
+          )
         )
-      )
-      .subscribe(errorResponse => {
-        this.notificationService.showError(errorResponse.payload.error.message);
-      });
-
-    this.actionsSubject$
-      .pipe(filter((action: any) => action.type === ActionTypes.LOAD_FAILURE))
-      .subscribe(errorResponse => {
-        this.notificationService.showError(errorResponse.payload.error.message);
-      });
+        .subscribe((errorResponse) => {
+          this.notificationService.showError(
+            errorResponse.payload.error.message
+          );
+        })
+    );
+    this.subscriptions.push(
+      this.actionsSubject$
+        .pipe(filter((action: any) => action.type === ActionTypes.LOAD_FAILURE))
+        .subscribe((errorResponse) => {
+          this.notificationService.showError(
+            errorResponse.payload.error.message
+          );
+        })
+    );
   }
 
   getSuppliers() {
@@ -135,5 +148,9 @@ export class SuppliersComponent implements OnInit {
   sortItems(sort: Sort) {
     this.filterHandler.setSort(sort);
     this.getSuppliers();
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 }

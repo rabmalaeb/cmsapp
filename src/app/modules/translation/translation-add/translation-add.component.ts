@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NotificationService } from 'src/app/core/services/notification.service';
 import { ActionType } from 'src/app/shared/models/general';
 import { ModuleName } from 'src/app/shared/models/nav';
@@ -8,28 +8,26 @@ import { LanguageKey } from '../../language-key/language-key';
 import { Language } from '../../language/language';
 import { AuthorizationService } from 'src/app/core/services/authorization.service';
 import { ActionsSubject, Store } from '@ngrx/store';
-import {
-  RootStoreState,
-} from 'src/app/root-store';
-import { Observable, of } from 'rxjs';
+import { RootStoreState } from 'src/app/root-store';
+import { Observable, of, Subscription } from 'rxjs';
 import { TranslationStoreSelectors, TranslationStoreActions } from '../store';
 import { ActionTypes } from '../store/actions';
 import { filter } from 'rxjs/operators';
 import {
   LanguageStoreActions,
-  LanguageStoreSelectors
+  LanguageStoreSelectors,
 } from '../../language/store';
 import {
   LanguagekeyStoreActions,
-  LanguagekeyStoreSelectors
+  LanguagekeyStoreSelectors,
 } from '../../language-key/store';
 
 @Component({
   selector: 'app-translation-add',
   templateUrl: './translation-add.component.html',
-  styleUrls: ['./translation-add.component.scss']
+  styleUrls: ['./translation-add.component.scss'],
 })
-export class TranslationAddComponent implements OnInit {
+export class TranslationAddComponent implements OnInit, OnDestroy {
   constructor(
     private authorizationService: AuthorizationService,
     private notificationService: NotificationService,
@@ -50,12 +48,13 @@ export class TranslationAddComponent implements OnInit {
   isLoadingAction$: Observable<boolean>;
   loadingErrors$: Observable<string[]>;
   actionErrors$: Observable<string[]>;
+  subscriptions: Subscription[] = [];
 
   ngOnInit() {
     this.initializeStoreVariables();
     this.getLanguageKeys();
     this.getLanguages();
-    this.route.params.forEach(param => {
+    this.route.params.forEach((param) => {
       if (param.id) {
         const id = parseInt(param.id, 0);
         this.getTranslation(id);
@@ -79,33 +78,38 @@ export class TranslationAddComponent implements OnInit {
       TranslationStoreSelectors.selectIsLoadingItem
     );
 
-    this.actionsSubject$
-      .pipe(
-        filter(
-          (action: any) =>
-            action.type === ActionTypes.UPDATE_TRANSLATION_SUCCESS ||
-            action.type === ActionTypes.ADD_TRANSLATION_SUCCESS
+    this.subscriptions.push(
+      this.actionsSubject$
+        .pipe(
+          filter(
+            (action: any) =>
+              action.type === ActionTypes.UPDATE_TRANSLATION_SUCCESS ||
+              action.type === ActionTypes.ADD_TRANSLATION_SUCCESS
+          )
         )
-      )
-      .subscribe(() => {
-        let message = 'Translation Updated Successfully';
-        if (this.actionType === ActionType.ADD) {
-          message = 'Translation Added Successfully';
-        }
-        this.notificationService.showSuccess(message);
-      });
-
-    this.actionsSubject$
-      .pipe(
-        filter(
-          (action: any) =>
-            action.type === ActionTypes.UPDATE_TRANSLATION_FAILURE ||
-            action.type === ActionTypes.ADD_TRANSLATION_FAILURE
+        .subscribe(() => {
+          let message = 'Translation Updated Successfully';
+          if (this.actionType === ActionType.ADD) {
+            message = 'Translation Added Successfully';
+          }
+          this.notificationService.showSuccess(message);
+        })
+    );
+    this.subscriptions.push(
+      this.actionsSubject$
+        .pipe(
+          filter(
+            (action: any) =>
+              action.type === ActionTypes.UPDATE_TRANSLATION_FAILURE ||
+              action.type === ActionTypes.ADD_TRANSLATION_FAILURE
+          )
         )
-      )
-       .subscribe(errorResponse => {
-        this.notificationService.showError(errorResponse.payload.error.message);
-      });
+        .subscribe((errorResponse) => {
+          this.notificationService.showError(
+            errorResponse.payload.error.message
+          );
+        })
+    );
   }
 
   getTranslation(id: number) {
@@ -160,7 +164,10 @@ export class TranslationAddComponent implements OnInit {
   updateTranslation(translation: Translation) {
     const id = translation.id;
     this.store$.dispatch(
-      new TranslationStoreActions.UpdateTranslationRequestAction(id, translation)
+      new TranslationStoreActions.UpdateTranslationRequestAction(
+        id,
+        translation
+      )
     );
   }
 
@@ -179,5 +186,8 @@ export class TranslationAddComponent implements OnInit {
       this.actionType === ActionType.EDIT &&
       this.authorizationService.canEdit(ModuleName.TRANSLATIONS)
     );
+  }
+  ngOnDestroy() {
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 }

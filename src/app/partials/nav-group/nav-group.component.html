@@ -1,0 +1,12 @@
+<div class="nav-group" [ngClass]="{'nav-group_is-children-hidden': !showChildren}">
+  <div class="nav-group__container">
+    <div class="nav-group__title" (click)="toggleChildren()">
+      {{group}}
+    </div>
+    <div class="nav-group__item-container">
+      <div class="nav-group__item" *ngFor="let item of items">
+        <app-nav-item [navItem]="item.options"></app-nav-item>
+      </div>
+    </div>
+  </div>
+</div>

@@ -3,7 +3,8 @@ import {
   OnInit,
   Input,
   OnChanges,
-  SimpleChanges
+  SimpleChanges,
+  OnDestroy,
 } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { ProductRequest, ProductFilterLimits } from '../product';
@@ -13,14 +14,15 @@ import { Category } from '../../category/category';
 import { FilterHandler, FilterComponent } from 'src/app/shared/filters/filter';
 import { Brand } from '../../brand/brand';
 import { Manufacturer } from '../../manufacturer/manufacturer';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-product-filters',
   templateUrl: './product-filters.component.html',
-  styleUrls: ['./product-filters.component.sass']
+  styleUrls: ['./product-filters.component.sass'],
 })
 export class ProductFiltersComponent
-  implements OnInit, OnChanges, FilterComponent {
+  implements OnInit, OnChanges, FilterComponent, OnDestroy {
   @Input() filterHandler: FilterHandler;
   @Input() productFilterLimits: ProductFilterLimits;
   @Input() categories: Category[];
@@ -32,7 +34,7 @@ export class ProductFiltersComponent
    */
   selectedOriginalPriceRange: NumberRange = {
     minimum: 0,
-    maximum: 10000
+    maximum: 10000,
   };
 
   /**
@@ -40,7 +42,7 @@ export class ProductFiltersComponent
    */
   selectedRetailPriceRange: NumberRange = {
     minimum: 0,
-    maximum: 10000
+    maximum: 10000,
   };
   isInputChangeComingFromParentComponent = true;
   originalPriceSliderOptions: Options;
@@ -49,6 +51,7 @@ export class ProductFiltersComponent
   categoryOptionItems: OptionItem[];
   brandsOptionItems: OptionItem[];
   manufacturersOptionItems: OptionItem[];
+  subscriptions: Subscription[] = [];
 
   constructor(private form: FormBuilder) {}
 
@@ -62,7 +65,7 @@ export class ProductFiltersComponent
 
   sendInitialRequest() {
     const request: ProductRequest = {
-      currentPage: 1
+      currentPage: 1,
     };
     this.filterHandler.setRequest(request);
   }
@@ -82,7 +85,9 @@ export class ProductFiltersComponent
       this.buildManufacturersOptionItems();
     }
     if (changes.filterHandler) {
-      this.filterHandler.resetSubject.subscribe(() => this.resetFilters());
+      this.subscriptions.push(
+        this.filterHandler.resetSubject.subscribe(() => this.resetFilters())
+      );
     }
   }
 
@@ -129,7 +134,7 @@ export class ProductFiltersComponent
    */
   getSelectedCategories(): number[] {
     const selectedCategories = [];
-    this.categoryOptionItems.forEach(option => {
+    this.categoryOptionItems.forEach((option) => {
       if (option.selected) {
         selectedCategories.push(option.value);
       }
@@ -142,7 +147,7 @@ export class ProductFiltersComponent
    */
   getSelectedBrands(): number[] {
     const selectedBrands = [];
-    this.brandsOptionItems.forEach(option => {
+    this.brandsOptionItems.forEach((option) => {
       if (option.selected) {
         selectedBrands.push(option.value);
       }
@@ -155,7 +160,7 @@ export class ProductFiltersComponent
    */
   getSelectedManufacturers(): number[] {
     const selectedManufacturers = [];
-    this.manufacturersOptionItems.forEach(option => {
+    this.manufacturersOptionItems.forEach((option) => {
       if (option.selected) {
         selectedManufacturers.push(option.value);
       }
@@ -164,20 +169,22 @@ export class ProductFiltersComponent
   }
 
   resetCategories() {
-    this.categoryOptionItems.map(categories => (categories.selected = true));
+    this.categoryOptionItems.map((categories) => (categories.selected = true));
   }
 
   resetBrands() {
-    this.brandsOptionItems.map(brands => (brands.selected = true));
+    this.brandsOptionItems.map((brands) => (brands.selected = true));
   }
 
   resetManufacturers() {
-    this.manufacturersOptionItems.map(manufacturer => (manufacturer.selected = true));
+    this.manufacturersOptionItems.map(
+      (manufacturer) => (manufacturer.selected = true)
+    );
   }
 
   buildForm(): void {
     this.filterForm = this.form.group({
-      searchQuery: ['']
+      searchQuery: [''],
     });
   }
 
@@ -190,14 +197,14 @@ export class ProductFiltersComponent
       ceil: this.productFilterLimits.maximumOriginalPrice,
       translate: (value: number, label: LabelType): string => {
         return '$' + value;
-      }
+      },
     };
     this.retailPriceSliderOptions = {
       floor: this.productFilterLimits.minimumRetailPrice,
       ceil: this.productFilterLimits.maximumRetailPrice,
       translate: (value: number, label: LabelType): string => {
         return '$' + value;
-      }
+      },
     };
   }
 
@@ -207,11 +214,11 @@ export class ProductFiltersComponent
   setSelectedRanges() {
     this.selectedOriginalPriceRange = {
       minimum: this.productFilterLimits.minimumOriginalPrice,
-      maximum: this.productFilterLimits.maximumOriginalPrice
+      maximum: this.productFilterLimits.maximumOriginalPrice,
     };
     this.selectedRetailPriceRange = {
       minimum: this.productFilterLimits.minimumRetailPrice,
-      maximum: this.productFilterLimits.maximumRetailPrice
+      maximum: this.productFilterLimits.maximumRetailPrice,
     };
   }
 
@@ -230,7 +237,7 @@ export class ProductFiltersComponent
    */
   buildCategoryOptionItems(): void {
     this.categoryOptionItems = [];
-    this.categories.forEach(category => {
+    this.categories.forEach((category) => {
       this.categoryOptionItems.push(
         new OptionItem(category.name, category.id, true)
       );
@@ -242,10 +249,8 @@ export class ProductFiltersComponent
    */
   buildBrandOptionItems(): void {
     this.brandsOptionItems = [];
-    this.brands.forEach(brand => {
-      this.brandsOptionItems.push(
-        new OptionItem(brand.name, brand.id, true)
-      );
+    this.brands.forEach((brand) => {
+      this.brandsOptionItems.push(new OptionItem(brand.name, brand.id, true));
     });
   }
 
@@ -254,7 +259,7 @@ export class ProductFiltersComponent
    */
   buildManufacturersOptionItems(): void {
     this.manufacturersOptionItems = [];
-    this.manufacturers.forEach(manufacturer => {
+    this.manufacturers.forEach((manufacturer) => {
       this.manufacturersOptionItems.push(
         new OptionItem(manufacturer.name, manufacturer.id, true)
       );
@@ -267,5 +272,9 @@ export class ProductFiltersComponent
 
   get isFormEmpty() {
     return !this.searchQuery.value;
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 }

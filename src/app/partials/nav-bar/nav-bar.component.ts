@@ -1,20 +1,17 @@
 import { Component, OnInit } from '@angular/core';
-import { NavItem } from '../../shared/models/nav';
+import { GroupedNavItems } from '../../shared/models/nav';
 import { AppService } from '../../core/services/app.service';
 
 @Component({
   selector: 'app-nav-bar',
   templateUrl: './nav-bar.component.html',
-  styleUrls: ['./nav-bar.component.scss']
+  styleUrls: ['./nav-bar.component.scss'],
 })
 export class NavBarComponent implements OnInit {
-  constructor(
-    private appService: AppService,
-  ) {}
+  navBarGroups: GroupedNavItems[];
+  constructor(private appService: AppService) {}
 
-  ngOnInit() {}
-
-  get navBarItems(): NavItem[] {
-    return this.appService.activeNavBarItems;
+  ngOnInit() {
+    this.navBarGroups = this.appService.groupedNavItems();
   }
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
@@ -6,7 +6,7 @@ import { AlertService } from 'src/app/core/services/alert.service';
 import { Brand, BrandRequest } from '../brand';
 import { AuthorizationService } from 'src/app/core/services/authorization.service';
 import { ModuleName } from 'src/app/shared/models/nav';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { BrandStoreActions, BrandStoreSelectors } from '../store';
 import { ActionTypes } from '../store/actions';
 import { filter } from 'rxjs/operators';
@@ -15,14 +15,17 @@ import { ActionsSubject, Store } from '@ngrx/store';
 import { RootStoreState } from 'src/app/root-store';
 import { FilterHandler } from 'src/app/shared/filters/filter';
 import { Sort } from '@angular/material/sort';
-import { SuccessMessages, ConfirmMessages } from 'src/app/shared/models/messages';
+import {
+  SuccessMessages,
+  ConfirmMessages,
+} from 'src/app/shared/models/messages';
 
 @Component({
   selector: 'app-brands',
   templateUrl: './brands.component.html',
-  styleUrls: ['./brands.component.scss']
+  styleUrls: ['./brands.component.scss'],
 })
-export class BrandsComponent implements OnInit {
+export class BrandsComponent implements OnInit, OnDestroy {
   displayedColumns: string[] = ['id', 'name', 'manufacturer', 'action'];
   brands$: Observable<Brand[]>;
   error$: Observable<string>;
@@ -30,6 +33,7 @@ export class BrandsComponent implements OnInit {
   totalNumberOfItems$: Observable<number>;
   filterHandler = new FilterHandler();
   dataSource: MatTableDataSource<any>;
+  subscriptions: Subscription[] = [];
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 
   constructor(
@@ -47,9 +51,7 @@ export class BrandsComponent implements OnInit {
   }
 
   initializeStoreVariables() {
-    this.brands$ = this.store$.select(
-      BrandStoreSelectors.selectAllBrandItems
-    );
+    this.brands$ = this.store$.select(BrandStoreSelectors.selectAllBrandItems);
 
     this.error$ = this.store$.select(
       BrandStoreSelectors.selectBrandLoadingError
@@ -63,31 +65,41 @@ export class BrandsComponent implements OnInit {
       BrandStoreSelectors.selectBrandIsLoading
     );
 
-    this.actionsSubject$
-      .pipe(
-        filter(
-          (action: any) => action.type === ActionTypes.DELETE_BRAND_SUCCESS
+    this.subscriptions.push(
+      this.actionsSubject$
+        .pipe(
+          filter(
+            (action: any) => action.type === ActionTypes.DELETE_BRAND_SUCCESS
+          )
         )
-      )
-      .subscribe(() => {
-        this.notificationService.showSuccess(SuccessMessages.BRAND_DELETED);
-      });
+        .subscribe(() => {
+          this.notificationService.showSuccess(SuccessMessages.BRAND_DELETED);
+        })
+    );
 
-    this.actionsSubject$
-      .pipe(
-        filter(
-          (action: any) => action.type === ActionTypes.DELETE_BRAND_FAILURE
+    this.subscriptions.push(
+      this.actionsSubject$
+        .pipe(
+          filter(
+            (action: any) => action.type === ActionTypes.DELETE_BRAND_FAILURE
+          )
         )
-      )
-      .subscribe(errorResponse => {
-        this.notificationService.showError(errorResponse.payload.error.message);
-      });
+        .subscribe((errorResponse) => {
+          this.notificationService.showError(
+            errorResponse.payload.error.message
+          );
+        })
+    );
 
-    this.actionsSubject$
-      .pipe(filter((action: any) => action.type === ActionTypes.LOAD_FAILURE))
-      .subscribe(errorResponse => {
-        this.notificationService.showError(errorResponse.payload.error.message);
-      });
+    this.subscriptions.push(
+      this.actionsSubject$
+        .pipe(filter((action: any) => action.type === ActionTypes.LOAD_FAILURE))
+        .subscribe((errorResponse) => {
+          this.notificationService.showError(
+            errorResponse.payload.error.message
+          );
+        })
+    );
   }
 
   getBrands() {
@@ -109,9 +121,7 @@ export class BrandsComponent implements OnInit {
 
   deleteBrand(id: number) {
     this.alertService.confirmDelete(ConfirmMessages.CONFIRM_DELETE, () => {
-      this.store$.dispatch(
-        new BrandStoreActions.DeleteBrandRequestAction(id)
-      );
+      this.store$.dispatch(new BrandStoreActions.DeleteBrandRequestAction(id));
     });
   }
 
@@ -135,5 +145,9 @@ export class BrandsComponent implements OnInit {
   sortItems(sort: Sort) {
     this.filterHandler.setSort(sort);
     this.getBrands();
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 }

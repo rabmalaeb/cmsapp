@@ -1,8 +1,8 @@
 <div class="nav-bar">
   <div class="nav-bar__container">
     <div class="nav-bar__item-container">
-      <div class="nav-bar__item" *ngFor="let item of navBarItems">
-        <app-nav-item [navItem]="item.options"></app-nav-item>
+      <div class="nav-bar__item" *ngFor="let group of navBarGroups">
+        <app-nav-group [group]="group.name" [items]="group.items"></app-nav-group>
       </div>
     </div>
   </div>

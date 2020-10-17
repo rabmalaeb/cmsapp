@@ -1,12 +1,12 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { AlertService } from 'src/app/core/services/alert.service';
-import { Manufacturer, ManufacturerRequest } from '../manufacturer';
+import { Manufacturer } from '../manufacturer';
 import { AuthorizationService } from 'src/app/core/services/authorization.service';
 import { ModuleName } from 'src/app/shared/models/nav';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { ManufacturerStoreActions, ManufacturerStoreSelectors } from '../store';
 import { ActionTypes } from '../store/actions';
 import { filter } from 'rxjs/operators';
@@ -15,14 +15,17 @@ import { ActionsSubject, Store } from '@ngrx/store';
 import { RootStoreState } from 'src/app/root-store';
 import { FilterHandler } from 'src/app/shared/filters/filter';
 import { Sort } from '@angular/material/sort';
-import { SuccessMessages, ConfirmMessages } from 'src/app/shared/models/messages';
+import {
+  SuccessMessages,
+  ConfirmMessages,
+} from 'src/app/shared/models/messages';
 
 @Component({
   selector: 'app-manufacturers',
   templateUrl: './manufacturers.component.html',
-  styleUrls: ['./manufacturers.component.scss']
+  styleUrls: ['./manufacturers.component.scss'],
 })
-export class ManufacturersComponent implements OnInit {
+export class ManufacturersComponent implements OnInit, OnDestroy {
   displayedColumns: string[] = ['id', 'name', 'country', 'action'];
   manufacturers$: Observable<Manufacturer[]>;
   error$: Observable<string>;
@@ -30,6 +33,7 @@ export class ManufacturersComponent implements OnInit {
   totalNumberOfItems$: Observable<number>;
   filterHandler = new FilterHandler();
   dataSource: MatTableDataSource<any>;
+  subscriptions: Subscription[] = [];
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 
   constructor(
@@ -63,36 +67,52 @@ export class ManufacturersComponent implements OnInit {
       ManufacturerStoreSelectors.selectManufacturerIsLoading
     );
 
-    this.actionsSubject$
-      .pipe(
-        filter(
-          (action: any) => action.type === ActionTypes.DELETE_MANUFACTURER_SUCCESS
+    this.subscriptions.push(
+      this.actionsSubject$
+        .pipe(
+          filter(
+            (action: any) =>
+              action.type === ActionTypes.DELETE_MANUFACTURER_SUCCESS
+          )
         )
-      )
-      .subscribe(() => {
-        this.notificationService.showSuccess(SuccessMessages.MANUFACTURER_DELETED);
-      });
+        .subscribe(() => {
+          this.notificationService.showSuccess(
+            SuccessMessages.MANUFACTURER_DELETED
+          );
+        })
+    );
 
-    this.actionsSubject$
-      .pipe(
-        filter(
-          (action: any) => action.type === ActionTypes.DELETE_MANUFACTURER_FAILURE
+    this.subscriptions.push(
+      this.actionsSubject$
+        .pipe(
+          filter(
+            (action: any) =>
+              action.type === ActionTypes.DELETE_MANUFACTURER_FAILURE
+          )
         )
-      )
-      .subscribe(errorResponse => {
-        this.notificationService.showError(errorResponse.payload.error.message);
-      });
+        .subscribe((errorResponse) => {
+          this.notificationService.showError(
+            errorResponse.payload.error.message
+          );
+        })
+    );
 
-    this.actionsSubject$
-      .pipe(filter((action: any) => action.type === ActionTypes.LOAD_FAILURE))
-      .subscribe(errorResponse => {
-        this.notificationService.showError(errorResponse.payload.error.message);
-      });
+    this.subscriptions.push(
+      this.actionsSubject$
+        .pipe(filter((action: any) => action.type === ActionTypes.LOAD_FAILURE))
+        .subscribe((errorResponse) => {
+          this.notificationService.showError(
+            errorResponse.payload.error.message
+          );
+        })
+    );
   }
 
   getManufacturers() {
     const request = this.filterHandler.getRequest();
-    this.store$.dispatch(new ManufacturerStoreActions.LoadRequestAction(request));
+    this.store$.dispatch(
+      new ManufacturerStoreActions.LoadRequestAction(request)
+    );
   }
 
   addManufacturer() {
@@ -135,5 +155,9 @@ export class ManufacturersComponent implements OnInit {
   sortItems(sort: Sort) {
     this.filterHandler.setSort(sort);
     this.getManufacturers();
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 }
