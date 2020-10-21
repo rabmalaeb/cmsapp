@@ -17,13 +17,13 @@ import {
 import { Observable, Subscription } from 'rxjs';
 import { map, filter } from 'rxjs/operators';
 import { ActionTypes } from '../store/actions';
-import { AuthenticationService } from 'src/app/core/services/authentication.service';
 import { AuthenticationWorkflowService } from '../authentication-workflow.service';
 import { AuthenticationSteps } from '../authentication';
 import { Router } from '@angular/router';
 import { FormService } from 'src/app/core/services/form.service';
 import { ErrorMessages } from 'src/app/shared/models/messages';
 import { AuthorizationService } from 'src/app/core/services/authorization.service';
+import { AuthenticationService } from '../authentication.service';
 
 @Component({
   selector: 'app-login',

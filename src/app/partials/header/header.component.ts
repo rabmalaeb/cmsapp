@@ -1,9 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { AuthenticationService } from 'src/app/core/services/authentication.service';
 import { RoleService } from 'src/app/modules/role/role.service';
 import { Role } from 'src/app/modules/role/role';
 import { AppService } from 'src/app/core/services/app.service';
 import { Subscription } from 'rxjs';
+import { AuthenticationService } from 'src/app/modules/authentication/authentication.service';
+import { ConfirmMessages } from 'src/app/shared/models/messages';
+import { AlertService } from 'src/app/core/services/alert.service';
+import { LogoutService } from 'src/app/core/services/logout.service';
 
 @Component({
   selector: 'app-header',
@@ -16,9 +19,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
   subscriptions: Subscription[] = [];
 
   constructor(
-    private authenticationService: AuthenticationService,
     private appService: AppService,
-    private roleService: RoleService
+    private logoutService: LogoutService,
+    private alertService: AlertService,
+    private roleService: RoleService,
+    private authenticationService: AuthenticationService
   ) {}
 
   ngOnInit() {
@@ -45,7 +50,14 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   logout() {
-    this.authenticationService.logout();
+    this.alertService.confirm(
+      ConfirmMessages.CONFIRM_LOGOUT,
+      'Yes',
+      'No',
+      () => {
+        this.logoutService.logout();
+      }
+    );
   }
 
   ngOnDestroy() {

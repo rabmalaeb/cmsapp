@@ -1,11 +1,14 @@
 import { Injectable } from '@angular/core';
+import { ConfirmMessages } from 'src/app/shared/models/messages';
 import {
   NavItem,
   ModuleName,
   NavGroup,
   GroupedNavItems,
 } from 'src/app/shared/models/nav';
+import { AlertService } from './alert.service';
 import { AuthorizationService } from './authorization.service';
+import { LogoutService } from './logout.service';
 
 @Injectable({
   providedIn: 'root',
@@ -14,7 +17,9 @@ export class AppService {
   private returnUrl: string;
   private isMenuOpened: boolean;
 
-  constructor(private authorizationService: AuthorizationService) {}
+  constructor(
+    private authorizationService: AuthorizationService
+  ) {}
 
   private navBarItems = [
     new NavItem({
@@ -135,7 +140,7 @@ export class AppService {
       }
     });
     this.navBarItems.forEach((item) => {
-      groupedNavItems.forEach(group => {
+      groupedNavItems.forEach((group) => {
         if (item.options.group === group.name) {
           group.items.push(item);
         }

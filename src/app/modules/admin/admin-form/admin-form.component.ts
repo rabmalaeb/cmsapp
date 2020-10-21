@@ -20,8 +20,8 @@ import { ValidationMessagesService } from 'src/app/core/services/validation-mess
 import { Role } from '../../role/role';
 import { ActionType } from 'src/app/shared/models/general';
 import { Partner } from '../../partner/partner';
-import { AuthenticationService } from 'src/app/core/services/authentication.service';
 import { FormService } from 'src/app/core/services/form.service';
+import { AuthenticationService } from '../../authentication/authentication.service';
 
 @Component({
   selector: 'app-admin-form',

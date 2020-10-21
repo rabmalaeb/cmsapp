@@ -19,7 +19,7 @@ import {
 import { ActionTypes } from '../store/actions';
 import { filter } from 'rxjs/operators';
 import { Partner } from '../../partner/partner';
-import { AuthenticationService } from 'src/app/core/services/authentication.service';
+import { AuthenticationService } from '../../authentication/authentication.service';
 
 @Component({
   selector: 'app-admin-add',

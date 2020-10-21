@@ -1,10 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NotificationService } from './core/services/notification.service';
-import { AuthenticationService } from './core/services/authentication.service';
 import { AuthorizationService } from './core/services/authorization.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable, Subscription } from 'rxjs';
 import { AppService } from './core/services/app.service';
+import { AuthenticationService } from './modules/authentication/authentication.service';
 
 @Component({
   selector: 'app-root',

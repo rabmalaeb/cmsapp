@@ -1,15 +1,13 @@
-import { Injectable, Inject } from '@angular/core';
-import { LOCAL_STORAGE, StorageService } from 'ngx-webstorage-service';
-import { Router } from '@angular/router';
-import { AuthenticationService } from '../../modules/authentication/authentication.service';
-import { StorageParams } from 'src/app/shared/models/general';
-
+import { Injectable, Inject } from "@angular/core";
+import { LOCAL_STORAGE, StorageService } from "ngx-webstorage-service";
+import { Router } from "@angular/router";
+import { AuthenticationService } from "../../modules/authentication/authentication.service";
+import { StorageParams } from "src/app/shared/models/general";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root",
 })
 export class LogoutService {
-
   constructor(
     private router: Router,
     private authenticationService: AuthenticationService,
@@ -20,13 +18,16 @@ export class LogoutService {
    * remove user from local storage to log user out
    */
   logout() {
-    this.authenticationService
-      .deleteAuthentication()
-      .subscribe(() => this.removeSession(), () => this.removeSession());
+    if (this.authenticationService.isLoggedIn) {
+      this.authenticationService.deleteAuthentication().subscribe(
+        () => this.removeSession(),
+        () => this.removeSession()
+      );
+    }
   }
 
   removeSession() {
     this.storage.remove(StorageParams.CURRENT_USER);
-    this.router.navigate(['/login']);
+    this.router.navigate(["/login"]);
   }
 }

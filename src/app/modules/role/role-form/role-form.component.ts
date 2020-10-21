@@ -17,9 +17,9 @@ import { ActionType } from 'src/app/shared/models/general';
 import { Role, RoleActionRequest } from '../role';
 import { PermissionGroup, Permission } from '../../permissions/permission';
 import { PermissionSerializerService } from '../../permissions/permission-serializer.service';
-import { AuthenticationService } from 'src/app/core/services/authentication.service';
 import { Partner } from '../../partner/partner';
 import { FormService } from 'src/app/core/services/form.service';
+import { AuthenticationService } from '../../authentication/authentication.service';
 
 @Component({
   selector: 'app-role-form',
