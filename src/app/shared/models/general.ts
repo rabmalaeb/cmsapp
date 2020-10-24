@@ -27,3 +27,8 @@ export enum StorageParams {
   RESET_PASSWORD_IDENTIFIER = 'reset_password_identifier',
   CURRENT_USER = 'currentUser'
 }
+
+export enum BOOLEANS {
+  TRUE = 'True',
+  FALSE = 'False'
+}

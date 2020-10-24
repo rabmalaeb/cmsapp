@@ -12,6 +12,9 @@ export class NavBarComponent implements OnInit {
   constructor(private appService: AppService) {}
 
   ngOnInit() {
-    this.navBarGroups = this.appService.groupedNavItems();
+    this.navBarGroups = this.appService
+      .groupedNavItems()
+      .filter(group => group.items.length > 0);
+
   }
 }

@@ -6,7 +6,7 @@ export interface Admin {
   name: string;
   description: string;
   email: string;
-  country: string;
+  countryId: number;
   active: boolean;
   roleId: number;
   role?: Role;
@@ -23,7 +23,7 @@ export class AdminRequest extends FilterRequest {
   description?: string;
   email?: string;
   active?: string;
-  country?: string;
+  countryId?: string;
   partnerId?: string;
   roleId?: string;
   password?: string;

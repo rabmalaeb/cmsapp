@@ -19,6 +19,7 @@ import { CustomSelectComponent } from './custom-select/custom-select.component';
 import { InputComponent } from './input/input.component';
 import { InputErrorComponent } from './input-error/input-error.component';
 import { ButtonItemComponent } from './button-item/button-item.component';
+import { TextAreaComponent } from './text-area/text-area.component';
 
 @NgModule({
   declarations: [
@@ -36,14 +37,15 @@ import { ButtonItemComponent } from './button-item/button-item.component';
     CustomSelectComponent,
     InputComponent,
     InputErrorComponent,
-    ButtonItemComponent
+    ButtonItemComponent,
+    TextAreaComponent,
   ],
   imports: [
     CommonModule,
     SharedModule,
     PipesModule,
     RouterModule,
-    DirectivesModule
+    DirectivesModule,
   ],
   exports: [
     AlertComponent,
@@ -60,7 +62,8 @@ import { ButtonItemComponent } from './button-item/button-item.component';
     InputComponent,
     InputErrorComponent,
     SearchInputComponent,
-    ButtonItemComponent
-  ]
+    ButtonItemComponent,
+    TextAreaComponent,
+  ],
 })
 export class ComponentsModule {}

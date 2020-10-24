@@ -5,7 +5,7 @@ import {
   Output,
   EventEmitter,
   OnChanges,
-  SimpleChanges
+  SimpleChanges,
 } from '@angular/core';
 import { Admin, AdminRequest } from '../admin';
 import {
@@ -13,20 +13,25 @@ import {
   FormBuilder,
   Validators,
   FormControl,
-  FormGroupDirective
+  FormGroupDirective,
 } from '@angular/forms';
 import { CustomValidations } from 'src/app/shared/validators/custom-validations';
 import { ValidationMessagesService } from 'src/app/core/services/validation-messages.service';
 import { Role } from '../../role/role';
-import { ActionType } from 'src/app/shared/models/general';
+import {
+  ActionType,
+  BOOLEANS,
+  OptionItem,
+} from 'src/app/shared/models/general';
 import { Partner } from '../../partner/partner';
 import { FormService } from 'src/app/core/services/form.service';
 import { AuthenticationService } from '../../authentication/authentication.service';
+import { Country } from '../../country/country';
 
 @Component({
   selector: 'app-admin-form',
   templateUrl: './admin-form.component.html',
-  styleUrls: ['./admin-form.component.sass']
+  styleUrls: ['./admin-form.component.sass'],
 })
 export class AdminFormComponent implements OnInit, OnChanges {
   constructor(
@@ -38,6 +43,7 @@ export class AdminFormComponent implements OnInit, OnChanges {
 
   @Input() admin: Admin;
   @Input() roles: Role[];
+  @Input() countries: Country[];
   @Input() partners: Partner[];
   @Input() isLoading = false;
   @Input() actionError: boolean;
@@ -50,7 +56,10 @@ export class AdminFormComponent implements OnInit, OnChanges {
   showTogglePassword = false;
   shouldSetPassword = false;
   adminForm: FormGroup;
-
+  activeBooleans = [
+    new OptionItem(BOOLEANS.TRUE, true, true),
+    new OptionItem(BOOLEANS.FALSE, false, false),
+  ];
   ngOnInit() {
     if (this.actionType === ActionType.EDIT) {
       this.showTogglePassword = true;
@@ -64,7 +73,7 @@ export class AdminFormComponent implements OnInit, OnChanges {
     if (changes.roles && !changes.roles.firstChange) {
       return false;
     }
-    if (this.isLoadingAction || this.actionError && this.adminForm) {
+    if (this.isLoadingAction || (this.actionError && this.adminForm)) {
       return false;
     }
     if (this.admin) {
@@ -88,9 +97,9 @@ export class AdminFormComponent implements OnInit, OnChanges {
       description: ['', [Validators.required]],
       email: ['', [Validators.required, Validators.email]],
       roleId: ['', [Validators.required]],
-      country: ['', [Validators.required]],
+      countryId: ['', [Validators.required]],
       partnerId: [partnerId ? partnerId : '', [Validators.required]],
-      active: ['', [Validators.required]]
+      active: ['', [Validators.required]],
     });
     this.addPasswordControlsAndValidations();
   }
@@ -102,9 +111,9 @@ export class AdminFormComponent implements OnInit, OnChanges {
       description: [this.admin.description, [Validators.required]],
       email: [this.admin.email, [Validators.required, Validators.email]],
       partnerId: [this.admin.partnerId, [Validators.required]],
-      country: [this.admin.country, [Validators.required]],
+      countryId: [this.admin.countryId, [Validators.required]],
       roleId: [this.admin.roleId, [Validators.required]],
-      active: [this.admin.active, [Validators.required]]
+      active: [this.admin.active, [Validators.required]],
     });
     if (this.shouldSetPassword) {
       this.addPasswordControlsAndValidations();
@@ -180,8 +189,8 @@ export class AdminFormComponent implements OnInit, OnChanges {
     return this.adminForm.get('password');
   }
 
-  get country() {
-    return this.adminForm.get('country');
+  get countryId() {
+    return this.adminForm.get('countryId');
   }
 
   get confirmPassword() {
@@ -210,9 +219,9 @@ export class AdminFormComponent implements OnInit, OnChanges {
       description: this.description.value,
       email: this.email.value,
       active: this.active.value,
-      country: this.country.value,
+      countryId: this.countryId.value,
       partnerId: this.partnerId.value,
-      roleId: this.roleId.value
+      roleId: this.roleId.value,
     };
     if (this.shouldSetPassword) {
       admin.password = form.get('password').value;

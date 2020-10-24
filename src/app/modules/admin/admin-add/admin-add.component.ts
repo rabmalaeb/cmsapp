@@ -20,6 +20,11 @@ import { ActionTypes } from '../store/actions';
 import { filter } from 'rxjs/operators';
 import { Partner } from '../../partner/partner';
 import { AuthenticationService } from '../../authentication/authentication.service';
+import { Country } from '../../country/country';
+import {
+  CountryStoreActions,
+  CountryStoreSelectors,
+} from '../../country/store';
 
 @Component({
   selector: 'app-admin-add',
@@ -38,6 +43,7 @@ export class AdminAddComponent implements OnInit, OnDestroy {
   actionType: ActionType;
   roles$: Observable<Role[]>;
   partners$: Observable<Partner[]>;
+  countries$: Observable<Country[]>;
   admin$: Observable<Admin>;
   isLoading$: Observable<boolean>;
   isLoadingAction$: Observable<boolean>;
@@ -48,6 +54,7 @@ export class AdminAddComponent implements OnInit, OnDestroy {
   ngOnInit() {
     const partnerId = this.authenticationService.getCurrentUser().partnerId;
     this.getRoles(partnerId);
+    this.getCountries();
     this.initializeStoreVariables();
     this.getPartners();
     this.route.params.forEach((param) => {
@@ -105,6 +112,13 @@ export class AdminAddComponent implements OnInit, OnDestroy {
             errorResponse.payload.error.message
           );
         })
+    );
+  }
+
+  getCountries() {
+    this.store$.dispatch(new CountryStoreActions.LoadRequestAction());
+    this.countries$ = this.store$.select(
+      CountryStoreSelectors.selectAllCountryItems
     );
   }
 
@@ -171,6 +185,6 @@ export class AdminAddComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 }

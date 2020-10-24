@@ -11,13 +11,13 @@
       </app-input>
     </div>
     <div class="page__form-input">
-      <app-input
+      <app-text-area
         id="description"
         name="description"
         label="Description"
         [formControlItem]="description"
       >
-      </app-input>
+      </app-text-area>
     </div>
 
     <div class="page__form-input">
@@ -31,13 +31,15 @@
     </div>
 
     <div class="page__form-input">
-      <app-input
-        id="country"
-        name="country"
-        label="Country"
-        [formControlItem]="country"
-      >
-      </app-input>
+      <div class="form-item">
+        <div class="form-item__value form-item__value_is-textfield">
+          <app-custom-select [formControlItem]="countryId" label="Country">
+            <ng-select [clearable]="false" [items]="countries" bindValue="id" bindLabel="name"
+              formControlName="countryId">
+            </ng-select>
+          </app-custom-select>
+        </div>
+      </div>
     </div>
     <div class="page__form-input">
       <div class="form-item">
@@ -110,13 +112,11 @@
     </div>
 
     <div class="page__form-input">
-      <app-input
-        id="active"
-        name="active"
-        label="Active"
-        [formControlItem]="active"
-      >
-      </app-input>
+      <app-custom-select [formControlItem]="active" label="Active">
+        <ng-select [clearable]="false" [items]="activeBooleans" bindValue="value" bindLabel="label"
+          formControlName="active">
+        </ng-select>
+      </app-custom-select>
     </div>
   </div>
   <div class="page__form-button-container" *ngIf="canEditAdmin">

@@ -1,0 +1,49 @@
+.input {
+  padding-bottom: 10px;
+  position: relative;
+  &_has-error {
+    .input__label {
+      color: $global--error-color;
+    }
+    .input__item {
+      @include indicateError;
+      border-color: $global--error-color;
+    }
+    .input__error {
+      @include showInputErrorLabel;
+    }
+  }
+  &_is-text-area {
+    .input__item {
+      height: auto;
+    }
+  }
+}
+
+.input__item {
+  transition: 0.2s ease-in-out all;
+  border-radius: 3px;
+  padding: 10px;
+  width: 100%;
+  border: 1px solid #babbbe;
+  color: #333;
+  font-size: 12px;
+  height: 36px;
+  font-family: $global--font-family;
+  &:hover {
+    border-color: #000;
+    border-width: 2px;
+  }
+  &:focus {
+    border-color: $global--secondary-color;
+    border-width: 2px;
+  }
+}
+
+.input__label {
+  margin-bottom: 5px;
+}
+
+.input__error {
+  @include inputErrorLabel;
+}

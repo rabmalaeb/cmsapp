@@ -1,0 +1,12 @@
+<div class="input input_is-text-area" [ngClass]="{ 'input_has-error': hasError }" (click)="moveFocusToInput()">
+  <div class="input__label">
+    {{ label }}
+  </div>
+  <textarea #input class="input__item" [rows]="rows" [id]="id" [name]="name" [value]="value"
+    [formControl]="formControlItem" [readonly]="readonly"></textarea>
+  <div class="input__error">
+    <div class="input__error-message" *ngIf="formControlItem && hasError">
+      <app-input-error [errorMessage]="errorMessage"></app-input-error>
+    </div>
+  </div>
+</div>
