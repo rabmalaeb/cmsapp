@@ -19,35 +19,34 @@ import { capitalize } from '../../../shared/utils/general';
 import { AppService } from '../../../core/services/app.service';
 import { NavItem } from 'src/app/shared/models/nav';
 import { FormService } from 'src/app/core/services/form.service';
+import { BaseFormComponent } from 'src/app/shared/base/base-form/base-form.component';
 
 @Component({
   selector: 'app-permissions-form',
   templateUrl: './permissions-form.component.html',
-  styleUrls: ['./permissions-form.component.sass']
+  styleUrls: ['./permissions-form.component.sass'],
 })
-export class PermissionFormComponent implements OnInit, OnChanges {
+export class PermissionFormComponent
+  extends BaseFormComponent
+  implements OnInit, OnChanges {
   constructor(
     private form: FormBuilder,
     private appService: AppService,
     private formService: FormService,
     private validationMessagesService: ValidationMessagesService
-  ) {}
+  ) {
+    super();
+  }
 
   @Input() permission: Permission;
-  @Input() actionType: ActionType;
-  @Input() isLoadingAction: boolean;
   @Input() canEditPermission = false;
-  @Input() isLoading: boolean;
-  @Input() actionError: boolean;
-  @Output() submitForm = new EventEmitter<PermissionActionRequest>();
-  formGroupDirective: FormGroupDirective;
   permissionForm: FormGroup;
   appModules: NavItem[];
   permissionTypes: PermissionType[] = [
     PermissionType.ADD,
     PermissionType.VIEW,
     PermissionType.EDIT,
-    PermissionType.DELETE
+    PermissionType.DELETE,
   ];
 
   ngOnInit() {
@@ -55,7 +54,7 @@ export class PermissionFormComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges() {
-    if (this.isLoadingAction || this.actionError && this.permissionForm) {
+    if (this.isLoadingAction || (this.actionError && this.permissionForm)) {
       return false;
     }
     if (this.permission) {
@@ -71,7 +70,7 @@ export class PermissionFormComponent implements OnInit, OnChanges {
   buildNewPermissionForm() {
     this.permissionForm = this.form.group({
       modules: ['', [Validators.required]],
-      permissionType: ['', [Validators.required]]
+      permissionType: ['', [Validators.required]],
     });
   }
 
@@ -79,7 +78,7 @@ export class PermissionFormComponent implements OnInit, OnChanges {
     this.permissionForm = this.form.group({
       id: [this.permission.id],
       modules: [this.permission.group, [Validators.required]],
-      permissionType: [this.permission.type, [Validators.required]]
+      permissionType: [this.permission.type, [Validators.required]],
     });
   }
 
@@ -104,7 +103,7 @@ export class PermissionFormComponent implements OnInit, OnChanges {
         this.modules.value
       }`,
       type: this.permissionType.value,
-      group: this.modules.value
+      group: this.modules.value,
     };
   }
 

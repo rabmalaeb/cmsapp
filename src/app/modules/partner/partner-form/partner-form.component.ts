@@ -16,22 +16,19 @@ import { ValidationMessagesService } from 'src/app/core/services/validation-mess
 import { ActionType } from 'src/app/shared/models/general';
 import { Partner, PartnerRequest } from '../partner';
 import { FormService } from 'src/app/core/services/form.service';
+import { BaseFormComponent } from 'src/app/shared/base/base-form/base-form.component';
 
 @Component({
   selector: 'app-partner-form',
   templateUrl: './partner-form.component.html',
   styleUrls: ['./partner-form.component.sass'],
 })
-export class PartnerFormComponent implements OnInit, OnChanges {
+export class PartnerFormComponent
+  extends BaseFormComponent
+  implements OnInit, OnChanges {
   partnerForm: FormGroup;
   @Input() partner: Partner;
-  @Input() actionType: ActionType;
-  @Input() isLoadingAction: boolean;
   @Input() canEditPartner = false;
-  @Input() isLoading: boolean;
-  @Input() actionError: boolean;
-  @Output() submitForm = new EventEmitter<PartnerRequest>();
-  formGroupDirective: FormGroupDirective;
   partnerImage: File;
   resetImage = false;
 
@@ -39,7 +36,9 @@ export class PartnerFormComponent implements OnInit, OnChanges {
     private form: FormBuilder,
     private formService: FormService,
     private validationMessagesService: ValidationMessagesService
-  ) {}
+  ) {
+    super();
+  }
 
   ngOnInit() {}
 

@@ -58,7 +58,7 @@ import { BaseActionComponent } from './base/base-action/base-action.component';
     MatDialogModule,
     Ng5SliderModule
   ],
-  declarations: [BaseFormComponent, BaseListComponent, BaseActionComponent],
+  declarations: [],
   exports: [
     FormsModule,
     ReactiveFormsModule,

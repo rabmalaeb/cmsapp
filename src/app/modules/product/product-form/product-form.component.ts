@@ -19,29 +19,28 @@ import { Product } from '../product';
 import { Category } from '../../category/category';
 import { FormService } from 'src/app/core/services/form.service';
 import { Brand } from '../../brand/brand';
+import { BaseFormComponent } from 'src/app/shared/base/base-form/base-form.component';
 
 @Component({
   selector: 'app-product-form',
   templateUrl: './product-form.component.html',
-  styleUrls: ['./product-form.component.sass']
+  styleUrls: ['./product-form.component.sass'],
 })
-export class ProductFormComponent implements OnInit, OnChanges {
+export class ProductFormComponent
+  extends BaseFormComponent
+  implements OnInit, OnChanges {
   constructor(
     private form: FormBuilder,
     private formService: FormService,
     private validationMessagesService: ValidationMessagesService
-  ) {}
+  ) {
+    super();
+  }
 
   @Input() product: Product;
   @Input() categories: Category[];
   @Input() brands: Brand[];
-  @Input() actionType: ActionType;
-  @Input() isLoadingAction: boolean;
   @Input() canEditProduct = false;
-  @Input() actionError: boolean;
-  @Input() isLoading: boolean;
-  @Output() submitForm = new EventEmitter<Product>();
-  formGroupDirective: FormGroupDirective;
   productForm: FormGroup;
   productImage: File;
   resetImage = false;
@@ -49,7 +48,7 @@ export class ProductFormComponent implements OnInit, OnChanges {
   ngOnInit() {}
 
   ngOnChanges() {
-    if (this.isLoadingAction || this.actionError && this.productForm) {
+    if (this.isLoadingAction || (this.actionError && this.productForm)) {
       return false;
     }
     if (this.product) {
@@ -73,7 +72,7 @@ export class ProductFormComponent implements OnInit, OnChanges {
       quantity: ['', [Validators.required]],
       code: [''],
       brandId: ['', [Validators.required]],
-      unitOfCount: ['', [Validators.required]]
+      unitOfCount: ['', [Validators.required]],
     });
   }
 
@@ -88,7 +87,7 @@ export class ProductFormComponent implements OnInit, OnChanges {
       quantity: [this.product.quantity, [Validators.required]],
       brandId: [this.product.brandId, [Validators.required]],
       code: [this.product.code],
-      unitOfCount: [this.product.unitOfCount, [Validators.required]]
+      unitOfCount: [this.product.unitOfCount, [Validators.required]],
     });
   }
 

@@ -16,7 +16,6 @@ export abstract class BaseListComponent implements OnInit {
   constructor() {}
 
   ngOnInit(): void {
-    console.log('what is ', this.fetchListAction);
     this.fetchListAction();
   }
 

@@ -27,32 +27,29 @@ import { Partner } from '../../partner/partner';
 import { FormService } from 'src/app/core/services/form.service';
 import { AuthenticationService } from '../../authentication/authentication.service';
 import { Country } from '../../country/country';
+import { BaseFormComponent } from 'src/app/shared/base/base-form/base-form.component';
 
 @Component({
   selector: 'app-admin-form',
   templateUrl: './admin-form.component.html',
   styleUrls: ['./admin-form.component.sass'],
 })
-export class AdminFormComponent implements OnInit, OnChanges {
+export class AdminFormComponent extends BaseFormComponent implements OnInit, OnChanges {
   constructor(
     private form: FormBuilder,
     private validationMessagesService: ValidationMessagesService,
     private authenticationService: AuthenticationService,
     private formService: FormService
-  ) {}
+  ) {
+    super();
+  }
 
   @Input() admin: Admin;
   @Input() roles: Role[];
   @Input() countries: Country[];
   @Input() partners: Partner[];
-  @Input() isLoading = false;
-  @Input() actionError: boolean;
   @Input() canEditAdmin = false;
-  @Input() isLoadingAction = false;
-  @Input() actionType: ActionType;
-  @Output() submitForm = new EventEmitter<AdminRequest>();
   @Output() getRolesForPartner = new EventEmitter<number>();
-  formGroupDirective: FormGroupDirective;
   showTogglePassword = false;
   shouldSetPassword = false;
   adminForm: FormGroup;

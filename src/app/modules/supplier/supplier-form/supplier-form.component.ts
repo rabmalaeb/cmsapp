@@ -2,8 +2,6 @@ import {
   Component,
   OnInit,
   Input,
-  Output,
-  EventEmitter,
   OnChanges
 } from '@angular/core';
 import {
@@ -16,33 +14,32 @@ import { ValidationMessagesService } from 'src/app/core/services/validation-mess
 import { ActionType } from 'src/app/shared/models/general';
 import { Supplier } from '../supplier';
 import { FormService } from 'src/app/core/services/form.service';
+import { BaseFormComponent } from 'src/app/shared/base/base-form/base-form.component';
 
 @Component({
   selector: 'app-supplier-form',
   templateUrl: './supplier-form.component.html',
-  styleUrls: ['./supplier-form.component.sass']
+  styleUrls: ['./supplier-form.component.sass'],
 })
-export class SupplierFormComponent implements OnInit, OnChanges {
+export class SupplierFormComponent
+  extends BaseFormComponent
+  implements OnInit, OnChanges {
   constructor(
     private form: FormBuilder,
     private formService: FormService,
     private validationMessagesService: ValidationMessagesService
-  ) {}
+  ) {
+    super();
+  }
 
   supplierForm: FormGroup;
   @Input() supplier: Supplier;
-  @Input() actionType: ActionType;
-  @Input() actionError: boolean;
-  @Input() isLoadingAction: boolean;
   @Input() canEditSupplier = false;
-  @Input() isLoading: boolean;
-  @Output() submitForm = new EventEmitter<Supplier>();
-  formGroupDirective: FormGroupDirective;
 
   ngOnInit() {}
 
   ngOnChanges() {
-    if (this.isLoadingAction || this.actionError && this.submitForm) {
+    if (this.isLoadingAction || (this.actionError && this.submitForm)) {
       return false;
     }
     if (this.supplier) {
@@ -58,7 +55,7 @@ export class SupplierFormComponent implements OnInit, OnChanges {
   buildNewSupplierForm() {
     this.supplierForm = this.form.group({
       name: ['', [Validators.required]],
-      code: ['', [Validators.required]]
+      code: ['', [Validators.required]],
     });
   }
 
@@ -66,7 +63,7 @@ export class SupplierFormComponent implements OnInit, OnChanges {
     this.supplierForm = this.form.group({
       id: [this.supplier.id],
       name: [this.supplier.name, [Validators.required]],
-      code: [this.supplier.code, [Validators.required]]
+      code: [this.supplier.code, [Validators.required]],
     });
   }
 
@@ -82,7 +79,7 @@ export class SupplierFormComponent implements OnInit, OnChanges {
     return {
       id: this.supplierForm.get('id') ? this.supplierForm.get('id').value : '',
       name: this.name.value,
-      code: this.code.value
+      code: this.code.value,
     };
   }
 

@@ -18,37 +18,36 @@ import { Translation } from '../translation';
 import { Language } from '../../language/language';
 import { LanguageKey } from '../../language-key/language-key';
 import { FormService } from 'src/app/core/services/form.service';
+import { BaseFormComponent } from 'src/app/shared/base/base-form/base-form.component';
 
 @Component({
   selector: 'app-translation-form',
   templateUrl: './translation-form.component.html',
-  styleUrls: ['./translation-form.component.sass']
+  styleUrls: ['./translation-form.component.sass'],
 })
-export class TranslationFormComponent implements OnInit, OnChanges {
+export class TranslationFormComponent
+  extends BaseFormComponent
+  implements OnInit, OnChanges {
   constructor(
     private form: FormBuilder,
     private formService: FormService,
     private validationMessagesService: ValidationMessagesService
-  ) { }
+  ) {
+    super();
+  }
 
   translationForm: FormGroup;
   @Input() translation: Translation;
-  @Input() actionType: ActionType;
   @Input() languages: Language[];
   @Input() languageKeys: LanguageKey[];
-  @Input() isLoadingAction: boolean;
   @Input() canEditTranslation = false;
-  @Input() isLoading: boolean;
   @Input() isLoadingLanguageKeys: boolean;
   @Input() isLoadingLanguages: boolean;
-  @Input() actionError: boolean;
-  @Output() submitForm = new EventEmitter<Translation>();
-  formGroupDirective: FormGroupDirective;
 
-  ngOnInit() { }
+  ngOnInit() {}
 
   ngOnChanges() {
-    if (this.isLoadingAction || this.actionError && this.translationForm) {
+    if (this.isLoadingAction || (this.actionError && this.translationForm)) {
       return false;
     }
     if (this.translation) {
@@ -65,7 +64,7 @@ export class TranslationFormComponent implements OnInit, OnChanges {
     this.translationForm = this.form.group({
       languageId: ['', [Validators.required]],
       languageKeyId: ['', [Validators.required]],
-      value: ['', [Validators.required]]
+      value: ['', [Validators.required]],
     });
   }
 
@@ -74,7 +73,7 @@ export class TranslationFormComponent implements OnInit, OnChanges {
       id: [this.translation.id],
       languageId: [this.translation.languageId, [Validators.required]],
       languageKeyId: [this.translation.languageKeyId, [Validators.required]],
-      value: [this.translation.value, [Validators.required]]
+      value: [this.translation.value, [Validators.required]],
     });
   }
 
@@ -92,8 +91,10 @@ export class TranslationFormComponent implements OnInit, OnChanges {
 
   buildTranslationParams(): Translation {
     const translation = new Translation();
-    translation.id = this.translationForm.get('id') ? this.translationForm.get('id').value : '',
-    translation.languageId = this.languageId.value;
+    (translation.id = this.translationForm.get('id')
+      ? this.translationForm.get('id').value
+      : ''),
+      (translation.languageId = this.languageId.value);
     translation.languageKeyId = this.languageKeyId.value;
     translation.value = this.value.value;
     return translation;

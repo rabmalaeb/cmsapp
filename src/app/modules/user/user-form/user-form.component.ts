@@ -19,33 +19,33 @@ import { NotificationService } from 'src/app/core/services/notification.service'
 import { ActionType } from 'src/app/shared/models/general';
 import { User } from '../user';
 import { FormService } from 'src/app/core/services/form.service';
+import { BaseFormComponent } from 'src/app/shared/base/base-form/base-form.component';
 
 @Component({
   selector: 'app-user-form',
   templateUrl: './user-form.component.html',
-  styleUrls: ['./user-form.component.sass']
+  styleUrls: ['./user-form.component.sass'],
 })
-export class UserFormComponent implements OnInit, OnChanges {
+export class UserFormComponent
+  extends BaseFormComponent
+  implements OnInit, OnChanges {
   constructor(
     private form: FormBuilder,
     private formService: FormService,
     private validationMessagesService: ValidationMessagesService
-  ) {}
+  ) {
+    super();
+  }
 
   userForm: FormGroup;
   @Input() user: User;
-  @Input() actionType: ActionType;
-  @Input() isLoadingAction: boolean;
   @Input() canEditUser = false;
-  @Input() isLoading: boolean;
   @Input() actionErrors: boolean;
-  @Output() submitForm = new EventEmitter<User>();
-  formGroupDirective: FormGroupDirective;
 
   ngOnInit() {}
 
   ngOnChanges() {
-    if (this.isLoadingAction || this.actionErrors && this.userForm) {
+    if (this.isLoadingAction || (this.actionErrors && this.userForm)) {
       return false;
     }
     if (this.user) {
@@ -63,7 +63,7 @@ export class UserFormComponent implements OnInit, OnChanges {
       firstName: ['', [Validators.required]],
       lastName: ['', [Validators.required]],
       email: ['', [Validators.required, Validators.email]],
-      mobile: ['', [Validators.required]]
+      mobile: ['', [Validators.required]],
     });
   }
 
@@ -73,7 +73,7 @@ export class UserFormComponent implements OnInit, OnChanges {
       firstName: [this.user.firstName, [Validators.required]],
       lastName: [this.user.lastName, [Validators.required]],
       email: [this.user.email, [Validators.required, Validators.email]],
-      mobile: [this.user.mobile, [Validators.required]]
+      mobile: [this.user.mobile, [Validators.required]],
     });
   }
 
@@ -99,7 +99,7 @@ export class UserFormComponent implements OnInit, OnChanges {
       firstName: this.firstName.value,
       lastName: this.lastName.value,
       email: this.email.value,
-      mobile: this.mobile.value
+      mobile: this.mobile.value,
     };
   }
 

@@ -17,28 +17,27 @@ import { ActionType } from 'src/app/shared/models/general';
 import { Banner } from '../banner';
 import { Language } from '../../language/language';
 import { FormService } from 'src/app/core/services/form.service';
+import { BaseFormComponent } from 'src/app/shared/base/base-form/base-form.component';
 
 @Component({
   selector: 'app-banner-form',
   templateUrl: './banner-form.component.html',
-  styleUrls: ['./banner-form.component.sass']
+  styleUrls: ['./banner-form.component.sass'],
 })
-export class BannerFormComponent implements OnInit, OnChanges {
+export class BannerFormComponent
+  extends BaseFormComponent
+  implements OnInit, OnChanges {
   constructor(
     private form: FormBuilder,
     private formService: FormService,
     private validationMessagesService: ValidationMessagesService
-  ) {}
+  ) {
+    super();
+  }
 
   @Input() banner: Banner;
   @Input() languages: Language[];
-  @Input() actionType: ActionType;
-  @Input() isLoadingAction: boolean;
   @Input() canEditBanner = false;
-  @Input() actionError: boolean;
-  @Input() isLoading: boolean;
-  @Output() submitForm = new EventEmitter<Banner>();
-  formGroupDirective: FormGroupDirective;
   bannerForm: FormGroup;
   bannerImage: File;
   resetImage = false;
@@ -46,7 +45,7 @@ export class BannerFormComponent implements OnInit, OnChanges {
   ngOnInit() {}
 
   ngOnChanges() {
-    if (this.isLoadingAction || this.actionError && this.bannerForm) {
+    if (this.isLoadingAction || (this.actionError && this.bannerForm)) {
       return false;
     }
     if (this.banner) {
@@ -65,7 +64,7 @@ export class BannerFormComponent implements OnInit, OnChanges {
       name: ['', [Validators.required]],
       description: [''],
       link: [''],
-      languageId: ['', [Validators.required]]
+      languageId: ['', [Validators.required]],
     });
   }
 
@@ -75,7 +74,7 @@ export class BannerFormComponent implements OnInit, OnChanges {
       name: [this.banner.name, [Validators.required]],
       description: [this.banner.description],
       link: [this.banner.link],
-      languageId: [this.banner.languageId, [Validators.required]]
+      languageId: [this.banner.languageId, [Validators.required]],
     });
   }
 

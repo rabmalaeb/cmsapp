@@ -21,7 +21,7 @@
   </div>
   <div class="page__container">
     <div class="page__table-container">
-      <mat-table mat-table matSort (matSortChange)="sortProducts($event)" [dataSource]="products$ | async"
+      <mat-table mat-table matSort (matSortChange)="sortItems($event)" [dataSource]="products$ | async"
         class="mat-elevation-z8">
         <ng-container matColumnDef="id">
           <mat-header-cell mat-sort-header *matHeaderCellDef>Id</mat-header-cell>

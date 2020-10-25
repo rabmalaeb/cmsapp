@@ -20,33 +20,32 @@ import { PermissionSerializerService } from '../../permissions/permission-serial
 import { Partner } from '../../partner/partner';
 import { FormService } from 'src/app/core/services/form.service';
 import { AuthenticationService } from '../../authentication/authentication.service';
+import { BaseFormComponent } from 'src/app/shared/base/base-form/base-form.component';
 
 @Component({
   selector: 'app-role-form',
   templateUrl: './role-form.component.html',
-  styleUrls: ['./role-form.component.sass']
+  styleUrls: ['./role-form.component.sass'],
 })
-export class RoleFormComponent implements OnInit, OnChanges {
+export class RoleFormComponent
+  extends BaseFormComponent
+  implements OnInit, OnChanges {
   constructor(
     private form: FormBuilder,
     private formService: FormService,
     private validationMessagesService: ValidationMessagesService,
     private authenticationService: AuthenticationService,
     private permissionSerializer: PermissionSerializerService
-  ) {}
+  ) {
+    super();
+  }
 
   roleForm: FormGroup;
   permissionGroups: PermissionGroup[];
-  formGroupDirective: FormGroupDirective;
   @Input() role: Role;
-  @Input() actionType: ActionType;
   @Input() partners: Partner[];
   @Input() permissions: Permission[];
-  @Input() actionError: boolean;
-  @Input() isLoadingAction: boolean;
-  @Input() isLoading: boolean;
   @Input() canEditRole = false;
-  @Output() submitForm = new EventEmitter<RoleActionRequest>();
 
   ngOnInit() {}
 
@@ -76,9 +75,9 @@ export class RoleFormComponent implements OnInit, OnChanges {
 
   setCheckedPermissions() {
     if (this.role) {
-      this.permissionGroups.forEach(group => {
-        group.permissions.forEach(groupPermission => {
-          this.role.permissions.forEach(permission => {
+      this.permissionGroups.forEach((group) => {
+        group.permissions.forEach((groupPermission) => {
+          this.role.permissions.forEach((permission) => {
             if (groupPermission.id === permission.id) {
               groupPermission.isChecked = true;
             }
@@ -92,7 +91,7 @@ export class RoleFormComponent implements OnInit, OnChanges {
     const partnerId = this.authenticationService.getCurrentUser().partnerId;
     this.roleForm = this.form.group({
       name: ['', [Validators.required]],
-      partnerId: [partnerId ? partnerId : '', [Validators.required]]
+      partnerId: [partnerId ? partnerId : '', [Validators.required]],
     });
   }
 
@@ -100,7 +99,7 @@ export class RoleFormComponent implements OnInit, OnChanges {
     this.roleForm = this.form.group({
       id: [this.role.id],
       name: [this.role.name, [Validators.required]],
-      partnerId: [this.role.partnerId, [Validators.required]]
+      partnerId: [this.role.partnerId, [Validators.required]],
     });
   }
 
@@ -117,14 +116,14 @@ export class RoleFormComponent implements OnInit, OnChanges {
       id: this.roleForm.get('id') ? this.roleForm.get('id').value : '',
       name: this.name.value,
       partnerId: this.partnerId.value,
-      permissions: this.getSelectedPermissions()
+      permissions: this.getSelectedPermissions(),
     };
   }
 
   getSelectedPermissions() {
     const selectedPermissions: number[] = [];
-    this.permissionGroups.forEach(group => {
-      group.permissions.forEach(permission => {
+    this.permissionGroups.forEach((group) => {
+      group.permissions.forEach((permission) => {
         if (permission.isChecked) {
           selectedPermissions.push(permission.id);
         }
@@ -160,8 +159,8 @@ export class RoleFormComponent implements OnInit, OnChanges {
   }
 
   togglePermissions(value: boolean) {
-    this.permissionGroups.forEach(group => {
-      group.permissions.forEach(permission => {
+    this.permissionGroups.forEach((group) => {
+      group.permissions.forEach((permission) => {
         permission.isChecked = !value;
       });
     });
@@ -169,8 +168,8 @@ export class RoleFormComponent implements OnInit, OnChanges {
 
   get isAllPermissionsSelected() {
     let isAllPermissionsSelected = true;
-    this.permissionGroups.forEach(group => {
-      group.permissions.forEach(permission => {
+    this.permissionGroups.forEach((group) => {
+      group.permissions.forEach((permission) => {
         if (!permission.isChecked) {
           isAllPermissionsSelected = false;
         }

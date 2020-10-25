@@ -16,28 +16,25 @@ import { ValidationMessagesService } from 'src/app/core/services/validation-mess
 import { ActionType } from 'src/app/shared/models/general';
 import { LanguageKey } from '../language-key';
 import { FormService } from 'src/app/core/services/form.service';
+import { BaseFormComponent } from 'src/app/shared/base/base-form/base-form.component';
 
 @Component({
   selector: 'app-language-key-form',
   templateUrl: './language-key-form.component.html',
   styleUrls: ['./language-key-form.component.sass']
 })
-export class LanguageKeyFormComponent implements OnInit, OnChanges {
+export class LanguageKeyFormComponent extends BaseFormComponent implements OnInit, OnChanges {
   constructor(
     private form: FormBuilder,
     private formService: FormService,
     private validationMessagesService: ValidationMessagesService
-  ) {}
+  ) {
+    super();
+  }
 
   languageKeyForm: FormGroup;
   @Input() languageKey: LanguageKey;
-  @Input() actionType: ActionType;
-  @Input() isLoadingAction: boolean;
   @Input() canEditLanguageKey = false;
-  @Input() actionError: boolean;
-  @Input() isLoading: boolean;
-  @Output() submitForm = new EventEmitter<LanguageKey>();
-  formGroupDirective: FormGroupDirective;
 
   ngOnInit() {}
 

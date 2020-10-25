@@ -2,8 +2,6 @@ import {
   Component,
   OnInit,
   Input,
-  Output,
-  EventEmitter,
   OnChanges
 } from '@angular/core';
 import {
@@ -16,28 +14,25 @@ import { ValidationMessagesService } from 'src/app/core/services/validation-mess
 import { ActionType } from 'src/app/shared/models/general';
 import { Category } from '../category';
 import { FormService } from 'src/app/core/services/form.service';
+import { BaseFormComponent } from 'src/app/shared/base/base-form/base-form.component';
 
 @Component({
   selector: 'app-category-form',
   templateUrl: './category-form.component.html',
   styleUrls: ['./category-form.component.sass']
 })
-export class CategoryFormComponent implements OnInit, OnChanges {
+export class CategoryFormComponent extends BaseFormComponent implements OnInit, OnChanges {
   constructor(
     private form: FormBuilder,
     private formService: FormService,
     private validationMessagesService: ValidationMessagesService
-  ) {}
+  ) {
+    super();
+  }
 
   @Input() category: Category;
   @Input() categories: Category[];
-  @Input() actionType: ActionType;
-  @Input() isLoadingAction: boolean;
   @Input() canEditCategory = false;
-  @Input() actionError: boolean;
-  @Input() isLoading: boolean;
-  @Output() submitForm = new EventEmitter<Category>();
-  formGroupDirective: FormGroupDirective;
   categoryForm: FormGroup;
   bannerImage: File;
   resetImage = false;

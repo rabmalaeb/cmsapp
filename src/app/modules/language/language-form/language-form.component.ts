@@ -16,33 +16,33 @@ import { ValidationMessagesService } from 'src/app/core/services/validation-mess
 import { ActionType } from 'src/app/shared/models/general';
 import { Language } from '../language';
 import { FormService } from 'src/app/core/services/form.service';
+import { BaseFormComponent } from 'src/app/shared/base/base-form/base-form.component';
 
 @Component({
   selector: 'app-language-form',
   templateUrl: './language-form.component.html',
-  styleUrls: ['./language-form.component.sass']
+  styleUrls: ['./language-form.component.sass'],
 })
-export class LanguageFormComponent implements OnInit, OnChanges {
+export class LanguageFormComponent
+  extends BaseFormComponent
+  implements OnInit, OnChanges {
   constructor(
     private form: FormBuilder,
     private formService: FormService,
     private validationMessagesService: ValidationMessagesService
-  ) { }
+  ) {
+    super();
+  }
 
   languageForm: FormGroup;
   @Input() language: Language;
-  @Input() actionType: ActionType;
   @Input() isLoadingAction: boolean;
   @Input() canEditLanguage = false;
-  @Input() actionError: boolean;
-  @Input() isLoading: boolean;
-  @Output() submitForm = new EventEmitter<Language>();
-  formGroupDirective: FormGroupDirective;
 
-  ngOnInit() { }
+  ngOnInit() {}
 
   ngOnChanges() {
-    if (this.isLoadingAction || this.actionError && this.languageForm) {
+    if (this.isLoadingAction || (this.actionError && this.languageForm)) {
       return false;
     }
     if (this.language) {
@@ -58,7 +58,7 @@ export class LanguageFormComponent implements OnInit, OnChanges {
   buildNewLanguageForm() {
     this.languageForm = this.form.group({
       name: ['', [Validators.required]],
-      code: ['', [Validators.required]]
+      code: ['', [Validators.required]],
     });
   }
 
@@ -66,7 +66,7 @@ export class LanguageFormComponent implements OnInit, OnChanges {
     this.languageForm = this.form.group({
       id: [this.language.id],
       name: [this.language.name, [Validators.required]],
-      code: [this.language.code, [Validators.required]]
+      code: [this.language.code, [Validators.required]],
     });
   }
 
@@ -82,7 +82,7 @@ export class LanguageFormComponent implements OnInit, OnChanges {
     return {
       id: this.languageForm.get('id') ? this.languageForm.get('id').value : '',
       name: this.name.value,
-      code: this.code.value
+      code: this.code.value,
     };
   }
 

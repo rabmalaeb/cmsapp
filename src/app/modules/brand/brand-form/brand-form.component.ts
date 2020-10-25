@@ -17,34 +17,33 @@ import { ActionType } from 'src/app/shared/models/general';
 import { Brand } from '../brand';
 import { FormService } from 'src/app/core/services/form.service';
 import { Manufacturer } from '../../manufacturer/manufacturer';
+import { BaseFormComponent } from 'src/app/shared/base/base-form/base-form.component';
 
 @Component({
   selector: 'app-brand-form',
   templateUrl: './brand-form.component.html',
-  styleUrls: ['./brand-form.component.sass']
+  styleUrls: ['./brand-form.component.sass'],
 })
-export class BrandFormComponent implements OnInit, OnChanges {
+export class BrandFormComponent
+  extends BaseFormComponent
+  implements OnInit, OnChanges {
   constructor(
     private form: FormBuilder,
     private formService: FormService,
     private validationMessagesService: ValidationMessagesService
-  ) { }
+  ) {
+    super();
+  }
 
   brandForm: FormGroup;
   @Input() brand: Brand;
   @Input() manufacturers: Manufacturer[];
-  @Input() actionType: ActionType;
-  @Input() isLoadingAction: boolean;
   @Input() canEditBrand = false;
-  @Input() actionError: boolean;
-  @Input() isLoading: boolean;
-  @Output() submitForm = new EventEmitter<Brand>();
-  formGroupDirective: FormGroupDirective;
 
   ngOnInit() {}
 
   ngOnChanges() {
-    if (this.isLoadingAction || this.actionError && this.brandForm) {
+    if (this.isLoadingAction || (this.actionError && this.brandForm)) {
       return false;
     }
     if (this.brand) {
@@ -60,7 +59,7 @@ export class BrandFormComponent implements OnInit, OnChanges {
   buildNewBrandForm() {
     this.brandForm = this.form.group({
       name: ['', [Validators.required]],
-      manufacturerId: ['', [Validators.required]]
+      manufacturerId: ['', [Validators.required]],
     });
   }
 
@@ -68,7 +67,7 @@ export class BrandFormComponent implements OnInit, OnChanges {
     this.brandForm = this.form.group({
       id: [this.brand.id],
       name: [this.brand.name, [Validators.required]],
-      manufacturerId: [this.brand.manufacturerId, [Validators.required]]
+      manufacturerId: [this.brand.manufacturerId, [Validators.required]],
     });
   }
 
@@ -84,7 +83,7 @@ export class BrandFormComponent implements OnInit, OnChanges {
     return {
       id: this.brandForm.get('id') ? this.brandForm.get('id').value : '',
       name: this.name.value,
-      manufacturerId: this.manufacturerId.value
+      manufacturerId: this.manufacturerId.value,
     };
   }
 

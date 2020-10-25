@@ -7,7 +7,7 @@ import { ActionType } from '../../models/general';
   templateUrl: './base-action.component.html',
   styleUrls: ['./base-action.component.scss'],
 })
-export class BaseActionComponent implements OnInit {
+export abstract class BaseActionComponent implements OnInit {
   actionType: ActionType;
   isLoading$: Observable<boolean>;
   isLoadingAction$: Observable<boolean>;
