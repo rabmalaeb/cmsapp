@@ -60,7 +60,7 @@ export class ProductsComponent extends BaseListComponent implements OnInit, OnDe
   }
 
   ngOnInit() {
-    this.getProducts();
+    super.ngOnInit();
     this.getProductFilterLimits();
     this.getCategories();
     this.getBrands();

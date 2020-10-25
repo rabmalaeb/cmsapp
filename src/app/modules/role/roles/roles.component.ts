@@ -45,7 +45,7 @@ export class RolesComponent extends BaseListComponent implements OnInit, OnDestr
   }
 
   ngOnInit() {
-    this.getRoles();
+    super.ngOnInit();
     this.initializeStoreVariables();
   }
 

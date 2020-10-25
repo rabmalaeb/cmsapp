@@ -13,30 +13,31 @@ import { PermissionStoreSelectors, PermissionStoreActions } from '../store';
 import { ActionTypes } from '../store/actions';
 import { filter } from 'rxjs/operators';
 import { NavItem, ModuleName } from 'src/app/shared/models/nav';
+import { BaseActionComponent } from 'src/app/shared/base/base-action/base-action.component';
 
 @Component({
   selector: 'app-permission-add',
   templateUrl: './permission-add.component.html',
   styleUrls: ['./permission-add.component.scss'],
 })
-export class PermissionAddComponent implements OnInit, OnDestroy {
+export class PermissionAddComponent
+  extends BaseActionComponent
+  implements OnInit, OnDestroy {
   constructor(
     private notificationService: NotificationService,
     private authorizationService: AuthorizationService,
     private route: ActivatedRoute,
     private actionsSubject$: ActionsSubject,
     private store$: Store<RootStoreState.State>
-  ) {}
+  ) {
+    super();
+  }
 
   actionType: ActionType;
   isLoadingPermission = false;
   appModules: NavItem[] = [];
   selectedModel: string;
   permission$: Observable<Permission>;
-  isLoading$: Observable<boolean>;
-  isLoadingAction$: Observable<boolean>;
-  loadingErrors$: Observable<string[]>;
-  actionErrors$: Observable<string[]>;
   subscriptions: Subscription[] = [];
 
   ngOnInit() {

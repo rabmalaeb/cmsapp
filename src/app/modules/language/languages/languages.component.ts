@@ -42,7 +42,7 @@ export class LanguagesComponent extends BaseListComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getLanguages();
+    super.ngOnInit();
     this.initializeStoreVariables();
   }
 

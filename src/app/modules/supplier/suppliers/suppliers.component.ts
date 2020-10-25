@@ -45,7 +45,7 @@ export class SuppliersComponent extends BaseListComponent implements OnInit, OnD
   }
 
   ngOnInit() {
-    this.getSuppliers();
+    super.ngOnInit();
     this.initializeStoreVariables();
   }
 

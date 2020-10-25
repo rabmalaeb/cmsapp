@@ -4,8 +4,7 @@ import { NotificationService } from 'src/app/core/services/notification.service'
 import { ActionType } from 'src/app/shared/models/general';
 import { ModuleName } from 'src/app/shared/models/nav';
 import { ActivatedRoute } from '@angular/router';
-import { Role, RoleRequest, RoleActionRequest } from '../role';
-import { PermissionGroup, Permission } from '../../permissions/permission';
+import { Role, RoleActionRequest } from '../role';
 import { AuthorizationService } from 'src/app/core/services/authorization.service';
 import { Observable, of, Subscription } from 'rxjs';
 import { RoleStoreSelectors, RoleStoreActions } from '../store';
@@ -20,16 +19,17 @@ import {
   PermissionStoreActions,
   PermissionStoreSelectors
 } from '../../permissions/store';
-import { PermissionSerializerService } from '../../permissions/permission-serializer.service';
 import { ActionTypes } from '../store/actions';
 import { Partner } from '../../partner/partner';
+import { Permission } from '../../permissions/permission';
+import { BaseActionComponent } from 'src/app/shared/base/base-action/base-action.component';
 
 @Component({
   selector: 'app-role-add',
   templateUrl: './role-add.component.html',
   styleUrls: ['./role-add.component.scss'],
 })
-export class RoleAddComponent implements OnInit, OnDestroy {
+export class RoleAddComponent extends BaseActionComponent implements OnInit, OnDestroy {
   constructor(
     private notificationService: NotificationService,
     private validationMessagesService: ValidationMessagesService,
@@ -37,12 +37,10 @@ export class RoleAddComponent implements OnInit, OnDestroy {
     private actionsSubject$: ActionsSubject,
     private store$: Store<RootStoreState.State>,
     private route: ActivatedRoute
-  ) {}
+  ) {
+    super();
+  }
   permissions$: Observable<Permission[]>;
-  isLoadingAction$: Observable<boolean>;
-  loadingErrors$: Observable<string[]>;
-  actionErrors$: Observable<string[]>;
-  isLoading$: Observable<boolean>;
   role$: Observable<Role>;
   partners$: Observable<Partner[]>;
   actionType: ActionType;

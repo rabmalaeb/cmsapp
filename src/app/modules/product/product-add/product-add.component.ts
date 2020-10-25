@@ -18,30 +18,31 @@ import {
 } from '../../category/store';
 import { Brand } from '../../brand/brand';
 import { BrandStoreActions, BrandStoreSelectors } from '../../brand/store';
+import { BaseActionComponent } from 'src/app/shared/base/base-action/base-action.component';
 
 @Component({
   selector: 'app-product-add',
   templateUrl: './product-add.component.html',
   styleUrls: ['./product-add.component.scss'],
 })
-export class ProductAddComponent implements OnInit, OnDestroy {
+export class ProductAddComponent
+  extends BaseActionComponent
+  implements OnInit, OnDestroy {
   constructor(
     private notificationService: NotificationService,
     private authorizationService: AuthorizationService,
     private actionsSubject$: ActionsSubject,
     private store$: Store<RootStoreState.State>,
     private route: ActivatedRoute
-  ) {}
+  ) {
+    super();
+  }
 
   actionType: ActionType;
   product$: Observable<Product>;
   categories$: Observable<Category[]>;
   brands$: Observable<Brand[]>;
-  isLoading$: Observable<boolean>;
   isLoadingCategories$: Observable<boolean>;
-  isLoadingAction$: Observable<boolean>;
-  loadingErrors$: Observable<string[]>;
-  actionErrors$: Observable<string[]>;
   subscriptions: Subscription[] = [];
 
   ngOnInit() {

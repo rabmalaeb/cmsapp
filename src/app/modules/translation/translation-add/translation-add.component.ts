@@ -21,20 +21,25 @@ import {
   LanguagekeyStoreActions,
   LanguagekeyStoreSelectors,
 } from '../../language-key/store';
+import { BaseActionComponent } from 'src/app/shared/base/base-action/base-action.component';
 
 @Component({
   selector: 'app-translation-add',
   templateUrl: './translation-add.component.html',
   styleUrls: ['./translation-add.component.scss'],
 })
-export class TranslationAddComponent implements OnInit, OnDestroy {
+export class TranslationAddComponent
+  extends BaseActionComponent
+  implements OnInit, OnDestroy {
   constructor(
     private authorizationService: AuthorizationService,
     private notificationService: NotificationService,
     private route: ActivatedRoute,
     private actionsSubject$: ActionsSubject,
     private store$: Store<RootStoreState.State>
-  ) {}
+  ) {
+    super();
+  }
 
   actionType: ActionType;
   translation: Translation;
@@ -44,10 +49,6 @@ export class TranslationAddComponent implements OnInit, OnDestroy {
   languages$: Observable<Language[]>;
   languageKeys$: Observable<LanguageKey[]>;
   translation$: Observable<Translation>;
-  isLoading$: Observable<boolean>;
-  isLoadingAction$: Observable<boolean>;
-  loadingErrors$: Observable<string[]>;
-  actionErrors$: Observable<string[]>;
   subscriptions: Subscription[] = [];
 
   ngOnInit() {

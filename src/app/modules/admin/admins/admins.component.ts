@@ -46,7 +46,7 @@ export class AdminsComponent
   }
 
   ngOnInit() {
-    this.getAdmins();
+    super.ngOnInit();
     this.initializeStoreVariables();
   }
 

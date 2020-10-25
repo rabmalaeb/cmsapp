@@ -13,13 +13,16 @@ import { RootStoreState } from 'src/app/root-store';
 import { Observable, of, Subscription } from 'rxjs';
 import { CategoryStoreSelectors, CategoryStoreActions } from '../store';
 import { ActionTypes } from '../store/actions';
+import { BaseActionComponent } from 'src/app/shared/base/base-action/base-action.component';
 
 @Component({
   selector: 'app-category-add',
   templateUrl: './category-add.component.html',
   styleUrls: ['./category-add.component.scss'],
 })
-export class CategoryAddComponent implements OnInit, OnDestroy {
+export class CategoryAddComponent
+  extends BaseActionComponent
+  implements OnInit, OnDestroy {
   constructor(
     private notificationService: NotificationService,
     private validationMessagesService: ValidationMessagesService,
@@ -27,17 +30,15 @@ export class CategoryAddComponent implements OnInit, OnDestroy {
     private actionsSubject$: ActionsSubject,
     private store$: Store<RootStoreState.State>,
     private route: ActivatedRoute
-  ) {}
+  ) {
+    super();
+  }
 
   categoryForm: FormGroup;
   actionType: ActionType;
   categories: Category[] = [];
   category$: Observable<Category>;
   categories$: Observable<Category[]>;
-  isLoading$: Observable<boolean>;
-  isLoadingAction$: Observable<boolean>;
-  loadingErrors$: Observable<string[]>;
-  actionErrors$: Observable<string[]>;
   subscriptions: Subscription[] = [];
 
   ngOnInit() {

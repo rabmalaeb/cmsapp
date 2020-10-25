@@ -12,13 +12,16 @@ import { SupplierStoreSelectors, SupplierStoreActions } from '../store';
 import { ActionsSubject, Store } from '@ngrx/store';
 import { RootStoreState } from 'src/app/root-store';
 import { Supplier } from '../supplier';
+import { BaseActionComponent } from 'src/app/shared/base/base-action/base-action.component';
 
 @Component({
   selector: 'app-supplier-add',
   templateUrl: './supplier-add.component.html',
   styleUrls: ['./supplier-add.component.scss'],
 })
-export class SupplierAddComponent implements OnInit, OnDestroy {
+export class SupplierAddComponent
+  extends BaseActionComponent
+  implements OnInit, OnDestroy {
   constructor(
     private notificationService: NotificationService,
     private validationMessagesService: ValidationMessagesService,
@@ -26,14 +29,11 @@ export class SupplierAddComponent implements OnInit, OnDestroy {
     private actionsSubject$: ActionsSubject,
     private store$: Store<RootStoreState.State>,
     private route: ActivatedRoute
-  ) {}
+  ) {
+    super();
+  }
 
-  actionType: ActionType;
   supplier$: Observable<Supplier>;
-  isLoading$: Observable<boolean>;
-  isLoadingAction$: Observable<boolean>;
-  loadingErrors$: Observable<string[]>;
-  actionErrors$: Observable<string[]>;
   subscriptions: Subscription[] = [];
 
   ngOnInit() {

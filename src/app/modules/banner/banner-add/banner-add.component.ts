@@ -16,29 +16,30 @@ import {
   LanguageStoreActions,
 } from '../../language/store';
 import { Language, LanguageRequest } from '../../language/language';
+import { BaseActionComponent } from 'src/app/shared/base/base-action/base-action.component';
 
 @Component({
   selector: 'app-banner-add',
   templateUrl: './banner-add.component.html',
   styleUrls: ['./banner-add.component.scss'],
 })
-export class BannerAddComponent implements OnInit, OnDestroy {
+export class BannerAddComponent
+  extends BaseActionComponent
+  implements OnInit, OnDestroy {
   constructor(
     private notificationService: NotificationService,
     private authorizationService: AuthorizationService,
     private actionsSubject$: ActionsSubject,
     private store$: Store<RootStoreState.State>,
     private route: ActivatedRoute
-  ) {}
+  ) {
+    super();
+  }
 
   actionType: ActionType;
   banner$: Observable<Banner>;
   languages$: Observable<Language[]>;
-  isLoading$: Observable<boolean>;
   isLoadingCategories$: Observable<boolean>;
-  isLoadingAction$: Observable<boolean>;
-  loadingErrors$: Observable<string[]>;
-  actionErrors$: Observable<string[]>;
   subscriptions: Subscription[] = [];
 
   ngOnInit() {

@@ -45,7 +45,7 @@ export class ManufacturersComponent extends BaseListComponent implements OnInit,
   }
 
   ngOnInit() {
-    this.getManufacturers();
+    super.ngOnInit();
     this.initializeStoreVariables();
   }
 

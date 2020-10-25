@@ -45,7 +45,7 @@ export class BrandsComponent extends BaseListComponent implements OnInit, OnDest
   }
 
   ngOnInit() {
-    this.getBrands();
+    super.ngOnInit();
     this.initializeStoreVariables();
   }
 

@@ -45,7 +45,7 @@ export class PermissionsComponent extends BaseListComponent implements OnInit, O
   }
 
   ngOnInit() {
-    this.getPermissions();
+    super.ngOnInit();
     this.initializeStoreVariables();
   }
 

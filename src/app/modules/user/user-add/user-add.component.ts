@@ -14,27 +14,28 @@ import { filter } from 'rxjs/operators';
 import { ActionTypes } from '../store/actions';
 import { AuthorizationService } from 'src/app/core/services/authorization.service';
 import { ModuleName } from 'src/app/shared/models/nav';
+import { BaseActionComponent } from 'src/app/shared/base/base-action/base-action.component';
 
 @Component({
   selector: 'app-user-add',
   templateUrl: './user-add.component.html',
   styleUrls: ['./user-add.component.scss'],
 })
-export class UserAddComponent implements OnInit, OnDestroy {
+export class UserAddComponent
+  extends BaseActionComponent
+  implements OnInit, OnDestroy {
   constructor(
     private notificationService: NotificationService,
     private actionsSubject$: ActionsSubject,
     private store$: Store<RootStoreState.State>,
     private authorizationService: AuthorizationService,
     private route: ActivatedRoute
-  ) {}
+  ) {
+    super();
+  }
 
   actionType: ActionType;
   user$: Observable<User>;
-  isLoading$: Observable<boolean>;
-  isLoadingAction$: Observable<boolean>;
-  loadingErrors$: Observable<string[]>;
-  actionErrors$: Observable<string[]>;
   subscriptions: Subscription[] = [];
 
   ngOnInit() {

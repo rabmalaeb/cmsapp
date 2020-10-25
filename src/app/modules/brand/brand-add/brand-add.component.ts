@@ -17,13 +17,16 @@ import {
   ManufacturerStoreSelectors,
 } from '../../manufacturer/store';
 import { Manufacturer } from '../../manufacturer/manufacturer';
+import { BaseActionComponent } from 'src/app/shared/base/base-action/base-action.component';
 
 @Component({
   selector: 'app-brand-add',
   templateUrl: './brand-add.component.html',
   styleUrls: ['./brand-add.component.scss'],
 })
-export class BrandAddComponent implements OnInit, OnDestroy {
+export class BrandAddComponent
+  extends BaseActionComponent
+  implements OnInit, OnDestroy {
   constructor(
     private notificationService: NotificationService,
     private validationMessagesService: ValidationMessagesService,
@@ -31,16 +34,14 @@ export class BrandAddComponent implements OnInit, OnDestroy {
     private actionsSubject$: ActionsSubject,
     private store$: Store<RootStoreState.State>,
     private route: ActivatedRoute
-  ) {}
+  ) {
+    super();
+  }
 
   actionType: ActionType;
   brand$: Observable<Brand>;
   manufacturers$: Observable<Manufacturer[]>;
-  isLoading$: Observable<boolean>;
-  isLoadingAction$: Observable<boolean>;
-  loadingErrors$: Observable<string[]>;
   loadingManufacturersErrors$: Observable<string[]>;
-  actionErrors$: Observable<string[]>;
   subscriptions: Subscription[] = [];
 
   ngOnInit() {

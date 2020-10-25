@@ -17,13 +17,16 @@ import { Observable, of, Subscription } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 import { ActionTypes } from '../store/actions';
 import { ModuleName } from 'src/app/shared/models/nav';
+import { BaseActionComponent } from 'src/app/shared/base/base-action/base-action.component';
 
 @Component({
   selector: 'app-language-key-add',
   templateUrl: './language-key-add.component.html',
   styleUrls: ['./language-key-add.component.scss'],
 })
-export class LanguageKeyAddComponent implements OnInit, OnDestroy {
+export class LanguageKeyAddComponent
+  extends BaseActionComponent
+  implements OnInit, OnDestroy {
   constructor(
     private form: FormBuilder,
     private notificationService: NotificationService,
@@ -32,7 +35,9 @@ export class LanguageKeyAddComponent implements OnInit, OnDestroy {
     private actionsSubject$: ActionsSubject,
     private store$: Store<RootStoreState.State>,
     private route: ActivatedRoute
-  ) {}
+  ) {
+    super();
+  }
 
   languageKeyForm: FormGroup;
   actionType: ActionType;
@@ -41,10 +46,6 @@ export class LanguageKeyAddComponent implements OnInit, OnDestroy {
   isLoading = false;
   categories: Category[] = [];
   languageKey$: Observable<LanguageKey>;
-  isLoading$: Observable<boolean>;
-  isLoadingAction$: Observable<boolean>;
-  loadingErrors$: Observable<string[]>;
-  actionErrors$: Observable<string[]>;
   subscriptions: Subscription[] = [];
 
   ngOnInit() {

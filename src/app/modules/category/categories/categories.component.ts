@@ -44,7 +44,7 @@ export class CategoriesComponent extends BaseListComponent implements OnInit, On
   }
 
   ngOnInit() {
-    this.getCategories();
+    super.ngOnInit();
     this.initializeStoreVariables();
   }
 

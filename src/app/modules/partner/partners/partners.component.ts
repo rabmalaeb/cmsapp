@@ -45,7 +45,7 @@ export class PartnersComponent extends BaseListComponent implements OnInit, OnDe
   }
 
   ngOnInit() {
-    this.getPartners();
+    super.ngOnInit();
     this.initializeStoreVariables();
   }
 

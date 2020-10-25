@@ -46,7 +46,7 @@ export class LanguageKeysComponent extends BaseListComponent implements OnInit, 
   }
 
   ngOnInit() {
-    this.getLanguageKeys();
+    super.ngOnInit();
     this.initializeStoreVariables();
   }
 

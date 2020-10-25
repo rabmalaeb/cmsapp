@@ -44,7 +44,7 @@ export class BannersComponent extends BaseListComponent implements OnInit, OnDes
   }
 
   ngOnInit() {
-    this.getBanners();
+    super.ngOnInit();
     this.initializeStoreVariables();
   }
 

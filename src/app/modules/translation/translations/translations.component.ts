@@ -55,7 +55,7 @@ export class TranslationsComponent extends BaseListComponent implements OnInit, 
   }
 
   ngOnInit() {
-    this.getTranslations();
+    super.ngOnInit();
     this.fillDisplayedColumns();
     this.initializeStoreVariables();
   }

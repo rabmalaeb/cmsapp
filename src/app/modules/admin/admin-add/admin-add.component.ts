@@ -25,13 +25,16 @@ import {
   CountryStoreActions,
   CountryStoreSelectors,
 } from '../../country/store';
+import { BaseActionComponent } from 'src/app/shared/base/base-action/base-action.component';
 
 @Component({
   selector: 'app-admin-add',
   templateUrl: './admin-add.component.html',
   styleUrls: ['./admin-add.component.scss'],
 })
-export class AdminAddComponent implements OnInit, OnDestroy {
+export class AdminAddComponent
+  extends BaseActionComponent
+  implements OnInit, OnDestroy {
   constructor(
     private notificationService: NotificationService,
     private authorizationService: AuthorizationService,
@@ -39,16 +42,14 @@ export class AdminAddComponent implements OnInit, OnDestroy {
     private actionsSubject$: ActionsSubject,
     private store$: Store<RootStoreState.State>,
     private route: ActivatedRoute
-  ) {}
+  ) {
+    super();
+  }
   actionType: ActionType;
   roles$: Observable<Role[]>;
   partners$: Observable<Partner[]>;
   countries$: Observable<Country[]>;
   admin$: Observable<Admin>;
-  isLoading$: Observable<boolean>;
-  isLoadingAction$: Observable<boolean>;
-  loadingErrors$: Observable<string[]>;
-  actionErrors$: Observable<string[]>;
   subscriptions: Subscription[] = [];
 
   ngOnInit() {

@@ -12,13 +12,16 @@ import { Observable, of, Subscription } from 'rxjs';
 import { LanguageStoreSelectors, LanguageStoreActions } from '../store';
 import { filter } from 'rxjs/operators';
 import { ActionTypes } from '../store/actions';
+import { BaseActionComponent } from 'src/app/shared/base/base-action/base-action.component';
 
 @Component({
   selector: 'app-language-add',
   templateUrl: './language-add.component.html',
   styleUrls: ['./language-add.component.scss'],
 })
-export class LanguageAddComponent implements OnInit, OnDestroy {
+export class LanguageAddComponent
+  extends BaseActionComponent
+  implements OnInit, OnDestroy {
   constructor(
     private notificationService: NotificationService,
     private validationMessagesService: ValidationMessagesService,
@@ -26,14 +29,12 @@ export class LanguageAddComponent implements OnInit, OnDestroy {
     private actionsSubject$: ActionsSubject,
     private store$: Store<RootStoreState.State>,
     private route: ActivatedRoute
-  ) {}
+  ) {
+    super();
+  }
 
   actionType: ActionType;
   language$: Observable<Language>;
-  isLoading$: Observable<boolean>;
-  isLoadingAction$: Observable<boolean>;
-  loadingErrors$: Observable<string[]>;
-  actionErrors$: Observable<string[]>;
   subscriptions: Subscription[] = [];
 
   ngOnInit() {

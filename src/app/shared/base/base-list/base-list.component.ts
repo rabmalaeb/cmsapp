@@ -8,14 +8,17 @@ import { FilterHandler } from '../../filters/filter';
   templateUrl: './base-list.component.html',
   styleUrls: ['./base-list.component.scss'],
 })
-export class BaseListComponent implements OnInit {
+export abstract class BaseListComponent implements OnInit {
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   filterHandler = new FilterHandler();
   fetchListAction: () => void;
 
   constructor() {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    console.log('what is ', this.fetchListAction);
+    this.fetchListAction();
+  }
 
   get perPage() {
     return this.filterHandler.getPaginator().perPage;

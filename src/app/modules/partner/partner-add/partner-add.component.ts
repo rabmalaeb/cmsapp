@@ -12,13 +12,16 @@ import { PartnerStoreSelectors, PartnerStoreActions } from '../store';
 import { ActionsSubject, Store } from '@ngrx/store';
 import { RootStoreState } from 'src/app/root-store';
 import { Partner, PartnerRequest } from '../partner';
+import { BaseActionComponent } from 'src/app/shared/base/base-action/base-action.component';
 
 @Component({
   selector: 'app-partner-add',
   templateUrl: './partner-add.component.html',
   styleUrls: ['./partner-add.component.scss'],
 })
-export class PartnerAddComponent implements OnInit, OnDestroy {
+export class PartnerAddComponent
+  extends BaseActionComponent
+  implements OnInit, OnDestroy {
   constructor(
     private notificationService: NotificationService,
     private validationMessagesService: ValidationMessagesService,
@@ -26,14 +29,12 @@ export class PartnerAddComponent implements OnInit, OnDestroy {
     private actionsSubject$: ActionsSubject,
     private store$: Store<RootStoreState.State>,
     private route: ActivatedRoute
-  ) {}
+  ) {
+    super();
+  }
 
   actionType: ActionType;
   partner$: Observable<Partner>;
-  isLoading$: Observable<boolean>;
-  isLoadingAction$: Observable<boolean>;
-  loadingErrors$: Observable<string[]>;
-  actionErrors$: Observable<string[]>;
   subscriptions: Subscription[] = [];
 
   ngOnInit() {

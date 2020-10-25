@@ -17,13 +17,16 @@ import {
   CountryStoreSelectors,
 } from '../../country/store';
 import { Country } from '../../country/country';
+import { BaseActionComponent } from 'src/app/shared/base/base-action/base-action.component';
 
 @Component({
   selector: 'app-manufacturer-add',
   templateUrl: './manufacturer-add.component.html',
   styleUrls: ['./manufacturer-add.component.scss'],
 })
-export class ManufacturerAddComponent implements OnInit, OnDestroy {
+export class ManufacturerAddComponent
+  extends BaseActionComponent
+  implements OnInit, OnDestroy {
   constructor(
     private notificationService: NotificationService,
     private validationMessagesService: ValidationMessagesService,
@@ -31,15 +34,13 @@ export class ManufacturerAddComponent implements OnInit, OnDestroy {
     private actionsSubject$: ActionsSubject,
     private store$: Store<RootStoreState.State>,
     private route: ActivatedRoute
-  ) {}
+  ) {
+    super();
+  }
 
   actionType: ActionType;
   manufacturer$: Observable<Manufacturer>;
   countries$: Observable<Country[]>;
-  isLoading$: Observable<boolean>;
-  isLoadingAction$: Observable<boolean>;
-  loadingErrors$: Observable<string[]>;
-  actionErrors$: Observable<string[]>;
   subscriptions: Subscription[] = [];
 
   ngOnInit() {

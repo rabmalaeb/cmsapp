@@ -57,7 +57,7 @@ export class UsersComponent extends BaseListComponent implements OnInit, OnDestr
   }
 
   ngOnInit() {
-    this.getUsers();
+    super.ngOnInit();
     this.initializeStoreVariables();
   }
 
