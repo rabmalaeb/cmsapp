@@ -82,4 +82,8 @@ export class AuthenticationService {
     }
     return false;
   }
+
+  get isTopLevelPartner() {
+    return this.getCurrentUser().isTopLevel;
+  }
 }

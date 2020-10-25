@@ -1,6 +1,5 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { AlertService } from 'src/app/core/services/alert.service';
 import { Brand, BrandRequest } from '../brand';
@@ -13,28 +12,25 @@ import { filter } from 'rxjs/operators';
 import { NotificationService } from 'src/app/core/services/notification.service';
 import { ActionsSubject, Store } from '@ngrx/store';
 import { RootStoreState } from 'src/app/root-store';
-import { FilterHandler } from 'src/app/shared/filters/filter';
-import { Sort } from '@angular/material/sort';
 import {
   SuccessMessages,
   ConfirmMessages,
 } from 'src/app/shared/models/messages';
+import { BaseListComponent } from 'src/app/shared/base/base-list/base-list.component';
 
 @Component({
   selector: 'app-brands',
   templateUrl: './brands.component.html',
   styleUrls: ['./brands.component.scss'],
 })
-export class BrandsComponent implements OnInit, OnDestroy {
+export class BrandsComponent extends BaseListComponent implements OnInit, OnDestroy {
   displayedColumns: string[] = ['id', 'name', 'manufacturer', 'action'];
   brands$: Observable<Brand[]>;
   error$: Observable<string>;
   isLoading$: Observable<boolean>;
   totalNumberOfItems$: Observable<number>;
-  filterHandler = new FilterHandler();
   dataSource: MatTableDataSource<any>;
   subscriptions: Subscription[] = [];
-  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 
   constructor(
     private alertService: AlertService,
@@ -43,7 +39,10 @@ export class BrandsComponent implements OnInit, OnDestroy {
     private store$: Store<RootStoreState.State>,
     private notificationService: NotificationService,
     private actionsSubject$: ActionsSubject
-  ) {}
+  ) {
+    super();
+    this.fetchListAction = this.getBrands;
+  }
 
   ngOnInit() {
     this.getBrands();
@@ -131,20 +130,6 @@ export class BrandsComponent implements OnInit, OnDestroy {
 
   get canDeleteBrand() {
     return this.authorizationService.canDelete(ModuleName.BRANDS);
-  }
-
-  get perPage() {
-    return this.filterHandler.getPaginator().perPage;
-  }
-
-  setPage($event: PageEvent) {
-    this.filterHandler.setPaginator($event.pageIndex + 1, $event.pageSize);
-    this.getBrands();
-  }
-
-  sortItems(sort: Sort) {
-    this.filterHandler.setSort(sort);
-    this.getBrands();
   }
 
   ngOnDestroy() {

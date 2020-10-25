@@ -26,6 +26,9 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { AlertComponent } from 'src/app/shared/components/alert/alert.component';
 import { Ng5SliderModule } from 'ng5-slider';
 import { MatSortModule } from '@angular/material/sort';
+import { BaseFormComponent } from './base/base-form/base-form.component';
+import { BaseListComponent } from './base/base-list/base-list.component';
+import { BaseActionComponent } from './base/base-action/base-action.component';
 
 @NgModule({
   imports: [
@@ -55,7 +58,7 @@ import { MatSortModule } from '@angular/material/sort';
     MatDialogModule,
     Ng5SliderModule
   ],
-  declarations: [],
+  declarations: [BaseFormComponent, BaseListComponent, BaseActionComponent],
   exports: [
     FormsModule,
     ReactiveFormsModule,

@@ -1,6 +1,5 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { AlertService } from 'src/app/core/services/alert.service';
 import { Banner, BannerRequest } from '../banner';
@@ -13,27 +12,24 @@ import { Observable, Subscription } from 'rxjs';
 import { Store, ActionsSubject } from '@ngrx/store';
 import { RootStoreState } from 'src/app/root-store';
 import { NotificationService } from 'src/app/core/services/notification.service';
-import { FilterHandler } from 'src/app/shared/filters/filter';
-import { Sort } from '@angular/material/sort';
 import {
   SuccessMessages,
   ConfirmMessages,
 } from 'src/app/shared/models/messages';
+import { BaseListComponent } from 'src/app/shared/base/base-list/base-list.component';
 
 @Component({
   selector: 'app-banners',
   templateUrl: './banners.component.html',
   styleUrls: ['./banners.component.scss'],
 })
-export class BannersComponent implements OnInit, OnDestroy {
+export class BannersComponent extends BaseListComponent implements OnInit, OnDestroy {
   displayedColumns: string[] = ['id', 'name', 'image', 'action'];
   dataSource: MatTableDataSource<any>;
-  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   banners$: Observable<Banner[]>;
   totalNumberOfItems$: Observable<number>;
   error$: Observable<string>;
   isLoading$: Observable<boolean>;
-  filterHandler = new FilterHandler();
   subscriptions: Subscription[] = [];
   constructor(
     private alertService: AlertService,
@@ -42,7 +38,10 @@ export class BannersComponent implements OnInit, OnDestroy {
     private store$: Store<RootStoreState.State>,
     private notificationService: NotificationService,
     private actionsSubject$: ActionsSubject
-  ) {}
+  ) {
+    super();
+    this.fetchListAction = this.getBanners;
+  }
 
   ngOnInit() {
     this.getBanners();
@@ -130,20 +129,6 @@ export class BannersComponent implements OnInit, OnDestroy {
 
   get canDeleteBanner() {
     return this.authorizationService.canDelete(ModuleName.PRODUCTS);
-  }
-
-  get perPage() {
-    return this.filterHandler.getPaginator().perPage;
-  }
-
-  setPage($event: PageEvent) {
-    this.filterHandler.setPaginator($event.pageIndex + 1, $event.pageSize);
-    this.getBanners();
-  }
-
-  sortItems(sort: Sort) {
-    this.filterHandler.setSort(sort);
-    this.getBanners();
   }
 
   ngOnDestroy() {

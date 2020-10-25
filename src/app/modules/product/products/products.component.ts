@@ -1,6 +1,5 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { AlertService } from 'src/app/core/services/alert.service';
 import { Product, ProductFilterLimits } from '../product';
@@ -18,8 +17,6 @@ import {
   CategoryStoreActions,
   CategoryStoreSelectors,
 } from '../../category/store';
-import { Sort } from '@angular/material/sort';
-import { FilterHandler } from 'src/app/shared/filters/filter';
 import {
   SuccessMessages,
   ConfirmMessages,
@@ -31,15 +28,15 @@ import {
   ManufacturerStoreSelectors,
 } from '../../manufacturer/store';
 import { Manufacturer } from '../../manufacturer/manufacturer';
+import { BaseListComponent } from 'src/app/shared/base/base-list/base-list.component';
 
 @Component({
   selector: 'app-products',
   templateUrl: './products.component.html',
   styleUrls: ['./products.component.scss'],
 })
-export class ProductsComponent implements OnInit, OnDestroy {
+export class ProductsComponent extends BaseListComponent implements OnInit, OnDestroy {
   displayedColumns: string[] = ['id', 'name', 'category', 'image', 'action'];
-  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   products$: Observable<Product[]>;
   categories$: Observable<Category[]>;
   manufacturers$: Observable<Manufacturer[]>;
@@ -48,7 +45,6 @@ export class ProductsComponent implements OnInit, OnDestroy {
   totalNumberOfItems$: Observable<number>;
   productFilterLimits$: Observable<ProductFilterLimits>;
   isLoading$: Observable<boolean>;
-  filterHandler = new FilterHandler();
   dataSource: MatTableDataSource<any>;
   subscriptions: Subscription[] = [];
   constructor(
@@ -58,7 +54,10 @@ export class ProductsComponent implements OnInit, OnDestroy {
     private store$: Store<RootStoreState.State>,
     private notificationService: NotificationService,
     private actionsSubject$: ActionsSubject
-  ) {}
+  ) {
+    super();
+    this.fetchListAction = this.getProducts;
+  }
 
   ngOnInit() {
     this.getProducts();
@@ -184,16 +183,6 @@ export class ProductsComponent implements OnInit, OnDestroy {
     });
   }
 
-  setPage($event: PageEvent) {
-    this.filterHandler.setPaginator($event.pageIndex + 1, $event.pageSize);
-    this.getProducts();
-  }
-
-  sortProducts(sort: Sort) {
-    this.filterHandler.setSort(sort);
-    this.getProducts();
-  }
-
   get canAddProduct() {
     return this.authorizationService.canAdd(ModuleName.PRODUCTS);
   }
@@ -202,14 +191,6 @@ export class ProductsComponent implements OnInit, OnDestroy {
     return this.authorizationService.canDelete(ModuleName.PRODUCTS);
   }
 
-  get perPage() {
-    return this.filterHandler.getPaginator().perPage;
-  }
-
-  sortItems(sort: Sort) {
-    this.filterHandler.setSort(sort);
-    this.getProducts();
-  }
 
   ngOnDestroy() {
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());

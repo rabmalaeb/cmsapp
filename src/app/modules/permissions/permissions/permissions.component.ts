@@ -1,6 +1,5 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { AlertService } from 'src/app/core/services/alert.service';
 import { Permission, PermissionRequest } from '../permission';
@@ -13,28 +12,25 @@ import { NotificationService } from 'src/app/core/services/notification.service'
 import { PermissionStoreSelectors, PermissionStoreActions } from '../store';
 import { ActionTypes } from '../store/actions';
 import { filter } from 'rxjs/operators';
-import { FilterHandler } from 'src/app/shared/filters/filter';
-import { Sort } from '@angular/material/sort';
 import {
   SuccessMessages,
   ConfirmMessages,
 } from 'src/app/shared/models/messages';
+import { BaseListComponent } from 'src/app/shared/base/base-list/base-list.component';
 
 @Component({
   selector: 'app-permissions',
   templateUrl: './permissions.component.html',
   styleUrls: ['./permissions.component.scss'],
 })
-export class PermissionsComponent implements OnInit, OnDestroy {
+export class PermissionsComponent extends BaseListComponent implements OnInit, OnDestroy {
   permissions$: Observable<Permission[]>;
   error$: Observable<string>;
   isLoading$: Observable<boolean>;
   totalNumberOfItems$: Observable<number>;
-  filterHandler = new FilterHandler();
   displayedColumns: string[] = ['id', 'name', 'type', 'group', 'action'];
   dataSource: MatTableDataSource<any>;
   subscriptions: Subscription[] = [];
-  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 
   constructor(
     private alertService: AlertService,
@@ -43,7 +39,10 @@ export class PermissionsComponent implements OnInit, OnDestroy {
     private actionsSubject$: ActionsSubject,
     private notificationService: NotificationService,
     private router: Router
-  ) {}
+  ) {
+    super();
+    this.fetchListAction = this.getPermissions;
+  }
 
   ngOnInit() {
     this.getPermissions();
@@ -139,20 +138,6 @@ export class PermissionsComponent implements OnInit, OnDestroy {
 
   get canDeletePermission() {
     return this.authorizationService.canDelete(ModuleName.PERMISSIONS);
-  }
-
-  get perPage() {
-    return this.filterHandler.getPaginator().perPage;
-  }
-
-  setPage($event: PageEvent) {
-    this.filterHandler.setPaginator($event.pageIndex + 1, $event.pageSize);
-    this.getPermissions();
-  }
-
-  sortItems(sort: Sort) {
-    this.filterHandler.setSort(sort);
-    this.getPermissions();
   }
 
   ngOnDestroy() {

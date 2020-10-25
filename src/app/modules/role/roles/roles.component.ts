@@ -1,6 +1,5 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { AlertService } from 'src/app/core/services/alert.service';
 import { Role } from '../role';
@@ -16,25 +15,22 @@ import {
 import { ActionTypes } from '../store/actions';
 import { NotificationService } from 'src/app/core/services/notification.service';
 import { filter } from 'rxjs/operators';
-import { FilterHandler } from 'src/app/shared/filters/filter';
-import { Sort } from '@angular/material/sort';
 import { SuccessMessages, ConfirmMessages } from 'src/app/shared/models/messages';
+import { BaseListComponent } from 'src/app/shared/base/base-list/base-list.component';
 
 @Component({
   selector: 'app-roles',
   templateUrl: './roles.component.html',
   styleUrls: ['./roles.component.scss'],
 })
-export class RolesComponent implements OnInit, OnDestroy {
+export class RolesComponent extends BaseListComponent implements OnInit, OnDestroy {
   roles$: Observable<Role[]>;
   error$: Observable<string>;
   totalNumberOfItems$: Observable<number>;
   isLoading$: Observable<boolean>;
-  filterHandler = new FilterHandler();
   displayedColumns: string[] = ['id', 'name', 'partner', 'action'];
   dataSource: MatTableDataSource<any>;
   subscriptions: Subscription[] = [];
-  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 
   constructor(
     private alertService: AlertService,
@@ -43,7 +39,10 @@ export class RolesComponent implements OnInit, OnDestroy {
     private actionsSubject$: ActionsSubject,
     private notificationService: NotificationService,
     private router: Router
-  ) {}
+  ) {
+    super();
+    this.fetchListAction = this.getRoles;
+  }
 
   ngOnInit() {
     this.getRoles();
@@ -126,20 +125,6 @@ export class RolesComponent implements OnInit, OnDestroy {
     this.alertService.confirmDelete(ConfirmMessages.CONFIRM_DELETE, () => {
       this.store$.dispatch(new RoleStoreActions.DeleteRoleRequestAction(id));
     });
-  }
-
-  get perPage() {
-    return this.filterHandler.getPaginator().perPage;
-  }
-
-  setPage($event: PageEvent) {
-    this.filterHandler.setPaginator($event.pageIndex + 1, $event.pageSize);
-    this.getRoles();
-  }
-
-  sortItems(sort: Sort) {
-    this.filterHandler.setSort(sort);
-    this.getRoles();
   }
 
   ngOnDestroy() {

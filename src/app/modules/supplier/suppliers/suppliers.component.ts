@@ -1,6 +1,5 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { AlertService } from 'src/app/core/services/alert.service';
 import { Supplier } from '../supplier';
@@ -13,28 +12,25 @@ import { RootStoreState } from 'src/app/root-store';
 import { NotificationService } from 'src/app/core/services/notification.service';
 import { ActionTypes } from '../store/actions';
 import { filter } from 'rxjs/operators';
-import { FilterHandler } from 'src/app/shared/filters/filter';
-import { Sort } from '@angular/material/sort';
 import {
   SuccessMessages,
   ConfirmMessages,
 } from 'src/app/shared/models/messages';
+import { BaseListComponent } from 'src/app/shared/base/base-list/base-list.component';
 
 @Component({
   selector: 'app-suppliers',
   templateUrl: './suppliers.component.html',
   styleUrls: ['./suppliers.component.scss'],
 })
-export class SuppliersComponent implements OnInit, OnDestroy {
+export class SuppliersComponent extends BaseListComponent implements OnInit, OnDestroy {
   displayedColumns: string[] = ['id', 'name', 'code', 'action'];
   dataSource: MatTableDataSource<any>;
   suppliers$: Observable<Supplier[]>;
   totalNumberOfItems$: Observable<number>;
   error$: Observable<string>;
   isLoading$: Observable<boolean>;
-  filterHandler = new FilterHandler();
   subscriptions: Subscription[] = [];
-  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 
   constructor(
     private alertService: AlertService,
@@ -43,7 +39,10 @@ export class SuppliersComponent implements OnInit, OnDestroy {
     private store$: Store<RootStoreState.State>,
     private notificationService: NotificationService,
     private actionsSubject$: ActionsSubject
-  ) {}
+  ) {
+    super();
+    this.fetchListAction = this.getSuppliers;
+  }
 
   ngOnInit() {
     this.getSuppliers();
@@ -134,20 +133,6 @@ export class SuppliersComponent implements OnInit, OnDestroy {
 
   get canDeleteSupplier() {
     return this.authorizationService.canDelete(ModuleName.SUPPLIERS);
-  }
-
-  get perPage() {
-    return this.filterHandler.getPaginator().perPage;
-  }
-
-  setPage($event: PageEvent) {
-    this.filterHandler.setPaginator($event.pageIndex + 1, $event.pageSize);
-    this.getSuppliers();
-  }
-
-  sortItems(sort: Sort) {
-    this.filterHandler.setSort(sort);
-    this.getSuppliers();
   }
 
   ngOnDestroy() {

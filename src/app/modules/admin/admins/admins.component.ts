@@ -1,6 +1,5 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { Admin } from '../admin';
 import { AuthorizationService } from 'src/app/core/services/authorization.service';
@@ -13,27 +12,26 @@ import { AdminStoreSelectors, AdminStoreActions } from '../store';
 import { ActionTypes } from '../store/actions';
 import { NotificationService } from 'src/app/core/services/notification.service';
 import { filter } from 'rxjs/operators';
-import { FilterHandler } from 'src/app/shared/filters/filter';
-import { Sort } from '@angular/material/sort';
 import {
   SuccessMessages,
   ConfirmMessages,
 } from 'src/app/shared/models/messages';
+import { BaseListComponent } from 'src/app/shared/base/base-list/base-list.component';
 
 @Component({
   selector: 'app-admins',
   templateUrl: './admins.component.html',
   styleUrls: ['./admins.component.scss'],
 })
-export class AdminsComponent implements OnInit, OnDestroy {
+export class AdminsComponent
+  extends BaseListComponent
+  implements OnInit, OnDestroy {
   displayedColumns: string[] = ['id', 'name', 'email', 'active', 'action'];
   dataSource: MatTableDataSource<any>;
-  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   admins$: Observable<Admin[]>;
   error$: Observable<string>;
   isLoading$: Observable<boolean>;
   totalNumberOfItems$: Observable<number>;
-  filterHandler = new FilterHandler();
   subscriptions: Subscription[] = [];
   constructor(
     private alertService: AlertService,
@@ -42,7 +40,10 @@ export class AdminsComponent implements OnInit, OnDestroy {
     private notificationService: NotificationService,
     private store$: Store<RootStoreState.State>,
     private actionsSubject$: ActionsSubject
-  ) {}
+  ) {
+    super();
+    this.fetchListAction = this.getAdmins;
+  }
 
   ngOnInit() {
     this.getAdmins();
@@ -128,20 +129,6 @@ export class AdminsComponent implements OnInit, OnDestroy {
 
   get canDeleteAdmin(): Observable<boolean> {
     return this.authorizationService.canDelete(ModuleName.ADMINS);
-  }
-
-  get perPage() {
-    return this.filterHandler.getPaginator().perPage;
-  }
-
-  setPage($event: PageEvent) {
-    this.filterHandler.setPaginator($event.pageIndex + 1, $event.pageSize);
-    this.getAdmins();
-  }
-
-  sortItems(sort: Sort) {
-    this.filterHandler.setSort(sort);
-    this.getAdmins();
   }
 
   ngOnDestroy() {

@@ -15,6 +15,7 @@ export interface Admin {
   token?: string;
   partnerId?: number;
   apiKey?: string;
+  isTopLevel: boolean;
 }
 
 export class AdminRequest extends FilterRequest {
