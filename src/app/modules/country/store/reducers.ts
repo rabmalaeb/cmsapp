@@ -11,7 +11,7 @@ export function countryReducer(state = initialState, action: Actions): State {
       };
     }
     case ActionTypes.LOAD_SUCCESS: {
-      return countryAdapter.addAll(action.payload.items, {
+      return countryAdapter.addMany(action.payload.items, {
         ...state,
         isLoading: false,
         loadingError: null

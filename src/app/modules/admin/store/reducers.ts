@@ -11,7 +11,7 @@ export function adminReducer(state = initialState, action: Actions): State {
       };
     }
     case ActionTypes.LOAD_SUCCESS: {
-      return adminAdapter.addAll(action.payload.items, {
+      return adminAdapter.addMany(action.payload.items, {
         ...state,
         isLoading: false,
         total: action.payload.paginator.total,

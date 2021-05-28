@@ -11,7 +11,7 @@ export function partnerReducer(state = initialState, action: Actions): State {
       };
     }
     case ActionTypes.LOAD_SUCCESS: {
-      return partnerAdapter.addAll(action.payload.items, {
+      return partnerAdapter.addMany(action.payload.items, {
         ...state,
         isLoading: false,
         total: action.payload.paginator.total,

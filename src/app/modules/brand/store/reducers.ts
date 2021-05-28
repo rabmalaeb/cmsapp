@@ -11,7 +11,7 @@ export function brandReducer(state = initialState, action: Actions): State {
       };
     }
     case ActionTypes.LOAD_SUCCESS: {
-      return brandAdapter.addAll(action.payload.items, {
+      return brandAdapter.addMany(action.payload.items, {
         ...state,
         isLoading: false,
         total: action.payload.paginator.total,

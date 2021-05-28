@@ -11,7 +11,7 @@ export function manufacturerReducer(state = initialState, action: Actions): Stat
       };
     }
     case ActionTypes.LOAD_SUCCESS: {
-      return manufacturerAdapter.addAll(action.payload.items, {
+      return manufacturerAdapter.addMany(action.payload.items, {
         ...state,
         isLoading: false,
         total: action.payload.paginator.total,

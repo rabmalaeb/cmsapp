@@ -11,7 +11,7 @@ export function productReducer(state = initialState, action: Actions): State {
       };
     }
     case ActionTypes.LOAD_SUCCESS: {
-      return productAdapter.addAll(action.payload.items, {
+      return productAdapter.addMany(action.payload.items, {
         ...state,
         isLoading: false,
         total: action.payload.paginator.total,

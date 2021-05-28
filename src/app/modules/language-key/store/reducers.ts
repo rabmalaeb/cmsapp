@@ -14,7 +14,7 @@ export function languagekeyReducer(
       };
     }
     case ActionTypes.LOAD_SUCCESS: {
-      return languageKeyAdapter.addAll(action.payload.items, {
+      return languageKeyAdapter.addMany(action.payload.items, {
         ...state,
         isLoading: false,
         total: action.payload.paginator.total,

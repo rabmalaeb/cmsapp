@@ -11,7 +11,7 @@ export function mediaReducer(state = initialState, action: Actions): State {
       };
     }
     case ActionTypes.LOAD_SUCCESS: {
-      return mediaAdapter.addAll(action.payload.items, {
+      return mediaAdapter.addMany(action.payload.items, {
         ...state,
         isLoading: false,
         loadingError: null

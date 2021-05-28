@@ -11,7 +11,7 @@ export function translationReducer(state = initialState, action: Actions): State
       };
     }
     case ActionTypes.LOAD_SUCCESS: {
-      return translationAdapter.addAll(action.payload.items, {
+      return translationAdapter.addMany(action.payload.items, {
         ...state,
         isLoading: false,
         total: action.payload.paginator.total,

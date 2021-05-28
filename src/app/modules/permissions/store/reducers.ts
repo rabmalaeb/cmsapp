@@ -14,7 +14,7 @@ export function permissionReducer(
       };
     }
     case ActionTypes.LOAD_SUCCESS: {
-      return permissionAdapter.addAll(action.payload.items, {
+      return permissionAdapter.addMany(action.payload.items, {
         ...state,
         isLoading: false,
         total: action.payload.paginator.total,

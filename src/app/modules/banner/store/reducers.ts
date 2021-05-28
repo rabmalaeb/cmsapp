@@ -11,7 +11,7 @@ export function bannerReducer(state = initialState, action: Actions): State {
       };
     }
     case ActionTypes.LOAD_SUCCESS: {
-      return bannerAdapter.addAll(action.payload.items, {
+      return bannerAdapter.addMany(action.payload.items, {
         ...state,
         isLoading: false,
         total: action.payload.paginator.total,

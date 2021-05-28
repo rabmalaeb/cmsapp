@@ -11,7 +11,7 @@ export function roleReducer(state = initialState, action: Actions): State {
       };
     }
     case ActionTypes.LOAD_SUCCESS: {
-      return roleAdapter.addAll(action.payload.items, {
+      return roleAdapter.addMany(action.payload.items, {
         ...state,
         isLoading: false,
         total: action.payload.paginator.total,
@@ -120,7 +120,7 @@ export function roleReducer(state = initialState, action: Actions): State {
       };
     }
     case ActionTypes.GET_ROLE_BY_PARTNER_SUCCESS: {
-      return roleAdapter.addAll(action.payload.items, {
+      return roleAdapter.addMany(action.payload.items, {
         ...state,
         isLoading: false,
         loadingError: null
