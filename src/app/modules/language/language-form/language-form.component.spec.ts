@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { LanguageFormComponent } from './language-form.component';
 
@@ -6,7 +6,7 @@ describe('LanguageFormComponent', () => {
   let component: LanguageFormComponent;
   let fixture: ComponentFixture<LanguageFormComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ LanguageFormComponent ]
     })

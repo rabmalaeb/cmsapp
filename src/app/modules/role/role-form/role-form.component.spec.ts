@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { RoleFormComponent } from './role-form.component';
 
@@ -6,7 +6,7 @@ describe('RoleFormComponent', () => {
   let component: RoleFormComponent;
   let fixture: ComponentFixture<RoleFormComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ RoleFormComponent ]
     })

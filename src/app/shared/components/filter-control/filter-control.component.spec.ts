@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { FilterControlComponent } from './filter-control.component';
 
@@ -6,7 +6,7 @@ describe('FilterControlComponent', () => {
   let component: FilterControlComponent;
   let fixture: ComponentFixture<FilterControlComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ FilterControlComponent ]
     })
