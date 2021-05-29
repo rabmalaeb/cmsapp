@@ -13,6 +13,7 @@ import { ActionsSubject, Store } from '@ngrx/store';
 import { RootStoreState } from 'src/app/root-store';
 import { Supplier } from '../supplier';
 import { BaseActionComponent } from 'src/app/shared/base/base-action/base-action.component';
+import { Labels } from 'src/app/shared/models/input';
 
 @Component({
   selector: 'app-supplier-add',
@@ -130,12 +131,12 @@ export class SupplierAddComponent
     return this.isLoadingAction$.pipe(
       map((isLoading) => {
         if (isLoading) {
-          return 'Loading';
+          return Labels.LOADING;
         }
         if (this.actionType === ActionType.EDIT) {
-          return 'Update';
+          return Labels.UPDATE;
         }
-        return 'Add';
+        return Labels.ADD;
       })
     );
   }

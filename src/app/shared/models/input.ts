@@ -25,3 +25,10 @@ export function checkFormControlErrors(
     errorMessage
   };
 }
+
+export enum Labels {
+  LOADING = 'Loading',
+  UPDATE = 'Update',
+  ADD = 'Add',
+  SET_PASSWORD = 'Set Password'
+}

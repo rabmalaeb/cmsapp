@@ -18,6 +18,7 @@ import { Manufacturer } from '../manufacturer';
 import { FormService } from 'src/app/core/services/form.service';
 import { Country } from '../../country/country';
 import { BaseFormComponent } from 'src/app/shared/base/base-form/base-form.component';
+import { Labels } from 'src/app/shared/models/input';
 
 @Component({
   selector: 'app-manufacturer-form',
@@ -98,12 +99,12 @@ export class ManufacturerFormComponent
 
   get buttonLabel() {
     if (this.isLoadingAction) {
-      return 'Loading';
+      return Labels.LOADING;
     }
     if (this.actionType === ActionType.EDIT) {
-      return 'Update';
+      return Labels.UPDATE;
     }
-    return 'Add';
+    return Labels.ADD;
   }
 
   performAction(formDirective: FormGroupDirective) {

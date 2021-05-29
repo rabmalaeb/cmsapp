@@ -28,6 +28,7 @@ import { FormService } from 'src/app/core/services/form.service';
 import { AuthenticationService } from '../../authentication/authentication.service';
 import { Country } from '../../country/country';
 import { BaseFormComponent } from 'src/app/shared/base/base-form/base-form.component';
+import { Labels } from 'src/app/shared/models/input';
 
 @Component({
   selector: 'app-admin-form',
@@ -196,12 +197,12 @@ export class AdminFormComponent extends BaseFormComponent implements OnInit, OnC
 
   get buttonLabel() {
     if (this.isLoadingAction) {
-      return 'Loading';
+      return Labels.LOADING;
     }
     if (this.actionType === ActionType.EDIT) {
-      return 'Update';
+      return Labels.UPDATE;
     }
-    return 'Add';
+    return Labels.ADD;
   }
 
   get isLoadingForm() {

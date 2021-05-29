@@ -25,6 +25,7 @@ import { FormService } from 'src/app/core/services/form.service';
 import { CookieService } from 'ngx-cookie-service';
 import { AuthenticationWorkflowService } from '../authentication-workflow.service';
 import { AuthenticationSteps } from '../authentication';
+import { Labels } from 'src/app/shared/models/input';
 
 @Component({
   selector: 'app-set-password',
@@ -141,9 +142,9 @@ export class SetPasswordComponent implements OnInit, OnDestroy {
     return this.isLoading$.pipe(
       map((isLoading) => {
         if (isLoading) {
-          return 'Loading';
+          return Labels.LOADING;
         }
-        return 'Set Password';
+        return Labels.SET_PASSWORD;
       })
     );
   }

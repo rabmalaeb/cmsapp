@@ -20,6 +20,7 @@ import { ActionType } from 'src/app/shared/models/general';
 import { User } from '../user';
 import { FormService } from 'src/app/core/services/form.service';
 import { BaseFormComponent } from 'src/app/shared/base/base-form/base-form.component';
+import { Labels } from 'src/app/shared/models/input';
 
 @Component({
   selector: 'app-user-form',
@@ -105,12 +106,12 @@ export class UserFormComponent
 
   get buttonLabel() {
     if (this.isLoadingAction) {
-      return 'Loading';
+      return Labels.LOADING;
     }
     if (this.actionType === ActionType.EDIT) {
-      return 'Update';
+      return Labels.UPDATE;
     }
-    return 'Add';
+    return Labels.ADD;
   }
 
   performAction(formDirective: FormGroupDirective) {
